@@ -1,0 +1,20 @@
+<!--  Modal content for City Image -->
+<div class="modal fade dialog1" tabindex="-1" id="modal-app">
+    <div class="modal-dialog modal-lg" style="margin-top:2em !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+
+                <h4 class="text-right w-100">
+                    <span v-text="title"></span>
+                </h4>
+            </div>
+            <div class="modal-body active">
+                <img :src="image" class="img-responsive img-rounded center-block w-100" alt="" />
+                <div class="text-right" v-html="description">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

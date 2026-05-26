@@ -1,0 +1,16 @@
+<div class="card">
+  {% load to_price %}
+  <div class="card-header">
+    <h5>
+      {{financial_event.title}}
+       <span class="badge badge-{{financial_event.status_color}}">
+        {{financial_event.status}}
+      </span>
+    </h5>
+
+  </div>  
+  <div class="card-body">
+
+    {% include 'accounting/includes/financial-event-app/card-contents.html' %}
+  </div>
+</div>

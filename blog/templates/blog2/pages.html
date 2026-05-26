@@ -1,0 +1,123 @@
+{% extends "blog2/layout.html" %}
+
+{% load static %}
+
+{% block head %}
+
+{% endblock  %}
+{% block content %}
+
+
+{% if header %}
+<div class="page-header header-filter header-small" data-parallax="true"
+	style="background-image: url(&quot;{{header.image}}&quot;); transform: translate3d(0px, 0px, 0px);">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 ml-auto mr-auto text-center">
+				<h2 class="title farsi">
+
+					{{header.title}}
+
+				</h2>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+
+
+
+<div class="main main-raised mb-5">
+
+
+	<div class="blogs-3">
+		<div class="container">
+			<div class="row rtl">
+				<div class="col-md-10 ml-auto mr-auto">
+					<h2 class="title farsi text-right"> {{list_title}}</h2>
+					<br>
+					{% for page in pages %}
+					<div class="card card-plain card-blog">
+						<div class="row rtl">
+							<div class="col-md-4">
+								<div class="card-header card-header-image">
+									<a href=" {{page.get_absolute_url}}">
+										<img class="img img-raised" src="{{page.thumbnail}}">
+
+									</a>
+
+									<div class="colored-shadow"
+										style="background-image: url(&quot;{{page.thumbnail}}&quot;); opacity: 1;">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-8">
+								{% if page.category %}
+								  
+								<h6 class="card-category text-info text-right">{{page.category}}</h6>
+								{% endif %}
+								<h3 class="card-title farsi text-right">
+									<a href=" {{page.get_absolute_url}}">{{page.title}}</a>
+								</h3>
+								{% if page.short_description %}
+								<p class="card-description">
+									{{page.short_description}}
+								</p>
+								{% endif %}
+
+								<p class="author">
+									{% if page.profile %}
+									<a href="{{page.profile.get_absolute_url}}">
+
+										<img alt="64x64" src="{{page.profile.image}}" width="32"
+											class="rounded-circle shadow">
+
+										<b> {{page.profile.name}}</b>
+									</a>
+
+									{% endif %}
+
+
+								</p>
+								<!-- <p><a href="{{page.get_absolute_url}}">ادامه مطلب </a></p> -->
+								<p>
+									<span class="mx-3">
+										{{page.persian_date_added_tag|safe}}
+									</span>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					{% empty %}
+					<div class="text-center">
+						<h5 class="farsi">
+
+							موردی پیدا نشد.
+						</h5>
+					</div>
+					{% endfor %}
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block script %}
+<script>
+	let pages=JSON.parse(`{{pages_s|escapejs}}`)
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-merge-product" class="rtl text-right farsi">
+
+
+
+    <div class="card" id="merge-product-app">
+        <div class="card-header" id="heading-merge-product">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-merge-product"
+                    aria-expanded="true" aria-controls="collapse-merge-product">
+                        همسان سازی کالا
+                </button>
+            </h5>
+
+         
+        </div>
+        <div id="collapse-merge-product" class="collapse"
+            aria-labelledby="heading-merge-product" data-parent="#accordion-merge-product">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                 
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">بارکد کالای که باید حذف شود</label>
+                            <input @input="select_deleting_product()" type="text" class="form-control" v-model="deleting_product_code">
+                        </div>
+                    </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group" v-if="deleting_product">
+                            <label for="">کالای که باید حذف شود</label>
+                            
+                            <div v-for="product in [deleting_product]">
+                                {% include "accounting/includes/product-app/media.html" %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">بارکد کالای که باید آپدیت شود</label>
+                            <input @input="select_updating_product()" type="text" class="form-control" v-model="updating_product_code">
+                        </div>
+                    </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group" v-if="updating_product">
+                            <label for="">کالای که باید آپدیت شود</label>
+                            
+                            <div v-for="product in [updating_product]">
+                                {% include "accounting/includes/product-app/media.html" %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <button v-if="!show_confirm" @click="show_confirm=true" class="my-2 btn btn-success">همگام شود؟</button>
+                        <span v-if="show_confirm"> همگام سازی شود؟</span>
+                        <button v-if="show_confirm" @click="show_confirm=false" class="my-2 btn btn-secondary">خیر . مطمئن نیستم</button>
+                        <button v-if="show_confirm" @click="merge()" class="my-2 btn btn-success">همگام شود</button>
+                    </div>
+                    <div class="col-md-8">
+                        <div v-if="message.show">
+
+                            <div :class="'alert alert-'+message.color">
+                                <h5 v-text="message.title"></h5>
+                                <div v-html="message.body"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

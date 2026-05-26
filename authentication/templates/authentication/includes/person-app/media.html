@@ -1,0 +1,22 @@
+{% load to_price %}
+<div class="media">
+  <img :src="person.image" class="rounded" width="64" alt="" />
+  <div class="media-body mr-2">
+    <h5 class="text-primary">
+      <a :href="person.get_absolute_url">
+        <span v-text="person.full_name"></span>
+      </a>
+    </h5>
+    <div v-if="person.tel">
+      <a :href="'tel:'+person.tel">
+        <span v-text="person.tel"></span>
+      </a>
+    </div>
+ 
+    <div v-if="person.mobile">
+      <a :href="'tel:'+person.mobile">
+        <span v-text="person.mobile"></span>
+      </a>
+    </div>
+  </div>
+</div>

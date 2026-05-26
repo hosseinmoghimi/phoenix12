@@ -1,0 +1,29 @@
+{% load static %}
+<form @submit.prevent="send_notification()" class="mb-3">
+    <div class="row">
+        <div class="col-md-5">
+            <select v-model="member_id" class="form-control">
+                {% for memb in members %}
+
+                <option value="{{memb.id}}">
+                    {{memb.person.full_name}}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-10">
+
+            <input required type="text" class="form-control" placeholder="عنوان پیام" v-model="message_title">
+            <input type="text" class="form-control" placeholder="متن پیام" v-model="message_body">
+        </div>
+        <div class="col-2">
+            <button v-if="!waiting" type="submit" class="btn btn-success">
+                <i class="material-icons">
+                    send
+                </i>
+            </button>
+            <img v-if="waiting" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+
+        </div>
+    </div>
+</form>

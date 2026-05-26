@@ -1,0 +1,14 @@
+<script>
+    let customers = JSON.parse("{{customers_s|escapejs}}")
+    // let links=JSON.parse(`{{links_s|escapejs}}`)
+    let customers_app = new Vue({
+        el: "#customers-app",
+        data: {
+            customers: customers,
+        },
+        methods: {
+            to_price:vall=>to_price(vall),
+              
+        }
+    })
+</script>

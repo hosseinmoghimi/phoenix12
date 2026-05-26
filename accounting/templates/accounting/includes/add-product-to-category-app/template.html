@@ -1,0 +1,71 @@
+{% load static %}
+
+
+<div id="accordion-add-product-to-category">
+
+    <div class="card" id="add-product-to-category-app">
+        <div class="card-header">
+            <h5 class="card-title text-center farsi">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-product-to-category"
+                    aria-expanded="true" aria-controls="collapse-add-product-to-category">
+                    افزودن محصول به دسته بندی
+                </button>
+            </h5>
+
+
+        </div>
+        <div id="collapse-add-product-to-category"
+            class="collapse {% if expand_add_product_to_category %} show {% endif %}"
+            aria-labelledby="heading-add-product-to-category" data-parent="#accordion-add-product-to-category">
+            <div class="card-body">
+                <a target="_blank" href="{% url 'accounting:category' pk=0 %}">همه دسته بندی ها</a>
+                <div class="my-3">
+                    <h6>دسته بندی های این محصول</h6>
+                    <div v-for="product_category in product_categories">
+                        <a :href="product_category.get_absolute_url">
+                            <span v-text="product_category.full_title"></span>
+                        </a>
+                        <button class="btn btn-link mx-2" title="حذف" @click="remove(product_category.id)"><i
+                                class="fa fa-minus text-danger"></i></button>
+                    </div>
+                </div>
+                <form @submit.prevent="add_product_to_category()">
+                    <div class="row rtl">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">شناسه کالا</label>
+                                <input type="number" class="form-control" v-model="product_id">
+                            </div>
+                        </div>
+
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="">بارکد کالا</label>
+                                <input type="text" class="form-control" v-model="product_barcode">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-plus"></i> افزودن
+                            </button>
+                        </div>
+
+                        <div class="col-md-12 my-2" v-if="message.show">
+                            <div :class="'alert alert-'+message.color">
+                                <div v-html="message.body"></div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+{% load static %}
+<footer class="footer footer-black footer-big">
+  <div class="container">
+    <div class="content">
+      <div class="row rtl">
+        <div class="col-md-4">
+          <div class="text-center">
+
+            <img src="{{app.logo.image}}" class="rounded-circle shadow" width="64" alt="" srcset="">
+          </div>
+
+          <h4 class="text-center text-light">
+            <span class="farsi  text-light">
+              {{app.title.value}}
+
+            </span>
+
+          </h4>
+          <h5 class="text-right">
+            <i class="fa fa-tel"></i>
+
+
+
+            <i class="material-icons text-success">phone</i>
+            <span class="farsi ltr">
+              {{app.tel.value}}
+
+            </span>
+          </h5>
+
+
+          <h5 class="text-right">
+
+
+
+
+            <i class="material-icons text-rose">alternate_email</i>
+
+            <span class=" farsi ltr">
+
+
+              {{app.email.value}}
+
+            </span>
+          </h5>
+
+
+          <h5 class="text-right">
+            <i class="fa fa-tel"></i>
+
+
+            <i class="material-icons text-info">place</i>
+            <span class="farsi ">
+              {{app.address.value}}
+            </span>
+          </h5>
+
+
+        </div>
+        <div class="col-md-4">
+          <h5 class="text-center farsi">
+            <span class="farsi">
+              درباره ما
+
+            </span>
+
+          </h5>
+          <p class="text-center">
+
+            {{app.about_us_short.value}}
+            {% if perms.core.change_parameter %}
+
+            {{app.about_us_short.get_edit_btn|safe}}
+            {% endif %}
+
+          </p>
+        </div>
+        <div class="col-md-4">
+          {% if app.footer_links %}
+
+          <h5 class="text-center farsi">
+            <span class="farsi text-center">
+              شبکه های اجتماعی
+
+            </span>
+
+          </h5>
+          <div class="gallery-feed">
+            {% for footer_link in app.footer_links %}
+            <a target="{{footer_link.target}}" href="{{footer_link.url}}" title="{{footer_link.title}}">
+              <img src="{{footer_link.image}}" class="img img-raised rounded" alt="">
+            </a>
+
+            {% endfor %}
+
+
+          </div>
+
+          {% endif %}
+          {% if app.footer_awards %}
+
+          <h5 class="text-center farsi">
+            <span class="farsi text-center">
+              تقدیر نامه ها
+
+            </span>
+
+          </h5>
+          <div class="gallery-feed ">
+            {% for award in app.footer_awards %}
+            <a href="{{award.get_absolute_url}}" title="{{award.title}}">
+              <img src="{{award.thumbnail}}" class="img img-raised rounded" alt="">
+            </a>
+
+            {% endfor %}
+
+
+          </div>
+          {% endif %}
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <!-- <hr> -->
+    <div class="text-center">
+
+      {% for social_link in app.social_links %}
+      <a href="{{social_link.url}}" class="btn btn-just-icon btn-round {{social_link.icon_class}} mx-2">
+        {{social_link.get_icon_tag|safe}}
+        <div class="ripple-container"></div>
+      </a>
+      {% endfor %}
+
+
+
+      <a href="https://demos.creative-tim.com/material-kit-pro/index.html">material-kit-pro</a>
+
+
+    </div>
+    <!-- <hr> -->
+    {% include 'blog2/includes/last-footer.html' %}
+  </div>
+</footer>

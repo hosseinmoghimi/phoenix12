@@ -1,0 +1,31 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+     
+    {% if add_asset_form %}
+    <div class="col-md-12">
+        {% include "accounting/includes/add-asset-app/template.html" %}
+    </div>
+    {% endif %}
+    
+    <div class="col-md-12 ">
+        {% include "accounting/includes/assets-app/template.html" %}
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "accounting/includes/assets-app/script.html" %}
+{% if add_asset_form %}
+{% include "accounting/includes/add-asset-app/script.html" %}
+{% endif %}
+ 
+{% endblock script %}

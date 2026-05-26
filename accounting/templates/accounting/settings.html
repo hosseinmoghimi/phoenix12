@@ -1,0 +1,179 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div class="card" id="settings-app">
+            <div class="card-header">
+                <h6>
+                    تنظیمات
+                </h6>
+            </div>
+            <div class="card-body text-right">
+                <div class="my-2">
+                    <button v-if="!show_delete" class="btn btn-danger my-2 farsi" @click="show_delete=!show_delete">
+                        حذف همه کد ها
+                    </button>
+                    <div v-if="show_delete">
+                        همه کد ها حذف شوند؟
+                        <button class="btn btn-danger farsi" @click="delete_all_accounts()">
+                            همه کد ها
+                            را حذف کن
+                        </button>
+                        <button class="btn btn-secondary farsi" @click="show_delete=false">
+                            انصراف
+                        </button>
+                    </div>
+                </div>
+                <button class="my-2 btn btn-success farsi" @click="init_all_accounts()">
+                    افزودن کدینگ های پیش فرض
+                </button>
+
+                <button class="my-2 btn btn-info farsi" @click="normalize_all_accounts()">
+                    نرمال سازی همه حساب ها
+                </button>
+
+                
+                <button class="my-2 btn btn-warning farsi" @click="normalize_all_financial_documents()">
+                    نرمال سازی همه سند ها
+                </button>
+
+                <a target="_blank" class="my-2 btn btn-primary farsi" href="{% url 'accounting:tree_chart' pk=0 %}"
+                    target="_blank"> درخت حساب
+                    ها</a>
+                <a target="_blank" class="my-2 btn btn-info farsi" href="{% url 'accounting:tree_list' %}" target="_blank">
+                    لیست حساب
+                    ها</a>
+                <a target="_blank" class="my-2 btn btn-warning farsi" href="{% url 'accounting:selection' %}"
+                    target="_blank"> انتخاب حساب
+                    ها</a>
+                <div class="mt-2">
+                    {% include "utility/includes/message.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if import_from_excel_form %}
+
+    <div class="col-md-6">
+        {% include "accounting/includes/import-from-excel/template.html" %}
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    let settings_app = new Vue({
+        el: "#settings-app",
+        data: {
+            message: { show: false },
+            waiting: false,
+            show_delete: false,
+        },
+        methods: {
+            normalize_all_accounts: function () {
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:normalize_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        let title = "موفق" 
+                        show_message(settings_app, title, data.message , "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+            
+            normalize_all_financial_documents: function () {
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:normalize_all_financial_documents' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        let title = "موفق" 
+                        show_message(settings_app, title, data.message , "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+            
+            
+            init_all_accounts: function () {
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:init_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result1 === "SUCCEED") {
+                        let title = "موفق"
+                        let message1 = data.message1
+                        let message2 = data.message2
+                        let message3 = data.message3
+                        show_message(settings_app, title, message1 + message2 + message3, "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message1 + message2 + message3, "danger", 20000)
+                    }
+                })
+            },
+            
+            delete_all_accounts: function () {
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:delete_all_accounts' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                console.log("data")
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        settings_app.show_delete = false
+
+                        show_message(settings_app, "موفق", data.message, "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+        }
+    })
+</script>
+{% if import_from_excel_form %}
+
+{% include "accounting/includes/import-from-excel/script.html" %}
+{% endif %}
+{% endblock script %}

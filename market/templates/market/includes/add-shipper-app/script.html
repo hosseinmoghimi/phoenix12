@@ -1,0 +1,51 @@
+<script>
+    let person_accounts_s = JSON.parse("{{person_accounts_s|escapejs}}")
+ 
+</script>
+
+<script>
+    let add_shipper_app = new Vue({
+        el: "#add-shipper-app",
+        data: {
+            level: "", 
+            person_account_id:0,
+            person_accounts: person_accounts_s,
+            waiting: false,
+            message: { show: false },
+            show_form: false, 
+
+        },
+        methods: {
+
+            to_price: vall => to_price(vall),
+            
+          
+            add_shipper: function () {
+
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    person_account_id: this.person_account_id,
+                    level: this.level,
+                }
+ 
+
+                let url = "{% url 'market:add_shipper' %}"
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        if (typeof shippers_app != "undefined") {
+                            shippers_app.shippers.push(data.shipper)
+                        }
+                        show_message(add_shipper_app, "موفقیت آمیز", data.message, "success", 10000)
+                        add_shipper_app.persons=add_shipper_app.person_accounts.filter(person_account=>person_account.id!=data.shipper.person_account.id)
+                    }
+                    else {
+                        show_message(add_shipper_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        },
+    })
+</script>

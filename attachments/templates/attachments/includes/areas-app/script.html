@@ -1,0 +1,36 @@
+<script>
+    let url_add_area = "{% url 'map:add_area' %}"
+    let areas = JSON.parse(`{{areas_s|escapejs}}`)
+    let areas_app = new Vue({
+        el: "#areas-app",
+        data: {
+            areas: areas,
+            title:"",
+            code:"",
+            area:"",
+            color:"success",
+            show_form :false,
+            waiting:false,
+        },
+        methods: {
+            add_area: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    code: this.code,
+                    color: this.color,
+                    area: this.area,
+
+                }
+                $.post(url_add_area, payload).done((data) => {
+                    if (data.result === 'SUCCEED') {
+                        areas_app.areas.push(data.area)
+                        areas_app.title=""
+                        areas_app.code="" 
+                        areas_app.area="" 
+                    }
+                })
+            },
+        }
+    })
+</script>

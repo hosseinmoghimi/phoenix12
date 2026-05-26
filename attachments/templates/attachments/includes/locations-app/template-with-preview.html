@@ -1,0 +1,80 @@
+{% load static %}
+<div id="accordion-locations">
+    <div class="card" id="locations-app">
+        <div class="card-header" id="heading-locations">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-locations"
+                    aria-expanded="true" aria-controls="collapse-locations">
+                    موقعیت ها
+
+
+                    <span v-if="(locations.length+page_locations.length)>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="(locations.length+page_locations.length)"></span>
+                        </small>
+                    </span>
+
+
+
+
+                </button>
+            </h5>
+
+
+        </div>
+        <div id="collapse-locations" class="collapse" aria-labelledby="heading-locations"
+            data-parent="#accordion-locations">
+            <div class="card-body">
+
+                {% load static %}
+                <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+                <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..." @input="filter()">
+
+                <div class="row">
+                    <div class="col-md-6 my-3" v-for="location in locations">
+                        <a :href="location.get_absolute_url">
+                            <h4>
+                                <span v-text="location.title"></span>
+                            </h4>
+                        </a>
+                        <div class="" v-html="location.location">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 my-3" v-for="page_location in page_locations">
+                        <h4>
+                            <a :href="page_location.location.get_absolute_url">
+                                <span v-text="page_location.location.title"></span>
+                            </a>
+                        </h4>
+                        <h4>
+
+                            {% if perms.map.change_pagelocation %}
+                            <a :href="page_location.get_edit_url" target="_blank" title="ویرایش"
+                                class="mx-2 text-warning"><i class="fa fa-edit"></i></a>
+
+                            {% endif %}
+
+
+                            {% if perms.map.delete_pagelocation %}
+                            <a :href="page_location.get_delete_url" target="_blank" title="حذف"
+                                class="mx-2 text-danger"><i class="fa fa-trash"></i> </a>
+
+                            {% endif %}
+
+                        </h4>
+                        <div class="" v-html="page_location.location.location">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% include "attachments/includes/locations-app/footer.html" %}
+
+
+        </div>
+
+
+    </div>
+</div>

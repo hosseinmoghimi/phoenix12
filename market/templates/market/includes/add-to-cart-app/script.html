@@ -1,0 +1,40 @@
+<script>
+    let shops_for_add_to_cart_app = JSON.parse("{{shops_s_for_add_to_cart_app|escapejs}}")
+
+
+    let add_to_cart_app = new Vue({
+        el: "#add-to-cart-app",
+        data: {
+            shops: shops_for_add_to_cart_app,
+            quantity: 1,
+            message: { show: false },
+            waiting: false,
+        },
+        methods: {
+            to_price: vall => to_price(vall),
+            add_to_cart: shop => {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    quantity: add_to_cart_app.quantity,
+                    shop_id: shop.id,
+
+                }
+                console.log(payload)
+                let url = "{% url 'market:add_to_cart' %}"
+                $.post(url, payload).done(data => {
+                    if (data.result === "SUCCEED") {
+                        if (typeof cart_items_navbar_app != "undefined") {
+                            cart_items_navbar_app.cart_items.push(data.cart_item)
+                        }
+                        show_message(add_to_cart_app, "موفقیت آمیز", data.message, "success", 5000)
+                    }
+
+                    if (data.result != "SUCCEED") {
+
+                        show_message(add_to_cart_app, "خطا", data.message, "danger", 5000)
+                    }
+                })
+            },
+        },
+    })
+</script>

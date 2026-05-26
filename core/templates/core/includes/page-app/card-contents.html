@@ -1,0 +1,74 @@
+{% load static %}
+{% load to_persian_date %}
+<h5>
+  <a href="{% url 'core:page' pk=page.pk %}"> page: {{page.title}} </a>
+</h5>
+<img src="{{page.thumbnail}}" width="128" alt="" />
+<div class="my-3">
+
+  <h5>{{page.title}}
+    <span class="badge badge-{{financial_event.get_status_color}}">
+        {{financial_event.status}}
+      </span>
+  </h5>
+
+  <a href="{{page.get_absolute_url}}">
+    <small class="text-muted2">{{page.class_title}}</small>
+  </a>
+</div>
+<div class="text-center">
+  <a href="{{page.get_absolute_url}}">
+
+    <img width="128" src="{{page.get_qrcode_url}}" alt="">
+  </a>
+</div>
+<hr>
+<div>
+  <h6>
+  <small class="text-muted">
+    تاریخ ایجاد
+  </small>
+  
+
+  {{page.date_added|to_persian_datetime|safe}}
+</h6>
+</div>
+<div>
+  <h6>
+  <small class="text-muted">
+    تاریخ ویرایش
+  </small>
+  
+
+  {{page.date_updated|to_persian_datetime|safe}}
+</h6>
+</div>
+<div>{% include "attachments/includes/page-like-app/template.html" %}</div>
+<div class="my-3">
+  <form action="https://www.google.com/search" method="get" target="_blank" id="search-form">
+    <input name="q" type="hidden" value="{{page.title}}" />
+    <button type="submit" class="btn btn-link p-0">
+      <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
+
+      جستجوی گوگل
+    </button>
+  </form>
+</div>
+
+<div>
+  {% if perms.core.change_page %}
+  <a href="{{page.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+    <i class="fa fa-edit text-warning"></i>
+    ویرایش
+  </a>
+  {% endif %} {% if perms.core.delete_page %}
+
+  <a href="{{page.get_delete_url}}" class="my-2 text-danger mx-2" title="حذف" target="_blank">
+    <i class="fa fa-trash text-danger"></i>
+    حذف
+  </a>
+  {% endif %}
+</div>
+<div class="my-2">
+  {% include 'core/includes/page-priority-app/template.html' %}
+</div>

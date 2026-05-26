@@ -1,0 +1,271 @@
+<script>
+  let invoice_line_items_for_add_invoice_line_items_app = JSON.parse("{{invoice_line_items_s|escapejs}}")
+  
+  let unit_names = JSON.parse("{{unit_names_for_edit_invoice_line_s|escapejs}}")
+  let add_invoice_line_app = new Vue({
+    el: "#add-invoice-line-app",
+    data: {
+      invoice_line_item_id: 0,
+      invoice_line_items: invoice_line_items_for_add_invoice_line_items_app,
+      invoice_line_item_units: [],
+      // invoice_line_item_unit:{id:0,unit_name:'عدد',unit_price:0,coef:1},
+      unit_price: 0,
+      quantity: 0,
+      save: false,
+      default_price: false,
+      coef: 1,
+      unit_name: "عدد",
+      unit_names:unit_names,
+      discount_percentage: 0,
+      description:"",
+      status:"",
+      search_for: "",
+      buffer_items: [],
+      list_length: 6,
+      waiting: false,
+      message: { show: false },
+      show_add_btn: true,
+    },
+    methods: {
+      add_product:()=>{
+        
+        add_invoice_line_app.waiting=true
+        let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: add_invoice_line_app.search_for,
+                    unit_name: add_invoice_line_app.unit_name,
+                    coef: add_invoice_line_app.coef,
+                    barcode: '',
+                    unit_price: parseInt(add_invoice_line_app.unit_price),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_product' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    add_invoice_line_app.waiting=false
+                    
+                    if (data.result === "SUCCEED") {
+                      invoice_line_items_for_add_invoice_line_items_app.push(data.product)
+                      add_invoice_line_app.invoice_line_items.push(data.product)
+                      add_invoice_line_app.select_item(data.product)
+                        if (typeof products_app != "undefined") {
+                            products_app.products.push(data.product)
+                        }
+
+                        show_message(add_invoice_line_app, "موفقیت آمیز", data.message, "success", 5000)
+                    }
+
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_invoice_line_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+      },
+      add_service:()=>{
+        console.log("add_service!")
+
+        
+        add_invoice_line_app.waiting=true
+        let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: add_invoice_line_app.search_for,
+                    unit_name: add_invoice_line_app.unit_name,
+                    coef: add_invoice_line_app.coef,
+                    unit_price: parseInt(add_invoice_line_app.unit_price),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_service' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    add_invoice_line_app.waiting=false
+                    
+                    if (data.result === "SUCCEED") {
+                      invoice_line_items_for_add_invoice_line_items_app.push(data.service)
+                      add_invoice_line_app.invoice_line_items.push(data.service)
+                      add_invoice_line_app.select_item(data.service)
+                        if (typeof services_app != "undefined") {
+                            services_app.services.push(data.service)
+                        }
+
+                        show_message(add_invoice_line_app, "موفقیت آمیز", data.message, "success", 5000)
+                    }
+
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_invoice_line_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+
+
+      },
+      select_invoice_line_item_unit: function (invoice_line_item_unit) {
+        add_invoice_line_app.unit_price = invoice_line_item_unit.unit_price
+        add_invoice_line_app.unit_name = invoice_line_item_unit.unit_name
+        add_invoice_line_app.coef = invoice_line_item_unit.coef
+        
+        add_invoice_line_app.save = false
+        add_invoice_line_app.default_price = false
+      },
+      more: function () {
+        add_invoice_line_app.list_length += 6;
+        add_invoice_line_app.filter(add_invoice_line_app.list_length);
+      },
+      less: function () {
+        add_invoice_line_app.list_length -= 6;
+        add_invoice_line_app.filter(add_invoice_line_app.list_length);
+      },
+      select_item: function (invoice_line_item) {
+        add_invoice_line_app.invoice_line_item_id = invoice_line_item.id
+        add_invoice_line_app.unit_name = invoice_line_item.unit_name
+        add_invoice_line_app.unit_price = invoice_line_item.unit_price
+        add_invoice_line_app.invoice_line_items = [invoice_line_item]
+        add_invoice_line_app.buffer_items = [invoice_line_item]
+        let url = "{% url 'accounting:get_invoice_line_item_units' %}"
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_line_item_id: invoice_line_item.id
+        }
+        $.post(url, payload).done(data => {
+          console.log(data)
+          console.log(data.invoice_line_item_units)
+          add_invoice_line_app.invoice_line_item_units = data.invoice_line_item_units
+        })
+      },
+      filter: function (count = 6) {
+         add_invoice_line_app.invoice_line_item_units=[]
+
+        add_invoice_line_app.list_length = count
+        // if (add_invoice_line_app.search_for.length < 1) return;
+        let search_for = add_invoice_line_app.search_for.toUpperCase();
+        add_invoice_line_app.invoice_line_items =
+          invoice_line_items_for_add_invoice_line_items_app.filter(function (
+            invoice_line_item
+          ) {
+            let title = invoice_line_item.title.toUpperCase();
+
+            if (title.indexOf(search_for) > -1) {
+              return true;
+            }
+
+
+
+            let model = invoice_line_item.model;
+
+            if (model && model.length>0 && model.toUpperCase().indexOf(search_for) > -1) {  
+              return true;
+            }
+
+            
+            let brand = invoice_line_item.brand_name;
+
+            if (brand && brand.toUpperCase().indexOf(search_for) > -1) {
+              return true;
+            }
+
+            return false;
+          });
+        if (add_invoice_line_app.invoice_line_items.length == 0) {
+          add_invoice_line_app.invoice_line_item_id =0
+
+        add_invoice_line_app.unit_name = 'عدد'
+        add_invoice_line_app.unit_price = 0
+        add_invoice_line_app.invoice_line_items = []
+         add_invoice_line_app.invoice_line_item_units=[]
+          add_invoice_line_app.buffer_items = []
+        }
+        if (add_invoice_line_app.invoice_line_items.length > 0) {
+          add_invoice_line_app.buffer_items =
+            add_invoice_line_app.invoice_line_items.slice(
+              0,
+              add_invoice_line_app.list_length
+            );
+          add_invoice_line_app.invoice_line_item_id =
+            add_invoice_line_app.invoice_line_items[0].id;
+        }
+      },
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      add_invoice_line: function () {
+        let failure=false
+        let quantity=0
+        try {
+          quantity=parseFloat(this.quantity)
+        } catch (error) {
+            show_message(add_invoice_line_app, 'خطا', ',عدد به درستی در فیلد تعداد وارد نشده است', 'danger', 2000)
+            failure=true
+        }
+        if(failure){
+          return
+        }
+
+        add_invoice_line_app.show_add_btn = false
+        add_invoice_line_app.waiting = true
+        add_invoice_line_app.message.show = false
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_id: invoice_id,
+          search_for: this.search_for,
+          description: this.description,
+          status: this.status,
+          invoice_line_item_id: this.invoice_line_item_id,
+          quantity: parseFloat(this.quantity),
+          unit_price: parseInt(this.unit_price),
+          unit_name: this.unit_name,
+          default_price: this.default_price,
+          save: this.save,
+          coef: parseInt(this.coef),
+          discount_percentage: this.discount_percentage,
+        };
+        console.log(payload)
+        let url = "{% url 'accounting:add_invoice_line' %}";
+        let posting = $.post(url, payload);
+        posting.fail(function(data){
+
+          console.log(data)
+          add_invoice_line_app.show_add_btn = true
+          
+        })
+        posting.done((data) => {
+          
+          console.log(data)
+
+
+          add_invoice_line_app.waiting = false
+          if (data.result != "SUCCEED") {
+            setTimeout(() => {
+              add_invoice_line_app.show_add_btn = true
+            }, 1000);
+            title = 'خطا'
+            body = data.message
+            show_message(add_invoice_line_app, title, body, 'danger', 2000)
+          }
+
+          if (data.result === "SUCCEED") {
+
+            setTimeout(() => {
+              add_invoice_line_app.show_add_btn = true
+              add_invoice_line_app.quantity = 0
+              add_invoice_line_app.description = ""
+
+            }, 2000);
+            title = 'موفق'
+            body = data.message
+            show_message(add_invoice_line_app, title, body, 'success', 2000)
+            if (typeof invoice_lines_app != "undefined") {
+              invoice_lines_app.invoice_lines.push(data.invoice_line);
+              // invoice_lines_app.calculate_total();
+            } 
+            
+            if (typeof invoice_edit_app != "undefined") {
+              console.log("invoice_edit_app.invoice_lines.push(data.invoice_line);")
+              invoice_edit_app.invoice_lines.push(data.invoice_line);
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

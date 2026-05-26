@@ -1,0 +1,89 @@
+<div id="accordion-pages" class="rtl text-right farsi">
+    <div class="card" id="pages-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-pages" aria-expanded="true"
+                    aria-controls="collapse-pages">
+                    صفحه ها
+                    <span v-if="pages.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="pages.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-pages" class="collapse {% if expand_pages %} show {% endif %}" aria-labelledby="heading-pages"
+            data-parent="#accordion-pages">
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                           
+                            
+                            <th>
+                                عنوان
+                            </th>
+                            <th>
+                                نوع
+                            </th>
+                            <th>
+                                اپ
+                            </th>
+                            <th>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="page in pages">
+                               
+                                <td>
+                                    <div class="media">
+                                        <a :href="page.get_absolute_url">
+                                            <img width="48" class="rounded" :src="page.thumbnail"> 
+                                        </a>
+                                        <div class="media-body mr-2">
+                                            <a :href="page.get_absolute_url">
+                                                <h5 v-text="page.title"></h5>
+                                            </a>
+                                        </div>
+                                    </div>
+                                   
+
+                                </td> 
+                                 <td>
+                                        <span  v-text="page.class_title"></span>
+                                </td>
+                                <td>
+                                        <span  v-text="page.app_name"></span>
+                                </td>
+                                
+                                <td>
+                                    <a target="_blank" :href="page.get_edit_url" title="ویرایش"
+                                        class=" text-warning mx-2">
+                                        <i class="fa fa-edit text-warning">
+                                        </i>
+                                        ویرایش
+                                    </a>
+                                    <a target="_blank" :href="page.get_delete_url" title="حذف"
+                                        class=" text-danger mx-2">
+                                        <i class="fa fa-trash text-danger">
+                                        </i>
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

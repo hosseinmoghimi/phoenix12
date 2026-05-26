@@ -1,0 +1,39 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+     
+    {% if add_service_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/add-service-app/template.html" %}
+    </div>
+    {% endif %}
+    {% if import_services_from_excel_form %}
+
+    <div class="col-md-6">
+        {% include "accounting/includes/import-services-from-excel-app/template.html" %}
+    </div>
+    {% endif %}
+    <div class="col-md-12 ">
+        {% include "accounting/includes/services-app/template.html" %}
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "accounting/includes/services-app/script.html" %}
+{% if add_service_form %}
+{% include "accounting/includes/add-service-app/script.html" %}
+{% endif %}
+
+{% if import_services_from_excel_form %}
+    {% include "accounting/includes/import-services-from-excel-app/script.html" %}
+{% endif %}
+{% endblock script %}

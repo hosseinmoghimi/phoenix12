@@ -1,0 +1,7 @@
+<script>
+    select_person_account_by_code = function (person_account_code) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, code: person_account_code  }
+        console.log(payload2)
+        return $.post("{% url 'accounting:select_person_account' %}", payload2)
+    }
+</script>

@@ -1,0 +1,104 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-person-categories" class="rtl text-right farsi">
+    <div class="card" id="person-categories-app">
+        <div class="card-header" id="heading-person-categories">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-person-categories"
+                    aria-expanded="true" aria-controls="collapse-person-categories">
+                    دسته بندی اشخاص
+                    <span v-if="person_categories.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="person_categories.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-person-categories" class="collapse {% if expand_person_categories %} show {% endif %}"
+            aria-labelledby="heading-person-categories" data-parent="#accordion-person-categories">
+            <div class="card-body">
+                {% load static %}
+                <form @submit.prinvoice="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                دسته بندی
+                            </th>
+                            <th>
+                                حساب والد
+                            </th>
+                            <th>
+                                تعداد حساب
+                            </th>
+                            <th>
+                                طول کد
+                            </th>
+                            <th>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="person_category in person_categories">
+                                <td>
+                                    <a :href="person_category.get_absolute_url">
+                                        <span v-text="person_category.title">
+                                        </span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="media">
+                                        <a :href="person_category.account.get_absolute_url">
+                                            <img :src="person_category.account.thumbnail" class="rounded" width="32" alt="">
+                                        </a>
+                                        <div class="media-body mr-3">
+                                            <div>
+                                                <a :href="person_category.account.get_absolute_url">
+                                                    <span v-text="person_category.account.name "></span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <a :href="person_category.account.get_absolute_url">
+                                                    <small class="text-muted"
+                                                        v-text="person_category.account.full_title"></small>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <small class="text-muted">
+                                                    <span v-text="person_category.account.class_title"></span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span v-text="(person_category.count_of_accounts)">
+                                    </span>
+                                </td>
+
+                                 <td>
+                                    <span v-text="(person_category.code_length)">
+                                    </span>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

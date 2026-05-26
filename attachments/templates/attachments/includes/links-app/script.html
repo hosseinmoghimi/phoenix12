@@ -1,0 +1,35 @@
+    <script>
+        let url_add_link="{% url 'attachments:add_link' %}"
+        let links_for_links_app=JSON.parse(`{{links_s|escapejs}}`)
+        let links_app = new Vue({
+            el: "#links-app",
+            data: {
+                new_link_title: "",
+                new_link_url: "",
+                priority:1000,
+                links: links_for_links_app,
+                show_add_link:false,
+            },
+            methods: {
+                add_link: function () {
+                    let url = url_add_link
+                    let payload = {
+                        csrfmiddlewaretoken: csrfmiddlewaretoken,
+                        page_id: page_id,
+                        title: this.new_link_title,
+                        priority: this.priority,
+                        url: this.new_link_url,
+                    }
+                    let posting = $.post(url, payload)
+                    posting.done((data) => {
+                        if (data.result === 'SUCCEED') {
+
+                            links_app.links.push(data.link)
+                            links_app.new_link_title = ""
+                            links_app.new_link_url = ""
+                        }
+                    })
+                },
+            }
+        })
+    </script>

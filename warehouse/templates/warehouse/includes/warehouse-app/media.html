@@ -1,0 +1,13 @@
+<div class="media">
+    <a :href="warehouse.get_absolute_url">
+        <img :src="warehouse.thumbnail" class="rounded" width="48" alt="">
+    </a>
+    <div class="media-body mr-2">
+    <a :href="warehouse.get_absolute_url">
+        <h5>
+            <span v-text="warehouse.name"></span>
+        </h5>
+    </a>
+
+    </div>
+</div>

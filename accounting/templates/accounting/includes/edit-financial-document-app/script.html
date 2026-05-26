@@ -1,0 +1,40 @@
+<script>
+  let edit_financial_document_app = new Vue({
+    el: "#edit-financial-document-app",
+    data: {
+      title: "{{financial_document.title}}",
+      status: "{{financial_document.status}}",
+      waiting: false,
+      message: { show: false },
+    },
+    methods: {
+      to_price: function (VALL) {
+        return to_price(VALL)
+      },
+      edit_financial_document: function () {
+        edit_financial_document_app.waiting = true;
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          financial_document_id: financial_document_id,
+          title: edit_financial_document_app.title,
+          status: edit_financial_document_app.status,
+        };
+
+        console.log(payload);
+        let url = "{% url 'accounting:edit_financial_document' %}";
+        $.post(url, payload).done((data) => {
+          edit_financial_document_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(
+              edit_financial_document_app,
+              "موفقیت آمیز",
+              data.message,
+              "success",
+              3000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

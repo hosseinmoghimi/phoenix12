@@ -1,0 +1,13 @@
+{% extends "organization/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-6">
+{% include "organization/includes/employee-app/card.html" %}
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  console.log("name1: {{name1}}");
+  console.log("name2: {{name2}}");
+  console.log("name3: {{name3}}");
+</script>
+{% endblock script %}

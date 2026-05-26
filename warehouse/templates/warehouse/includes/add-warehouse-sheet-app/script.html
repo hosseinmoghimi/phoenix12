@@ -1,0 +1,110 @@
+{% include "warehouse/includes/warehouse-app/select-script.html" %}
+<script>
+    let url_add_warehouse_sheet="{% url 'warehouse:add_warehouse_sheet' %}"
+    let warehouse_for_add_warehouse_sheet_app={}
+    let warehouse_id_for_add_warehouse_sheet_app=0
+</script>
+<script>
+    let invoice_line_for_add_warehouse_sheet_app={}
+    let invoice_line_id_for_add_warehouse_sheet_app=0
+</script>
+{% if invoice_line %}
+  <script>
+    
+     invoice_line_id_for_add_warehouse_sheet_app=parseInt("{{invoice_line.id}}")
+     invoice_line_for_add_warehouse_sheet_app={}
+  </script>
+{% endif %}
+{% if warehouse %}
+    <script>
+    
+     warehouse_id_for_add_warehouse_sheet_app=parseInt("{{warehouse.id}}")
+     warehouse_for_add_warehouse_sheet_app={}
+  </script>
+{% endif %}
+<script>
+    console.log("invoice_line_id :"+invoice_line_id_for_add_warehouse_sheet_app)
+    console.log("warehouse_id :"+warehouse_id_for_add_warehouse_sheet_app)
+    let organizational_units=JSON.parse(`{{organizational_units_s|escapejs}}`)
+
+    let add_warehouse_sheet_app=new Vue({
+        el:"#add-warehouse-sheet-app",
+        data:{
+            warehouse_id:warehouse_id_for_add_warehouse_sheet_app,
+            warehouse:warehouse_for_add_warehouse_sheet_app,
+            invoice_line_id:invoice_line_id_for_add_warehouse_sheet_app,
+            invoice_line:invoice_line_for_add_warehouse_sheet_app,
+            description:"",
+            shelf:"",
+            organizational_unit_id:0,
+            row:"",
+            col:"",
+            type:"",
+            status:"",
+            organizational_unit:{},
+            direction:'',
+            message:{show:false},
+            waiting:false,
+        },
+        methods:{ 
+            add_warehouse_sheet:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    warehouse_id:parseInt(this.warehouse_id),
+                    organizational_unit_id:parseInt(this.organizational_unit_id),
+                    invoice_line_id:parseInt(this.invoice_line_id),
+                    description:(this.description),
+                    status:(this.status),
+                    type:(this.type),
+                    shelf:(this.shelf),
+                    row:(this.row),
+                    col:(this.col),
+                    direction:this.direction,
+
+                }
+                console.log(payload)
+                $.post(url_add_warehouse_sheet,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        if(typeof warehouse_sheets_app !='undefined'){
+                            warehouse_sheets_app.warehouse_sheets.push(data.warehouse_sheet)
+                            warehouse_sheets_app.calculate_total()
+                        }
+                        add_warehouse_sheet_app.direction=''
+                        show_message(add_warehouse_sheet_app,'موفق',data.message,'success',3000)
+                    }
+                    else{
+                        show_message(add_warehouse_sheet_app,'خطا',data.message,'danger',3000)
+                    }
+                })
+
+            },
+            select_warehouse:function(){
+                    select_warehouse_by_id(this.warehouse_id).done(data=>{
+                        console.log(data)
+                        if(data.result=="SUCCEED"){
+                            add_warehouse_sheet_app.warehouse=data.warehouse
+                        }
+                        else{
+                            add_warehouse_sheet_app.warehouse={}
+                        }
+                    })
+            },
+            select_invoice_line:function(){
+
+            },
+            paste_from_clipboard:async function(){
+                console.log('paste_bedehkar ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_warehouse_sheet_app.warehouse_id=String(text)
+                    add_warehouse_sheet_app.select_warehouse()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+            },
+        }
+    })
+</script>

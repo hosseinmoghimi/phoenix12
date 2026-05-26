@@ -1,0 +1,110 @@
+<div id="accordion-page-prints">
+  <div id="page-prints-app" >
+    
+    <div class="card" v-show="!printing" >
+        <div class="card-header" id="heading-page-prints">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-page-prints"
+                    aria-expanded="true" aria-controls="collapse-page-prints">
+                    تاریخچه چاپ
+                    <span v-if="page_prints.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="page_prints.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-page-prints" class="collapse" aria-labelledby="heading-page-prints"
+            data-parent="#accordion-page-prints">
+            <div class="card-body">
+                {% if add_page_print_form %}
+        
+                  <button @click="print()" class="btn btn-info">
+                    <i class="fa fa-print"></i>
+                    <span class="mx-3"> چاپ </span>
+                  </button>
+                {% endif %}
+                    <button v-if="only_printed" @click="toggle()" class="btn btn-success">
+                     همه
+                  </button>
+
+                  <button v-if="!only_printed" @click="toggle()" class="btn btn-primary">
+                     پرینت شده ها
+                  </button>
+
+
+      <div class="table-responsive">
+        
+      <table class="table table-striped">
+        <thead>
+          {% if not page %}
+            
+          <th>صفحه</th>
+          
+          {% endif %}
+          <th>شخص</th>
+
+          <th>تاریخ</th>
+
+          <th>نوع</th>
+
+          <th>چاپ شده</th>
+        </thead>
+        <tbody>
+          <tr v-for="page_print in page_prints">
+            
+          {% if not page %}
+            
+       
+            <td>
+              <div v-for="page in [page_print.page]">
+                {% include "core/includes/page-app/media.html" %}
+              </div>
+            </td>
+          
+          {% endif %}
+          
+
+            <td>
+              <div v-for="person in [page_print.person]">
+                {% include "authentication/includes/person-app/media.html" %}
+              </div>
+            </td>
+
+            <td>
+              <span v-if="page_print.printed && page_print.type==='رسمی'">
+                <i class="fa fa-print text-danger"></i>
+              </span>
+
+                <span v-if="page_print.printed && page_print.type!='رسمی'">
+                <i class="fa fa-print text-success"></i>
+              </span>
+              <span v-text="page_print.persian_datetime_added"></span>
+            </td>
+
+            <td>
+              <span v-text="page_print.type"></span>
+            </td>
+
+            <td>
+              <span v-if="page_print.printed && page_print.type==='رسمی'">
+                <i class="fa fa-print text-danger"></i>
+              </span>
+
+                <span v-if="page_print.printed && page_print.type!='رسمی'">
+                <i class="fa fa-print text-success"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  </div>
+
+ 

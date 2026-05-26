@@ -1,0 +1,124 @@
+{% extends "phoenix/print-layout.html" %} {% block content %}
+{% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    <div class="card">
+      {% load to_price %}
+      <div class="card-body">
+        <div class="text-center">
+          {% if invoice.thumbnail_origin %}
+              <img
+            src="{{invoice.thumbnail}}"
+            class="mb-2"
+            width="96"
+            alt=""
+          />
+          {% else %}
+            <img
+            src="{{invoice.bestankar.thumbnail}}"
+            class="mb-2"
+            width="96"
+            alt=""
+          />
+          {% endif %}
+         
+        </div>
+        <h5 class="text-center">{{invoice.bestankar.title}}</h5>
+        <div class="text-center"></div>
+        <div class="row rtl">
+          <div class="col-8">
+            <h4>فاکتور : {{invoice.title}}</h4>
+
+            <div>خریدار : {{invoice.bedehkar.title}}</div>
+          </div>
+          <div class="col-4">
+            <div>تاریخ : {{invoice.event_datetime|to_persian_datetime|safe}}</div>
+
+            <div>شماره : 
+              {{invoice.id}}
+              / 
+              {{invoice.invoice_no}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    {% include "accounting/includes/invoice-lines-app/print-template.html" %}
+  </div>
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-center">
+          فروشنده
+          <br />
+          {{invoice.bestankar.title}}
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="card farsi">
+      <div class="card-body">
+        <p class="text-center">
+          خریدار
+          <br />
+          {{invoice.bedehkar.title}}
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="media">
+          <img src="{{invoice.get_qrcode_url}}" width="128" alt="" />
+          <div class="media-body mr-2">
+            <div class="description">
+              توضیحات:
+              <br />
+              {{invoice.status}}&nbsp;/&nbsp;{{invoice.payment_method}}
+              <br />
+              کلیه اقلام فاکتور سالم بوده ، تست شده و تحویل خریدار گردید.
+              <br />
+              تا تسویه کامل مبلغ فاکتور اجناس متعلق به فروشنده و به صورت امانت
+              نزد خریدار می باشد.
+              <br />
+              به علت نوسانات قیمت ، فاکتور فوق از لحاظ استعلام قیمت تا بیست و
+              چهار ساعت معتبر می باشد. {% if invoice.description %}
+              {{invoice.description|safe}} {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 ">
+      {% include "attachments/includes/page-prints-app/template.html" %}
+
+
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+{% include "accounting/includes/invoice-app/print-script.html" %}
+ 
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ {% endblock script %}

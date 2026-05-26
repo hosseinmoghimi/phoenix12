@@ -1,0 +1,159 @@
+ 
+
+
+{% include "accounting/includes/invoice-app/script.html" %}
+<script>
+  let status_for_edit_invoice_app =  "{{invoice.status}}" 
+  let payment_method_for_edit_invoice_app =  "{{invoice.payment_method}}" 
+  let bestankar_for_edit_invoice_app = JSON.parse("{{bestankar_s|escapejs}}");
+  let bedehkar_for_edit_invoice_app = JSON.parse("{{bedehkar_s|escapejs}}");
+  let invoice_lines_for_edit_invoice_app = JSON.parse("{{invoice_lines_s|escapejs}}");
+  
+let invoice_edit_app_event_datetime= "{{invoice.persian_event_datetime}}"
+let invoice_edit_app_event_date= invoice_edit_app_event_datetime.substring(0,10)
+let invoice_edit_app_event_time= invoice_edit_app_event_datetime.substring(10,19)
+
+  let invoice_edit_app = new Vue({
+    el: "#invoice-edit-app",
+    data: {
+
+      event_date:invoice_edit_app_event_date,
+      event_time:invoice_edit_app_event_time,
+      bestankar: bestankar_for_edit_invoice_app,
+      bedehkar: bedehkar_for_edit_invoice_app,
+      payment_method: payment_method_for_edit_invoice_app,
+      status: status_for_edit_invoice_app,
+      bestankar_code: bestankar_for_edit_invoice_app.code,
+      bedehkar_code: bedehkar_for_edit_invoice_app.code,
+      title: "{{invoice.title}}",
+      invoice_lines: invoice_lines_for_edit_invoice_app,
+
+      discount: parseInt("{{invoice.discount}}"),
+      tax_percentage: parseInt("{{invoice.tax_percentage}}"),
+      shipping_fee: parseInt("{{invoice.shipping_fee}}"),
+
+      message: { show: false },
+      waiting: false,
+    },
+    components:{
+      DatePicker: VuePersianDatetimePicker,
+
+    },
+    methods: {
+      sum_total: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum +=
+          (invoice_line.quantity *
+            invoice_line.unit_price *
+            (100 - invoice_line.discount_percentage)) /
+          100;
+      });
+      return sum;
+    },
+
+    sum_prices: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum += invoice_line.quantity*(100-invoice_line.discount_percentage)/100 * invoice_line.unit_price;
+      });
+      return sum;
+    },
+
+    sum_discounts: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum +=
+          (invoice_line.quantity *
+            invoice_line.unit_price *
+            invoice_line.discount_percentage) /
+          100;
+      });
+      return sum;
+    },
+      to_price: (price) => to_price(price),
+      select_bedehkar: function () {
+        select_account_by_code(invoice_edit_app.bedehkar_code).done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            invoice_edit_app.bedehkar = data.account;
+          } else {
+            invoice_edit_app.bedehkar = {};
+          }
+        });
+      },
+
+      select_bestankar: function () {
+        select_account_by_code(invoice_edit_app.bestankar_code).done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            invoice_edit_app.bestankar = data.account;
+          } else {
+            invoice_edit_app.bestankar = {};
+          }
+        });
+      },
+      save: function () {
+        invoice_edit_app.waiting = true;
+        invoice_lines = [];
+        invoice_edit_app.invoice_lines.forEach((invoice_line) => {
+          invoice_lines.push({
+            row: parseInt(invoice_line.row),
+            invoice_line_id: parseInt(invoice_line.id),
+            quantity: parseFloat(invoice_line.quantity),
+            unit_name: invoice_line.unit_name,
+            unit_price: parseInt(invoice_line.unit_price),
+            discount_percentage: parseInt(invoice_line.discount_percentage),
+          });
+        });
+        console.log(invoice_lines);
+
+        invoice_lines = JSON.stringify(invoice_lines);
+        let payload = {
+          
+          event_datetime: invoice_edit_app.event_date+" "+invoice_edit_app.event_time,
+
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_lines: invoice_lines,
+          invoice_id: invoice_id,
+          financial_event_id: invoice_id,
+          bedehkar_id: invoice_edit_app.bedehkar.id,
+          bestankar_id: invoice_edit_app.bestankar.id,
+          status: invoice_edit_app.status,
+          payment_method: invoice_edit_app.payment_method,
+          title: invoice_edit_app.title,
+          discount: parseInt(this.discount),
+          tax_percentage: parseInt(this.tax_percentage),
+          shipping_fee: parseInt(this.shipping_fee),
+        };
+        console.log(payload);
+        let url = `{% url 'accounting:invoice_edit' pk=invoice.id %}`;
+        $.post(url, payload).done((data) => {
+          console.log(data);
+          invoice_edit_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(
+              invoice_edit_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+          }
+
+          if (data.result != "SUCCEED") {
+            show_message(
+              invoice_edit_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+
+        });
+      },
+    },
+  });
+</script>

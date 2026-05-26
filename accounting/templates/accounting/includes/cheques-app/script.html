@@ -1,0 +1,30 @@
+<script>
+    let cheques_app_cheques = JSON.parse(`{{cheques_s|escapejs}}`)
+    let cheques_app = new Vue({
+        el:"#cheques-app",
+        data: {
+            cheques: cheques_app_cheques,
+            search_for:'',
+            waiting:false,
+
+        },
+        methods: {
+             copy_code_to_clipboard:function(code){
+                copy_to_clipboard(code)
+                
+
+            },
+
+            filter:function(){
+                this.cheques = cheques_app_cheques.filter(cheque=> cheque.title.indexOf(this.search_for) > -1 )
+            },
+            to_price: function (vall) {
+                 return  to_price(vall,"")
+            },
+          
+            to_price_colored: function (vall,curr) {
+                 return  to_price_colored(vall,curr)
+            },
+        }
+    })
+</script>

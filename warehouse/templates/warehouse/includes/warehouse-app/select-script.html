@@ -1,0 +1,7 @@
+<script>
+    select_warehouse_by_id = function (warehouse_id) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, warehouse_id: warehouse_id  }
+        console.log(payload2)
+        return $.post("{% url 'warehouse:select_warehouse' %}", payload2)
+    }
+</script>

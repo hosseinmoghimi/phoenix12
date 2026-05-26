@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+
+
+
+    <link rel="icon" type="image/png" href="{{app.icon}}">
+    <script
+        nonce="32b7f2b6-3185-490e-afa4-4c726690a174">(function (w, d) { !function (a, e, t, r) { a.zarazData = a.zarazData || {}, a.zarazData.executed = [], a.zarazData.tracks = [], a.zaraz = { deferred: [] }, a.zaraz.track = (e, t) => { for (key in a.zarazData.tracks.push(e), t) a.zarazData["z_" + key] = t[key] }, a.zaraz._preSet = [], a.zaraz.set = (e, t, r) => { a.zarazData["z_" + e] = t, a.zaraz._preSet.push([e, t, r]) }, a.addEventListener("DOMContentLoaded", (() => { var t = e.getElementsByTagName(r)[0], z = e.createElement(r), n = e.getElementsByTagName("title")[0]; n && (a.zarazData.t = e.getElementsByTagName("title")[0].text), a.zarazData.w = a.screen.width, a.zarazData.h = a.screen.height, a.zarazData.j = a.innerHeight, a.zarazData.e = a.innerWidth, a.zarazData.l = a.location.href, a.zarazData.r = e.referrer, a.zarazData.k = a.screen.colorDepth, a.zarazData.n = e.characterSet, a.zarazData.o = (new Date).getTimezoneOffset(), z.defer = !0, z.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(a.zarazData))), t.parentNode.insertBefore(z, t) })) }(w, d, 0, "script"); })(window, document);
+    </script>
+
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vendor/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'authentication/css/style.css' %}">
+
+    {% include "phoenix/includes/head-farsi-font.html" %}
+
+
+
+</head>
+
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-5">
+
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5">
+                    <div class="wrap">
+                        <div class="img" style="background-image:url('{{login_form_header_image.image}}')">
+                        </div>
+
+                        <div class="login-wrap p-4 p-md-5">
+                            
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4">Sign In</h3>
+
+                                </div>
+                                <div class="w-100">
+                                    <p class="social-media d-flex justify-content-end">
+                                        <a href="#"
+                                            class="social-icon d-flex align-items-center justify-content-center"><span
+                                                class="fa fa-facebook"></span></a>
+                                        <a href="#"
+                                            class="social-icon d-flex align-items-center justify-content-center"><span
+                                                class="fa fa-twitter"></span></a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            {% if messages %}
+                            <div class="my-3">
+
+                                {% for message in messages %}
+                                <div class="alert alert-danger farsi text-right" style="direction: rtl;">{{message}}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <form method="POST" id="login-app" action="{% url 'authentication:login' %}"
+                                class="signin-form">
+                                {% csrf_token %}
+                                {% if next %}
+
+                                <input type="hidden" name="next" value="{{next}}">
+                                {% endif %}
+                                <div class="form-group mt-3">
+                                    <input type="text" class="form-control" name="username" required>
+                                    <label class="form-control-placeholder" for="username">Username</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="password-field" type="password" name="password" class="form-control"
+                                        required>
+                                    <label class="form-control-placeholder" for="password-field">Password</label>
+                                    <span toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="text-center">
+
+                                        <img v-if="!show_login_btn" alt="loading, Please wait" width="48" src="{% static 'leo/img/loading.gif' %}" alt="">
+                                    </div>
+                                    <button type="submit" v-show="show_login_btn" @click="show_login_btn=false"
+                                        class="form-control btn btn-primary rounded submit px-3">Sign
+                                        In</button>
+                                </div>
+                                <div class="form-group d-md-flex">
+                                    <div class="w-50 text-left">
+                                        <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                                            <input type="checkbox" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="w-50 text-md-right">
+                                        <a href="{% url 'authentication:change_password' %}">Forgot Password</a>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="text-center">Not a member? <a href="{% url 'authentication:register' %}">Sign
+                                    Up</a></p>
+
+                            <p class="text-center">change password? <a
+                                    href="{% url 'authentication:change_password' %}">Change Password</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/js/popper.min.js' %}"></script>
+    <script>eval(mod_pagespeed_B48vE68w01);</script>
+    <script>eval(mod_pagespeed_M0XlbbKlq8);</script>
+    <script>eval(mod_pagespeed_DUZ_Pnp2XD);</script>
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194"
+        integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw=="
+        data-cf-beacon='{"rayId":"6f09f87a9e9d9bcb","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.12.0","si":100}'
+        crossorigin="anonymous"></script>
+    <script>
+        let build_absolute_uri = `{{build_absolute_uri}}`
+    </script>
+
+    <script src="{% static 'vendor/js/vue.min.js' %}"></script>
+    <script>
+        let login_app = new Vue({
+            el: "#login-app",
+            data: {
+                show_login_btn: true,
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+{% if add_page_download_form %}
+
+    <div id="page-downloads-app" class="card mb-3">
+        <div class="card-header" id="heading-downloads">
+            <h5 class="text-center farsi">
+                دانلود ها
+
+
+                <span v-if="downloads.length>0">
+                    <small class="text-danger mx-2">
+                        <span v-text="downloads.length"></span>
+                    </small>
+                </span>
+
+            </h5>
+        </div>
+
+
+        <div class="card-body">
+
+            <div v-for="download in downloads">
+
+                <h6 class="farsi  text-right">
+                    <i class=" text-primary material-icons">get_app</i>
+                    <a class="mr-2" target="_blank" :href="download.get_download_url" v-text="download.title">
+
+                    </a>
+                    {% if perms.core.change_download %}
+                    <a :href="download.get_edit_url" target="_blank" title="ویرایش" class="mx-2 docs-creator">
+                        <i class="material-icons">
+                            edit
+                        </i>
+                    </a>
+                    {% endif %}
+                </h6>
+            </div>
+        </div>
+        <div class="card-footer">
+
+
+            {% if add_page_download_form %}
+
+            <p class="text-right" v-if="!show_add_download_form">
+
+                <a style="cursor: pointer;" class="farsi a" @click="show_add_download_form=true">
+                    <i class="material-icons">
+                        add
+                    </i>
+                    افزودن دانلود جدید
+                </a>
+            </p>
+            <form id="add-download-form" v-if="show_add_download_form" @submit.prevent="add_page_download()"
+                enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-8">
+                        <input required type="text" v-model="new_download_title" class="farsi form-control"
+                            placeholder="عنوان دانلود جدید">
+
+
+                        <span class="btn btn-raised btn-round btn-default btn-file">
+                            <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                            <input type="file" v-on:change="download_file=true" name="">
+                            <div class="ripple-container"></div>
+                        </span>
+
+
+                    </div>
+                    <div class="col-4">
+                        <button class="farsi btn btn-primary btn-block" type="submit">تایید</button>
+                        <button @click="show_add_download_form=false" class="farsi btn btn-secondary btn-block"
+                            type="reset">انصراف</button>
+
+                    </div>
+                </div>
+
+            </form>
+            {% endif %}
+
+        </div>
+    </div>
+{% elif downloads %}
+    {% include "web/includes/page-downloads-app/template-simple.html" %}
+
+
+
+{% endif %}

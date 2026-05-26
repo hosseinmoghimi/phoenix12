@@ -1,0 +1,13 @@
+<script>
+    let cart_items=JSON.parse("{{cart_items_s|escapejs}}")
+     
+    let cart_items_app=new Vue({
+        el:"#cart-items-app",
+        data:{
+            cart_items:cart_items,
+        },
+        methods:{
+            to_price:vall=>to_price(vall),
+        }
+    })
+</script>

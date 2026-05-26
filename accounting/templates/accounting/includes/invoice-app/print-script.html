@@ -1,0 +1,9 @@
+<script>
+    let invoice=JSON.parse("{{invoice_s|escapejs}}")
+    let invoice_id=parseInt("{{invoice.id}}")
+</script>
+
+{% include "accounting/includes/financial-event-app/print-script.html" %}
+
+ 
+{% include "accounting/includes/invoice-lines-app/script.html" %}

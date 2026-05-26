@@ -1,0 +1,142 @@
+
+{% include "accounting/includes/financial-document-app/select-script.html" %}
+{% include "accounting/includes/financial-event-app/select-script.html" %}
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+    let account_code_for_edit_financial_document_line_app="{{financial_document_line.account.code}}"
+    let account_for_edit_financial_document_line_app=JSON.parse("{{account_s|escapejs}}")
+    let financial_event_for_edit_financial_document_line_app=JSON.parse("{{financial_event_s|escapejs}}")
+    let financial_document_for_edit_financial_document_line_app=JSON.parse("{{financial_document_s|escapejs}}")
+</script>
+<script>
+  let edit_financial_document_line_app = new Vue({
+    el: "#edit-financial-document-line-app",
+    data: {
+        title: "{{financial_document_line.title}}",
+        status: "{{financial_document_line.status}}",
+        waiting: false,
+        message: { show: false },
+        status:"{{financial_document_line.status}}",
+        date_time: "{{persian_date_time}}",
+        bedehkar: parseInt("{{financial_document_line.bedehkar}}"),
+        bestankar: parseInt("{{financial_document_line.bestankar}}"),
+        account_code:account_code_for_edit_financial_document_line_app,
+        account: account_for_edit_financial_document_line_app,
+        financial_event: financial_event_for_edit_financial_document_line_app,
+        financial_document: financial_document_for_edit_financial_document_line_app,
+
+    },
+    
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+    methods: {
+to_price_colored :(vall,curr)=>to_price_colored (vall,curr),
+         paste_account:async ()=>{
+                console.log('paste_account ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    edit_financial_document_line_app.account_code=String(text)
+                    edit_financial_document_line_app.select_account()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+           
+      to_price: function (VALL) {
+        return to_price(VALL)
+      },
+      edit_financial_document_line: function () {
+        edit_financial_document_line_app.waiting = true;
+        let payload = {
+           csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    bedehkar: parseInt(this.bedehkar),
+                    bestankar: parseInt(this.bestankar),
+                    account_code: (this.account.code),
+                    account_id: (this.account.id),
+                    persian_date_time: (this.date_time),
+                    status: (this.status),
+                    financial_event_id: parseInt(this.financial_event.id),
+                    financial_document_id: parseInt(this.financial_document.id),
+                    financial_document_line_id: parseInt("{{financial_document_line.id}}"),
+        };
+
+        console.log(payload);
+        let url = "{% url 'accounting:edit_financial_document_line' %}";
+        $.post(url, payload).done((data) => {
+          edit_financial_document_line_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(
+              edit_financial_document_line_app,
+              "موفقیت آمیز",
+              data.message,
+              "success",
+              3000
+            );
+          }
+
+
+          if (data.result != "SUCCEED") {
+            show_message(
+              edit_financial_document_line_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+        });
+      },
+       swap: function () {
+                let a = this.bestankar
+                this.bestankar = this.bedehkar
+                this.bedehkar = a
+            },
+            select_account: function () {
+                select_account_by_code(this.account_code).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        edit_financial_document_line_app.account = data.account
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        edit_financial_document_line_app.account={}
+                    }
+                })
+            },
+            select_financial_event_by_id: function () {
+                select_financial_event_by_id(this.financial_event.id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        edit_financial_document_line_app.financial_event = data.financial_event
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        edit_financial_document_line_app.financial_event.title=''
+                    }
+                })
+            },
+
+              select_financial_document_by_id: function () {
+                select_financial_document_by_id(this.financial_document.id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        edit_financial_document_line_app.financial_document = data.financial_document
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        edit_financial_document_line_app.financial_document.title=''
+                    }
+                })
+            },
+
+    
+    },
+  });
+</script>

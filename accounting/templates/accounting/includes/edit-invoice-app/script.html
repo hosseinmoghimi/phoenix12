@@ -1,0 +1,206 @@
+<script>
+  let edit_invoice_app_bestankar=invoice.bestankar
+  let edit_invoice_app_bedehkar=invoice.bedehkar
+  let edit_invoice_app_description=""
+  let edit_invoice_app_short_description=""
+  let edit_invoice_app_valid=false
+  let edit_invoice_app_event_datetime= "{{invoice.persian_event_datetime}}"
+   let edit_invoice_app_event_date= edit_invoice_app_event_datetime.substring(0,10)
+   let edit_invoice_app_event_time= edit_invoice_app_event_datetime.substring(10,19)
+ 
+</script>
+{% if invoice.description %}
+  <script>
+    edit_invoice_app_description="{{invoice.description}}"
+  </script>
+{% endif %}
+
+
+{% if invoice.valid %}
+  <script>
+    edit_invoice_app_valid=true
+  </script>
+{% endif %}
+
+{% if invoice.short_description %}
+  <script>
+    edit_invoice_app_short_description="{{invoice.short_description}}"
+  </script>
+{% endif %}
+<script>
+  let edit_invoice_app = new Vue({
+    el: "#edit_invoice-app",
+    data: {
+      title: "{{invoice.title}}",
+      status: "{{invoice.status}}",
+      
+      bedehkar: edit_invoice_app_bedehkar ,
+      bestankar: edit_invoice_app_bestankar ,
+      bedehkar_code: "0",
+      bestankar_code: "0", 
+      
+      event_date: edit_invoice_app_event_date,
+      event_time: edit_invoice_app_event_time,
+      event_datetime: edit_invoice_app_event_datetime,
+
+      description:edit_invoice_app_description,
+      short_description:edit_invoice_app_short_description,
+      payment_method: "{{invoice.payment_method}}",
+      discount: parseInt("{{invoice.discount}}"),
+      tax_percentage: parseInt("{{invoice.tax_percentage}}"),
+      amount: parseInt("{{invoice.amount}}"),
+      shipping_fee: parseInt("{{invoice.shipping_fee}}"),
+      bedehkar_code: `{{invoice.bedehkar.code}}`,
+      bestankar_code: `{{invoice.bestankar.code}}`,
+      waiting: false,
+      valid: edit_invoice_app_valid,
+      message: { show: false },
+      show_confirm:false,
+    },
+    
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    mounted() {
+      // this.select_bedehkar()
+      // this.select_bestankar()
+    },
+    methods: {
+      to_price: function (VALL) {
+        return to_price(VALL)
+      },
+
+      swap: function () {
+        let bed_code = edit_invoice_app.bedehkar_code;
+        let bes_code = edit_invoice_app.bestankar_code; 
+        edit_invoice_app.bedehkar_code = bes_code;
+        edit_invoice_app.bestankar_code = bed_code;
+        this.select_bedehkar()
+        this.select_bestankar()
+        
+      },
+
+     
+      paste_bestankar:async ()=>{
+          console.log('paste_bestankar ')
+
+           try {
+            const text = await navigator.clipboard.readText();
+             edit_invoice_app.bestankar_code=String(text)
+             edit_invoice_app.select_bestankar()
+             
+          } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+          }
+
+        },
+        paste_bedehkar:async ()=>{
+          console.log('paste_bedehkar ')
+
+           try {
+            const text = await navigator.clipboard.readText();
+             edit_invoice_app.bedehkar_code=String(text)
+             edit_invoice_app.select_bedehkar()
+             
+          } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+          }
+
+        }, 
+      select_bedehkar: function () {
+          console.log( edit_invoice_app.bedehkar);
+          select_account_by_code( edit_invoice_app.bedehkar_code).done((data) => {
+               edit_invoice_app.bedehkar = data.account;
+
+              if (data.result === "SUCCEED") {
+                  console.log(data.account);
+            if (data.account.nature === "{{ONLY_BESTANKAR}}") {
+                return;
+            }
+             edit_invoice_app.bedehkar = data.account;
+        } else {
+             edit_invoice_app.bedehkar = false
+        }
+        });
+    },
+
+    select_bestankar: function () {
+          console.log( edit_invoice_app.bestankar);
+        select_account_by_code( edit_invoice_app.bestankar_code).done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+              console.log(data.account);
+              if (data.account.nature === "{{ONLY_BEDEHKAR}}") {
+                  return;
+                }
+
+                 edit_invoice_app.bestankar = data.account;
+          } else {
+             edit_invoice_app.bestankar = false
+          }
+        });
+      },
+      to_price_colored: (vall,curr)=>to_price_colored(vall,curr),
+
+      edit_invoice: function () {
+        edit_invoice_app.waiting = true;
+        let payload = {
+          
+          
+          event_datetime: this.event_date+" "+this.event_time,
+          bedehkar_id: this.bedehkar.id,
+          bestankar_id: this.bestankar.id,
+          
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_id: parseInt("{{invoice.id}}"),
+          financial_event_id:parseInt("{{invoice.id}}"),
+          title: edit_invoice_app.title,
+          discount: parseInt(
+            edit_invoice_app.discount
+          ),
+          description: edit_invoice_app.description,
+          short_description: edit_invoice_app.short_description,
+          payment_method: edit_invoice_app.payment_method,
+          amount: parseInt(edit_invoice_app.amount),
+          tax_percentage: parseInt(edit_invoice_app.tax_percentage),
+          shipping_fee: parseInt(edit_invoice_app.shipping_fee),
+          status: edit_invoice_app.status,
+          valid: edit_invoice_app.valid,
+          bedehkar_code: edit_invoice_app.bedehkar_code,
+          bestankar_code: edit_invoice_app.bestankar_code,
+        };
+
+        console.log(payload);
+        console.log("payload.valid");
+        console.log(payload.valid);
+        let url = "{% url 'accounting:edit_invoice' %}";
+        console.log(url);
+        $.post(url, payload).done((data) => {
+          edit_invoice_app.waiting = false;
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(
+              edit_invoice_app,
+              "موفقیت آمیز",
+              data.message,
+              "success",
+              3000
+            );
+            location.href = data.invoice.get_absolute_url
+
+          }
+
+          if (data.result != "SUCCEED") {
+            show_message(
+              edit_invoice_app,
+              "خطا",
+              data.message,
+              "danger",
+              3000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

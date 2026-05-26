@@ -1,0 +1,9 @@
+FAILED="FAILED"
+SUCCEED="SUCCEED"
+TUMAN="تومان"
+RIAL="ریال"
+CLIPBODRD_MAX_LENGTH=5
+MY_LINKS_LENGTH=10
+PRICE_GROUP_NAME='نمیش قیمت کالا ها'
+QUANTITY_GROUP_NAME='نمایش تعداد کالا ها'
+BALANCE_GROUP_NAME='نمایش مانده حساب ها'

@@ -1,0 +1,64 @@
+{% extends "market/layout.html" %}
+{% load to_price %}
+{% load static %}
+{% load to_persian_date %}
+{% block style %}
+<style>
+    .Showcase_no_seller__M8XOL {
+        color: #919eab;
+        line-height: 40px;
+        cursor: default;
+        text-align: center;
+        background: #ecedef;
+        display: block;
+        border-radius: 8px;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<div class="row rtl" style="background-color: #F2F3F5;">
+    <div class="col-md-12">
+        {% include 'market/includes/product-app/navbar.html' %}
+    </div>
+    <div class="col-md-12">
+        {% include 'market/includes/product-app/main.html' %}
+    </div>
+    {% if shops %}
+    <div class="col-lg-9">
+        {% include 'market/includes/product-shops-app/template.html' %}
+    </div>
+    {% endif %}
+    {% if related_pages %}
+    <div class="col-md-12">
+        <h5 class="text-right mt-3">
+            محصولات مشابه
+        </h5>
+        {% include "market/includes/product-app/relateds.html" %}
+    </div>
+    {% endif %}
+    {% if add_shop_form %}
+    <div class="col-md-12">
+       
+        {% include "market/includes/add-shop-app/template.html" %}
+    </div>
+    {% endif %}
+    <div class="col-lg-6">
+        {% include "market/includes/comments-app/template.html" %}
+    </div>
+
+    <div class="col-lg-6">
+        {% include "accounting/includes/product-specifications-app/template.html" %}
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+{% include "market/includes/product-app/script.html" %}
+{% if shops %}
+   {% include 'market/includes/product-shops-app/script.html' %} 
+{% endif %}
+{% if add_shop_form %}
+{% include "market/includes/add-shop-app/script.html" %}
+{% endif %}
+{% include "accounting/includes/product-specifications-app/script.html" %}
+
+{% endblock script %}

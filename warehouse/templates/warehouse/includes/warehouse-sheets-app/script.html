@@ -1,0 +1,60 @@
+<script>
+    let warehouse_sheets_for_warehouse_sheets_app=[]
+</script>
+{% if warehouse_sheets_s %}
+<script>
+
+    warehouse_sheets_for_warehouse_sheets_app=JSON.parse("{{warehouse_sheets_s|escapejs}}")
+</script>
+{% endif %}
+
+<script>
+    
+    let warehouse_sheets_app = new Vue({
+        el: "#warehouse-sheets-app",
+        data: {
+            warehouse_sheets: warehouse_sheets_for_warehouse_sheets_app,
+            sum_in:0,
+            sum_out:0,
+        },
+        methods: {
+             copy_code_to_clipboard:function(code){
+                copy_to_clipboard(code)
+                
+
+            },
+            direction_color:function(direction){
+                if(direction.indexOf('ورود')>-1){
+                    return 'success'
+                }
+                return 'danger'
+            },
+            to_arrow:function(direction){
+                if(direction.indexOf('ورود')>-1){
+                    return `<i class="fa fa-arrow-down text-success"></i>`
+                }
+                return `<i class="fa fa-arrow-up text-danger"></i>`
+            },
+            
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            },
+            calculate_total:()=>{
+                warehouse_sheets_app.sum_in=0
+                warehouse_sheets_app.sum_out=0
+                warehouse_sheets_app.warehouse_sheets.forEach(warehouse_sheet => {
+                    if(warehouse_sheet.direction==='ورود')
+                        warehouse_sheets_app.sum_in+=warehouse_sheet.sum
+                    if(warehouse_sheet.direction==='خروج')
+                        warehouse_sheets_app.sum_out+=warehouse_sheet.sum
+                });
+            },
+        }
+    })
+
+    $(document).ready(()=>{
+        warehouse_sheets_app.calculate_total()
+    })
+</script>
+
+  

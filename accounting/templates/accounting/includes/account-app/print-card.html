@@ -1,0 +1,46 @@
+{% load static %} {% load to_price %} {% load to_persian_date %} {% load account_code_seperator %}
+ {% load to_price_color_btn %}
+<div class="card rtl text-right" id="account-app">
+  <div class="card-header">
+    <h5 class="text-center">حساب</h5>
+  </div>
+  <div class="card-body">
+    <div class="text-center">
+      <img src="{{account.thumbnail}}" width="64" alt="" />
+    </div>
+
+    <h5 class="text-center mt-2">
+      {{account.title}}
+      <span class="badge badge-{{account.color}}">{{account.type}}</span>
+    </h5>
+
+      <div class="text-center">
+        <img width="128" src="{{account.get_qrcode_url}}" alt="" />
+      </div>
+    <div>
+      <div class="text-center">
+        <div class="my-2">
+          
+            <small class=""> کد : </small>
+            {{account.code}}
+        </div>
+      </div>
+    </div>
+ 
+
+    
+    <h5 class="text-center mt-4">
+      <small class="text-muted"> مانده : </small>
+      {{account.balance|to_price_color|safe}} {{CURRENCY}}
+    </h5>
+    
+    <div>
+      <div class="text-center">
+        <small class="text-muted"> شناسه : </small>
+          <span class=" text-{{account.color}}">{{account.id}}</span>
+      </div>
+
+      
+    </div>
+  </div>
+</div>

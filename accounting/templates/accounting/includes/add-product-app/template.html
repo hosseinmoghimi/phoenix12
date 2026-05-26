@@ -1,0 +1,124 @@
+<div id="accordion-add-product" class="rtl text-right farsi">
+
+    
+    <div class="card" id="add-product-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-product"
+                    aria-expanded="true" aria-controls="collapse-add-product">
+                    افزودن محصول جدید
+
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-add-product" class="collapse " aria-labelledby="heading-add-product"
+            data-parent="#accordion-add-product">
+            <div class="card-body">
+                <form @submit.prevent="add_product()">
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">نام کالا</label>
+                                <input type="text" class="form-control" v-model="title">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">بارکد</label>
+                                <input type="text" class="form-control" v-model="barcode">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">ضریب</label>
+                                <input type="number" class="form-control" v-model="coef">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">نام واحد</label>
+                                <select name="" class="form-control" v-model="unit_name">
+                                    {% for unit_name in unit_names_for_add_invoice_line_item %}
+                                    <option value="{{unit_name}}">{{unit_name}}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="">قیمت
+                                    <small class="text-muted" v-text="to_price(unit_price)"></small>
+                                    <small class="text-muted">{{CURRENCY}}</small>
+                                </label>
+                                <input type="number" class="form-control" v-model="unit_price">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">دسته بندی</label>
+                                <select class="form-control" v-model="category_id">
+                                    {% for category in categories_for_add_product_app %}
+                                    <option value="{{category.id}}">{{category.full_title}}</option>
+                                    {% endfor %}
+                                </select>
+                                <a target="_blank" href="{% url 'accounting:category' pk=0 %}">همه دسته بندی ها</a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">برند</label>
+                                <select class="form-control" v-model="brand_id">
+                                    {% for brand in brands_for_add_product_app %}
+                                    <option value="{{brand.id}}">{{brand.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <a target="_blank" href="{% url 'accounting:brands' %}">همه برند ها</a>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">مدل</label>
+                                <input type="text" class="form-control" v-model="model">
+                                 
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">نقطه سفارش</label>
+                                <input type="number" class="form-control" v-model="rop">
+                                 
+                            </div>
+                        </div>
+
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-12">
+                            <Button type="submit" class="btn btn-success">
+                                <i class="fa fa-plus ml-2"></i>افزودن
+                            </Button>
+
+                            <div>
+                                <div v-if="message.show" class="my-2">
+                                    <div :class="'alert alert-'+message.color">
+                                        <h5 v-html="message.title"></h5>
+                                        <div v-html="message.body"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,167 @@
+{% load static %}
+<div id="accordion-downloads">
+  <div id="downloads-app" class="card">
+    <div class="card-header" id="heading-downloads">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-downloads"
+          aria-expanded="true"
+          aria-controls="collapse-downloads"
+        >
+          دانلود ها
+
+          <span v-if="downloads.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="downloads.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-downloads"
+      class="collapse"
+      aria-labelledby="heading-downloads"
+      data-parent="#accordion-downloads"
+    >
+      <div class="card-body">
+        <div v-for="download in downloads" class="mb-3">
+          {% if not page %}
+          <a :href="download.page.get_absolute_url" class="mt-3">
+            <div class="media">
+              <img
+                :src="download.page.thumbnail"
+                class="rounded"
+                width="32"
+                alt=""
+              />
+              <div class="media-body mr-2">
+                <h6 v-text="download.page.title"></h6>
+              </div>
+            </div>
+          </a>
+          {% endif %}
+          <h6 class="my-2">
+            <div class="media">
+              <a   :href="download.get_download_url">
+                <i class="fa fa-download"></i>
+              </a>
+
+              <div class="media-body mr-2">
+                <a  target="" :href="download.get_download_url">
+                  <h6
+                      
+                  >
+                  <span v-text="download.title"></span>
+                </h6>
+                </a>
+                  <h6
+                    class="text-muted small"
+                    v-html="download.persian_date_added"
+                  ></h6>
+                 {% if perms.core.change_download %}
+              <a
+                :href="download.get_edit_url"
+                target="_blank"
+                title="ویرایش"
+                class="ml-2 docs-creator"
+              >
+                <i class="fa fa-edit text-info"></i>
+              </a>
+              {% endif %} {% if perms.core.delete_download %}
+              <a
+                :href="download.get_delete_url"
+                target="_blank"
+                title="حذف"
+                class="ml-2 docs-creator"
+              >
+                <i class="fa fa-trash text-danger"></i>
+              </a>
+              {% endif %}
+              </div>
+            </div>
+           
+             
+          </h6>
+          <hr>
+        </div>
+      </div>
+      {% if add_download_form %}
+      <div class="card-footer">
+        <p class="text-right" v-if="!show_add_download_form">
+          <a
+            style="cursor: pointer"
+            class="farsi a"
+            @click="show_add_download_form=true"
+          >
+            <i class="material-icons"> add </i>
+            افزودن دانلود جدید
+          </a>
+        </p>
+
+        <form
+          id="add-download-form"
+          v-if="show_add_download_form"
+          @submit.prevent="add_download()"
+          enctype="multipart/form-data"
+        >
+          <div class="row">
+            <div class="col-12">
+              <input
+                required
+                type="text"
+                v-model="new_download_title"
+                class="farsi form-control"
+                placeholder="عنوان دانلود جدید"
+              />
+
+              <span class="btn btn-raised btn-round btn-default btn-file">
+                <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                <input
+                  type="file"
+                  v-on:change="has_download_file=true"
+                  name=""
+                />
+                <div class="ripple-container"></div>
+              </span>
+            </div>
+            <div class="col-12">
+              <img
+                src="{% static 'leo/img/loading.gif' %}"
+                width="32"
+                v-if="waiting"
+                alt=""
+              />
+
+              <button
+                class="farsi btn btn-primary btn-block"
+                v-if="!waiting"
+                type="submit"
+              >
+                <i class="fa fa-plus mx-1"></i>
+                افزودن
+              </button>
+              <button
+                @click="show_add_download_form=false"
+                v-if="!waiting"
+                class="farsi btn btn-secondary btn-block"
+                type="reset"
+              >
+                انصراف
+              </button>
+              <div class="col-md-12 my-2">
+
+                {% include "utility/includes/message-app/alert.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

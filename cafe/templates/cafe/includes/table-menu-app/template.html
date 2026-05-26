@@ -1,0 +1,31 @@
+<div class="card">
+      <div class="card-header">
+        <h5>منو</h5>
+      </div>
+  <div class="card-body">
+    <h5>{{menu.title}}</h5>
+    <h5>{{menu.supplier.title}}</h5>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12"></div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>میز</h5>
+      </div>
+      <div class="card-body">
+        <h5>{{table.title}}</h5>
+        <h5>{{table.supplier.title}}</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 my-3">
+    <div id="menu-app">
+      <shop-component v-for="shop in shops" :shop="shop"></shop-component>
+    </div>
+  </div>
+</div>

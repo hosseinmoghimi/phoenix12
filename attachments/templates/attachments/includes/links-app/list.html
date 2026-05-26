@@ -1,0 +1,113 @@
+{% load to_persian_date %}
+{% load static %}
+<div id="accordion-page-links">
+
+
+    <div id="page-links-app" class="card">
+        <div class="card-header" id="heading-page-links">
+            <h5 class="text-center">
+                <button aclass="btn btn-link" data-toggle="collapse" data-target="#collapse-page-links"
+                    aria-expanded="true" aria-controls="collapse-page-links">
+                    لینک ها
+                    {% if page_links %}
+
+                    <span>
+                        <small class="text-danger mx-2">
+                            {{page_links|length}}
+                        </small>
+                    </span>
+                    {% endif %}
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-page-links" class="collapse" aria-labelledby="heading-page-links"
+            data-parent="#accordion-page-links">
+
+            <div class="card-body">
+                <div class="table-responsive rtl">
+                    <table class="table table-strip">
+                        <thead>
+
+                            <th>
+                                لینک
+                            </th>
+
+                            <th>
+                                صفحه
+                            </th>
+                            <th>
+                                نوع صفحه
+                            </th>
+                            <th>
+                                ایجاد
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+                            {% for page_link in page_links %}
+
+
+                            <tr>
+                                <td>
+                                    <a class="mr-2" target="" href="{{page_link.url}}">
+                                        <h6>
+                                            {{page_link.get_icon_tag|safe}}
+                                            {{page_link.title}}
+                                        </h6>
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a class="mr-2" target="" href="{{page_link.page.get_absolute_url}}">
+                                        <h6>
+                                            {{page_link.page.title}}
+                                        </h6>
+                                    </a>
+                                </td>
+                                <td>
+                                    <h6>
+                                        {{page_link.page.app_name}}
+                                    </h6>
+                                </td>
+                                <td>
+                                    <h6>
+                                        {{page_link.page.class_title}}
+                                    </h6>
+                                </td>
+
+                                <td>
+                                    {{page_link.date_added|to_persian_datetime|safe}}
+                                </td>
+
+
+                                <td>
+                                    {% if perms.core.change_link %}
+                                    <a href="{{page_link.get_edit_url}}" target="_blank" title="ویرایش"
+                                        class="ml-2 docs-creator">
+                                        <i class="fa fa-edit text-info"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if perms.core.delete_link %}
+                                    <a href="{{page_link.get_delete_url}}" target="_blank" title="حذف"
+                                        class="ml-2 docs-creator">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

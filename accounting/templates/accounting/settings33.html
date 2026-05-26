@@ -1,0 +1,39 @@
+{% extends "accounting/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div class="card" >
+            <div class="card-header">
+                <h6>
+                    تنظیمات
+                </h6>
+            </div>
+            <div class="card-body text-right">
+                <div>
+                    {% verbatim %}
+                    <div id="app">
+                        <button @click="count++">Count is : {{ count }}</button>
+                    </div>
+                    {% endverbatim %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+   let app=new Vue({
+    el:"#app",
+    data:{
+        count:90,
+    },
+   })
+</script>
+{% endblock script %}

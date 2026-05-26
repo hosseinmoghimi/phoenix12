@@ -1,0 +1,121 @@
+
+<script>
+    let bank_id=0
+    let person_id_for_add_bank_account_app=0
+    let person_for_add_bank_account_app={}
+    // const colors_for_add_account_app = JSON.parse("{a{colors_s|escapejs}}")
+</script>
+
+{% if person_s_for_add_bank_account %}
+  <script>
+    person_for_add_bank_account_app=JSON.parse(`{{person_s_for_add_bank_account|escapejs}}`)
+    person_id_for_add_bank_account_app=person_for_add_bank_account_app.id
+
+  </script>
+{% endif %}
+{% if bank %}
+  <script>
+    bank_id=parseInt("{{bank.id}}")
+  </script>
+{% endif %}
+
+{% if person %}
+  <script>
+    person_for_add_bank_account_app=JSON.parse("{{person_s|escapejs}}")
+    person_id_for_add_bank_account_app=parseInt("{{person.id}}")
+  </script>
+{% endif %}
+
+
+{% include 'authentication/includes/person-app/select-script.html' %}
+{% include 'accounting/includes/account-app/select-script.html' %}
+<script>
+    let add_bank_account_app = new Vue({
+        el: "#add-bank-account-app",
+        data: { 
+            // person_category_id:0,
+            person:person_for_add_bank_account_app,
+            person_id:person_id_for_add_bank_account_app,
+            priority: 100,
+            type: "",
+            bank_id:bank_id,
+            shaba_no:'',
+            code:'',
+            title:'',
+            card_no:'',
+            account_no:'',
+            nature: "بدون کنترل",
+            color: 'success',
+            // colors: colors_for_add_account_app,
+            message: { show: false }
+        },
+        methods: {
+            select_person:function(){
+                select_person_by_id(this.person_id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_bank_account_app.person = data.person
+                        console.log(data.person)
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_bank_account_app.person.full_name=''
+                    }
+                })
+            },
+
+            
+            select_account:function(){
+                select_account_by_code(this.account_code).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_bank_account_app.account = data.account
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_bank_account_app.account={}
+                    }
+                })
+            },
+
+            add_bank_account: function () {
+                const url = "{% url 'accounting:add_bank_account'  %}"
+                const payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    priority: parseInt(this.priority),
+                    parent_id:0, 
+                    person_id: parseInt(this.person.id),
+                    // person_category_id: parseInt(this.person_category_id),
+                    color: this.color,
+                    bank_id: parseInt(this.bank_id),
+                    shaba_no: this.shaba_no,
+                    account_no: this.account_no,
+                    code: this.code,
+                    title: this.title,
+                    card_no: this.card_no,
+                    nature: this.nature,
+
+                }
+                leolog(payload)
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        show_message(add_bank_account_app, "موفقیت آمیز", data.message, "success", 10000)
+                        if (typeof bank_accounts_app != "undefined") {
+
+                            bank_accounts_app.bank_accounts.push(data.bank_account)
+                        }
+                    }
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_bank_account_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        }
+    })
+</script>

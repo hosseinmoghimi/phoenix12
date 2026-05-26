@@ -1,0 +1,112 @@
+{% load static %}
+
+<!-- HEADER -->
+<div class="cd-section" id="headers">
+
+
+    <!--     *********     HEADER 3      *********      -->
+    <div class="header-3">
+
+
+        <!-- Carousel Card -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for homeslider in homesliders %}
+                <li data-target="#carouselExampleIndicators" id="carousel-indicator{{forloop.counter0}}"
+                    data-slide-to="{{forloop.counter0}}" class=""></li>
+
+                {% empty %}
+                <li data-target="#carouselExampleIndicators" id="carousel-indicator0"
+                    data-slide-to="0" class=""></li>
+                {% endfor %}
+
+            </ol>
+            <div class="carousel-inner">
+                {% for homeslider in homesliders %}
+                <div id="carousel-item0" class="carousel-item">
+                    <div class="page-header header-filter_temp" style="background-image: url('{{homeslider.image}}');">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-8 ml-auto mr-auto text-center">
+                                   {% if perms.dashboard.add_homeslider %}
+                       
+                                        {{admin_utility.get_add_homeslider|safe}}
+                                   
+                                    {% endif %} 
+
+                                    {% if homeslider.title %}
+                                       <h1 class="title farsi" style="color: {{homeslider.text_color}};">
+                                        {{homeslider.title}}
+                                        
+                                    </h1>
+                                    {% endif %}
+                                   
+                                   
+                                
+
+                                    
+                                    <div style="color: {{homeslider.text_color}};">{{homeslider.body|safe}}</div>
+                                    {% if perms.app.change_homeslider %}
+                                    <div class="text-center my-3">
+                                        {{homeslider.get_edit_btn|safe}}
+                                        
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div id="carousel-item0" class="carousel-item">
+                    <div class="page-header header-filter_temp" style="background-image: url('{% static 'web/img/homeslider.jpg' %}');">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-8 ml-auto mr-auto text-center">
+                                   
+
+                                       <h1 class="title farsi" style="color: #fff;">
+                                        {{app.title.value}}
+                                        
+                                    </h1>
+                                   
+                                   
+                                
+
+                                    
+                                    <div style="color: #fff;">
+                                    <p class="text-center">
+                                        به وب سایت 
+                                        {{app.title.value}}
+                                        خوش آمدید
+                                    </p>
+                                    </div>
+                                    
+                                    {% if perms.web.add_homeslider %}
+                       
+                                        {{admin_utility.get_add_homeslider|safe}}
+                                   
+                                    {% endif %} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <i class="material-icons"   aria-hidden="true" >keyboard_arrow_left</i>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <i class="material-icons"   aria-hidden="true" >keyboard_arrow_right</i>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <!-- End Carousel Card -->
+    </div>
+    <!--     *********    END HEADER 3      *********      -->
+</div>

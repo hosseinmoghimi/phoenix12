@@ -1,0 +1,204 @@
+{% extends "accounting/layout.html" %} {% load static %} {% block style %}
+<style>
+  .field-name {
+    text-align: left;
+    color: rgb(139, 138, 138);
+    font-size: 70%;
+  }
+  .field-value {
+    text-align: right;
+  }
+</style>
+{% endblock style %} {% block content %} {% load to_normal_number %}
+<div></div>
+{% load to_price %} {% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h5>سطر فاکتور</h5>
+      </div>
+      <div class="card-body">
+        <h5></h5>
+        {% if perms.accounting.change_invoiceline %}
+        <a
+          href="{{invoice_line.get_edit_url}}"
+          class="my-2 text-warning mx-2"
+          title="ویرایش"
+          target="_blank"
+        >
+          <i class="fa fa-edit text-warning"></i>
+          ویرایش
+        </a>
+        {% endif %} {% if perms.core.delete_invoice_line %}
+
+        <a
+          href="{{invoice_line.get_delete_url}}"
+          class="my-2 text-danger mx-2"
+          title="حذف"
+          target="_blank"
+        >
+          <i class="fa fa-trash text-danger"></i>
+          حذف
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table rtl">
+            <tr>
+              <td class="field-name">فاکتور</td>
+
+              <td class="field-value">
+                {% if invoice_line.invoice %}
+                <a href="{{invoice_line.invoice.get_absolute_url}}">
+                  {{invoice_line.invoice.title}}
+                </a>
+                
+              {% else %}
+              <i class="fa fa-exclamation-triangle text-warning"></i>
+              ندارد
+              {% endif %}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="field-name">ردیف</td>
+
+              <td class="field-value">{{invoice_line.row}}</td>
+            </tr>
+
+            <tr>
+              <td class="field-name">شرح</td>
+
+              <td class="field-value">
+                <div class="media">
+                  <a href="{{invoice_line.invoice_line_item.get_absolute_url}}">
+                    <img
+                      src="{{invoice_line.invoice_line_item.thumbnail}}"
+                      class="rounded"
+                      width="64"
+                      alt=""
+                    />
+                  </a>
+                  <div class="media-body">
+                    <a
+                      href="{{invoice_line.invoice_line_item.get_absolute_url}}"
+                    >
+                      {{invoice_line.invoice_line_item.title}}
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            {% if invoice_line.description %}
+              
+            <tr>
+              <td class="field-name">توضیحات</td>
+              
+              <td class="field-value">
+                <p class="">
+                  
+                  {{invoice_line.description}}
+                </p>
+              </tr>
+              {% endif %}
+
+            <tr>
+              <td class="field-name">تعداد / مقدار</td>
+
+              <td class="field-value">
+                {{invoice_line.quantity|to_normal_number}}
+                {{invoice_line.unit_name}}
+              </td>
+            </tr>
+
+             <tr>
+              <td class="field-name">وضعیت</td>
+
+              <td class="field-value">
+                {{invoice_line.status}} 
+              </td>
+            </tr>
+
+
+            <tr>
+              <td class="field-name">قیمت جزء</td>
+
+              <td class="field-value">
+                {{invoice_line.unit_price|to_price}} {{CURRENCY}}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="field-name">مبلغ</td>
+
+              <td class="field-value">
+                {{invoice_line.line_total|to_price}} {{CURRENCY}}
+              </td>
+            </tr>
+
+            <tr>
+              <td class="field-name">درصد تخفیف</td>
+
+              <td class="field-value">
+                {{invoice_line.discount_percentage}} %
+              </td>
+            </tr>
+
+
+            
+            <tr>
+              <td class="field-name">ثبت توسط</td>
+
+              <td class="field-value">
+                <div class="media">
+                  <a href="{{invoice_line.person.get_accountig_absolute_url}}">
+                    <img src="{{invoice_line.person.image}}" width="48" class="rounded-circle" alt="">
+                  </a>
+                  <div class="media-body mr-2">
+                    <a href="{{invoice_line.person.get_accountig_absolute_url}}">
+                      {{invoice_line.person.full_name}}
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td class="field-name"></td>
+
+              <td class="field-value"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+      <div class="col-md-12">
+        {% include "warehouse/includes/warehouse-sheets-app/template.html" %}
+      </div>
+
+  {% if add_invoice_line_warehouse_sheet_form %}
+
+  <div class="col-12">
+    {% include "warehouse/includes/add-warehouse-sheet-app/template.html" %}
+  </div>
+  {% endif %}
+</div>
+{% endblock content %} {% block script %}
+ {% if  add_invoice_line_warehouse_sheet_form %}
+
+    {% include "warehouse/includes/add-warehouse-sheet-app/script.html" %}
+  {% endif %} 
+        {% include "warehouse/includes/warehouse-sheets-app/script.html" %}
+
+
+{% endblock script %}
+

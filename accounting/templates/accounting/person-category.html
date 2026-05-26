@@ -1,0 +1,39 @@
+{% extends "accounting/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-6">
+  
+    {% include "accounting/includes/person-category-app/card.html" %}
+  </div>
+
+  {% if edit_person_category_form %}
+  <div class="col-md-6">
+    {% include "accounting/includes/edit-person-category-app/template.html" %}
+  </div>
+  {% endif %}
+  
+  {% if add_person_account_form %}
+
+  <div class="col-md-12">
+    {% include 'accounting/includes/add-person-account-app/template.html' %}
+  </div>
+  {% endif %}
+
+
+  <div class="col-md-12">
+    {% include 'accounting/includes/person-accounts-app/template.html' %}
+  </div>
+</div>
+{% endblock content %}
+{% block script %}
+{% if add_person_account_form %}
+        {% include 'accounting/includes/add-person-account-app/script.html' %}
+{% endif %}
+
+
+{% if edit_person_category_form %}
+          
+      {% include "accounting/includes/edit-person-category-app/script.html" %} 
+{% endif %}
+
+{% include 'accounting/includes/person-accounts-app/script.html' %} 
+{% endblock script %}

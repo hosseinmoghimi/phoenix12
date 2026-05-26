@@ -1,0 +1,743 @@
+{% extends "projectmanager/layout.html" %}
+{% block style %}
+<style>
+    .client-param-name {
+        text-align: right;
+        color: #959292;
+        direction: ltr !important;
+    }
+
+    .client-param-value {
+        text-align: left;
+        direction: ltr !important;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<div class="row ltr">
+    <div class="col-md-12">
+        <div class="card" id="remote-client-app">
+            <div class="card-header">
+                <h4 class="my-3  ltr text-center">
+                    {{remote_client.name}}
+
+
+                    {% if perms.projectmanager.change_remoteclient %}
+                    <a href="{{remote_client.get_edit_url}}" class="mx-2" title="ویرایش" target="_blank"><i
+                            class="fa fa-edit text-warning"></i></a>
+                    {% endif %}
+
+                    {% if perms.projectmanager.delete_remoteclient %}
+                    <a href="{{remote_client.get_delete_url}}" class="mx-2" title="حذف" target="_blank"><i
+                            class="fa fa-trash text-danger"></i></a>
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+
+
+
+                <table class="table ltr">
+                    {% for project in remote_client.project_set.all %}
+
+
+                    <tr>
+                        <td class="client-param-name">
+                            project
+                        </td>
+                        <td class="client-param-value">
+                            <div class="rtl my-2">{{project.get_breadcrumb|safe}}</div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+
+                    {% if remote_client.name %}
+                    <tr>
+                        <td class="client-param-name">
+                            name
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.name}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+
+                    {% if remote_client.local_ip %}
+                    <tr>
+                        <td class="client-param-name">
+                            local ip
+                        </td>
+                        <td class="client-param-value">
+                            <div>
+                                {{remote_client.local_ip}}
+
+                            </div>
+                            <div>
+
+                                <a target="_blank" href="http://{{remote_client.local_ip}}/">
+
+                                    {{remote_client.local_ip}}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.remote_ip %}
+                    <tr>
+                        <td class="client-param-name">
+                            remote ip
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.remote_ip}}
+                            <div>
+                                <a target="_blank" href="{{remote_client.remote_ip}}">
+                                    {{remote_client.remote_ip}}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+                    {% if remote_client.os %}
+                    <tr>
+                        <td class="client-param-name">
+                            Operating System ( OS )
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.os}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.username %}
+                    <tr>
+                        <td class="client-param-name">
+                            username
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.username}}
+
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.password %}
+                    <tr>
+                        <td class="client-param-name">
+                            password
+                        </td>
+                        <td class="client-param-value">
+                            <div v-show="!show_password">
+
+                                <span>
+                                    <button class="btn btn-sm" @click="show_password=!show_password">
+                                        <i class="fa fa-eye text-danger"></i>
+                                    </button>
+                                    ****************
+                                </span>
+                            </div>
+                            <div v-show="show_password">
+
+                                <span>
+                                    <button class="btn btn-sm" @click="show_password=!show_password">
+                                        <i class="fa fa-eye-slash text-danger"></i>
+                                    </button>
+                                    {{remote_client.password}}
+
+                                </span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm" @click="copy_password()">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                                <span v-show="show_password_copied" class="text-warning">
+
+                                    password copied to clipboard !
+                                </span>
+
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.pattern %}
+                    <tr>
+                        <td class="client-param-name">
+                            pattern
+                        </td>
+                        <td class="client-param-value">
+                           
+                            <div>
+
+                                <span>
+                                   
+                                    {{remote_client.pattern}}
+
+                                </span>
+                            </div>
+                           
+
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+                    {% if remote_client.serial_no %}
+                    <tr>
+                        <td class="client-param-name">
+                            serial no
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.serial_no}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+                    {% if remote_client.mac_address %}
+                    <tr>
+                        <td class="client-param-name">
+                            mac address
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.mac_address}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+                    {% if remote_client.product %}
+                    <tr>
+                        <td class="client-param-name">
+                            product
+                        </td>
+                        <td class="client-param-value">
+                             
+                            <div class="media"> 
+                                    <a href="{{remote_client.product.get_absolute_url}}">
+                                    <img src="{{remote_client.product.thumbnail}}" width="48" class="rounded" alt="">
+                                    </a>
+                                <div class="media-body mr-2">
+                                    <a href="{{remote_client.product.get_absolute_url}}">
+
+                                    {{remote_client.product.title}}
+                                    </a>
+                                </div>
+                            </div>
+                          
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    
+                    {% if remote_client.brand %}
+                    <tr>
+                        <td class="client-param-name">
+                            brand
+                        </td>
+                        <td class="client-param-value">
+
+                             <div class="media"> 
+                                    <a href="{{remote_client.brand.get_absolute_url}}">
+                                    <img src="{{remote_client.brand.logo}}" width="48" class="rounded" alt="">
+                                    </a>
+                                <div class="media-body mr-2">
+                                    <a href="{{remote_client.brand.get_absolute_url}}">
+
+                                    {{remote_client.brand.name}}
+                                    </a>
+                                </div>
+                            </div>
+
+
+                             
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+
+                    {% if remote_client.model_name %}
+                    <tr>
+                        <td class="client-param-name">
+                            model name
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.model_name}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+
+                    {% if remote_client.id_name %}
+                    <tr>
+                        <td class="client-param-name">
+                            id name
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.id_name}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+                    {% if remote_client.part_no %}
+                    <tr>
+                        <td class="client-param-name">
+                            part no
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.part_no}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.any_desk_address %}
+                    <tr>
+                        <td class="client-param-name">
+                            Anydesk Address
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.any_desk_address}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.any_desk_password %}
+                    <tr>
+                        <td class="client-param-name">
+                            Anydesk Password
+                        </td>
+
+                        <td class="client-param-value">
+                            <div v-show="!show_any_desk_password">
+
+                                <span>
+                                    <button class="btn btn-sm" @click="show_any_desk_password=!show_any_desk_password">
+                                        <i class="fa fa-eye text-primary"></i>
+                                    </button>
+                                    ****************
+                                </span>
+
+                            </div>
+                            <div v-show="show_any_desk_password">
+
+                                <button class="btn btn-sm" @click="show_any_desk_password=!show_any_desk_password">
+                                    <i class="fa fa-eye-slash text-danger"></i>
+                                </button>
+                                {{remote_client.any_desk_password}}
+
+                                </span>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-sm" @click="copy_any_desk_password()">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                                <span v-show="show_any_desk_password_copied" class="text-warning">
+
+                                    any desk password copied to clipboard !
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+                    
+                    {% if remote_client.dorsan_desk_address %}
+                    <tr>
+                        <td class="client-param-name">
+                            Dorsan Desk Address
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.dorsan_desk_address}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.dorsan_desk_password %}
+                    <tr>
+                        <td class="client-param-name">
+                            Dorsan Desk Password
+                        </td>
+
+                        <td class="client-param-value">
+                            <div v-show="!show_dorsan_desk_password">
+
+                                <span>
+                                    <button class="btn btn-sm" @click="show_dorsan_desk_password=!show_dorsan_desk_password">
+                                        <i class="fa fa-eye text-primary"></i>
+                                    </button>
+                                    ****************
+                                </span>
+
+                            </div>
+                            <div v-show="show_dorsan_desk_password">
+
+                                <button class="btn btn-sm" @click="show_dorsan_desk_password=!show_dorsan_desk_password">
+                                    <i class="fa fa-eye-slash text-danger"></i>
+                                </button>
+                                {{remote_client.dorsan_desk_password}}
+
+                                </span>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-sm" @click="copy_dorsan_desk_password()">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+                                <span v-show="show_dorsan_desk_password_copied" class="text-warning">
+
+                                    dorsan desk password copied to clipboard !
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.url %}
+                    <tr>
+                        <td class="client-param-name">
+                            url
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.url}}
+                            <div>
+                                <a target="_blank" href="{{remote_client.url}}">
+                                    {{remote_client.url}}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+                    {% if remote_client.ssid %}
+                    <tr>
+                        <td class="client-param-name">
+                            SSID
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.ssid}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.preshared_key %}
+                    <tr>
+                        <td class="client-param-name">
+                            preshared_key
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.preshared_key}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+                    {% if remote_client.telephone %}
+                    <tr>
+                        <td class="client-param-name">
+                            Telephone
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.telephone}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.adsl_username %}
+                    <tr>
+                        <td class="client-param-name">
+                            ADSL Username
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.adsl_username}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.adsl_password %}
+                    <tr>
+                        <td class="client-param-name">
+                            ADSL Password
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.adsl_password}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.workgroup %}
+                    <tr>
+                        <td class="client-param-name">
+                            Workgroup
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.workgroup}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+
+                    {% if remote_client.active_directory %}
+                    <tr>
+                        <td class="client-param-name">
+                            Active Directory
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.active_directory}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+                    {% if remote_client.contact %}
+                    <tr>
+                        <td class="client-param-name">
+                            Contact
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.contact}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if remote_client.wireless_mode %}
+                    <tr>
+                        <td class="client-param-name">
+                            Wireless Mode
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.wireless_mode}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+
+
+
+
+                    {% if remote_client.wireless_band %}
+                    <tr>
+                        <td class="client-param-name">
+                            Wireless Band
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.wireless_band}}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if remote_client.frequency %}
+                    <tr>
+                        <td class="client-param-name">
+                            Frequency
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.frequency}}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if remote_client.protocol %}
+                    <tr>
+                        <td class="client-param-name">
+                            Protocol
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.protocol}}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if remote_client.channel_width %}
+                    <tr>
+                        <td class="client-param-name">
+                            Channel Width
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.channel_width}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.identity %}
+                    <tr>
+                        <td class="client-param-name">
+                            Identity
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.identity}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if remote_client.description %}
+                    <tr>
+                        <td class="client-param-name">
+                            Description
+                        </td>
+                        <td class="client-param-value">
+                            {{remote_client.description|safe}}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let remote_client_app = new Vue({
+        el: "#remote-client-app",
+        data: {
+            show_password: false,
+            show_password_copied: false,
+            show_any_desk_address_copied: false,
+            show_any_desk_password: false,
+            show_any_desk_password_copied: false,
+            show_dorsan_desk_address_copied: false,
+            show_dorsan_desk_password: false,
+            show_dorsan_desk_password_copied: false,
+        },
+        methods: {
+            copy_password: function () {
+                navigator.clipboard.writeText("{{remote_client.password}}");
+                this.show_password_copied = true
+                setTimeout(() => {
+                    remote_client_app.show_password_copied = false
+                }, 2000);
+                //alert("password Copied to clipboard !" );
+            },
+            copy_any_desk_address: function () {
+                navigator.clipboard.writeText("{{remote_client.any_desk_address}}");
+                this.show_any_desk_address_copied = true
+                setTimeout(() => {
+                    remote_client_app.show_any_desk_address_copied = false
+                }, 2000);
+                
+            },
+            copy_any_desk_password: function () {
+                navigator.clipboard.writeText("{{remote_client.any_desk_password}}");
+                this.show_any_desk_password_copied = true
+                setTimeout(() => {
+                    remote_client_app.show_any_desk_password_copied = false
+                }, 2000);
+            },
+            copy_dorsan_desk_address: function () {
+                navigator.clipboard.writeText("{{remote_client.dorsan_desk_address}}");
+                this.show_dorsan_desk_address_copied = true
+                setTimeout(() => {
+                    remote_client_app.show_dorsan_desk_address_copied = false
+                }, 2000);
+            },
+            copy_dorsan_desk_password: function () {
+                navigator.clipboard.writeText("{{remote_client.dorsan_desk_password}}");
+                this.show_dorsan_desk_password_copied = true
+                setTimeout(() => {
+                    remote_client_app.show_dorsan_desk_password_copied = false
+                }, 2000);
+            },
+        }
+    })
+</script>
+{% endblock script %}

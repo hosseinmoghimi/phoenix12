@@ -1,0 +1,121 @@
+{% extends "accounting/layout.html" %} 
+{% load to_price %} {% load to_persian_date %}
+ {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>سطر سند مالی</h5>
+      </div>
+      <div class="card-body">
+        <h5>
+          <small class="text-muted"> عنوان : </small>
+          {{financial_document_line.title}}
+
+          <span class="badge badge-{{financial_document_line.status_color}}">
+            {{financial_document_line.status}}</span
+          >
+        </h5>
+        <div>
+          <hr />
+          سند مالی :
+          <a
+            href="{{financial_document_line.financial_document.get_absolute_url}}"
+            >{{financial_document_line.financial_document.title}}</a
+          >
+        </div>
+        <hr />
+        <div>
+          تاریخ :
+          {{financial_document_line.financial_event.event_datetime|to_persian_datetime|safe}}
+          </div>
+        <hr />
+
+        <div>
+          حساب :
+
+          <div class="media">
+            <a href="{{financial_document_line.account.get_absolute_url}}">
+              <img
+                src="{{financial_document_line.account.thumbnail}}"
+                class="rounded"
+                width="64"
+                alt=""
+              />
+            </a>
+            <div class="media-body mr-2">
+              <a href="{{financial_document_line.account.get_absolute_url}}">
+                <h6>{{financial_document_line.account.title}}</h6>
+
+                <h6>{{financial_document_line.account.code}}</h6>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div>
+          {% if financial_document_line.bedehkar != 0 %} بدهکار :
+          {{financial_document_line.bedehkar|to_price}} {{CURRENCY}} {% endif %}
+        </div>
+
+        <div>
+          {% if financial_document_line.bestankar != 0 %} بستانکار
+          {{financial_document_line.bestankar|to_price}} {{CURRENCY}} {% endif %}
+        </div>
+
+        <hr />
+
+        <div>
+          رویداد مالی :
+
+          <div class="media">
+            <a
+              href="{{financial_document_line.financial_event.get_absolute_url}}"
+            >
+              <img
+                src="{{financial_document_line.financial_event.thumbnail}}"
+                width="64"
+                alt=""
+              />
+            </a>
+            <div class="media-body mr-2">
+              <a
+                href="{{financial_document_line.financial_event.get_absolute_url}}"
+                >{{financial_document_line.financial_event.title}}</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if edit_financial_document_line_form %}
+  <div class="col-12">
+    {% include "accounting/includes/edit-financial-document-line-app/template.html" %}
+  </div>
+  {% endif %}
+
+
+  
+      {% if logs %}
+      
+      <div class="col-md-12">
+            {% include 'log/includes/logs-app/template.html' %}
+      </div>
+      {% endif %}
+
+</div>
+{% endblock content %} {% block script %} {% if edit_financial_document_line_form %}
+ {% include "accounting/includes/edit-financial-document-line-app/script.html" %} {% endif %} 
+ {% include "accounting/includes/financial-document-line-app/script.html" %}
+ 
+      {% if logs %}
+       
+            {% include 'log/includes/logs-app/script.html' %}
+ 
+      {% endif %}
+
+{% endblock script %}

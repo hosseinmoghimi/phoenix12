@@ -1,0 +1,10 @@
+<script>
+    let bank=JSON.parse("{{bank_s|escapejs}}")
+    let bank_app=new Vue({
+        el:"#bank-app",
+        data:{
+            bank:bank,
+        },
+
+    })
+</script>

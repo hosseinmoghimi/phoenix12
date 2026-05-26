@@ -1,0 +1,58 @@
+{% include "accounting/includes/person-account-app/select-script.html" %}
+<script>
+  let add_blog_app = new Vue({
+    el: "#add-blog-app",
+    data: {
+      title:"", 
+      message:{show:false},
+      waiting:false,
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+      add_blog: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+        };
+
+        console.log(payload);
+        let url = "{% url 'blog:add_blog' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof blogs_app != "undefined") {
+              blogs_app.blogs.push(data.blog);
+              show_message(add_blog_app,'موفق',data.message,'success',2000)
+            }
+          }
+          else{
+
+            show_message(add_blog_app,'خطا',data.message,'danger',2000)
+          }
+        });
+      },
+    },
+  });
+</script>

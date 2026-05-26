@@ -1,0 +1,285 @@
+{% extends "utility/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl" id="selection-app">
+
+    {% if financial_document_lines %}
+    <div class="col-md-12">
+        {% include "accounting/includes/financial-document-lines-app/template.html" %}
+    </div>
+    {% endif %}
+    {% if persons %}
+    <div class="col-md-12">
+        {% include "authentication/includes/persons-app/template.html" %}
+    </div>
+    {% endif %}
+
+    
+    {% if accounts %}
+    <div class="col-md-12">
+        {% include "accounting/includes/accounts-app/template.html" %}
+    </div>
+    {% endif %}
+
+    {% if remote_clients %}
+      
+    <div class="col-md-12">
+        {% include "projectmanager/includes/remote-clients-app/template.html" %}
+    </div>
+    {% endif %}
+
+
+    {% if bank_accounts %}
+      
+    <div class="col-md-12">
+        {% include "accounting/includes/bank-accounts-app/template.html" %}
+    </div>
+    {% endif %}
+    
+    {% if financial_documents %}
+         
+    <div class="col-md-12 ">
+        {% include "accounting/includes/financial-documents-app/template.html" %}
+    </div>
+    {% endif %}
+
+    {% if financial_events %}
+         
+    <div class="col-md-12 ">
+        {% include "accounting/includes/financial-events-app/template.html" %}
+    </div>
+    {% endif %}
+
+     {% if invoices %}
+         
+    <div class="col-md-12 ">
+        {% include "accounting/includes/invoices-app/template.html" %}
+    </div>
+    {% endif %}
+
+
+
+
+    {% if products %}
+    <div class="col-md-12">
+        {% include "accounting/includes/products-app/list-template.html" %}
+    </div>
+    {% endif %}
+
+    
+
+    {% if services %}
+    <div class="col-md-12">
+        {% include "accounting/includes/services-app/template.html" %}
+    </div>
+    {% endif %}
+
+
+
+    {% if categories %}
+    <div class="col-md-12">
+
+        {% include "accounting/includes/categories-app/list-template.html" %}
+
+    </div>
+    {% endif %}
+
+    {% if tags %}
+    <div class="col-md-12">
+        {% include "attachments/includes/tags-app/template.html" %}
+    </div>
+    {% endif %}
+
+     {% if employees %}
+       
+     <div class="col-md-12">
+         
+         
+         {% include "organization/includes/employees-app/template.html" %}
+        </div>
+        {% endif %}
+        {% if organizational_units %}
+          
+        <div class="col-md-12">
+            
+            
+            {% include "organization/includes/organizational-units-app/template.html" %}
+        </div>
+        {% endif %}
+
+  {% if downloads %}
+              <div class="col-md-12 ">
+        {% include "attachments/includes/downloads-app/template.html" %}
+    </div>
+    
+        {% endif %}
+ {% if projects %}
+       
+          
+    <div class="col-md-12">
+
+        
+        {% include "projectmanager/includes/projects-app/template.html" %}
+    </div>
+
+        {% endif %}
+        
+  {% if links %}
+              <div class="col-md-12 ">
+        {% include "attachments/includes/links-app/template.html" %}
+    </div>
+    
+        {% endif %}
+
+
+        
+  {% if brands %}
+              <div class="col-md-12 ">
+        {% include "accounting/includes/brands-app/template.html" %}
+    </div>
+    
+        {% endif %}
+
+
+        
+  {% if images %}
+              <div class="col-md-12 ">
+        {% include "attachments/includes/images-app/template.html" %}
+    </div>
+    
+        {% endif %}
+
+        
+    {% if not WAS_FOUND %}
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="text-center">
+                    موردی پیدا نشد.
+                </h5>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% if accounts %}
+{% include "accounting/includes/accounts-app/script.html" %}
+
+{% endif %}
+
+  {% if brands %}
+        {% include "accounting/includes/brands-app/script.html" %}
+    
+        {% endif %}
+
+{% if products %}
+    {% include "accounting/includes/products-app/list-script.html" %}
+{% endif %}
+
+
+{% if categories %}
+    {% include "accounting/includes/categories-app/list-script.html" %}
+{% endif %}
+
+{% if services %}
+    {% include "accounting/includes/services-app/script.html" %}
+{% endif %}
+
+
+    {% if persons %}
+        {% include "authentication/includes/persons-app/script.html" %}
+    {% endif %}
+
+    
+     {% if employees %}
+       
+         
+         
+         {% include "organization/includes/employees-app/script.html" %}
+        {% endif %}
+
+
+        {% if organizational_units %}
+          
+            
+            
+            {% include "organization/includes/organizational-units-app/script.html" %}
+        {% endif %}
+        {% if downloads %}
+         {% include "attachments/includes/downloads-app/script.html" %}
+ 
+        {% endif %}
+
+          {% if links %}
+         {% include "attachments/includes/links-app/script.html" %}
+ 
+        {% endif %}
+
+          {% if images %}
+         {% include "attachments/includes/images-app/script.html" %}
+ 
+        {% endif %}
+
+          {% if projects %}
+       
+           
+        
+        {% include "projectmanager/includes/projects-app/script.html" %}
+  
+        
+        {% endif %}
+
+        
+    {% if tags %}
+        {% include "attachments/includes/tags-app/script.html" %}
+    {% endif %}
+
+    
+    {% if financial_documents %}
+         
+        {% include "accounting/includes/financial-documents-app/script.html" %}
+    {% endif %}
+    {% if financial_events %}
+         
+        {% include "accounting/includes/financial-events-app/script.html" %}
+    {% endif %}
+
+     {% if invoices %}
+         
+        {% include "accounting/includes/invoices-app/script.html" %}
+    {% endif %}
+
+
+
+    
+    {% if financial_document_lines %}
+        {% include "accounting/includes/financial-document-lines-app/script.html" %}
+    {% endif %}
+
+    
+    {% if remote_clients %}
+      
+        {% include "projectmanager/includes/remote-clients-app/script.html" %}
+    {% endif %}
+
+
+    {% if bank_accounts %}
+      
+        {% include "accounting/includes/bank-accounts-app/script.html" %}
+    {% endif %}
+<script>
+    let log = '{{log}}'
+    let WAS_FOUND = '{{WAS_FOUND}}'
+    let result = '{{result}}'
+    let message = '{{message}}'
+</script>
+{% endblock script %}

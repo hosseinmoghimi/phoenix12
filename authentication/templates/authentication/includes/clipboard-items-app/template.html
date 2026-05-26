@@ -1,0 +1,63 @@
+{% if clipboard_items %}
+<li class="nav-item dropdown">
+  <a
+    class="nav-link dropdown-toggle text-right"
+    href="#"
+    id="navbarDropdown"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    کلیپ بورد
+  </a>
+  <div
+    class="dropdown-menu"
+    aria-labelledby="navbarDropdown"
+    id="clipboard-items-app"
+  >
+    {% for clipboard_item in clipboard_items %} {% if clipboard_item.text %}
+    <div>
+      <button
+        class="dropdown-item"
+        style="text-align: right"
+        @click="copy_to_clipboard(`{{clipboard_item.text}}`)"
+      >
+        <span class="">
+          <small class="text-muted ml-2"> {{clipboard_item.name}} </small>
+          {{clipboard_item.text}}
+        </span>
+      </button>
+    </div>
+
+    {% endif %} {% endfor %}
+    <div v-for="clipboard_item in clipboard_items">
+      <button
+        class="dropdown-item"
+        style="text-align: right"
+        @click="copy_to_clipboard(clipboard_item.text)"
+      >
+        <span class="">
+          <small class="text-muted ml-2" v-text="clipboard_item.name"></small>
+          <span v-text="clipboard_item.text"></span>
+        </span>
+      </button>
+    </div>
+
+    <div>
+      <div
+        class="dropdown-item"
+        style="text-align: right"
+        
+      > 
+      <button @click="clear_all_clipboard_items()" class="btn btn-danger btn-sm">
+
+        پاک کردن همه آیتم های کلیپ بورد
+      </button>
+      </div>
+    </div>
+
+  </div>
+</li>
+
+{% endif %}

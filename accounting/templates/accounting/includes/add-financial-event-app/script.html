@@ -1,0 +1,197 @@
+<script>
+    let add_financial_event_app = new Vue({
+        el: "#add-financial-event-app",
+        data: {
+            title: "",
+            amount: 0,
+            bedehkar: { code: "0", name: false },
+            bestankar: { code: "0", name: false },
+            bedehkar_code:  "0" ,
+            bestankar_code:   "0" ,
+            description:"",
+            valid:true,
+            status:"",
+            financial_event_date: current_date,
+            financial_event_time: current_time,
+            waiting:false,
+            message: { show: false },
+        },
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+        methods: {
+            paste_bestankar:async ()=>{
+                console.log('paste_bestankar ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_financial_event_app.bestankar_code=String(text)
+                    add_financial_event_app.select_bestankar()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+            paste_bedehkar:async ()=>{
+                console.log('paste_bedehkar ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_financial_event_app.bedehkar_code=String(text)
+                    add_financial_event_app.select_bedehkar()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+      
+            swap: function () {
+                let bed = add_financial_event_app.bedehkar
+                let bes = add_financial_event_app.bestankar
+                add_financial_event_app.bedehkar = bes
+                add_financial_event_app.bestankar = bed
+            },
+            to_price_colored: function (vall) {
+                let colorr = "primary"
+                if (vall > 0) {
+                    colorr = "success"
+                }
+
+
+                if (vall < 0) {
+                    colorr = "danger"
+                }
+
+                return `<span class="text-${colorr}">${to_price(vall)} {{CURRENCY}}</span>`
+            },
+
+            
+            to_price: function (vall) {
+                return  to_price(vall)+" {{CURRENCY}}" 
+            },
+
+            add_financial_event: function () {
+
+                
+                if( !add_financial_event_app.bedehkar.name){
+                    add_financial_event_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>بدهکار را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+
+                if(!add_financial_event_app.bestankar.name){
+                    add_financial_event_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>بستانکار را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+
+
+                if (!add_financial_event_app.amount > 0) {
+                    add_financial_event_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>مبلغ صحیح را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    bestankar_id: this.bestankar.id,
+                    bedehkar_id: this.bedehkar.id,
+                    status: this.status,
+                    valid: this.valid,
+                    description: this.description,
+                    amount: parseInt(this.amount),
+                    event_datetime: (this.financial_event_date)+' '+(this.financial_event_time),
+                    title: (this.title),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_financial_event' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if(typeof financial_events_app !="undefined"){
+                            financial_events_app.financial_events.push(data.financial_event)
+                        }
+                        // add_financial_event_app.message = {
+                        //     show: true,
+                        //     header: "موفقیت آمیز",
+                        //     body: `<div  class="text-right farsi"><p>${data.message}</p><a target="_blank" href="${data.financial_event.get_absolute_url}">${data.financial_event.title}</a></div>`,
+                        //     color: "success",
+                        // }
+                        show_message(add_financial_event_app,"موفقیت آمیز", `<div  class="text-right farsi"><p>${data.message}</p><a target="_blank" href="${data.financial_event.get_absolute_url}">${data.financial_event.title}</a></div>`,"success",50000)
+                    }
+                    if (data.result != "SUCCEED") {
+                        // add_financial_event_app.message = {
+                        //     show: true,
+                        //     header: "خطا",
+                        //     body: `<div  class="text-right farsi"><p>${data.message}</p></div>`,
+                        //     color: "danger",
+                        // }
+                        show_message(add_financial_event_app,"خطا", `<div  class="text-right farsi"><p>${data.message}</p></div>`,"danger",50000)
+
+                    }
+
+                })
+
+            },
+            select_bedehkar: function () {
+                setTimeout(() => {
+                        select_account_by_code(this.bedehkar_code).done(data => {
+                    console.log(data)
+
+                    if (data.result === "SUCCEED") {
+                        console.log(data.account)
+                        if(data.account.nature==="{{ONLY_BESTANKAR}}"){
+
+                            return
+                        }
+                        add_financial_event_app.bedehkar = data.account
+                    }
+                    else {
+                        add_financial_event_app.bedehkar = { code: add_financial_event_app.bedehkar.code, name: false }
+
+                    }
+                })
+          
+                }, 200);
+              },
+            select_bestankar: function () {
+                setTimeout(() => {
+                            select_account_by_code(this.bestankar_code).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if(data.account.nature==="{{ONLY_BEDEHKAR}}"){
+                            
+                            return
+                        }
+
+                        console.log(data.account)
+                        add_financial_event_app.bestankar = data.account
+                    }
+
+                    else {
+                        add_financial_event_app.bestankar = { code: add_financial_event_app.bestankar.code, name: false }
+
+                    }
+                })
+        
+                }, 200);
+            }
+
+        },
+    })
+</script>

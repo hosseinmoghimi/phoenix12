@@ -1,0 +1,97 @@
+<div id="accordion-organizational-units" class="rtl text-right farsi">
+  <div class="card" id="organizational-units-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-organizational-units"
+          aria-expanded="true"
+          aria-controls="collapse-organizational-units"
+        >
+          سازمان ها
+          <span v-if="organizational_units.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="organizational_units.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-organizational-units"
+      class="collapse {% if expand_organizational_units %} show {% endif %}"
+      aria-labelledby="heading-organizational-units"
+      data-parent="#accordion-organizational-units"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>نام سازمان</th>
+              <th>حساب</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="organizational_unit in organizational_units">
+
+                <td>
+                  <div class="media">
+                    <a :href="organizational_unit.get_absolute_url">
+                      <img :src="organizational_unit.thumbnail" width="64" class="rounded" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                    <a :href="organizational_unit.get_absolute_url">
+                      <h5>
+                        <span v-text="organizational_unit.title"></span>
+                      </h5>
+                    </a>
+
+                      <a :href="organizational_unit.person_account.get_absolute_url">
+                      <h6>
+                        <small>
+
+                          <span v-text="organizational_unit.person_account.title"></span>
+                        </small>
+                      </h6>
+                    </a>
+
+                    </div>
+                  </div>
+                  
+                </td>
+                <td>
+                   <div v-for="account in [organizational_unit.person_account]">
+                    {% include "accounting/includes/account-app/media.html" %}
+                   </div>
+                </td>
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="organizational_unit.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="organizational_unit.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

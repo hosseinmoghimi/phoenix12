@@ -1,0 +1,117 @@
+<div id="accordion-add-account">
+    <div class="card" id="add-account-app">
+        <div class="card-header" id="heading-add-account">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-account"
+                    aria-expanded="true" aria-controls="collapse-add-account">
+                    افزودن
+                    حساب
+
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-add-account" class="collapse " aria-labelledby="heading-add-account"
+            data-parent="#accordion-add-account">
+
+            <div class="card-body">
+                <form @submit.prevent="add_account()">
+                    <div class="row rtl">
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">کد {{account.code}}</label>
+                                <input type="text" required class="form-control" v-model="code">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">عنوان</label>
+                                <input type="text" required class="form-control" v-model="title">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">رنگ</label>
+                                <select name="" id="" class="form-control" v-model="color">
+
+                                    <option value="success">
+                                        سبز
+                                    </option>
+
+
+                                    <option value="secondary">
+                                        خاکستری
+                                    </option>
+
+
+                                    <option value="primary">
+                                        آبی
+                                    </option>
+
+
+                                    <option value="danger">
+                                        قرمز
+                                    </option>
+
+
+                                    <option value="warning">
+                                        نارنجی
+                                    </option>
+
+
+                                    <option value="dark">
+                                        تیره
+                                    </option>
+
+
+
+                                    <option value="info">
+                                        آبی روشن
+                                    </option>
+
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">ماهیت</label>
+                                <select name="" id="" class="form-control" v-model="nature">
+                                    {% for nature in account_natures_for_add_account %}
+                                    <option value="{{nature}}">
+                                        {{nature}}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">اولویت</label>
+                                <input type="number" required class="form-control" v-model="priority">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-success" type="submit">
+                                <i class="fa fa-plus"></i>
+                                افزودن
+                                حساب
+                            </button>
+                        </div>
+                        <div class="col-md-12 mt-2" v-if="message.show">
+                            <div :class="'alert alert-'+message.color">
+                                <div class="rtl text-right">
+                                    <h5 v-html="message.title"></h5>
+                                    <span v-html="message.body"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

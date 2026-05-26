@@ -1,0 +1,93 @@
+<script>
+    let page_color='primary'
+</script>
+{% if page %}
+  <script>
+    page_color='{{page.color}}'
+  </script>
+{% endif %}
+<script>
+    let set_page_thumbnail_header_app = new Vue(
+        {
+            el: "#set-page-thumbnail-header-app",
+            data: {
+                show_form: false,
+                waiting: false,
+                has_thumbnail: false,
+                has_header: false,
+                title: "{{page.title}}",
+                message: { show: false },
+                clear_thumbnail: false,
+                clear_header: false,
+                color:page_color,
+
+            },
+            methods: {
+                set_thumbnail_header1: function () {
+                    let payload = {
+                        csrfmiddlewaretoken: csrfmiddlewaretoken,
+                        page_id: page_id
+                    }
+                    let url = "{% url 'core:set_page_thumbnail_header' %}"
+                    $.post(url, payload).done(data => {
+                        console.log(data)
+                    })
+                },
+                set_thumbnail_header: function () {
+
+                    set_page_thumbnail_header_app.waiting = true
+                    let title = this.title
+                    let color = this.color
+                    let formData = new FormData();
+                    let thumbnail = $('#set-page-thumbnail-header-form')[0].elements[0].files[0]
+                    let header = $('#set-page-thumbnail-header-form')[0].elements[1].files[0]
+                    formData.append("thumbnail", thumbnail);
+                    formData.append("header", header);
+                    formData.append("title", title);
+                    formData.append("color", color);
+                    formData.append("clear_thumbnail", set_page_thumbnail_header_app.clear_thumbnail);
+                    formData.append("clear_header", set_page_thumbnail_header_app.clear_header);
+                    formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+                    formData.append("page_id", page_id);
+                    $.ajax({
+                        url: "{% url 'core:set_page_thumbnail_header' %}",
+                        type: 'post',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            set_page_thumbnail_header_app.waiting = false
+
+                            if (data != 0) {
+                                if (data.result === 'SUCCEED') {
+                                    location.href = data.page.get_absolute_url
+                                    set_page_thumbnail_header_app.message = {
+                                        show: true,
+                                        body: `با موفقیت تغییر یافت .  
+                                        <a href="${data.page.get_absolute_url}">
+                                            این صفحه
+                                        </a> را رفرش کنید.
+                                        `,
+                                        color: "success",
+                                    }
+                                    setTimeout(() => {
+                                        set_page_thumbnail_header_app.message = {
+                                            show: false,
+                                        }
+                                    }, 5000);
+                                    // set_page_thumbnail_header_app.add_page_image_form_title = ''
+                                    // set_page_thumbnail_header_app.add_page_image_form_file = ''
+                                    // set_page_thumbnail_header_app.show_add_page_image_form = false
+
+                                }
+                            }
+                            else {
+                            }
+                        },
+                    });
+                },
+
+            }
+        }
+    )
+</script>

@@ -1,0 +1,42 @@
+{% extends "warehouse/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+    
+  <div class="col-12">
+    {% include "warehouse/includes/warehouse-sheet-app/card.html" %}
+  </div>
+
+  <div class="col-12">
+{% include "warehouse/includes/warehouse-sheet-signatures-app/template.html" %}
+  </div>
+  {% if add_warehouse_sheet_signature_form %}
+  <div class="col-12">
+    {% include "warehouse/includes/add-warehouse-sheet-signature-app/template.html" %}
+  </div>
+  {% endif %}
+  <div class="col-12">
+{% include "warehouse/includes/warehouse-sheet-labels-app/template.html" %}
+  </div>
+  
+  {% if add_warehouse_sheet_label_form %}
+  <div class="col-12">
+    {% include "warehouse/includes/add-warehouse-sheet-label-app/template.html" %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock content %} 
+{% block script %} 
+{% include "warehouse/includes/warehouse-sheet-app/script.html" %}
+{% include "warehouse/includes/warehouse-sheet-signatures-app/script.html" %}
+
+
+ {% if add_warehouse_sheet_signature_form %} 
+
+{% include "warehouse/includes/add-warehouse-sheet-signature-app/script.html" %}
+ {% endif %} 
+{% include "warehouse/includes/warehouse-sheet-labels-app/script.html" %}
+ 
+  {% if add_warehouse_sheet_label_form %}
+    {% include "warehouse/includes/add-warehouse-sheet-label-app/script.html" %}
+  {% endif %}
+ {% endblock script %}

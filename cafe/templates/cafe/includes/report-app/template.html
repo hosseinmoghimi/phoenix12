@@ -1,0 +1,75 @@
+<div id="accordion-meals" class="rtl text-right farsi">
+    <div class="card" id="meals-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-meals" aria-expanded="true"
+                    aria-controls="collapse-meals">
+                    میز ها
+                    <span v-if="meals.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="meals.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-meals" class="collapse {% if expand_meals %} show {% endif %}" aria-labelledby="heading-meals"
+            data-parent="#accordion-meals">
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>
+                                تاریخ
+                            </th>
+                            <th>
+                                نام وعده
+                            </th>
+                          
+                            <th>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="meal in meals">
+                                <td>
+                                        <span   v-text="meal.persian_datetime"></span>
+                                </td>
+                               
+
+                                  <td>
+                                    <a :href="meal.get_absolute_url">
+                                        <span  v-text="meal.name"></span>
+                                    </a>
+                                </td>
+                               
+                                
+                                <td>
+                                    <a target="_blank" :href="meal.get_edit_url" title="ویرایش"
+                                        class=" text-warning mx-2">
+                                        <i class="fa fa-edit text-warning">
+                                        </i>
+                                        ویرایش
+                                    </a>
+                                    <a target="_blank" :href="meal.get_delete_url" title="حذف"
+                                        class=" text-danger mx-2">
+                                        <i class="fa fa-trash text-danger">
+                                        </i>
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

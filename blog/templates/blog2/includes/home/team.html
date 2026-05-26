@@ -1,0 +1,74 @@
+{% load static %}
+
+<!-- teams -->
+<div class="cd-section" id="teams">
+    <!--     *********    TEAM 1     *********      -->
+    <div class="team-1  section-dark" id="team-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <h2 class="farsi title">
+                        {{web.OUR_TEAM_TITLE.value}}
+                        {% if perms.app.change_parameter %}
+                        {{web.OUR_TEAM_TITLE.get_edit_btn|safe}}
+                      {% endif %}
+                        
+                    
+                    </h2>
+                    <h5 class="farsi description">
+                   {{web.OUR_TEAM_SLOGAN.value}}
+                   {% if perms.app.change_parameter %}
+                   {{web.OUR_TEAM_SLOGAN.get_edit_btn|safe}}
+                 {% endif %}
+                    </h5>
+                <div class="">
+                    {% if perms.dashboard.add_ourteam %}
+                       
+                    {{admin_utility.get_add_ourteam|safe}}
+               
+                {% endif %}
+                </div>
+                </div>
+            </div>
+            <div class="row rtl">
+                {% for ourteam in ourteams %}
+                <div class="col-md-3">
+                    <div class="card card-profile card-plain">
+                        <div class="card-header card-avatar">
+                            <a href="{{ourteam.profile.get_absolute_url}}">
+                                <img class="img" src="{{ourteam.profile.image}}">
+                            </a>
+                        </div>
+                        <div class="card-body ">
+                            <a href="{{ourteam.profile.get_absolute_url}}">
+                                <h4 class="card-title farsi">{{ourteam.profile.name}}</h4>
+                            </a>
+                            <h6 class="card-category farsi text-muted">{{ourteam.job}}</h6>
+                            <p class="card-description">
+                                {{ourteam.short_description}}
+                            </p>
+                        </div>
+                        <div class="card-footer justify-content-center">
+                            {% for social_link in ourteam.social_links.all %}
+
+                            {{social_link.get_link|safe}}
+
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--     *********    END TEAM 1      *********      -->
+
+
+
+</div>

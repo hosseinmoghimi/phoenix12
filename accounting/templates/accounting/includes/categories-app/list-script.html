@@ -1,0 +1,49 @@
+
+<script>
+    let parent_id_for_category_app=0
+</script>
+{% if category %}
+  <script>
+    parent_id_for_category_app=parseInt("{{category.id}}")
+  </script>
+{% else %}
+
+{% endif %}
+<script>
+
+    let categories_for_categories_app=JSON.parse('{{categories_s|escapejs}}')
+
+    
+    let categories_app = new Vue({
+        el: "#categories-app",
+        data: {
+            title: "",
+            parent_id:parent_id_for_category_app,
+            categories:categories_for_categories_app,
+            message: { show: false }
+        },
+        methods: {
+            add_category: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    parent_id: parseInt(this.parent_id),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_category' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    if (data.result === "SUCCEED") {
+
+                        categories_app.categories.push(data.category)
+                        categories_app.title=""
+                    }
+                    else {
+                        show_message(categories_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+            }
+        },
+    })
+</script>

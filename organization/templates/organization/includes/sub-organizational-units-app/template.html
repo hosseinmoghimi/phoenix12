@@ -1,0 +1,110 @@
+{% load static %}
+{% load to_price %}
+
+
+<div id="accordion-organizational-units">
+
+
+    <div class="card" id="sub-organizational-units-app">
+        <div class="card-header" id="heading-organizational-units">
+            <div class="row rtl">
+                <div class="col-3">
+
+                </div>
+
+                <div class="col-6">
+                    <h5 class="card-title text-center farsi">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-organizational-units"
+                            aria-expanded="true" aria-controls="collapse-organizational-units">
+                            واحد های زیرمجموعه
+                            <span v-if="organizational_units.length>0">
+                                <small class="text-danger mx-2">
+                                    <span v-text="organizational_units.length"></span>
+                                </small>
+                            </span>
+
+                        </button>
+                    </h5>
+                </div>
+
+                 
+            </div>
+
+
+
+        </div>
+        <div id="collapse-organizational-units" class="collapse {% if expand_organizational_units %} show {% endif %}"
+            aria-labelledby="heading-organizational-units" data-parent="#accordion-organizational-units">
+
+            <div class="card-body rtl">
+
+                <div v-for="organizational_unit in organizational_units" class="farsi mx-2 mb-3">
+
+                    <a title="جزئیات" :href="organizational_unit.get_absolute_url">
+                        <div class="media">
+
+                            <img :src="organizational_unit.thumbnail" class="rounded" width="32" alt="">
+
+                            <div class="media-body farsi">
+
+                                <h5 v-text="organizational_unit.title" class="rtl mx-2">
+                                    <span v-text="organizational_unit.title"></span>
+                                   
+
+                                </h5>
+                                <h6 v-if="organizational_unit.sub_title">
+                                    <span class="text-secondary rtl" v-html="organizational_unit.sub_title"></span>
+
+                                </h6>
+                                {% if not organizational_unit %}
+                                <h6 class="text-secondary">
+                                
+
+                                        <span v-text="organizational_unit.employer.title"></span> 
+                                        <!-- <span v-text="organizational_unit.employer.title"></span> -->
+                                        
+                                        
+                                </h6>
+                                {% endif %}
+
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% if add_organizational_unit_form %}
+            <div class="card-footer ">
+
+
+                <form v-cloak @submit.prevent="add_organizational_unit()">
+                    <div class="row">
+                        <div class="col-8">
+                            <input required type="text" v-model="new_organizational_unit_title" class="farsi form-control"
+                                placeholder="واحد سازمانی جدید">
+
+                        </div>
+                        <div class="col-4">
+                            <img v-if="waiting" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+
+
+
+                            <button v-if="!waiting" class="btn btn-primary btn-link text-light" type="submit">
+
+                                <i class="material-icons">
+                                    add
+                                </i>
+                            </button>
+
+
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

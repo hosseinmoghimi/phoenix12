@@ -1,0 +1,76 @@
+{% extends "organization/layout.html" %} {% load to_price %} {% load static %}
+{% block content %}
+<div class="row rtl farsi">
+  <div class="col-12">
+     {% if organizational_unit.parent %} 
+    <div class="rtl my-2">{{organizational_unit.get_breadcrumb|safe}}</div>
+    {% endif %} 
+  </div>
+  <div class="col-md-4">
+    {% include "organization/includes/organizational-unit-app/card.html" %}
+  </div>
+  <div class="col-md-12">
+    <div class="text-center"></div>
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-12">
+    {% include "organization/includes/employees-app/template.html" %}
+  </div>
+  <div class="col-12">
+    {% include "organization/includes/sub-organizational-units-app/template.html" %}
+  </div>
+ 
+
+  {% if add_employee_form %}
+  <div class="col-md-12">
+    {% include "organization/includes/add-employee-app/template.html" %}
+  </div>
+  {% endif %}
+  <div class="col-12">
+    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+  </div>
+
+  <div class="col-md-4">
+    {% include "attachments/includes/links-app/template.html" %}
+  </div>
+
+  <div class="col-md-4">
+    {% include "attachments/includes/downloads-app/template.html" %}
+  </div>
+
+  <div class="col-md-4">
+    {% include "attachments/includes/tags-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "core/includes/page-description-app/short-description.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "core/includes/page-description-app/description.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "attachments/includes/comments-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "attachments/includes/images-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "core/includes/page-related-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "attachments/includes/locations-app/template.html" %}
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  let organizational_unit_id = parseInt("{{organizational_unit.id}}");
+</script>
+{% include "organization/includes/sub-organizational-units-app/script.html" %} 
+{% include "organization/includes/organizational-unit-app/script.html" %}
+ {% include "organization/includes/employees-app/script.html" %} {% if add_employee_form %}
+{% include "organization/includes/add-employee-app/script.html" %} {% endif %}
+ {% endblock script %}

@@ -1,0 +1,80 @@
+{% load static %}
+
+<div id="accordion-import-export" class="rtl text-right farsi">
+    <div id="import-export-excel-app" class="card">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-import-export"
+                    aria-expanded="true" aria-controls="collapse-import-export">
+
+                    بازیابی و دانلود فایل اکسل
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-import-export" class="collapse " aria-labelledby="heading-import-export"
+            data-parent="#accordion-import-export">
+            <div class="card-body">
+
+
+                <div class="my-2">
+                    <a target="_blank" href="{% url 'accounting:export_to_excel' %}" class="btn btn-info">
+
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                        دانلود فایل اکسل</a>
+                </div>
+                <p class="text-right">
+
+
+                    بازیابی از فایل اکسل
+
+                </p>
+                <form id="import-from-excel-form" @submit.prevent="import_from_excel()"
+                    enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+
+
+
+                            <span class="btn btn-raised btn-round btn-default btn-file">
+                                <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                                <input type="file" name="">
+                                <div class="ripple-container"></div>
+                            </span>
+
+
+                        </div>
+                      
+                        <div class="col-12">
+                            <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                            <button class="farsi btn btn-primary btn-block" v-if="!waiting" type="submit">
+                                <i class="fa fa-plus mx-1"></i>
+                                بازیابی</button>
+
+
+                        </div>
+
+                        <div class="col-md-12 my-2">
+                            <div :class="'alert alert-'+message.color" v-if="message.show">
+                                <div class="my-2">
+                                    <h4 v-html="message.title" class="my-2"></h4>
+                                    <div v-html="message.body" class="my-2"></div>
+                                    <div  class="my-2">
+                                        <button class="btn btn-info " @click="message.show=false">متوجه شدم.</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

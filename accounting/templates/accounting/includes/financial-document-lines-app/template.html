@@ -1,0 +1,345 @@
+{% load to_persian_date %} {% load to_price %}
+<style>
+  .bg-success4 {
+    /* background-color: rgb(239, 255, 255); */
+  }
+</style>
+
+<div id="accordion-financial-document-lines" class="rtl text-right farsi">
+  <div class="card bg-success4 farsi" id="financial-document-lines-app">
+    <div class="card-header" id="heading-financial-document-line-lines">
+        <h5 class="text-center">
+        <button
+        class="btn btn-link"
+        data-toggle="collapse"
+        data-target="#collapse-financial-document-lines"
+        aria-expanded="true"
+        aria-controls="collapse-financial-document-lines"
+        >
+          ریز اسناد حسابداری
+
+          
+         
+          <span v-if="financial_document_lines.length>0">
+
+          <span
+            v-if="total.bestankar>total.bedehkar"
+            class="badge badge-success"
+          >
+           <span>
+            <span v-text="financial_document_lines.length"> </span>
+            سطر
+          </span>
+          {% if not search_for %}
+            
+          <span v-text="to_price(total.bestankar-total.bedehkar)"> </span>
+          ریال
+          بستانکار
+          {% endif %}
+          </span>
+
+          <span
+            v-if="total.bedehkar>total.bestankar"
+            class="badge badge-danger"
+          >
+           <span>
+            <span v-text="financial_document_lines.length"> </span>
+            سطر
+          </span>
+          
+            {% if not search_for %}
+              
+
+            <span v-text="to_price(total.bedehkar-total.bestankar)"> </span>
+            ریال 
+            بدهکار
+            {% endif %}
+          </span>
+
+          <span
+            v-if="total.bedehkar==total.bestankar"
+            class="badge badge-primary"
+          >
+           <span>
+            <span v-text="financial_document_lines.length"> </span>
+            سطر
+          </span>
+            تراز
+          </span>
+            
+          </span>
+
+        </button>
+    </h5>
+    </div>
+    <div
+      id="collapse-financial-document-lines"
+      class="collapse {% if expand_financial_document_lines %} show {% endif %}"
+      aria-labelledby="heading-financial-document-lines"
+      data-parent="#accordion-financial-document-lines"
+    >
+      <div class="card-body">
+        <div class="table-responsive rtl">
+          <div v-if="financial_document_lines.length>0">
+            <table class="table table-striped rtl">
+              <thead>
+                <th>
+                  ردیف
+                </th>
+                <th>
+                  وضعیت
+                </th>
+                <th>شرح</th>
+
+                {% if not financial_document %}
+                <th>سند</th>
+                {% endif %}
+
+                {% if not account %}
+                <th>حساب</th>
+                {% endif %}
+
+                {% if not financial_event %}
+                <th>رویداد</th>
+                {% endif %}
+
+
+                <th>تاریخ</th>
+
+                <th>مبلغ</th>
+
+                <th>بدهکار</th>
+
+                <th>بستانکار</th>
+
+                <th></th>
+              </thead>
+              <tbody>
+                <tr v-for="(financial_document_line, index) in financial_document_lines" :key="financial_document_line.id">
+                <td>
+                   <span v-text="index + 1"></span>
+                </td>
+
+                 <td>
+                  <span :class="'badge badge-'+financial_document_line.status_color">
+
+                    <span v-text="financial_document_line.status"></span>
+                  </span>
+                </td>
+                <td>
+                   
+                    
+                    <div>
+                      <a :href="financial_document_line.get_absolute_url">
+                        <span v-text="financial_document_line.title"></span>
+                      </a>
+                    </div>
+
+                    
+                  </td>
+
+                  {% if not financial_document %}
+                  <td>
+                    <a
+                      :href="financial_document_line.financial_document.get_absolute_url"
+                    >
+                      <span
+                        v-text="financial_document_line.financial_document.title"
+                      ></span>
+                    </a>
+                  </td>
+                  {% endif %} 
+
+                  {% if not account %}
+                  <td>
+                    <a :href="financial_document_line.account.get_absolute_url">
+                      <div class="media">
+                        <img
+                          :src="financial_document_line.account.thumbnail"
+                          width="32"
+                          alt=""
+                        />
+
+                        <div class="media-body mr-2">
+                          <div
+                            v-text="financial_document_line.account.name"
+                          ></div>
+                          <div
+                            v-text="financial_document_line.account.code"
+                          ></div>
+                          <div>
+                            <small
+                              class="text-muted"
+                              v-text="financial_document_line.account.full_title"
+                            ></small>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+                  {% endif %}
+
+
+                  {% if not financial_event %}
+                  <td>
+                    <a
+                      v-if="financial_document_line.financial_event"
+                      :href="financial_document_line.financial_event.get_absolute_url"
+                    >
+                      <span v-text="financial_document_line.financial_event.title"></span>
+                    </a>
+                  </td>
+                  {% endif %}
+
+                  <td>
+                    <span
+                      v-html="financial_document_line.persian_date_time"
+                    ></span>
+                  </td>
+                  <td>
+                    <span
+                      v-text="to_price(financial_document_line.amount)"
+                    ></span>
+                  </td>
+                  <td>
+                    <span
+                      class="text-danger"
+                      v-if="financial_document_line.bedehkar!='0'"
+                    >
+                      <span
+                        v-text="to_price(financial_document_line.bedehkar)"
+                      ></span>   
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="text-success"
+                      v-if="financial_document_line.bestankar!='0'"
+                    >
+                      <span
+                        v-text="to_price(financial_document_line.bestankar)"
+                      ></span>
+                    </span>
+                  </td>
+                  <td>
+                    <a
+                      target="_blank"
+                      :href="financial_document_line.get_edit_url"
+                      title="ویرایش"
+                      class="text-warning"
+                    >
+                      <i class="fa fa-edit text-warning"> </i>&nbsp;ویرایش
+                    </a>
+                    <a
+                      target="_blank"
+                      :href="financial_document_line.get_delete_url"
+                      title="حذف"
+                      class="text-danger"
+                    >
+                      <i class="fa fa-trash text-danger"> </i>&nbsp;حذف
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="10">&nbsp;</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <th></th>
+                <th></th>
+                <th></th>
+                 
+                {% if not financial_document %}
+                  <th></th>
+                {% endif %}
+                
+                {% if not account %}
+                  <th></th>
+                {% endif %}
+
+                {% if not financial_event %}
+                  <th></th>
+                {% endif %}
+                <th>
+                  
+                </th>
+                <th>
+                  <div class="text-left farsi">جمع</div>
+                </th>
+                <th>
+                  <span class="text-danger">
+                    <span v-text="to_price(total.bedehkar)"></span>
+                  </span>
+                </th>
+                <th>
+                  <span class="text-success">
+                    <span v-text="to_price(total.bestankar)"></span>
+                  </span>
+                </th>
+                <th>
+                  <div v-if="total.bestankar>total.bedehkar">
+                    <span class="badge badge-success">
+                      <span v-text="to_price(total.bestankar-total.bedehkar)">
+                      </span>
+                      بستانکار
+                    </span>
+                  </div>
+                  <div v-if="total.bedehkar>total.bestankar">
+                    <span class="badge badge-danger">
+                      <span v-text="to_price(total.bedehkar-total.bestankar)">
+                      </span>
+                      بدهکار
+                    </span>
+                  </div>
+
+                  <div v-if="total.bedehkar==total.bestankar">
+                    <span class="badge badge-primary"> تراز </span>
+                  </div>
+                </th>
+              </tfoot>
+            </table>
+          </div>
+          <div v-else>
+            <h5>سطری وجود ندارد.</h5>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="text-right">
+            <button class="btn btn-info" @click="ready_for_print()">
+            <i class="fa fa-print"></i>
+            آماده برای
+            چاپ
+          </button>
+
+          <form action="{% url 'accounting:financial_document_lines_print' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="financial_document_lines_ids" :value="financial_document_lines_ids_str">
+            {% if account %}
+            <input type="hidden" name="account_id" value="{{account.id}}">
+            {% endif %}
+
+            {% if financial_event %}
+            <input type="hidden" name="financial_event_id" value="{{financial_event.id}}">
+            {% endif %}
+
+            {% if financial_document %}
+            <input type="hidden" name="financial_document_id" value="{{financial_document.id}}">
+            {% endif %}
+
+            
+
+            {% if person %}
+            <input type="hidden" name="person_id" value="{{person.id}}">
+            {% endif %}
+            <button class="btn btn-info" type="submit">
+              <i class="fa fa-print"></i>
+              چاپ
+            </button>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

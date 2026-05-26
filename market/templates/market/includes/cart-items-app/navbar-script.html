@@ -1,0 +1,23 @@
+
+<script>
+    let cart_items_navbar=[]
+
+</script>
+{% if cart_items_navbar_s %}
+  
+<script>
+    cart_items_navbar=JSON.parse("{{cart_items_navbar_s|escapejs}}")
+    
+</script>
+{% endif %}
+<script>
+    let cart_items_navbar_app=new Vue({
+        el:"#cart-items-navbar-app",
+        data:{
+            cart_items:cart_items_navbar,
+        },
+        methods:{
+            to_price:vall=>to_price(vall),
+        }
+    })
+</script>

@@ -1,0 +1,18 @@
+  
+<script>
+
+    
+    console.log("financial document !!!")
+    let financial_document=JSON.parse('{{financial_document_s|escapejs}}')
+    let financial_document_id=parseInt('{{financial_document.id}}')
+    console.log('financial_document')
+    console.log(financial_document)
+    console.log('financial_document.id')
+    console.log(financial_document_id)
+
+</script>
+{% if edit_financial_document_form %}
+    {% include "accounting/includes/edit-financial-document-app/script.html" %}
+  
+{% endif %}
+ 

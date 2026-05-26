@@ -1,0 +1,34 @@
+<script>
+    let product_specifications = JSON.parse("{{product_specifications_s|escapejs}}")
+    let product_specifications_app = new Vue({
+        el: "#product-specifications-app",
+        data: {
+            product_specifications: product_specifications,
+            new_item: { product_id: parseInt("{{product.id}}"), unit_specification: 0, unit_name: "عدد", coef: 1 },
+            waiting: false,
+            show_form: false,
+            message: { show: false },
+        },
+        methods: { 
+            add_product_specification: () => {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    product_id: product_specifications_app.new_item.product_id,
+                    name: product_specifications_app.new_item.name,
+                    value: product_specifications_app.new_item.value,
+                }
+                leolog(payload)
+                let url = "{% url 'accounting:add_product_specification' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+                    if(typeof product_specifications_app != "undefined"){
+                        console.log(data.deleted_id )
+                        product_specifications_app.product_specifications=product_specifications_app.product_specifications.filter(product_specification=>product_specification.id!=data.deleted_id)
+                        product_specifications_app.product_specifications.push(data.product_specification)
+                    }
+                })
+            },
+        }
+    })
+</script>

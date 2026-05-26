@@ -1,0 +1,58 @@
+<div id="accordion-relates-pages">
+
+    <div class="card" id="related-pages-app">
+        <div class="card-header" id="headingRelatedPages">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseRelatedPages"
+                    aria-expanded="true" aria-controls="collapseRelatedPages">
+                    صفحات مرتبط
+
+                    <span v-if="related_pages.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="related_pages.length"></span>
+                        </small>
+                    </span>
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseRelatedPages" class="collapse" aria-labelledby="headingRelatedPages"
+         data-parent="#accordion-relates-pages">
+
+
+            <div class="card-body">
+                <div class="row">
+             
+                    <div class="col-md-3 mb-3" v-for="related_page in related_pages">
+                        <a :href="related_page.get_absolute_url">
+                            <div class="text-center mb-3">
+
+                                <img :src="related_page.thumbnail" class="rounded" width="80%" alt="">
+                            </div>
+                        </a>
+                        <h6 class="text-muted text-center">
+                            <small>
+
+                                <span v-text="related_page.class_title"></span>
+                            </small>
+                        </h6>
+                        <a :href="related_page.get_absolute_url" target="_blank">
+
+                            <h6 class="text-center">
+                                <span v-text="related_page.title"></span>
+                            </h6>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% if add_related_page_form %}
+            <div class="card-footer">
+             {% include "core/includes/page-related-app/form.html" %}
+
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>

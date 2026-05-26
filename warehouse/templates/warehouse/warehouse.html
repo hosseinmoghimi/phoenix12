@@ -1,0 +1,68 @@
+
+{% extends "warehouse/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4>
+                    {{warehouse.name}}
+                                
+{% if perms.warehouse.change_warehouse %}
+  <a
+    href="{{warehouse.get_edit_url}}"
+    class="my-2 text-warning mx-2"
+    title="ویرایش"
+    target="_blank"
+  >
+    <i class="fa fa-edit text-warning"></i>
+     
+  </a>
+{% endif %} {% if perms.warehouse.delete_warehouse %}
+  <a
+    href="{{warehouse.get_delete_url}}"
+    class="my-2 text-danger mx-2"
+    title="حذف"
+    target="_blank"
+  >
+    <i class="fa fa-trash text-danger"></i>
+     
+  </a>
+{% endif %}
+
+                </h4>
+
+    
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+
+        
+        {% include "warehouse/includes/warehouse-sheets-app/template.html" %}
+    </div>
+    
+    <div class="col-md-12">
+
+        
+        {% include "organization/includes/employees-app/template.html" %}
+    </div>
+
+    
+    <div class="col-md-12">
+
+        
+        {% include "warehouse/includes/products-in-warehouse-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "warehouse/includes/warehouse-sheets-app/script.html" %}
+        {% include "organization/includes/employees-app/script.html" %}
+        {% include "warehouse/includes/products-in-warehouse-app/script.html" %}
+ 
+{% endblock script %}

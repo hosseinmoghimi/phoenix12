@@ -1,0 +1,230 @@
+{% extends "blog2/layout.html" %}
+{% load static %}
+
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block ofbar %}
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+
+<div class="page-header header-filter header-small" data-parallax="true"
+    style="background-image: url('{% if about_header.image %}{{about_header.image}}{% else %}{% static 'dashboard/img/pages/about.jpg' %}{% endif %}');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto text-center">
+                <h1 class="title farsi">درباره ما</h1>
+                <div>
+
+                    {% if perms.app.change_mainpic %}
+
+                    {{about_header.get_edit_btn|safe}}
+                    {% endif %}
+                </div>
+                <h4 class="farsi">
+                    {{about_text.value}}
+                </h4>
+
+                {% if perms.app.change_parameter %}
+
+                {{about_text.get_edit_btn|safe}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="main main-raised">
+    <div class="container">
+        <div class="about-description text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+
+
+                    <h5 class="farsi description">
+                        {{AboutUsFull.value}}
+                    </h5>
+                    {% if perms.app.change_parameter %}
+                    {{AboutUsFull.get_edit_btn|safe}}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        <div class="about-team team-1">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <h2 class="farsi title">
+                        {{OURTEAM_TITLE.value}}
+                        {% if perms.app.change_parameter %}
+                        {{OURTEAM_TITLE.get_edit_btn|safe}}
+                        {% endif %}
+
+
+                    </h2>
+                    <h5 class="farsi description">
+                        {{OURTEAM_SLOGAN.value}}
+                        {% if perms.app.change_parameter %}
+                        {{OURTEAM_SLOGAN.get_edit_btn|safe}}
+                        {% endif %}
+
+                    </h5>
+                    {% if perms.core.add_ourteam %}
+                   <div class="">
+                       
+
+                    {{admin_utility.get_add_ourteam|safe}}
+
+                 
+
+                   </div> 
+                     {% endif %}
+                </div>
+            </div>
+            <div class="row rtl justify-content-center">
+                {% for ourteam in ourteams %}
+                <div class="col-md-3">
+                    <div class="card card-profile card-plain">
+                        <div class="card-avatar">
+                            <a href="{{ourteam.profile.get_absolute_url}}">
+                                <img class="img" src="{{ourteam.profile.image}}">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ourteam.profile.get_absolute_url}}">
+
+                                <h4 class="card-title farsi">{{ourteam.profile.name}}</h4>
+                            </a>
+                            <h6 class="category text-muted">{{ourteam.job}}</h6>
+                            {% if ourteam.description%}
+
+
+                            <p class="card-description text-center">
+                                {{ourteam.description}}
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer justify-content-center">
+                            {% for social_link in ourteam.social_links.all %}
+                            <a href="{{social_link.url}}" class="btn btn-just-icon btn-link btn-twitter">
+                                {{social_link.get_icon_tag|safe}}
+                            </a>
+
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+
+
+        <div class="features-1">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    <h2 class="farsi title">
+                        {{AWARDS_TITLE.value}}
+                        {% if perms.app.change_parameter %}
+                        {{AWARDS_TITLE.get_edit_btn|safe}}
+                        {% endif %}
+
+
+                    </h2>
+                    <h5 class="farsi description">
+                        {{AWARDS_SLOGAN.value}}
+                        {% if perms.app.change_parameter %}
+                        {{AWARDS_SLOGAN.get_edit_btn|safe}}
+                        {% endif %}
+
+                    </h5>
+                    {% if perms.web.add_award %}
+                   <div class="">
+                       
+
+                    {{admin_utility.get_add_award|safe}}
+
+                 
+
+                   </div> 
+                     {% endif %}
+
+                </div>
+            </div>
+            <div class="row rtl justify-content-center">
+
+
+                {% for award in awards %}
+
+                <div class="col-md-4">
+                    <div class="info">
+                        <a href="{{award.get_absolute_url}}">
+                            <div class="icon icon-info">
+
+
+                                <i class="material-icons" aria-hidden="true">emoji_events</i>
+                            </div>
+                        </a>
+                        <a href="{{award.get_absolute_url}}">
+
+                            <h4 class="info-title farsi">{{award.title}}</h4>
+                        </a>
+                        {% if award.description %}
+
+                        <p>
+                            {{award.description}}
+
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% endfor %}
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block modal %}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+{% endblock %}

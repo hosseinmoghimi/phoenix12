@@ -1,0 +1,81 @@
+{% include "organization/includes/organizational-unit-app/select-script.html" %}
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_warehouse_app = new Vue({
+    el: "#add-warehouse-app",
+    data: {
+    name: "", 
+    account_code:'0',
+    account:{},
+    organizational_unit:{},
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      paste_from_clipboard: async function(){
+          console.log('paste_person_account ')
+
+           try {
+            const text = await navigator.clipboard.readText();
+            add_warehouse_app.account_code=String(text)
+            add_warehouse_app.select_account()
+             
+          } catch (err) {
+            console.error('Failed to read clipboard contents: ', err);
+          }
+      },
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+       
+      select_account: function () {
+          console.log(add_warehouse_app.account);
+          select_account_by_code(add_warehouse_app.account_code).done((data) => {
+              add_warehouse_app.account = data.account;
+              if (data.result === "SUCCEED") {
+                  add_warehouse_app.account = data.account;
+              } else {
+                  add_warehouse_app.account = {}
+              }
+        });
+      },
+      add_warehouse: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          name: this.name,
+          person_account_id: this.account.id, 
+        };
+
+        console.log(payload);
+        let url = "{% url 'warehouse:add_warehouse' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof warehouses_app != "undefined") {
+              warehouses_app.warehouses.push(data.warehouse);
+              
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

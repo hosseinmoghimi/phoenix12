@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">چک</div>
+
+  <div class="card-body">
+    <img src="{{cheque.image}}" width="100%" alt="" />
+    <h5>
+      <a href="{{cheque.get_absolute_url}}"> {{cheque.title}} </a>
+    </h5>
+
+    <a href="{{cheque.get_absolute_url}}">
+      <div class="text-center">
+        <img width="128" src="{{cheque.get_qrcode_url}}" alt="" />
+      </div>
+    </a>
+
+    <div>
+      {% include 'accounting/includes/financial-event-app/card-contents.html' %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,347 @@
+{% extends "accounting/layout.html" %} {% block content %}
+<div class="row rtl farsi" id="invoice-edit-app">
+  {% load static %}
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">عنوان فاکتور</label>
+              <input type="text" class="form-control" v-model="title" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">بدهکار</label>
+              <input
+                type="text"
+                class="form-control"
+                @input="select_bedehkar()"
+                v-model="bedehkar_code"
+              />
+              <div v-if="bedehkar.id" class="my-2">
+                <a target="_blank" :href="bedehkar.get_absolute_url">
+                  <div class="media">
+                    <img
+                      :src="bedehkar.thumbnail"
+                      class="rounded-circle"
+                      width="48"
+                      alt=""
+                    />
+                    <div class="media-body mr-2">
+                      <h6>
+                        <span v-text="bedehkar.title"></span>
+                      </h6>
+                      <h6>
+                        <span v-text="bedehkar.code"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div v-else class="my-2">
+                <div class="alert alert-danger">بدهکار را انتخاب کنید.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">بستانکار</label>
+              <input
+                type="text"
+                @input="select_bestankar()"
+                class="form-control"
+                v-model="bestankar_code"
+              />
+              <div v-if="bestankar.id" class="my-2">
+                <a target="_blank" :href="bestankar.get_absolute_url">
+                  <div class="media">
+                    <img
+                      :src="bestankar.thumbnail"
+                      class="rounded-circle"
+                      width="48"
+                      alt=""
+                    />
+                    <div class="media-body mr-2">
+                      <h6>
+                        <span v-text="bestankar.title"></span>
+                      </h6>
+                      <h6>
+                        <span v-text="bestankar.code"></span>
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div v-else class="my-2">
+                <div class="alert alert-danger">بستانکار را انتخاب کنید.</div>
+              </div>
+            </div>
+          </div>
+
+
+           <div class="col-md-4">
+            <div class="form-group">
+              <label for="">تاریخ</label>
+              <date-picker v-model="event_date"></date-picker>
+
+              
+              <input
+                type="text"
+                
+                class="form-control"
+                v-model="event_date"
+              />
+                <input
+                type="text"
+                
+                class="form-control"
+                v-model="event_time"
+              />
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div> 
+  <div class="col-md-12">
+     <div class="card">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <th>ردیف</th>
+            <th>شرح</th>
+            <th>تعداد</th>
+            <th>فی</th>
+            <th>درصد تخفیف</th>
+            <th>جمع</th>
+          </thead>
+          <tbody>
+            <tr v-for="invoice_line in invoice_lines">
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="invoice_line.row"
+                />
+              </td>
+
+              <td>
+                <a :href="invoice_line.invoice_line_item.get_absolute_url">
+                  <span v-text="invoice_line.invoice_line_item.title"></span>
+                </a>
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="invoice_line.quantity"
+                />
+                <select class="form-control" v-model="invoice_line.unit_name">
+                  {% for unit_name in unit_names_for_edit_invoice_line %}
+                  <option value="{{unit_name}}">{{unit_name}}</option>
+                  {% endfor %}
+                </select>
+              </td>
+
+              <td>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="invoice_line.unit_price"
+                />
+                <label for="">
+                  <div v-if="invoice_line.discount_percentage==0">
+                    <span v-text="to_price(invoice_line.unit_price)"></span>
+                                   
+              
+                  </div>
+
+                  
+                  <div v-if="invoice_line.discount_percentage>0">
+                    <span  style="text-decoration: line-through;" v-text="to_price(invoice_line.unit_price)"></span>
+                                   
+                  <span class="mr-2"  v-text="to_price(invoice_line.unit_price*(100-invoice_line.discount_percentage)/100)"></span>
+              
+                  </div>
+                  
+                </label>
+              </td>
+
+              <td>
+                <input
+                min="0"
+                max="100"
+                  type="number"
+                  class="form-control"
+                  v-model="invoice_line.discount_percentage"
+                />
+                <div v-if="invoice_line.discount_percentage>0">
+                  <span v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"></span>
+                </div>
+              </td>
+              
+              <td>
+                <span v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(100-invoice_line.discount_percentage)/100)"></span>
+               
+                {{CURRENCY}}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>جمع </td>
+              <td></td>
+              <td></td>
+              <td>
+                <div v-if="sum_discounts()>0">
+
+                  <span  v-text="to_price(sum_discounts())"></span>
+                  {{CURRENCY}}
+                </div>
+              </td>
+              <td>
+                <span v-text="to_price(sum_prices())"></span>
+                {{CURRENCY}}
+              </td>
+            </tr>
+
+              
+
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+      
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row rtl">
+          
+
+                <div class="col-md-4">
+            <div class="form-group">
+              <label for=""> تخفیف</label>
+              
+                <span v-text="to_price(discount)"></span> {{CURRENCY}}
+              <input
+                type="number"
+                class="form-control"
+                v-model="discount"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">درصد مالیات</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="tax_percentage"
+              />
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">هزینه حمل
+
+                <span v-text="to_price(shipping_fee)"></span> {{CURRENCY}}
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="shipping_fee"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">وضعیت</label>
+              <select v-model="status" id="" class="form-control">
+                {% for status in invoice_statuses_for_edit_invoice  %}
+                  
+                <option value="{{status}}">{{status}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">نحوه پرداخت</label>
+              <select v-model="payment_method" id="" class="form-control">
+                {% for payment_method in invoice_payment_methods_for_edit_invoice  %}
+                  
+                <option value="{{payment_method}}">{{payment_method}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          
+
+      <div class="col-md-12">
+        <button v-if="!waiting" class="btn btn-success" @click="save()">ذخیره</button>
+        <img  v-if="waiting" src="{% static 'leo/img/loading.gif' %}" width="48" alt="">
+          
+        <div>
+
+              <a
+          target="_blank"
+          href="{% url 'accounting:invoice' pk=invoice.pk  %}"
+          class="btn btn-link mx-2"
+          >فاکتور</a
+        >
+        <a
+          target="_blank"
+          href="{% url 'accounting:invoice_print' pk=invoice.pk  %}"
+          class="btn btn-link mx-2"
+          >چاپ</a>
+        </div>
+    
+      </div>
+
+        <div class="col-md-8">
+          <div v-if="message.show" class="my-2">
+            <div :class="'alert alert-'+message.color">
+              <h5 v-html="message.title"></h5>
+              <div v-html="message.body"></div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </div> 
+
+</div>
+ <div class="row">
+  
+  {% if add_invoice_line_form %}
+  <div class="col-md-12">
+    {% include "accounting/includes/add-invoice-line-app/template.html" %}
+  </div>
+  {% endif %}
+ </div>
+{% endblock content %} {% block script %}
+<script></script>
+{% include "accounting/includes/invoice-app/edit-script.html" %}
+
+{% endblock script %}

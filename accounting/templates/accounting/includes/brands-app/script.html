@@ -1,0 +1,8 @@
+ 
+{% load static %}
+<script>
+
+    let brands_for_brands_app = JSON.parse("{{brands_s|escapejs}}")
+</script>
+
+<script src="{% static 'accounting/js/brands-app/script.js' %}"></script>

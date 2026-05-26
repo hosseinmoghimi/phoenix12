@@ -1,0 +1,29 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<h5 class="text-center rtl">
+    {{financial_year.name}}
+
+    {% if perms.accounting.change_financialyear %}
+    <a class="my-2" target="_blank" title="ویرایش" href="{{financial_year.get_edit_url}}"><i
+            class="fa fa-edit text-warning"></i></a>
+    {% endif %}
+
+    {% if perms.accounting.delete_financialyear %}
+    <a class="my-2" target="_blank" title="حذف" href="{{financial_year.get_delete_url}}"><i
+            class="fa fa-trash text-danger"></i></a>
+    {% endif %}
+
+</h5>
+<div class="row rtl">
+
+    <div class="col-md-12">
+        {% include "accounting/includes/financial-documents-app/template.html" %}
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/financial-documents-app/script.html" %}
+
+{% endblock script %}

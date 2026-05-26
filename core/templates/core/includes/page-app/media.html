@@ -1,0 +1,18 @@
+<div class="media">
+  <a :href="page.get_absolute_url">
+    <img :src="page.thumbnail" class="rounded" width="96" alt="" />
+  </a>
+  <div class="media-body mr-2">
+    <h5>
+      <a :href="page.get_absolute_url">
+        <span v-text="page.title"></span>
+      </a>
+    </h5>
+    <h6>
+      <span v-text="page.class_title"></span>
+    </h6>
+    <h6>
+      <span v-text="page.app_name"></span>
+    </h6>
+  </div>
+</div>

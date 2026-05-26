@@ -1,0 +1,19 @@
+{% extends "attachments/layout.html" %}
+{% load static %}
+{% load to_price %}
+
+{% block content %}
+
+  <div class="row">
+      <div class="col-md-12">
+         {% include "attachments/includes/tags-app/template.html" %}
+      </div>
+  </div>
+{% endblock content %}
+
+
+
+{% block script  %}
+{% include "attachments/includes/tags-app/script.html" %}
+
+{% endblock %}

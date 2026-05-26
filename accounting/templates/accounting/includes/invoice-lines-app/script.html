@@ -1,0 +1,94 @@
+<script>
+  let currency_coef = 1;
+
+  let tax_percentage = 0;
+  let invoice_lines_for_invoice_lines_app = []
+  let invoice_lines_app_data = {};
+  let invoice_lines_app_methods = {
+    calculate_sum: function () {},
+  };
+</script>
+{% if invoice_lines_s %}
+
+<script>
+  invoice_lines_for_invoice_lines_app = JSON.parse("{{invoice_lines_s|escapejs}}");
+</script>
+{% endif %}
+{% if invoice %}
+
+<script>
+  tax_percentage = parseInt(`{{invoice.tax_percentage}}`);
+</script>
+{% endif %} 
+
+{% if COEF_PRICE %}
+<script>
+  currency_coef = parseInt("{{COEF_PRICE}}");
+</script>
+{% endif %} 
+
+<script>
+  invoice_lines_app_data = {
+    invoice_lines: invoice_lines_for_invoice_lines_app,
+    tax_percentage: tax_percentage,
+  };
+  invoice_lines_app_methods = {
+    to_price: function (vall) {
+      return to_price(vall * currency_coef, "");
+    },
+    lines_total: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum +=
+          (invoice_line.quantity *
+            invoice_line.unit_price *
+            (100 - invoice_line.discount_percentage)) /
+          100;
+      });
+      return sum;
+    },
+    sum_total: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum +=
+          (invoice_line.quantity *
+            invoice_line.unit_price *
+            (100 - invoice_line.discount_percentage)) /
+          100;
+      });
+      return sum;
+    },
+
+    sum_prices: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum += invoice_line.quantity * invoice_line.unit_price;
+      });
+      return sum;
+    },
+
+    sum_discounts: function () {
+      let sum = 0;
+      this.invoice_lines.forEach((invoice_line) => {
+        sum +=
+          (
+            invoice_line.quantity *
+            invoice_line.unit_price *
+            invoice_line.discount_percentage
+          ) /
+          100;
+      });
+      return sum;
+    },
+  };
+</script> 
+
+
+<script>
+    
+  let invoice_lines_app = new Vue({
+    el: "#invoice-lines-app",
+    data: invoice_lines_app_data,
+    methods: invoice_lines_app_methods,
+  });
+</script>

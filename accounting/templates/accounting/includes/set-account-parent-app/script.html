@@ -1,0 +1,73 @@
+<script>
+    let account_parent_code = 0
+</script>
+{% if account.parent.code %}
+<script>
+    account_parent_code = "{{account.parent.code}}"
+</script>
+{% endif %}
+<script>
+
+    let set_account_parent_app = new Vue({
+        el: "#set-account-parent-app",
+        data: {
+            message: { show: false },
+            parent: {code:account_parent_code},
+        },
+        methods: {
+            
+            to_price: function (vall) {
+                return  to_price(vall)+" {{CURRENCY}}" 
+            },
+            
+            to_price_colored: function (vall) {
+                let colorr = "primary"
+                if (vall > 0) {
+                    colorr = "success"
+                }
+
+
+                if (vall < 0) {
+                    colorr = "danger"
+                }
+
+                return `<span class="text-${colorr}">${to_price(vall)} {{CURRENCY}}</span>`
+            },
+
+            set_account_parent: () => {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    account_code: "{{account.code}}",
+                    parent_code: set_account_parent_app.parent.code,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:set_account_parent' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    
+                    show_message(set_account_parent_app, "موفقیت آمیز", `<div  class="text-right farsi"><p>${data.message}</p><a  href="${data.account.get_absolute_url}">${data.account.name}</a></div>`, "success", 10000)
+                    
+                    
+                    console.log(data.parent)
+                    location.href = data.account.get_absolute_url
+                })
+            },
+
+            select_parent: function () {
+                select_account_by_code(set_account_parent_app.parent.code).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+
+                        console.log(data.account)
+                        set_account_parent_app.parent = data.account
+                    }
+
+                    else {
+                        set_account_parent_app.parent = { code: set_account_parent_app.parent.code, name: false }
+
+                    }
+                })
+            },
+        }
+    })
+</script>

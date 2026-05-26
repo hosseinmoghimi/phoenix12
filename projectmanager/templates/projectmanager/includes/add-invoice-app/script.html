@@ -1,0 +1,145 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_invoice_app = new Vue({
+    el: "#add-invoice-app",
+    data: {
+      title: "",
+      valid:true,
+      status:"",
+      event_date: current_date,
+      event_time: current_time,
+      event_datetime: current_datetime,
+      bedehkar: false,
+      bestankar: false,
+      bedehkar_code: "0",
+      bestankar_code: "0",
+      waiting: false,
+      message: { show: false },
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      paste_bestankar: async () => {
+        console.log("paste_bestankar ");
+
+        try {
+          const text = await navigator.clipboard.readText();
+          add_invoice_app.bestankar_code = String(text);
+          add_invoice_app.select_bestankar();
+        } catch (err) {
+          console.error("Failed to read clipboard contents: ", err);
+        }
+      },
+      paste_bedehkar: async () => {
+        console.log("paste_bedehkar ");
+
+        try {
+          const text = await navigator.clipboard.readText();
+          add_invoice_app.bedehkar_code = String(text);
+          add_invoice_app.select_bedehkar();
+        } catch (err) {
+          console.error("Failed to read clipboard contents: ", err);
+        }
+      },
+      swap: function () {
+        let bed = add_invoice_app.bedehkar;
+        let bes = add_invoice_app.bestankar;
+        add_invoice_app.bedehkar = bes;
+        add_invoice_app.bestankar = bed;
+        add_invoice_app.bedehkar_code = bes.code;
+        add_invoice_app.bestankar_code = bed.code;
+      },
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      select_bedehkar: function () {
+        console.log(add_invoice_app.bedehkar);
+        select_account_by_code(add_invoice_app.bedehkar_code).done((data) => {
+          add_invoice_app.bedehkar = data.account;
+
+          if (data.result === "SUCCEED") {
+            console.log(data.account);
+            if (data.account.nature === "{{ONLY_BESTANKAR}}") {
+              return;
+            }
+            add_invoice_app.bedehkar = data.account;
+          } else {
+            add_invoice_app.bedehkar = false;
+          }
+        });
+      },
+
+      select_bestankar: function () {
+        console.log(add_invoice_app.bestankar);
+        select_account_by_code(add_invoice_app.bestankar_code).done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            console.log(data.account);
+            if (data.account.nature === "{{ONLY_BEDEHKAR}}") {
+              return;
+            }
+
+            add_invoice_app.bestankar = data.account;
+          } else {
+            add_invoice_app.bestankar = false;
+          }
+        });
+      },
+
+      add_invoice: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          status: this.status,
+          valid: this.valid,
+          event_datetime: this.event_date + " " + this.event_time,
+          bedehkar_id: this.bedehkar.id,
+          bestankar_id: this.bestankar.id,
+          project_id: parseInt("{{project.id}}"),
+          amount: 0,
+        };
+
+        console.log(payload);
+        let url = "{% url 'projectmanager:add_project_invoice' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            add_invoice_app.title = "";
+            show_message(
+              add_invoice_app,
+              "موفق",
+              data.message+`<br><a href="${data.invoice.get_absolute_url}">${data.invoice.title}</a>`,
+              "success",
+              6000
+            );
+            if (typeof invoices_app != "undefined") {
+              invoices_app.invoices.push(data.invoice);
+            }
+          } else {
+            show_message(add_invoice_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>

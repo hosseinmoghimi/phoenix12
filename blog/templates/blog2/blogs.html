@@ -1,0 +1,182 @@
+{% extends "blog2/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="page-header header-filter header-small" data-parallax="true"
+    style="background-image: url(&quot;{{header_image.image}}&quot;); transform: translate3d(0px, 0px, 0px);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto text-center">
+                <h2 class="title">{{header_text}}</h2>
+                {% if perms.app.change_mainpic %}
+                {{header_image.get_edit_btn|safe}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="main main-raised mb-5" id="blogs-app">
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <ul class="nav nav-pills nav-pills-primary rtl">
+                        <li class="nav-item ml-1">
+                            <button class="nav-link google-drive-opener active" @click="select_category('all')"
+                                id='category_all' data-toggle="tab">همه</button>
+                        </li>
+                        <li class="nav-item" v-for="category in categories">
+                            <button class="nav-link google-drive-opener" @click="select_category(category)"
+                                :id="'category'+category" data-toggle="tab" v-text="category"></button>
+                        </li>
+
+
+                    </ul>
+                    <div class="tab-content tab-space">
+                        <div class="tab-pane active" id="pill1"></div>
+                        <div class="tab-pane" id="pill2"></div>
+                        <div class="tab-pane" id="pill3"></div>
+                        <div class="tab-pane" id="pill4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row rtl">
+                <template v-for="blog in blogs">
+                    <transition name="fade1">
+                        <div v-if="blog.category==selected_category || selected_category=='all'" class="col-md-6">
+
+                            <div class="card card-raised card-background"
+                                :style="'background-image: url(&quot;'+blog.thumbnail+'&quot;)'">
+                                <div class="card-body">
+                                    <h6 class="card-category text-info" v-text="blog.category"></h6>
+                                    <a :href="blog.get_absolute_url" class="google-drive-opener">
+                                        <h3 class="card-title" v-text="blog.title"></h3>
+                                    </a>
+                                    <p class="card-description text-center" v-text="blog.short_description">
+
+                                    </p>
+
+                                    {% if perms.app.change_mainpic %}
+                                    <a :href="blog.get_edit_url" class="btn btn-info btn-round google-drive-opener">
+                                        <i class="material-icons text-light">format_align_left</i>
+                                        <span class="text-light">
+
+                                            ویرایش مقاله
+                                        </span>
+                                    </a>
+                                    <a :href="blog.get_absolute_url"
+                                        class="btn btn-danger btn-round google-drive-opener">
+                                        <i class="material-icons text-light">format_align_left</i>
+                                        <span class="text-light">
+
+                                            ادامه مقاله
+                                        </span>
+                                    </a>
+                                    {% endif %}
+
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </transition>
+                </template>
+
+            </div>
+
+        </div>
+       
+    </div>
+  
+</div>
+{% endblock content %}
+
+{% block script %}
+
+
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+
+
+
+
+
+
+<script>
+    const all_blogs = JSON.parse(`{{blogs_s|escapejs}}`)
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+</script>
+<script>
+    let blogs_app = new Vue({
+        el: "#blogs-app",
+        data: {
+            blogs: all_blogs,
+            selected_category: 'all',
+        },
+        computed: {
+            categories: function () {
+                categories_ = []
+                all_blogs.forEach(element => {
+                    if (element.category)
+                        categories_.push(element.category)
+                })
+                categories_ = categories_.filter(onlyUnique)
+                return categories_
+            }
+        },
+        methods: {
+            select_category: function (category) {
+                $("#category_all").removeClass('active')
+
+                this.categories.forEach(element => {
+                    $("#category" + element).removeClass('active')
+                });
+
+                if (category === 'all')
+                    $("#category_all").addClass('active')
+                else
+                    $("#category" + category).addClass('active')
+
+                this.selected_category = category
+                // if (category === 'all')
+                //     this.blogs = all_blogs
+                // else {
+                //     this.blogs = []
+                //     all_blogs.forEach(element => {
+                //         if (element.category === category)
+                //             this.blogs.push(element)
+                //     });
+                // }
+
+
+            }
+
+
+        }
+    })
+</script>
+{% endblock script %}
+{% block style %}
+<style>
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity .5s;
+    }
+
+    .fade-enter,
+    .fade-leave-to
+
+    /* .fade-leave-active below version 2.1.8 */
+        {
+        opacity: 0;
+    }
+</style>
+{% endblock style %}

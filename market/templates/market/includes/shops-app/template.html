@@ -1,0 +1,145 @@
+<div id="accordion-shops" class="rtl text-right farsi">
+  <div id="shops-app" class="card">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-shops"
+          aria-expanded="true"
+          aria-controls="collapse-shops"
+        >
+          آماده فروش
+          <span v-if="shops.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="shops.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-shops"
+      class="collapse {% if expand_shops %} show {% endif %}"
+      aria-labelledby="heading-shops"
+      data-parent="#accordion-shops">
+      <div class="card-body">
+        <div v-if="shops.length==0" class="table-responsive">
+          <h6>قیمتی اعلام نشده است.</h6>
+        </div>
+        <div v-if="shops.length>0" class="table-responsive">
+          <table class="table">
+            <thead>
+              {% if not product %}
+              <th>کالا</th>
+              {% endif %} {% if not supplier %}
+              <th>فروشنده</th>
+              {% endif %}
+
+              <th>موجود</th>
+              <th>واحد فروش</th>
+
+              <th>سطح فروش</th>
+              <th>تخفیف</th>
+              <th>فی</th>
+
+              <th>تاریخ</th>
+              {% if perms.market.change_shop or perms.market.delete_shop %}
+              <th></th>
+
+              {% endif %}
+            </thead>
+            <tbody>
+              <tr v-for="shop in shops">
+                {% if not product %}
+                <td>
+                  <a :href="shop.product.get_market_absolute_url"
+                    ><span v-text="shop.product.title"></span
+                  ></a>
+                </td>
+                {% endif %} {% if not supplier %}
+
+                <td>
+                  <a :href="shop.supplier.get_absolute_url"
+                    ><span v-text="shop.supplier.full_name"></span
+                  ></a>
+                </td>
+                {% endif %}
+
+                <td>
+                  <span v-text="shop.available"></span>
+                </td>
+                <td>
+                  <span v-text="shop.unit_name"></span>
+                </td>
+
+                <td>
+                  <span v-text="shop.level"></span>
+                </td>
+                <td>
+                    <div v-if="shop.discount_percentage>0">
+
+                        <div class="text-success">
+                            <span
+                            v-text="to_price(shop.discount_percentage*shop.unit_price/100)"
+                            ></span>
+                            {{CURRENCY}}
+                        </div>
+                        <div>
+                            <span v-text="shop.discount_percentage"></span>
+                            %
+                        </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <span
+                      v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
+                    ></span>
+                    {{CURRENCY}}
+                  </div>
+
+                  <div v-if="shop.discount_percentage>0"
+                    class="text-muted"
+                    style="text-decoration: line-through"
+                  >
+                    <span v-text="to_price(shop.unit_price)"></span>
+                    {{CURRENCY}}
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <small class="text-muted">
+                      <span v-text="shop.persian_start_date"></span>
+                    </small>
+                  </div>
+
+                  <div>
+                    <small class="text-muted">
+                      <span v-text="shop.persian_end_date"></span>
+                    </small>
+                  </div>
+                </td>
+                {% if perms.market.change_shop or perms.market.delete_shop %}
+                <td>
+                  {% if perms.market.change_shop %}
+                  <a target="_blank" :href="shop.get_edit_url" title="ویرایش">
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_shop %}
+                  <a target="_blank" :href="shop.get_delete_url" title="حذف">
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

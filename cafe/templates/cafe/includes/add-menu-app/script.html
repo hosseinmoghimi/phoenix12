@@ -1,0 +1,47 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_menu_app = new Vue({
+    el: "#add-menu-app",
+    data: {
+    title: "",
+    supplier_id: 0,
+    
+    event_date: current_date,
+    event_time: "00:00:00",
+    event_datetime: current_datetime,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      add_menu: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: add_menu_app.title,
+          supplier_id: parseInt(add_menu_app.supplier_id),
+          event_datetime: add_menu_app.event_date+" "+add_menu_app.event_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'cafe:add_menu' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof menus_app != "undefined") {
+              menus_app.menus.push(data.menu);
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

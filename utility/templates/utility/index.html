@@ -1,0 +1,33 @@
+{% extends "utility/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'utility:parameters' %}">
+      <img
+        src="{% static 'core/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">پارامتر ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'utility:settings' %}">
+      <img
+        src="{% static 'core/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">تنظیمات</h6>
+    </a>
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  console.log("name1: {{name1}}");
+  console.log("name2: {{name2}}");
+  console.log("name3: {{name3}}");
+</script>
+{% endblock script %}

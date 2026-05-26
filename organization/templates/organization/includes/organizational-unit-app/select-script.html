@@ -1,0 +1,7 @@
+<script>
+    select_organizational_unit_by_id = function (organizational_unit_id) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, organizational_unit_id: parseInt(organizational_unit_id)  }
+        console.log(payload2)
+        return $.post("{% url 'organization:select_organizational_unit' %}", payload2)
+    }
+</script>

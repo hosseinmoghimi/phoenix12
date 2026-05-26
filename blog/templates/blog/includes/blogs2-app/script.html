@@ -1,0 +1,15 @@
+<script>
+    
+    let blogs_for_blogs_app=JSON.parse("{{blogs_s|escapejs}}")
+    let blogs_app = new Vue({
+        el: "#blogs-app",
+        data: {
+            blogs: blogs_for_blogs_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

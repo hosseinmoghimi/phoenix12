@@ -1,0 +1,257 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+
+{% block page_header %}
+<div class="page-header header-filter" data-parallax="true" style="background-image: url('{{page.header}}');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto text-center">
+                <h2 class="title text-center farsi">{{page.title}}</h2>
+                {% if page.panel %}
+                {{page.panel|safe}}
+                {% endif %}
+                <br>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="main {{main_class}}">
+
+
+    <div class="container">
+        <div class="section section-text" style="padding-top: 10px !important;">
+            <div class="row">
+                <div class="col-md-9 ml-auto mr-auto pt-4">
+                    {% if page.sub_title %}
+
+                    <h4 class="mb-0 mt-4 text-right farsi">{{page.sub_title}}</h4>
+                    {% endif %}
+                    <h3 class="mt-0 title text-right farsi">
+                        {{page.title}}
+                        {% if perms.blog.change_page %}
+
+                        <a href="{{page.get_edit_url}}" target="_blank" title="ویرایش">
+                            <i class="fa fa-edit text-warning"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if perms.blog.delete_page %}
+
+                        <a href="{{page.get_delete_url}}" target="_blank" title="حذف">
+                            <i class="fa fa-trash text-danger"></i>
+                        </a>
+                        {% endif %}
+                        {% include "attachments/includes/page-like-app/template.html" %}
+
+
+                    </h3>
+                    <div class="text-right farsi">
+
+                    </div>
+                    <div class=" text-center mb-3">
+                        {% if perms.blog.change_blogpage %}
+
+                        <!-- <a href="{{page.get_edit_url}}" target="_blank" class="btn btn-rose btn-round btn-lg">
+                            <i class="material-icons">edit</i>
+                            <span class="farsi">
+                                ویرایش
+                            </span>
+                        </a> -->
+                        {% endif %}
+
+                        <span class="my-2">
+
+                            {% post_to_telegram link_text=" . " title=page.title obj_or_url=page.get_absolute_url %}
+
+                        </span>
+                        <span class="my-2">
+
+                            {% post_to_whatsapp page.get_absolute_url link_text=" . " %}
+
+                        </span>
+                    </div>
+                    {% if page.panel %}
+                    {{page.panel|safe}}
+                    {% endif %}
+                </div>
+
+
+                {% if page.short_description %}
+                <div class="col-md-9 ml-auto mr-auto ltr farsi">
+
+                    {{page.short_description|safe}}
+
+                </div>
+                {% endif %}
+
+
+
+
+                {% if page.description %}
+                <div class="col-md-9 ml-auto mr-auto ltr farsi">
+
+                    {{page.description|safe}}
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="section section-blog-info">
+            <div class="row">
+                <div class="col-md-9 ml-auto mr-auto">
+                    {% if page_tags %}
+
+                    <div class="blog-tags farsi text-right">
+                        برچسب ها :
+                        {% for tag in page_tags %}
+                        <a href="{{tag.get_absolute_url}}">
+
+                            <span class="badge badge-primary badge-pill">
+                                {{tag.tag_title}}
+                            </span>
+                        </a>
+
+                        {% endfor %}
+                    </div>
+
+                    {% endif %}
+
+                    <hr>
+                    {% if page.author %}
+
+                    <div class="card card-profile card-plain">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="card-avatar">
+                                    <a href="{{page.author.get_absolute_url}}">
+                                        <img class="img" src="{{page.author.profile.image}}">
+                                    </a>
+                                    <div class="ripple-container"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <a href="{{page.author.get_absolute_url}}">
+                                    <h4 class="card-title farsi">{{page.author.profile.name}}</h4>
+                                </a>
+                                <p class="description farsi">
+                                    {{page.author.job}}
+
+                                </p>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{{page.author.get_absolute_url}}"
+                                    class="farsi btn btn-primary pull-right btn-round">سایر نوشته ها</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="section section-comments">
+            <div class="row">
+                <div class="col-md-12 rtl farsi text-right">
+                    {% if page.page_set.all %}
+                    <div class="my-3">
+
+                        <h4 class=" farsi text-right">
+                            صفحات مرتبط
+                        </h4>
+                        {% for page in page.page_set.all  %}
+                        <a href="{{page.get_absolute_url}}">
+                            <h5 class=" farsi text-right">
+                                
+                                {{page.title}}
+                            </h5>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-12 text-right my-3 farsi">
+                    <a href="{1% url 'core:page_show' pk=page.pk %}" target="_blank" title="نمایش"
+                        class="mx-2 text-success"><i class="fa fa-print"></i> نمایش</a>
+                    <a href="{{page.get_print_url}}" target="_blank" title="چاپ" class="mx-2 text-success"><i
+                            class="fa fa-print"></i> چاپ</a>
+                </div>
+                <div class="col-md-12">
+
+                    {% include "blog/includes/page-images-app/template.html" %}
+                </div>
+                <div class="col-md-4">
+
+                    {% include "blog/includes/page-links-app/template.html" %}
+
+                </div>
+
+                <div class="col-md-4">
+
+
+
+                    {% include "blog/includes/page-downloads-app/template.html" %}
+
+
+                </div>
+
+                <div class="col-md-4">
+
+                    {% include "blog/includes/page-tags-app/template.html" %}
+
+                    {% if change_page_metadata_form %}
+
+
+                    {% include "core/includes/page-metadata-app/template.html" %}
+                    {% endif %}
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="section section-comments">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto">
+                    {% include "blog/includes/page-comments-app/template.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="container">
+    <div class="section">
+
+        <div class="my-5">
+            {% include "blog/includes/related-pages-app/template.html" %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% include "core/includes/page-app/script.html" %}
+<script>
+    // page_comment_component_template = `{% include "blog/includes/page-comments-app/component.html" %}`
+</script>
+
+{% endblock %}
+
+
+{% block vertical_nav %}
+
+{% endblock %}
+
+{% block nav_bar %}
+
+{% endblock %}

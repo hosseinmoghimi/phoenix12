@@ -1,0 +1,51 @@
+<div id="accordion-add-warehouse-sheet-label" class="rtl text-right farsi">
+  <div class="card" id="add-warehouse-sheet-label-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-warehouse-sheet-label"
+          aria-expanded="true"
+          aria-controls="collapse-add-warehouse-sheet-label"
+        >
+          افزودن لیبل
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-warehouse-sheet-label"
+      class="collapse"
+      aria-labelledby="heading-add-warehouse-sheet-label"
+      data-parent="#accordion-add-warehouse-sheet-label"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_warehouse_sheet_label()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">serial_no</label>
+                <input v-model="serial_no" type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">توضیحات</label>
+                <input v-model="description" type="text" class="form-control" />
+              </div>
+            </div>
+                   
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

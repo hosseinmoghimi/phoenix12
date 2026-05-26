@@ -1,0 +1,33 @@
+<script>
+    var send_sms_app = new Vue({
+        el: "#send-sms-app",
+        data: {
+            receptor: "09155323633",
+            message: "hi hossein !!!!",
+            waiting: false,
+            my_alert: { show: false },
+        },
+        methods: {
+            send_sms: function () {
+                send_sms_app.my_alert = { show: false }
+                send_sms_app.waiting = true
+                let url = "{% url 'messenger:send_sms' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    message: this.message,
+                    receptor: this.receptor,
+                }
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    send_sms_app.waiting = false
+                    console.log(data)
+                    if (data.result === 'SUCCEED')
+                        send_sms_app.my_alert = { show: true, body: data.message_back, color: "success" }
+                    if (data.result === 'FAILED')
+                        send_sms_app.my_alert = { show: true, body: data.message_back, color: "danger" }
+
+                })
+            },
+        }
+    })
+</script>

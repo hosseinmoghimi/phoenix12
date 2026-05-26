@@ -1,0 +1,48 @@
+<div id="accordion-add-brand" class="rtl text-right farsi">
+
+    <div class="card" id="add-brand-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-brand"
+                    aria-expanded="true" aria-controls="collapse-add-brand">
+                    افزودن برند جدید
+
+
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-add-brand" class="collapse " aria-labelledby="heading-add-brand"
+            data-parent="#accordion-add-brand">
+
+            <div class="card-body">
+               
+                    <form @submit.prevent="add_brand()">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">نام برند</label>
+                                    <input type="text" class="form-control" v-model="name">
+                                </div>
+                            </div>
+
+    
+                            <div class="col-md-12">
+                                <Button type="submit" class="btn btn-success">
+                                    <i class="fa fa-plus ml-2"></i>افزودن
+                                </Button> 
+                                <div>
+                                    <div v-if="message.show" class="my-2">
+                                        <div :class="'alert alert-'+message.color">
+                                            <h5 v-html="message.title"></h5>
+                                            <div v-html="message.body"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                 
+            </div>
+        </div>
+    </div>
+</div>

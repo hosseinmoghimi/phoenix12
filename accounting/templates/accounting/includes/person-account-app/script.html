@@ -1,0 +1,45 @@
+
+{% include "accounting/includes/account-app/script.html" %} 
+
+
+
+
+<script>
+    let person_account_id=parseInt("{{person_account.id}}")
+    let person_account_app=new Vue({
+        el:"#person-account-app",
+        data:{
+            show_code_copied: false,
+            show_balance_copied: false,
+
+
+
+        },
+        methods:{ 
+
+            copy_code_to_clipboard:function(code,name){
+                copy_to_clipboard(code,name)
+                person_account_app.show_code_copied = true
+                setTimeout(() => {
+                    person_account_app.show_code_copied = false
+                }, 2000);
+
+            },
+            copy_balance_to_clipboard:function(balance,name){
+                copy_to_clipboard(balance,name)
+                this.show_balance_copied = true
+                setTimeout(() => {
+                    person_account_app.show_balance_copied = false
+                }, 2000);
+            },
+
+
+            
+        }
+    })
+</script>
+ 
+ 
+    
+    
+

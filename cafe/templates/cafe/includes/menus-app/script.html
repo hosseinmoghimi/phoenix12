@@ -1,0 +1,15 @@
+<script>
+    
+    let menus_for_menus_app=JSON.parse("{{menus_s|escapejs}}")
+    let menus_app = new Vue({
+        el: "#menus-app",
+        data: {
+            menus: menus_for_menus_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

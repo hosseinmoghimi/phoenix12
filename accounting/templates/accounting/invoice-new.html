@@ -1,0 +1,28 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+     
+    {% if add_invoice_form %}
+    <div class="col-md-12">
+        {% include "accounting/includes/add-invoice-app/template.html" %}
+    </div>
+    {% endif %}
+    
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+
+{% if add_invoice_form %}
+{% include "accounting/includes/add-invoice-app/script.html" %}
+{% endif %}
+ 
+{% endblock script %}

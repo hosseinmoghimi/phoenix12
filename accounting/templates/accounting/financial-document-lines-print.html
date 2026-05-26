@@ -1,0 +1,44 @@
+{% extends "phoenix/print-layout.html" %} {% block content %} {% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        {% if account %} 
+         <h6>
+          <small class="text-muted"> حساب  : </small>
+
+          {{account.title}}
+        </h6>
+        {% endif %} 
+        {% if financial_event %}
+        <h6>
+          <small class="text-muted"> رویداد مالی  : </small>
+
+          {{financial_event.title}}
+        </h6>
+        {% endif %}
+        {% if person %} 
+         <h6>
+          <small class="text-muted"> شخص  : </small>
+
+          {{person.full_name}}
+        </h6>  
+        {% endif %}
+         {% if financial_document %}
+            <h6>
+          <small class="text-muted"> سند مالی : </small>
+
+          {{financial_document.title}}
+        </h6>  
+        {% endif %}
+      </div>
+    </div>
+  </div>
+ 
+  <div class="col-md-12">
+    {% include "accounting/includes/financial-document-lines-app/print-template.html" %}
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+{% include "accounting/includes/financial-document-lines-app/print-script.html" %} {% endblock script %}

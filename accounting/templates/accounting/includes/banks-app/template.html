@@ -1,0 +1,78 @@
+<div id="accordion-banks" class="rtl text-right farsi">
+  <div class="card" id="banks-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-banks"
+          aria-expanded="true"
+          aria-controls="collapse-banks"
+        >
+بانک ها 
+        <span v-if="banks.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="banks.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-banks"
+      class="collapse"
+      aria-labelledby="heading-banks"
+      data-parent="#accordion-banks"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              
+              <th>بانک</th>
+              
+
+              
+               
+              
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="bank in banks">
+                <td>
+                  <a :href="bank.get_absolute_url">
+                    <span  
+                      v-text="bank.name"
+                    ></span>
+                  </a>
+                </td> 
+                
+                <td>
+                  <a
+                    target="_blank"
+                    :href="bank.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="bank.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+{% load to_persian_date %}
+{% load to_price %}
+ 
+
+<div id="accordion-page-likes">
+
+
+    <div class="card">
+        <div class="card-header" id="heading-page-likes">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-page-likes"
+                    aria-expanded="true" aria-controls="collapse-page-likes">
+                    صفحات پسندیده شده
+
+
+                    {% if page_likes %}
+                    <small class="text-danger mx-2">
+                        {{page_likes|length}}
+                    </small>
+                    {% endif %}
+                </button>
+            </h5>
+
+        </div>
+        <div id="collapse-page-likes" class="collapse {% if expand_likes %} show {% endif %}" aria-labelledby="heading-page-likes"
+            data-parent="#accordion-page-likes">
+
+
+            <div class="card-body">
+
+                <div class="table-responsive rtl">
+
+                    <table class="table table-striped">
+                        <thead>
+
+                            {% if not page %}
+
+                            <th>
+                                صفحه
+                            </th>
+                            {% endif %}
+                            {% if not selected_profile %}
+
+                            <th>
+                                پروفایل
+                            </th>
+                            {% endif %}
+                            {% if not page %}
+
+                            <th>
+                                پسندیده شده
+                            </th>
+                            {% endif %}
+                            <th>
+                                تاریخ
+                            </th>
+                        </thead>
+                        <tbody>
+                            {% for page_like in page_likes %}
+
+                            <tr>
+
+                                {% if not page %}
+                                <td>
+                                    <div class="media">
+                                        <a href="{{page_like.page.get_absolute_url}}">
+
+                                            <img src="{{page_like.page.thumbnail}}" class="rounded" width="48" alt="">
+                                        </a>
+                                        <div class="media-body mr-3">
+                                            <div>
+                                                <small class="text-muted">
+                                                    {{page_like.page.class_title}}
+                                                </small>
+
+
+                                            </div>
+                                            <div>
+                                                <h5>
+                                                    <a href="{{page_like.page.get_absolute_url}}">
+
+
+                                                        {{page_like.page.title}}
+                                                    </a>
+
+                                                </h5>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </td>
+
+                                {% endif %}
+
+                                {% if not selected_profile %}
+
+                                <td>
+                                    <div class="media">
+                                        <a href="{{page_like.profile.get_absolute_url}}">
+
+
+                                            <img src="{{page_like.profile.image}}" class="rounded-circle" width="48"
+                                                alt="">
+                                        </a>
+                                        <div class="media-body mr-2">
+                                            <div>
+                                                <a href="{{page_like.profile.get_absolute_url}}">
+
+
+                                                    {{page_like.profile.name}}
+                                                </a>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </td>
+                                {% endif %}
+                                {% if not page %}
+
+
+                                <td>
+                                    <small>
+
+                                        <i class="fa fa-star " style="color:#f5c103" aria-hidden="true"></i>
+                                        {{page_like.page.likes_count}}
+
+                                    </small>
+                                </td>
+                                {% endif %}
+                                <td>
+                                    {{page_like.date_added|to_persian_datetime|safe}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

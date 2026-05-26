@@ -1,0 +1,273 @@
+{% load static %}
+<div id="accordion-add-financial-event" class="rtl text-right farsi">
+
+    <div class="card rtl" id="add-financial-event-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-financial-event"
+                    aria-expanded="true" aria-controls="collapse-add-financial-event">
+                    افزودن رویداد مالی
+
+                </button>
+            </h5>
+            <h4>
+            </h4>
+        </div>
+        
+        <div id="collapse-add-financial-event" class="collapse {% if expand_add_financial_event %}show{% endif %}" aria-labelledby="heading-add-financial-event"
+            data-parent="#accordion-add-financial-event">
+
+            <div class="card-body">
+                <h5>
+
+                    <a href="{% url 'accounting:selection' %}" target="_blank"> همه حساب ها</a>
+                </h5>
+
+                <h5>
+
+                    <a href="{% url 'accounting:tree_chart' pk=0 %}" target="_blank"> درخت حساب ها</a>
+                </h5>
+ 
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label for="title">عنوان رویداد مالی جدید</label>
+                                <input type="text" required id="title" placeholder="" class="form-control"
+                                    v-model="title">
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleInputDate">تاریخ</label>
+                                <date-picker v-model="financial_event_date"></date-picker>
+                                <input type="text" required class="form-control" v-model="financial_event_date">
+
+
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" v-model="financial_event_time" name="" id="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                <label for="amount">مبلغ :
+                                </label>
+                                <input type="number" required class="form-control" placeholder="" id="amount"
+                                    v-model="amount">
+                                <div class="my-1">
+                                    <span class="text-muted" v-text="to_price(amount)"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-4">
+                            <div class="form-group">
+                            <label for="status">وضعیت</label>
+                            
+                            <select  v-model="status" id="status" class="form-control">
+                                {% for status in statuses_for_add_financial_event %}
+                                <option value="{{status}}">{{status}}</option>
+                                
+                                {% endfor %}
+                            </select>
+                            
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="form-group">
+                            <label for="status">قابل محاسبه</label>
+                            
+                            <input type="checkbox" class="form-control" v-model="valid" name="" id="">
+                            
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <label for="amount">توضیحات :
+                            </label>
+                            <input type="text" class="form-control" placeholder="" id="description"
+                                v-model="description">
+                            <hr>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="text-danger">
+                                        <a target="_blank" href="{% url 'accounting:selection' %}">
+                                            <span>
+                                                همه حساب ها
+                                            </span>
+                                        </a>
+                                    </h5>
+
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+
+                                        <label for="bedehkar_code">بدهکار</label>
+                                        
+                                        <button class="btn btn-info btn-sm" @click="paste_bedehkar()">
+                                            <i class="fa fa-paste"></i>
+                                        </button>
+                                        <select @input="select_bedehkar()" v-model="bedehkar_code" class="form-control">
+                                            {% for person_account in person_accounts %}
+                                            <option value="{{person_account.code}}">{{person_account.title}}</option>
+                                            
+                                            {% endfor %}
+                                        </select>
+                                        <input type="text" placeholder="" class="form-control" id="bedehkar_code"
+                                            @input="select_bedehkar()" v-model="bedehkar_code">
+                                    </div>
+                                </div>
+
+
+                                <div class="col-6 mt-3">
+                                    <hr>
+                                    <a :href="bedehkar.get_absolute_url" v-if="bedehkar.name">
+                                        <div class="media">
+                                            <img :src="bedehkar.thumbnail" width="64" alt="">
+                                            <div class="mr-2 media-body">
+                                                <h5 class="my-2">
+                                                    <span :class="'text-'+bedehkar.color" v-text="bedehkar.name"></span>
+                                                </h5>
+                                                <h6>
+                                                    <span :class="'text-'+bedehkar.color" v-text="bedehkar.code"></span>
+
+                                                </h6>
+
+                                                <h6>
+                                                    <span v-html="to_price_colored(bedehkar.balance)"></span>
+                                                </h6>
+
+
+
+                                                <h6>
+                                                    <small :class="'text-'+bedehkar.color"
+                                                        v-text="bedehkar.full_name"></small>
+
+                                                </h6>
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div v-if="!bedehkar.name">
+                                        <h5 class="text-danger">
+
+                                            بدهکار انتخاب نشده است.
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                         <div class="col-md-12">
+                            <button class="my-2 btn btn-info" title="جابجا کردن بدهکار و بستانکار" @click="swap()">
+                            {% load static %}
+                            <img width="32" src="{% static 'img/icons/exchange3.png' %}" alt="">
+                            </button>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+
+                                        <label for="bestankar_code">بستانکار</label>
+                                        
+                                        <button class="btn btn-info btn-sm" @click="paste_bestankar()">
+                                            <i class="fa fa-paste"></i>
+                                        </button>
+                                        
+                                        <select  @input="select_bestankar()" v-model="bestankar_code" class="form-control">
+                                            {% for person_account in person_accounts %}
+                                            <option value="{{person_account.code}}">{{person_account.title}}</option>
+                                            
+                                            {% endfor %}
+                                        </select>
+                                        <input type="text" placeholder="" class="form-control" id="bestankar_code"
+                                            @input="select_bestankar()" v-model="bestankar_code">
+                                    </div>
+                                </div>
+                                <div class="col-6 mt-3">
+                                    <hr>
+                                    <a :href="bestankar.get_absolute_url" v-if="bestankar.name">
+                                        <div class="media">
+                                            <img :src="bestankar.thumbnail" width="64" alt="">
+                                            <div class="mr-2 media-body">
+                                                <h5 class="my-2">
+                                                    <span :class="'text-'+bestankar.color"
+                                                        v-text="bestankar.name"></span>
+                                                </h5>
+                                                <h6>
+                                                    <span :class="'text-'+bestankar.color"
+                                                        v-text="bestankar.code"></span>
+
+                                                </h6>
+                                                <h6>
+                                                    <span v-html="to_price_colored(bestankar.balance)"></span>
+                                                </h6>
+
+
+                                                <h6>
+                                                    <small :class="'text-'+bestankar.color"
+                                                        v-text="bestankar.full_name"></small>
+
+                                                </h6>
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div v-if="!bestankar.name">
+                                        <h5 class="text-danger">
+
+                                            بستانکار انتخاب نشده است.
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12">
+
+
+                           
+                            <button class="btn btn-success" @click="add_financial_event">
+                                <i class="fa fa-plus"></i>
+                                افزودن رویداد مالی
+                            </button>
+                            <div v-if="waiting">
+                                <img src="{% static 'leo/img/loading.gif' %}" width="48" alt="">
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-12 my-2">
+                            <div :class="'alert alert-'+message.color" v-if="message.show">
+                                <div class="my-2">
+                                    <h4 v-html="message.title" class="my-2"></h4>
+                                    <div v-html="message.body" class="my-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                
+               
+            </div>
+        </div>
+    </div>
+</div>

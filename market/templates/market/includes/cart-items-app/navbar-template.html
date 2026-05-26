@@ -1,0 +1,42 @@
+<div id="cart-items-navbar-app" class="dropdown-item">
+  <div v-for="cart_item in cart_items">
+    <div class="media">
+      <a
+        class="text-right"
+        :href="cart_item.shop.product.get_market_absolute_url"
+      >
+        <img
+          :src="cart_item.shop.product.thumbnail"
+          width="32"
+          class="rounded-circle"
+          alt=""
+        />
+      </a>
+      <div class="media-body mr-2">
+        <div>
+          <a
+            class="text-right"
+            :href="cart_item.shop.product.get_market_absolute_url"
+          >
+            <h6
+              class="text-right text-primary"
+              v-text="cart_item.shop.product.title"
+            ></h6>
+          </a>
+        </div>
+        <div>
+          <h6 class="text-right rtl">
+            <small>
+              <span v-text="cart_item.quantity"> </span>
+              <span v-text="cart_item.shop.unit_name"> </span>
+              *
+              <span v-text="to_price(cart_item.shop.unit_price)"> </span>
+              {{CURRENCY}}
+            </small>
+          </h6>
+        </div>
+      </div>
+      <hr />
+    </div>
+  </div>
+</div>

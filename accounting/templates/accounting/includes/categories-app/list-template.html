@@ -1,0 +1,92 @@
+<div id="accordion-categories" class="rtl text-right farsi">
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-categories"
+                    aria-expanded="true" aria-controls="collapse-categories">
+                    دسته بندی ها
+                    <span v-if="categories.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="categories.length"></span>
+                        </small>
+                    </span>
+
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-categories" class="collapse " aria-labelledby="heading-categories"
+            data-parent="#accordion-categories">
+
+            <div class="card-body">
+
+                <div class="row rtl" id="categories-app">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped">
+                            <thead>
+                                <th>
+                                    دسته بندی
+                                </th>
+                                <th>
+
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr v-for="category in categories">
+                                    <td>
+                                        <a :href="category.get_absolute_url">
+                                            <div class="media">
+                                                <img :src="category.thumbnail" class="rounded" width="64" alt="">
+                                                <div class="media-body mr-2">
+
+                                                    <h6 v-text="category.title" class="text-1">
+
+                                                    </h6>
+
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </td>
+
+
+                                    <td>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if add_category_form %}
+
+                    <div class="col-md-12 pt-4">
+
+                        <form @submit.prevent="add_category()">
+
+                            <div class="rtl text-right">
+
+                                <input placeholder="دسته بندی جدید" class="form-control d-inline" required type="text"
+                                    v-model="title">
+                            </div>
+                            <div v-if="message.show" class="my-2 rtl text-right">
+                                <div :class="'alert alert-'+message.color">
+                                    <h5 v-text="message.title">
+
+                                    </h5>
+                                    <div v-html="message.body">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

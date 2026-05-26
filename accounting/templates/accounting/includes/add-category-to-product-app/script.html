@@ -1,0 +1,65 @@
+<script>
+    let all_categories = JSON.parse("{{all_categories_s|escapejs}}")
+    let product_categories = JSON.parse("{{product_categories_s|escapejs}}")
+    let add_category_to_product_app = new Vue({
+        el: "#add-category-to-product-app",
+        data: {
+            category_id: 0,
+            search_for: "",
+            all_categories: all_categories,
+            product_categories: product_categories,
+            message: { show: false },
+        },
+        methods: {
+            filter: function () {
+                let search_for = add_category_to_product_app.search_for
+                console.log(search_for)
+                add_category_to_product_app.all_categories = all_categories.filter(product_category => {
+                    if (product_category.full_title.indexOf(search_for) > -1) {
+
+                        console.log(product_category)
+                        return true
+                    }
+                })
+                console.log(add_category_to_product_app.product_categories)
+            },
+            add_product_to_category: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    product_id: parseInt("{{product.id}}"),
+                    category_id: parseInt(this.category_id),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_product_to_category' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+
+                    if (data.result === "SUCCEED") {
+                        add_category_to_product_app.product_categories = data.product_categories
+                    }
+
+                })
+            },
+            remove: function (category_id) {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    product_id: parseInt("{{product.id}}"),
+                    category_id: parseInt(category_id),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_product_to_category' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+
+                    if (data.result === "SUCCEED") {
+                        add_category_to_product_app.product_categories = data.product_categories
+                    }
+
+                })
+            },
+        },
+
+    })
+</script>

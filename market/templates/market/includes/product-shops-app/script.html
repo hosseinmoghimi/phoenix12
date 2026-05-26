@@ -1,0 +1,61 @@
+<script>
+  let shops_for_product_shops_app = JSON.parse("{{shops_s|escapejs}}");
+
+  let shop_component_template = `{% include 'market/includes/product-shops-app/component.html' %}`;
+
+  let product_shop_component = Vue.component("product-shop-component", {
+    data: function () {
+      return {
+        message: { show: false },
+        waiting: false,
+        quantity:1,
+        in_cart:1,
+      };
+    },
+    methods: {
+      to_price: (vall) => to_price(vall),
+
+      add_to_cart: function (shop) {
+        comment_component.waiting = true;
+
+        let url = "{% url 'market:add_cart_item' %}";
+        let payload = {
+          shop_id: shop.id,
+          quantity: parseInt(this.quantity),
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        let posting = $.post(url, payload);
+        posting.done(function (data) {
+          comment_component.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(product_shops_app,'موفق',data.message,'success',3000)
+            if(typeof cart_items_navbar_app !='undefined'){
+              cart_items_navbar_app.cart_items=(data.cart_items)
+            }
+          }
+          else{
+            show_message(product_shops_app,'خطا',data.message,'danger',3000)
+
+          }
+        });
+      },
+    },
+    props: ["shop"],
+    template: shop_component_template,
+  });
+
+  let product_shops_app = new Vue({
+    el: "#product-shops-app",
+    data: {
+      shops: shops_for_product_shops_app,
+      message:{show:false},
+      waiting:true,
+    },
+    components: {
+      product_shop_component,
+    },
+    methods: {
+      to_price: (vall) => to_price(vall),
+    },
+  });
+</script>

@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        نمودار گانت
+    </title>
+    <link rel="stylesheet" href="{% static 'vendor/css/bootstrap.min.css' %}">
+  
+    {% include "phoenix/includes/head-google.html" %}
+    {% include "phoenix/includes/head-farsi-font.html" %}
+
+
+    <script type="text/javascript">
+        let year = function (a) {
+            ye = a.substring(0, 4)
+            return ye
+        }
+        let month = function (a) {
+            ye = a.substring(5, 7)
+            return ye
+        }
+        let day = function (a) {
+            ye = a.substring(8, 10)
+            return ye
+        }
+
+        let projects = JSON.parse(`{{projects_s|escapejs}}`)
+
+        // projects-projects.sort((a,b)=>a.priority>b.priority)
+        google.charts.load('current', { 'packages': ['gantt'] });
+        google.charts.setOnLoadCallback(drawChart);
+        var data = []
+        function drawChart() {
+
+            data = new google.visualization.DataTable();
+            data.addColumn('string', 'Task ID');
+            data.addColumn('string', 'Task Name');
+            data.addColumn('string', 'Resource');
+            data.addColumn('date', 'Start Date');
+            data.addColumn('date', 'End Date');
+            data.addColumn('number', 'Duration');
+            data.addColumn('number', 'Percent Complete');
+            data.addColumn('string', 'Dependencies');
+            projects.forEach(project => {
+                data.addRow(
+                    [project.title, project.title, project.color,
+                    new Date(year(project.start_datetime), month(project.start_datetime), day(project.start_datetime)),
+                    new Date(year(project.end_datetime), month(project.end_datetime), day(project.end_datetime)),
+                        null, project.percentage_completed, null]
+
+                );
+            });
+
+
+            var options = {
+                height: 400,
+                gantt: {
+                    trackHeight: 30
+                }
+            };
+
+            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+        }
+
+
+    </script>
+    <style>
+        text{
+            font-family: "HMFONT" !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h3 class="text-center my-5">
+            <a href="{{project.get_absolute_url}}">
+
+                {{project.title}}
+            </a>
+
+        </h3>
+
+
+
+        <div class="text-center">
+
+            <div id="chart_div"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 ">
+                {% for sub_project in projects %}
+                <div class="mb-2">
+                    <a class="btn btn-block btn-{{sub_project.color}}" href="{{sub_project.get_absolute_url}}">
+
+
+                        {{sub_project.title}}
+
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

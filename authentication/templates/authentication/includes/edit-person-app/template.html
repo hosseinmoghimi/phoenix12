@@ -1,0 +1,203 @@
+<div id="accordion-edit-person" class="rtl text-right farsi">
+
+  <div class="card" id="edit-person-app">
+    {% load static %}
+    <div class="card-header">
+      <h5 class="text-center">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-edit-person" aria-expanded="true"
+          aria-controls="collapse-edit-person">
+          ویرایش اطلاعات شخصی
+           
+        </button>
+      </h5>
+    </div>
+    <div id="collapse-edit-person" class="collapse "
+      aria-labelledby="heading-edit-person" data-parent="#accordion-edit-person">
+      <div class="card-body">
+           <div class="row">
+
+            
+            
+
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">جنسیت</label>
+                <select v-model="gender" required type="text" class="form-control">
+                  {% for gender in genders_for_edit_person_app %}
+                  <option value="{{gender}}">{{gender}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">ماهیت</label>
+                <select v-model="type" required type="text" class="form-control">
+                  {% for type in types_for_edit_person_app %}
+                  <option value="{{type}}">{{type}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">نوع</label>
+                <select v-model="type2" required type="text" class="form-control">
+                  {% for type2 in types2_for_edit_person_app %}
+                  <option value="{{type2}}">{{type2}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+
+           
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">پیشوند</label>
+                <select v-model="prefix" required type="text" class="form-control">
+                  {% for prefix in prefixes_for_edit_person_app %}
+                  <option value="{{prefix}}">{{prefix}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">نام</label>
+                <input v-model="first_name" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">نام خانوادگی</label>
+                <input v-model="last_name" type="text" class="form-control" />
+              </div>
+            </div>
+
+            
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input v-model="title" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">نام پدر</label>
+                <input v-model="father_name" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">تلفن</label>
+                <input v-model="tel" type="text" class="form-control" />
+              </div>
+            </div>
+
+            
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">کد پستی</label>
+                <input v-model="postal_code" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">شماره اقتصادی</label>
+                <input v-model="economic_no" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">کد ملی</label>
+                <input v-model="melli_code" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">محل تولد</label>
+                <input v-model="birth_location" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">تاریخ تولد</label>
+                <input v-model="birth_date" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">ایمیل</label>
+                <input v-model="email" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">موبایل</label>
+                <input v-model="mobile" type="text" class="form-control" />
+              </div>
+            </div>
+ 
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">آدرس</label>
+                <input v-model="address" type="text" class="form-control" />
+              </div>
+            </div>
+
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">بیو</label>
+                <input v-model="bio" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" v-if="!waiting" @click="edit_person()">
+                <i class="fa fa-plus"></i>
+                تایید
+              </button>
+              <img src="{% static 'leo/img/loading' %}" width="64" v-if="waiting" alt="" />
+            </div>
+
+            <div class="col-md-12 mt-2" v-if="message.show">
+              <div :class="'alert alert-'+message.color">
+                <div class="rtl text-right">
+                  <h5 v-html="message.title"></h5>
+                  <span v-html="message.body"></span>
+                </div>
+              </div>
+            </div>
+          </div> 
+      </div>
+    </div>
+  </div>
+</div>

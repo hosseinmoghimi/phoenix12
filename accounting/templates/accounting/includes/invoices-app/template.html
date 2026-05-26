@@ -1,0 +1,156 @@
+{% load to_persian_date %} {% load to_price %} {% load to_amount_color %} {% load static %}
+<div id="accordion-invoices" class="rtl text-right farsi">
+  <div class="card" id="invoices-app">
+    <div class="card-header" id="heading-invoices">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-invoices"
+          aria-expanded="true"
+          aria-controls="collapse-invoices"
+        >
+          فاکتور ها
+
+          <span v-if="invoices.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="invoices.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-invoices"
+      class="collapse {% if expand_invoices %} show {% endif %}"
+      aria-labelledby="heading-invoices"
+      data-parent="#accordion-invoices"
+    >
+      <div class="card-body">
+        {% load static %}
+        <form @submit.prinvoice="search()">
+          <img
+            src="{% static 'leo/img/loading.gif' %}"
+            width="32"
+            v-if="waiting"
+            alt=""
+          />
+
+          <input
+            type="text"
+            v-model="search_for"
+            class="form-control"
+            placeholder="جستجو ..."
+            @input="filter()"
+          />
+        </form>
+
+        <div class="table-responsive rtl">
+          <img
+            v-if="false"
+            width="32"
+            src="{% static 'leo/img/loading.gif' %}"
+            alt=""
+          />
+          <h6 v-if="false">
+            <span class="text-muted">در حال بار گذاری ... </span>
+          </h6>
+          <table class="table table-striped rtl">
+            <thead>
+              <th>عنوان</th>
+
+              <th>تاریخ</th>
+              <th>بدهکار</th>
+              <th>بستانکار</th>
+              <th>مبلغ</th>
+              <th>تراز</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="invoice in invoices">
+                <td>
+                  <div class="media">
+                    <a :href="invoice.get_absolute_url">
+                      <img
+                        class="rounded"
+                        width="48"
+                        :src="invoice.thumbnail"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <h5>
+                        <a :href="invoice.get_absolute_url">
+                          <span v-if="invoice.valid" class="ml-1">*</span>
+                          <span v-text="invoice.title"> </span>
+
+                          <div>
+                            <span class="badge badge-info">
+                              <small v-text="invoice.status"> </small>
+                            </span>
+                          </div>
+                        </a>
+                      </h5>
+                      <h6>
+                        {% if SHOW_PRICE %}
+
+                        <span v-text="to_price(invoice.amount,'{{CURRENCY}}')">
+                        </span>
+                        {% endif %}
+                      </h6>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <span v-text="invoice.persian_event_datetime"> </span>
+                </td>
+                <td>
+                  <div v-for="account in [invoice.bedehkar]">
+                    {% include "accounting/includes/account-app/media.html" %}
+                  </div>
+                </td>
+
+                <td>
+                  <div v-for="account in [invoice.bestankar]">
+                    {% include "accounting/includes/account-app/media.html" %}
+                  </div>
+                </td>
+
+                <td>
+                  {% if SHOW_PRICE %}
+
+                  <span v-text="to_price(invoice.amount,'{{CURRENCY}}')">
+                  </span>
+                  {% endif %}
+                </td>
+
+                <td>
+                  <span v-if="invoice.balance>0" class="badge badge-success">
+                    <small v-text="to_price(invoice.balance)"> </small>
+                    <div>
+                      <small> بستانکار </small>
+                    </div>
+                  </span>
+
+                  <span v-if="invoice.balance<0" class="badge badge-danger">
+                    <small v-text="to_price(0-invoice.balance)"> </small>
+                    <div>
+                      <small> بدهکار </small>
+                    </div>
+                  </span>
+
+                  <span v-if="invoice.balance==0" class="badge badge-primary">
+                    <small> تراز </small>
+                  </span>
+                </td>
+
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

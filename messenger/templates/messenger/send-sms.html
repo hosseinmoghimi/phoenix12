@@ -1,0 +1,19 @@
+{% extends "messenger/layout.html" %}
+{% load static %}
+{% load to_persian_date %}
+
+
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-6">
+        {% include 'messenger/includes/send-sms-app/template.html' %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %} 
+{% include 'messenger/includes/send-sms-app/script.html' %}
+
+{% endblock %}

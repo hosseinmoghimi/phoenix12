@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="card-body">
+
+        <div class="row rtl">
+            <div class="col-lg-4 col-md-6">
+                <a href="{{product.thumbnail}}">
+
+                    <img class="rounded" src="{{product.thumbnail}}" width="100%" alt="">
+                </a>
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <h2 class="text-right">
+                    {{product.title}}
+                </h2>
+<div class="media">
+    <a href="{{product.get_market_absolute_url}}">
+
+        <img src="{{product.get_market_qrcode_url}}" width="64"  alt="">
+    </a>
+    <div class="media-body mr-2">
+  <div class="text-right">
+                    <div>{% include "attachments/includes/page-like-app/template.html" %}</div>
+
+                </div>
+                
+                <div class="text-right">
+                    <div>{% include "market/includes/product-app/main-shop.html" %}</div>
+
+                </div>
+    </div>
+</div>
+              
+                {% if product.short_description %}
+                  <div class="rtl text-right">
+                    {{product.short_description|safe}}
+                  </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

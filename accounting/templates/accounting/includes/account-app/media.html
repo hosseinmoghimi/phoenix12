@@ -1,0 +1,48 @@
+{% load to_price %}
+<div class="media">
+    <img :src="account.thumbnail" class="rounded" width="64" alt="">
+    <div class="media-body mr-2">
+        <h5 :class="'text-'+account.color">
+            <a :href="account.get_absolute_url">
+                <span :class="'text-'+account.color" v-text="account.title"></span>
+                <span :class="'badge badge-'+account.color" v-text="account.type"></span>
+            </a>
+        </h5>
+
+
+        <div>
+              <small  >
+            
+                    <button  title="کپی کن"  class="btn btn-sm btn-link" @click="copy_code_to_clipboard(account.code,account.title)">
+                        <small  >
+                        کد 
+
+                        </small>
+                        <span v-text="account.code"></span>
+                    </button>
+
+
+                </small>
+        </div>
+        <div>
+            
+      {% if SHOW_BALANCE %}
+        
+      <h6 >
+          
+          <small>
+              <span v-html="to_price_colored(account.balance,'{{CURRENCY}}')"></span> 
+              
+            </small>
+        </h6>
+        {% endif %}
+        </div>
+
+        <a :href="account.get_absolute_url">
+
+            <h6>
+                <span v-text="account.full_title"></span>
+            </h6>
+        </a>
+    </div>
+</div>

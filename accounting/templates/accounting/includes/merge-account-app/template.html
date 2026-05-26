@@ -1,0 +1,92 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-merge-account" class="rtl text-right farsi">
+
+
+
+    <div class="card" id="merge-account-app">
+        <div class="card-header" id="heading-merge-account">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-merge-account"
+                    aria-expanded="true" aria-controls="collapse-merge-account">
+                        همسان سازی حساب
+                </button>
+            </h5>
+
+         
+        </div>
+        <div id="collapse-merge-account" class="collapse"
+            aria-labelledby="heading-merge-account" data-parent="#accordion-merge-account">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                 
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">کد حسابی که باید حذف شود</label>
+                            <input @input="select_deleting_account()" type="text" class="form-control" v-model="deleting_account_code">
+                        </div>
+                    </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group" v-if="deleting_account">
+                            <label for="">حسابی که باید حذف شود</label>
+                            
+                            <div v-for="account in [deleting_account]">
+                                {% include "accounting/includes/account-app/media.html" %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+<hr>
+
+                
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">کد حسابی که باید آپدیت شود</label>
+                            <input @input="select_updating_account()" type="text" class="form-control" v-model="updating_account_code">
+                        </div>
+                    </div>
+
+                     <div class="col-md-8">
+                        <div class="form-group" v-if="updating_account">
+                            <label for="">حسابی که باید آپدیت شود</label>
+                            
+                            <div v-for="account in [updating_account]">
+                                {% include "accounting/includes/account-app/media.html" %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row rtl">
+                    <div class="col-md-4">
+                        <button v-if="!show_confirm" @click="show_confirm=true" class="my-2 btn btn-success">همگام شود؟</button>
+                        <span v-if="show_confirm"> همگام سازی شود؟</span>
+                        <button v-if="show_confirm" @click="show_confirm=false" class="my-2 btn btn-secondary">خیر . مطمئن نیستم</button>
+                        <button v-if="show_confirm" @click="merge()" class="my-2 btn btn-success">همگام شود</button>
+                    </div>
+                    <div class="col-md-8">
+                        <div v-if="message.show">
+
+                            <div :class="'alert alert-'+message.color">
+                                <h5 v-text="message.title"></h5>
+                                <div v-html="message.body"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

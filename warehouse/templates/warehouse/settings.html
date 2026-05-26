@@ -1,0 +1,59 @@
+{% extends "warehouse/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi" id="settings-app">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>تنظیمات انبارداری</h5>
+      </div>
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">شناسه انبار</label>
+              <input
+                type="number"
+                v-model="warehouse_id"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <button
+              class="btn btn-success"
+              @click="normalize_product_in_warehouse()"
+            >
+              نرمال سازی موجودی انبار ها
+            </button>
+          </div>
+          <div class="col-12">
+            {% include "utility/includes/message-app/alert.html" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  let settings_app = new Vue({
+    el: "#settings-app",
+    data: {
+      warehouse_id: 0,
+      message:{show:false},
+      waiting:false
+    },
+    methods: {
+      normalize_product_in_warehouse: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          warehouse_id: this.warehouse_id,
+        };
+        let url ="{% url 'warehouse:normalize_product_in_warehouse' %}"
+         $.post(url, payload).done((data) => {
+          console.log(data);
+        });
+      },
+    },
+  });
+</script>
+{% endblock script %}

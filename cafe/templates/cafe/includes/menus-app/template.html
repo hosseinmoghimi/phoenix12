@@ -1,0 +1,88 @@
+<div id="accordion-menus" class="rtl text-right farsi">
+  <div class="card" id="menus-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-menus"
+          aria-expanded="true"
+          aria-controls="collapse-menus"
+        >
+          منو ها
+          <span v-if="menus.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="menus.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-menus"
+      class="collapse {% if expand_menus %} show {% endif %}"
+      aria-labelledby="heading-menus"
+      data-parent="#accordion-menus"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead> 
+              <th>منو</th>
+              <th>فروشنده</th>
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="menu in menus">
+               
+                <td>
+                  <a :href="menu.get_absolute_url">
+                    <span v-text="menu.title"></span>
+                  </a>
+ 
+                </td>
+                <td>
+                     
+                     <a :href="menu.supplier.get_absolute_url">
+                    <div class="media">
+                    <img class="rounded-circle" width="32" :src="menu.supplier.person_account.person.image"> 
+
+                      <div class="media-body mr-2">
+                    <span v-text="menu.supplier.full_name"></span>
+
+                      </div>
+                    </div>
+                  </a>
+                </td>
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="menu.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="menu.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

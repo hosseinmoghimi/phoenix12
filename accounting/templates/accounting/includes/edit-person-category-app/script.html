@@ -1,0 +1,71 @@
+<script>
+    let person_category_account = JSON.parse("{{person_category_account_s|escapejs}}")
+</script>
+ 
+<script>
+
+    let edit_person_category_app = new Vue({
+        el: "#edit-person-category-app",
+        data: {
+            title:"{{person_category.title}}",
+            code_length:parseInt("{{person_category.code_length}}"),
+            message: { show: false },
+            account: person_category_account,
+            account_code:person_category_account.code
+        },
+        methods: {
+            
+            to_price: function (vall) {
+                return  to_price(vall)+" {{CURRENCY}}" 
+            },
+            
+            to_price_colored: function (vall) {
+                let colorr = "primary"
+                if (vall > 0) {
+                    colorr = "success"
+                }
+
+
+                if (vall < 0) {
+                    colorr = "danger"
+                }
+
+                return `<span class="text-${colorr}">${to_price(vall)} {{CURRENCY}}</span>`
+            },
+
+            edit_person_category: () => {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    person_category_id: "{{person_category.id}}",
+                    account_id: edit_person_category_app.account.id,
+                    title:edit_person_category_app.title,
+                    code_length:parseInt(edit_person_category_app.code_length),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:edit_person_category' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+                    show_message(edit_person_category_app, "موفقیت آمیز", `<div  class="text-right farsi"><p>${data.message}</p><a  href="${data.account.get_absolute_url}">${data.account.name}</a></div>`, "success", 10000)
+                    location.href = data.person_category.get_absolute_url
+                })
+            },
+
+            select_account: function () {
+                select_account_by_code(edit_person_category_app.account_code).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+
+                        console.log(data.account)
+                        edit_person_category_app.account = data.account
+                    }
+
+                    else {
+                        edit_person_category_app.account = {}
+
+                    }
+                })
+            },
+        }
+    })
+</script>

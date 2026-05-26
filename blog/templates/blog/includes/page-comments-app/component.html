@@ -1,0 +1,66 @@
+<div class="media">
+    <a class="float-left" :title="page_comment.profile.name" :href="page_comment.profile.get_absolute_url">
+        <div class="avatar">
+            <img class="media-object" :src="page_comment.profile.image" alt="...">
+        </div>
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a :href="page_comment.profile.get_absolute_url">
+
+                <span class="text-primary" v-text="page_comment.profile.name"></span>
+            </a>
+            &nbsp;&nbsp;
+            <small>
+
+
+                <span class="farsi" v-text="page_comment.persian_date_added"></span>
+            </small>
+        </h4>
+        <h6 class="text-muted"></h6>
+        <div class="text-right">
+
+            <div class="farsi" v-html="page_comment.comment">
+
+            </div>
+        </div>
+        {% if profile %}
+          
+        <div class="media-footer">
+
+
+            <div class="farsi rtl text-right">
+
+                <a v-if="page_comment.profile.id=={{profile.id}} && !confirm_delete" style="cursor:pointer"
+                    class="small text-danger mr-auto1 mx-2" @click="confirm_delete=true">
+                    حذف
+
+                </a>
+
+                <span v-if="page_comment.profile.id=={{profile.id}} && confirm_delete" style="cursor:pointer"
+                    class="small text-danger mr-auto1 mx-2">
+                    این نظر حذف شود ؟
+
+                </span>
+
+                <a v-if="page_comment.profile.id=={{profile.id}} && confirm_delete" style="cursor:pointer"
+                    class="small text-secondary mr-auto1 mx-2" @click="confirm_delete=false">
+                    خیر
+
+                </a>
+
+                <a v-if="page_comment.profile.id=={{profile.id}} && confirm_delete" style="cursor:pointer"
+                    class="small text-danger mr-auto1 mx-2" @click="delete_comment(page_comment.id)">
+                    <i class="material-icons">
+                        delete
+                    </i>
+                    حذف کن
+
+                </a>
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>

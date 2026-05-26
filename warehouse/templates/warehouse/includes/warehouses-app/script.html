@@ -1,0 +1,21 @@
+<script>
+    
+    let warehouses_for_warehouses_app=JSON.parse("{{warehouses_s|escapejs}}")
+    let warehouses_app = new Vue({
+        el: "#warehouses-app",
+        data: {
+            warehouses: warehouses_for_warehouses_app
+        },
+        methods: {
+             copy_code_to_clipboard:function(code){
+                copy_to_clipboard(code)
+                
+
+            },
+
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

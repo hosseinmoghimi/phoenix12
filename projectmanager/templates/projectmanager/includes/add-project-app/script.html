@@ -1,0 +1,75 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let organizations_for_add_project = JSON.parse(
+    "{{organizations_s|escapejs}}"
+  );
+  let add_project_app = new Vue({
+    el: "#add-project-app",
+    data: {
+      title: "",
+      organizations: organizations_for_add_project,
+      weight: 0,
+      percentage_completed: 0,
+      contractor_id: 0,
+      employer_id: 0,
+      type: "",
+      event_date: current_date,
+      event_time: "00:00:00",
+      event_datetime: current_datetime,
+
+      start_date: current_date,
+      start_time: "00:00:00",
+      start_datetime: current_datetime,
+
+      end_date: current_date,
+      end_time: "00:00:00",
+      end_datetime: current_datetime,
+      message: { show: false },
+      waiting: false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_project: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          contractor_id: parseInt(this.contractor_id),
+          employer_id: parseInt(this.employer_id),
+          weight: parseInt(this.weight),
+          type: this.type,
+          percentage_completed: parseInt(this.percentage_completed),
+          event_datetime: this.event_date + " " + this.event_time,
+          start_datetime: this.start_date + " " + this.start_time,
+          end_datetime: this.end_date + " " + this.end_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'projectmanager:add_project' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof projects_app != "undefined") {
+              projects_app.projects.push(data.project);
+            }
+            show_message(
+              add_project_app,
+              "موفق",
+              data.message,
+              "success",
+              3000
+            );
+          } else {
+            show_message(add_project_app, "خطا", data.message, "danger", 3000);
+          }
+        });
+      },
+    },
+  });
+</script>

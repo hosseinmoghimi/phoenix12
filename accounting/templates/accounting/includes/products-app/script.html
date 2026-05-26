@@ -1,0 +1,55 @@
+<script>
+    let products_for_products_app = JSON.parse("{{products_s|escapejs}}")
+    let products_app_data = {
+        search_for: "",
+        category_id: parseInt("{{category_id}}"),
+        products: products_for_products_app,
+        waiting: false,
+        new_product_title:"",
+        message: { show: false },
+    }
+    let products_app_methods = {}
+</script>
+{% if add_product_form %}
+<script>
+    products_app_methods.add_product= function () {
+            let payload = {
+                csrfmiddlewaretoken: csrfmiddlewaretoken,
+                title: this.new_product_title,
+                category_id: parseInt(this.category_id),
+            }
+            console.log(payload)
+            let url = "{% url 'accounting:add_product' %}"
+            let posting = $.post(url, payload)
+            posting.done(data => {
+                if (data.result === "SUCCEED") {
+
+                    products_app.new_product_title = ""
+                    products_app.products.push(data.product)
+                }
+
+                if (data.result != "SUCCEED") {
+                    show_message(products_app, "خطا", data.message, "danger", 5000)
+                }
+
+            })
+        }
+     
+</script>
+{% else %}
+<script>
+    products_app_data = {
+        title: "",
+        category_id: parseInt("{{category_id}}"),
+        products: products,
+
+    } 
+</script>
+{% endif %}
+<script>
+    let products_app = new Vue({
+        el: "#products-app",
+        data: products_app_data,
+        methods: products_app_methods,
+    })
+</script>

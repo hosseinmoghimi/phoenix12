@@ -1,0 +1,32 @@
+{% if clipboard_items %}
+<script>
+    console.log("clip_board_items_app started !!!!")
+    let clipboard_items_app=new Vue({
+        el:'#clipboard-items-app',
+        data:{
+            clipboard_items:[],
+        },
+        methods:{
+            copy_to_clipboard:function(text){
+                copy_to_clipboard(text)
+            },
+            clear_all_clipboard_items:function(){
+                console.log("clear_all_clipboard_items")
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken
+                }
+                let url=url_clear_all_clipboard_item
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                    if(data.result=="SUCCEED"){ 
+                        console.log(data.result)
+                        clipboard_items_app.clipboard_items=[]
+                    }
+                })
+            },
+        },
+
+    })
+</script>
+  
+{% endif %}

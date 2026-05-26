@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-header">
+    <h5>{{organizational_unit.title}}</h5>
+  </div>
+  <div class="card-body">
+    <h5>
+      <a
+        href="{% url 'organization:organizationalunit' pk=organizational_unit.pk %}"
+      >
+        organizational_unit: {{organizational_unit.title}}
+      </a>
+    </h5>
+    <div class="text-center">
+      <img src="{{organizational_unit.thumbnail}}" width="128" alt="" />
+    </div>
+    <div class="text-center">
+      <a href="{{organizational_unit.get_absolute_url}}">
+        <img width="128" src="{{organizational_unit.get_qrcode_url}}" alt="" />
+      </a>
+    </div>
+    <div class="my-3">
+      <h5>{{organizational_unit.title}}</h5>
+      <a href="{{organizational_unit.person_account.get_absolute_url}}">
+
+        <h5>{{organizational_unit.person_account.title}}</h5>
+      </a>
+
+      <small class="text-muted">{{organizational_unit.class_title}}</small>
+    </div>
+
+    <div>
+      <a
+        href="{{organizational_unit.get_tree_chart_url}}"
+        class="my-2 text-info mx-2"
+        title="نمودار درختی"
+        target="_blank"
+      >
+        <i class="fa fa-edit text-info"></i>
+        نمودار درختی
+      </a>
+
+      {% if perms.core.change_organizational_unit %}
+      <a
+        href="{{organizational_unit.get_edit_url}}"
+        class="my-2 text-warning mx-2"
+        title="ویرایش"
+        target="_blank"
+      >
+        <i class="fa fa-edit text-warning"></i>
+        ویرایش
+      </a>
+      {% endif %} {% if perms.core.delete_organizational_unit %}
+
+      <a
+        href="{{organizational_unit.get_delete_url}}"
+        class="my-2 text-danger mx-2"
+        title="حذف"
+        target="_blank"
+      >
+        <i class="fa fa-trash text-danger"></i>
+        حذف
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>

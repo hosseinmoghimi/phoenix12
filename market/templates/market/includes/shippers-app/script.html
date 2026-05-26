@@ -1,0 +1,14 @@
+<script>
+    let shippers = JSON.parse("{{shippers_s|escapejs}}")
+    // let links=JSON.parse(`{{links_s|escapejs}}`)
+    let shippers_app = new Vue({
+        el: "#shippers-app",
+        data: {
+            shippers: shippers,
+        },
+        methods: {
+            to_price:vall=>to_price(vall),
+              
+        }
+    })
+</script>

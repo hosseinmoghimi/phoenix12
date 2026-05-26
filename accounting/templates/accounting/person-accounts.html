@@ -1,0 +1,32 @@
+{% extends "accounting/layout.html" %}
+
+
+{% block content %}
+<div class="row rtl farsi">
+       
+   {% if add_person_account_form %}
+     
+    <div class="col-md-12">
+        {% include "accounting/includes/add-person-account-app/template.html" %}
+    </div>
+  
+    {% endif %}
+     
+   <div class="col-md-12">
+     {% include 'accounting/includes/person-accounts-app/template.html' %}
+   </div>
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+     {% include 'accounting/includes/person-accounts-app/script.html' %}
+   {% if add_person_account_form %}
+     
+        {% include "accounting/includes/add-person-account-app/script.html" %}
+  
+    {% endif %}
+     
+{% endblock script %}

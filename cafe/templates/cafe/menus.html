@@ -1,0 +1,27 @@
+
+{% extends "cafe/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_menu_form %}
+      <div class="col-md-12">
+          {% include "cafe/includes/add-menu-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "cafe/includes/menus-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "cafe/includes/menus-app/script.html" %}
+{% if add_menu_form %}
+{% include "cafe/includes/add-menu-app/script.html" %}
+{% endif %}
+{% endblock script %}

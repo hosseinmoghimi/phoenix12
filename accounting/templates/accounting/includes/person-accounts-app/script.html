@@ -1,0 +1,23 @@
+<script>
+    
+    let person_accounts_for_person_accounts_app=JSON.parse("{{person_accounts_s|escapejs}}")
+    let person_accounts_app = new Vue({
+        el: "#person-accounts-app",
+        data: {
+            person_accounts: person_accounts_for_person_accounts_app
+        },
+        methods: {
+ 
+            copy_code_to_clipboard: (vall,name)=>copy_to_clipboard(vall,name),
+            
+            copy_balance_to_clipboard:  (vall,name)=>copy_to_clipboard(vall,name),
+                        
+            to_price: function(vall) {
+                let color="primary"
+                if(vall>0)color="success"
+                if(vall<0)color="danger"
+                return "<span class='text-"+color+"'>"+to_price(vall)+' {{CURRENCY}}'+"</span>"
+            },
+        }
+    })
+</script>

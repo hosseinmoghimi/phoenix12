@@ -1,0 +1,15 @@
+<div class="media">
+    <a :href="product.get_absolute_url">
+        <img :src="product.thumbnail" width="48" class="rounded" alt="">
+    </a>
+    <div class="media-body mr-2">
+        <a :href="product.get_absolute_url">
+            <h5>
+                <span v-text="product.title"></span>
+            </h5>
+        </a>
+
+        
+
+    </div>
+</div>

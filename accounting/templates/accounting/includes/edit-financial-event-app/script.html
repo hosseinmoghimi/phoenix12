@@ -1,0 +1,56 @@
+<script>
+  let edit_financial_event_app = new Vue({
+    el: "#edit_financial-event-app",
+    data: {
+      title: "{{financial_event.title}}",
+      status: "{{financial_event.status}}",
+      payment_method: "{{financial_event.payment_method}}",
+      discount_percentage: parseInt("{{financial_event.discount_percentage}}"),
+      tax_percentage: parseInt("{{financial_event.tax_percentage}}"),
+      amount: parseInt("{{financial_event.amount}}"),
+      shipping_fee: parseInt("{{financial_event.shipping_fee}}"),
+      bedehkar_code: `{{financial_event.bedehkar.code}}`,
+      bestankar_code: `{{financial_event.bestankar.code}}`,
+      waiting: false,
+      message: { show: false },
+    },
+    methods: {
+      to_price: function (VALL) {
+        return to_price(VALL)
+      },
+      edit_financial_event: function () {
+        edit_financial_event_app.waiting = true;
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          financial_event_id: financial_event_id,
+          title: edit_financial_event_app.title,
+          discount_percentage: parseInt(
+            edit_financial_event_app.discount_percentage
+          ),
+          payment_method: edit_financial_event_app.payment_method,
+          amount: parseInt(edit_financial_event_app.amount),
+          tax_percentage: parseInt(edit_financial_event_app.tax_percentage),
+          shipping_fee: parseInt(edit_financial_event_app.shipping_fee),
+          status: edit_financial_event_app.status,
+          bedehkar_code: edit_financial_event_app.bedehkar_code,
+          bestankar_code: edit_financial_event_app.bestankar_code,
+        };
+
+        console.log(payload);
+        let url = "{% url 'accounting:edit_financial_event' %}";
+        $.post(url, payload).done((data) => {
+          edit_financial_event_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(
+              edit_financial_event_app,
+              "موفقیت آمیز",
+              data.message,
+              "success",
+              3000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

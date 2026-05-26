@@ -1,0 +1,129 @@
+  <div id="accordion-products-in-warehouse" class="rtl text-right farsi">
+  <div class="card" id="products-in-warehouse-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-products-in-warehouse"
+          aria-expanded="true"
+          aria-controls="collapse-products-in-warehouse">
+          موجودی های انبار
+          <span v-if="products_in_warehouse.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="products_in_warehouse.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-products-in-warehouse"
+      class="collapse {% if expand_products_in_warehouse %} show {% endif %}"
+      aria-labelledby="heading-products-in-warehouse"
+      data-parent="#accordion-products-in-warehouse"
+    >
+      <div class="card-body">
+       
+        <div class="table-responsive" v-if="products_in_warehouse.length>0">
+          <table class="table table-striped">
+            <thead> 
+
+                {% if not warehouse %}
+                  
+              <th>انبار</th>
+              {% endif %}
+               
+                {% if not product %}
+                 
+                    <th>کالا</th>
+                    {% endif %}
+                
+               
+                <th>موجودی</th>
+                <th>نقطه سفارش</th>
+                <th>
+                  توضیحات
+                </th>
+            </thead>
+            <tbody>
+
+              <tr v-for="product_in_warehouse in products_in_warehouse"  >
+                
+                 
+                {% if not warehouse %}
+                  
+                <td>
+                  <div v-if="warehouse" v-for="warehouse in [product_in_warehouse.warehouse]">
+                    {% include "warehouse/includes/warehouse-app/media.html" %}
+                  </div>
+                </td>
+                {% endif %}
+                 {% if not product %}
+                  
+                <td>
+                    <div v-for="product in [product_in_warehouse.product]">
+                         {% include "accounting/includes/product-app/media.html" %}
+
+                    </div>
+                </td>
+                {% endif %}
+
+                 <td>
+                  
+                  {% if SHOW_QUANTITY %}
+                    <span :class="product_in_warehouse.quantity<0?'text-danger':'text-success'">
+
+                      <span v-text="product_in_warehouse.quantity"></span>
+                      
+                      <span v-text="product_in_warehouse.unit_name"></span>
+                    </span>
+                  {% endif %}   
+                     
+                </td>
+                
+                 <td>
+                  <div v-if="product_in_warehouse.product.rop>0">
+
+                    <div v-if="product_in_warehouse.product.rop>product_in_warehouse.quantity">
+                      <span class="text-danger" v-text="product_in_warehouse.product.rop"></span>
+                    </div> 
+                    <div v-else>
+                      <span class="text-success" v-text="product_in_warehouse.product.rop"></span>
+                    </div> 
+                  </div>
+                </td>
+                <td>
+                   <div v-if="product_in_warehouse.product.rop>0">
+
+                    <div class="text-danger" v-if="product_in_warehouse.product.rop>product_in_warehouse.quantity">
+                     زیر نقطه سفارش
+                    </div> 
+                     
+                  </div>
+
+                   <div class="text-danger" v-if="product_in_warehouse.quantity<0">
+
+                     موجودی منفی
+                     
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            
+          </table>
+        </div>
+        <div v-if="products_in_warehouse.length==0">
+          <span>
+            موجودی انباری وجود ندارد
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+
+          
+      </div>
+    </div>
+  </div>
+</div>

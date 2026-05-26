@@ -1,0 +1,110 @@
+<div id="accordion-person-accounts" class="rtl text-right farsi">
+    <div class="card" id="person-accounts-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-person-accounts" aria-expanded="true"
+                    aria-controls="collapse-person-accounts">
+                    حساب های اشخاص
+                    <span v-if="person_accounts.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="person_accounts.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-person-accounts" class="collapse " aria-labelledby="heading-person-accounts"
+            data-parent="#accordion-person-accounts">
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                          
+                            <th>
+                                نام حساب
+                            </th>
+                            
+                            <th>
+                                نام شخص
+                            </th>
+                            <th>
+                                دسته بندی
+                            </th>
+                            
+              {% if SHOW_BALANCE %}
+                
+              <th>
+                  مانده
+                </th>
+                {% endif %}
+                            <th>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="person_account in person_accounts">
+                                <td>
+                                    {% include "accounting/includes/person-account-app/media.html" %}
+                                    
+                                </td>
+                                
+
+                                 <td>
+                                   
+                                      
+                                <div v-for="person in [person_account.person]">
+                                    {% include "accounting/includes/person-app/media.html" %}
+
+                                </div>
+                                </td>
+
+
+                                  <td>
+                                    <a :href="person_account.person_category.get_absolute_url">
+                                        <span   v-text="person_account.person_category.title"></span>
+                                    </a>
+
+                                </td>
+                                
+              {% if SHOW_BALANCE %}
+                
+              <td>
+                  <btn @click="copy_balance_to_clipboard(person_account.balance)" class="btn btn-link">
+                      
+                      <span v-html="to_price(person_account.balance)"></span>
+                      <small class="text-muted mr-1">
+                          
+                          {{CURRENCY}}
+                        </small>
+                    </btn>
+                                </td>
+                                {% endif %}
+                                <td>
+                                    <a target="_blank" :href="person_account.get_edit_url" title="ویرایش"
+                                    class=" text-warning mx-2">
+                                        <i class="fa fa-edit text-warning">
+                                        </i>
+                                        ویرایش
+                                    </a>
+                                    <a target="_blank" :href="person_account.get_delete_url" title="حذف"
+                                        class=" text-danger mx-2">
+                                        <i class="fa fa-trash text-danger">
+                                        </i>
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

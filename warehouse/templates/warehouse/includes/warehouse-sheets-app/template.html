@@ -1,0 +1,263 @@
+
+{% if warehouse_sheets_s %}
+{% endif %}
+
+  <div id="accordion-warehouse-sheets" class="rtl text-right farsi">
+  <div class="card" id="warehouse-sheets-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-warehouse-sheets"
+          aria-expanded="true"
+          aria-controls="collapse-warehouse-sheets">
+          برگه های انبار
+          <span v-if="warehouse_sheets.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="warehouse_sheets.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-warehouse-sheets"
+      class="collapse {% if expand_warehouse_sheets %} show {% endif %}"
+      aria-labelledby="heading-warehouse-sheets"
+      data-parent="#accordion-warehouse-sheets"
+    >
+      <div class="card-body">
+       
+        <div class="table-responsive" v-if="warehouse_sheets.length>0">
+          <table class="table table-striped">
+            <thead>
+              <th>جهت</th>
+              <th>تعداد</th>
+
+                {% if not product %}
+                 
+                    <th>کالا</th>
+                    {% endif %}
+                {% if not warehouse %}
+                  
+              <th>انبار</th>
+              {% endif %}
+                {% if not invoice %}
+                  
+                <th>فاکتور</th>
+                {% endif %}
+
+                
+                {% if not organizational_unit %}
+                  
+                <th>واحد درخواست کننده</th>
+                {% endif %}
+                <th>ثبت توسط</th>
+                <th>تاریخ</th>
+                <th>موقعیت کالا</th>
+                <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+
+              <tr v-for="warehouse_sheet in warehouse_sheets"  >
+                
+                <td>
+                  <span :class="'text-'+direction_color(warehouse_sheet.direction)">
+
+                    <span v-text="warehouse_sheet.direction"></span>
+                    <span v-html="to_arrow(warehouse_sheet.direction)"></span>
+                  </span>
+                </td>
+                 <td>
+                  {% if SHOW_QUANTITY %}
+                    
+                  <span v-text="warehouse_sheet.invoice_line.quantity"></span>
+                  <span v-text="warehouse_sheet.invoice_line.unit_name"></span>
+                  <div v-if="warehouse_sheet.invoice_line.status && warehouse_sheet.invoice_line.status!='نو'" >
+                    <small class="text-muted">
+                      (
+                        <span v-text="warehouse_sheet.invoice_line.status"></span>
+                        )
+                      </small>
+                    </div>
+                    {% endif %}
+                    {% if SHOW_PRICE %}
+                      
+                    <div>
+                      <span v-text="warehouse_sheet.invoice_line.quantity"></span>
+                      *
+                      <span v-text="to_price(warehouse_sheet.invoice_line.unit_price)"></span>
+                      =
+                      <span v-text="to_price(warehouse_sheet.sum)"></span>
+                      {{CURRENCY}}
+                      
+                    </div>
+                    {% endif %}
+                </td>
+                
+                {% if not product %}
+                  
+                <td>
+                    <div v-for="product in [warehouse_sheet.invoice_line.invoice_line_item]">
+                         {% include "accounting/includes/product-app/media.html" %}
+
+                    </div>
+                </td>
+                {% endif %}
+               
+                
+                {% if not warehouse %}
+                  
+                <td>
+                  <div v-if="warehouse" v-for="warehouse in [warehouse_sheet.warehouse]">
+                    {% include "warehouse/includes/warehouse-app/media.html" %}
+                  </div>
+                </td>
+                {% endif %}
+                {% if not invoice %}
+                  
+                <td>
+                  <div v-if="warehouse_sheet.invoice_line.invoice">
+                    <a :href="warehouse_sheet.invoice_line.invoice.get_absolute_url">
+                    <span v-text="warehouse_sheet.invoice_line.invoice.title"></span>
+                    </a>
+                  </div>
+                   <div v-else>
+              <i title="فاکتور ندارد" class="fa fa-exclamation-triangle text-warning"></i>
+
+                  </div>
+                  <div>
+                    <a :href="warehouse_sheet.invoice_line.get_absolute_url">
+                    ردیف
+                    <span v-text="warehouse_sheet.invoice_line.row"></span>
+                    </a>
+                  </div>
+                </td>
+                {% endif %}
+                
+
+                {% if not organizational_unit %}
+                  
+                <td>
+                  <div v-if="warehouse_sheet.organizational_unit">
+                    <a :href="warehouse_sheet.organizational_unit.get_absolute_url">
+                    <span v-text="warehouse_sheet.organizational_unit.title"></span>
+                    </a>
+                  </div>
+                  <div v-else>
+              <i title="واحد درخواست کننده ندارد" class="fa fa-exclamation-triangle text-warning"></i>
+
+                  </div>
+                  
+                </td>
+                {% endif %}
+                
+
+                
+                <td>
+                  <div
+                    v-for="employee in [warehouse_sheet.employee]"
+                  >
+                    {% include "organization/includes/employee-app/media.html" %}
+                  </div>
+                </td>
+                <td>
+                    <span v-html="warehouse_sheet.persian_date_added"></span>
+                </td>
+
+                  <td>
+                    <div v-if="warehouse_sheet.shelf">
+                      قفسه <span v-text="warehouse_sheet.shelf"></span>
+                    </div>
+                    <div v-if="warehouse_sheet.row">
+                      ردیف <span v-text="warehouse_sheet.row"></span>
+                    </div>
+                    <div v-if="warehouse_sheet.col">
+                      ستون <span v-text="warehouse_sheet.col"></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      <small class="text-muted">وضعیت</small>
+                      <span :class="'badge badge-'+warehouse_sheet.status_color" v-text="warehouse_sheet.status"></span>
+                    </div>
+                    
+                    
+                    <div>
+                      <small class="text-muted">نوع</small>
+                      <span v-text="warehouse_sheet.type"></span>
+                    </div>
+                  </td>
+                <td>
+                  <a
+                    :href="warehouse_sheet.get_absolute_url"
+                    title="نمایش"
+                    class="text-info mx-2"
+                  >
+                                            <i class="fa fa-info-circle text-info"></i>
+
+                    نمایش
+                  </a>
+
+                  <a
+                    target="_blank"
+                    :href="warehouse_sheet.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+
+                  <a
+                    target="_blank"
+                    :href="warehouse_sheet.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+            
+          </table>
+        </div>
+        <div v-if="warehouse_sheets.length==0">
+          <span>
+            برگه انباری وجود ندارد
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+
+        <div>
+          <small class="text-muted">
+            ورودی کل
+          </small>
+          <span  class="text-success" v-text="to_price(sum_in)"></span>
+        </div>
+
+        <div>
+          <small class="text-muted">
+            خروجی کل
+          </small>
+          <span class="text-danger" v-text="to_price(sum_out)"></span>
+        </div>
+
+        <div>
+          <small class="text-muted">
+            مانده کل
+          </small>
+          <span v-if="sum_in>sum_out" class="text-success" v-text="to_price(sum_in-sum_out)"></span>
+          <span v-if="sum_in<sum_out" class="text-danger" v-text="to_price(sum_in-sum_out)"></span>
+          <span v-if="sum_in==sum_out" class="text-info" v-text="to_price(sum_in-sum_out)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

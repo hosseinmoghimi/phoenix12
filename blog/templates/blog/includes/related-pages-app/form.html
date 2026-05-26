@@ -1,0 +1,68 @@
+<div v-show="!show_add_form" class="text-center">
+
+    <span @click="show_add_form=true" title="افزودن کالای مرتبط" class="material-icons text-primary"
+        style="cursor: pointer;">
+        loupe
+    </span>
+</div>
+
+<form v-show="show_add_form" @submit.prevent="add_related_page()">
+    <div class="row farsi rtl">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="exampleInputEmail1">شناسه صفحه مرتبط</label>
+                <input min="0" required type="number" v-model="related_page_id" class="farsi form-control"
+                    id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="شناسه صفحه">
+                <small id="emailHelp" class="form-text farsi text-muted">
+                    شناسه صفحه مرتبط را وارد کنید.
+                </small>
+            </div>
+        </div>
+        <div class="col-md-3">
+           
+
+
+            <div class="form-check" class="my-5 mx-3">
+                افزودن
+                <label class="form-check-label">
+                    <input @input="change_button_text()" v-model="add" class="form-check-input" type="checkbox">
+
+
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+                <hr>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="form-check" class="my-5 mx-3">
+                ارتباط دو طرفه
+                <label class="form-check-label">
+                    <input v-model="bidirectional" class="form-check-input" type="checkbox">
+
+
+                    <span class="form-check-sign">
+                        <span class="check"></span>
+                    </span>
+                </label>
+                <hr>
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+            <button @click="show_add_form=false" class="btn btn-outline-secondary farsi">انصراف</button>
+            <button type="submit"  class="btn btn-primary farsi">
+                
+            <span v-if="add">افزودن</span>
+            <span v-if="!add">حذف</span>
+            </button>
+
+            
+        </div>
+    </div>
+
+
+</form>

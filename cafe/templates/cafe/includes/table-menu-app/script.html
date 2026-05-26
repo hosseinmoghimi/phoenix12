@@ -1,0 +1,55 @@
+<script>
+  let shop_component_template = `{% include "market/includes/table-menu-app/component.html" %}`;
+
+  let url_add_to_cart = "{% url 'market:add_to_cart' %}";
+  let shops_for_menu_app = JSON.parse("{{shops_s|escapejs}}");
+
+  let shop_component = Vue.component("shop-component", {
+    data: function () {
+      return {
+        confirm_delete: false,
+        quantity:1,
+      };
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      add_to_cart: function (shop) {
+        this.confirm_delete = false;
+
+        let url = "";
+        let payload = {
+          quantity: parseInt(this.quantity),
+          shop_id: shop.id,
+          product: shop.product.title,
+          customer_id: table_customer.id,
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        console.log(payload)
+        // let posting = $.post(url, payload)
+        // posting.done(function (data) {
+        //     if (data.result === 'SUCCEED') {
+        //         page_comments_app.page_comments = page_comments_app.page_comments.filter((page_comment) => {
+        //             return (page_comment.id != page_comment_id)
+        //         })
+        //         page_comment_component.confirm_delete = false
+        //     }
+        // })
+      },
+    },
+    props: ["shop"],
+    template: shop_component_template,
+  });
+
+  let menu_app = new Vue({
+    el: "#menu-app",
+    components: {
+      shop_component,
+    },
+    data: {
+      shops: shops_for_menu_app,
+    },
+    methods: {},
+  });
+</script>

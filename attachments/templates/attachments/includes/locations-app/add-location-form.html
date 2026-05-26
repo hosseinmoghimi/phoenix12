@@ -1,0 +1,19 @@
+{% load static %}
+<form @submit.prevent="add_location()">
+    <h5>
+        افزودن موقعیت مکانی جدید
+    </h5>
+    <input placeholder="عنوان نقطه" required type="text" class="form-control" v-model="new_location_title">
+    <input placeholder="موقعیت" required type="text" class="form-control" v-model="new_location">
+    <img v-if="waiting" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+    <button v-if="!waiting" v-if="new_location" class="btn btn-success btn-round" type="submit">افزودن</button>
+    <button @click="show_add_location_form=false" v-if="show_add_location_form" class="btn btn-secondary">
+        انصراف
+    </button>
+    <p>
+        <a target="_blank" href="https://www.google.com/maps" class="farsi">
+            <i class="material-icons">map</map></i>
+            استفاده از نقشه
+        </a>
+    </p>
+</form>

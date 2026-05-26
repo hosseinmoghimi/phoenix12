@@ -1,0 +1,31 @@
+<script>
+    let add_my_link_app=new Vue({
+        el:"#add-my-link-app",
+        data:{
+            title:"",
+            url:"",
+            priority:1,
+
+        },
+        methods:{
+            add_my_link:function(title2,url2,priority2){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    title:title2,
+                    url:url2,
+                    priority:priority2,
+                }
+                let url="{% url 'authentication:add_my_link' %}"
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                })
+            },
+            add:function(){
+                this.add_my_link(this.title,this.url,this.priority)
+                    
+            },
+
+
+        }
+    })
+</script>

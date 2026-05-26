@@ -1,0 +1,260 @@
+<div id="accordion-add-invoice-line" class="rtl text-right farsi">
+
+  <div class="card" id="add-invoice-line-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-invoice-line"
+          aria-expanded="true" aria-controls="collapse-add-invoice-line">
+          افزودن سطر فاکتور
+        </button>
+      </h5>
+    </div>
+    <div id="collapse-add-invoice-line" class="collapse " aria-labelledby="heading-add-invoice-line"
+      data-parent="#accordion-add-invoice-line">
+
+
+      <div class="card-body">
+        <div class="row rtl">
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">جستجوی آیتم </label>
+              <input v-model="search_for" @input="filter()" class="form-control">
+
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <a target="_blank" class="mx-2" href="{% url 'accounting:products' %}">همه کالاها</a>
+            <button @click="add_product()" v-if="invoice_line_items.length==0" class="btn btn-success">+</button>
+            <a target="_blank" class="mx-2" href="{% url 'accounting:services' %}">همه خدمات</a>
+            <button @click="add_service()" v-if="invoice_line_items.length==0" class="btn btn-success">+</button>
+          </div>
+
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody>
+                  <tr v-for="(invoice_line_item, index) in buffer_items" :key="invoice_line_item.id">
+                    <td>
+                      <span v-text="index + 1"></span>
+                    </td>
+                    <td>
+                       <button v-if="invoice_line_item.class_title=='سرویس'" class="btn btn-info my-2" @click="select_item(invoice_line_item)">
+                        انتخاب
+                    <span v-text="invoice_line_item.class_title"></span>
+                  </button>
+                  <button v-else class="btn btn-primary my-2" @click="select_item(invoice_line_item)">
+                    انتخاب
+                    <span v-text="invoice_line_item.class_title"></span>
+                    
+                      </button>
+
+                    </td>
+                    <td>
+                      <a target="_blank" :href="invoice_line_item.get_absolute_url">
+                        <div class="media">
+                          <img :src="invoice_line_item.thumbnail" width="48" class="rounded" alt="">
+                          <div class="media-body mr-2">
+
+                            <h5 v-text="invoice_line_item.title"></h5>
+                            <h6 class="text-muted small" v-text="invoice_line_item.class_title"></h6>
+
+                            <h6>
+                              هر
+                              <span v-text="invoice_line_item.unit_name"></span>
+                              <span v-text="to_price(invoice_line_item.unit_price)"></span>
+                              {{CURRENCY}}
+                            </h6>
+                          </div>
+                        </div>
+                      </a>
+
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12 " v-if="invoice_line_items.length>list_length">
+              <button class="btn btn-success my-2" @click="more()" v-if="search_for">
+                بیشتر
+              </button>
+
+            </div>
+
+
+            <div class="col-md-12 " v-if="invoice_line_items.length>=list_length">
+
+              <button class="btn btn-danger my-2" @click="less()" v-if="list_length>6">
+                کمتر
+              </button>
+            </div>
+            <div class="col-md-4 my-1" v-for="invoice_line_item_unit in invoice_line_item_units">
+              <button class="btn btn-success"  @click="select_invoice_line_item_unit(invoice_line_item_unit)"
+                v-text="' هر '+ invoice_line_item_unit.unit_name +' ' +to_price(invoice_line_item_unit.unit_price)+' {{CURRENCY}}'"></button>
+            </div>
+
+          </div>
+        </div>
+        <form @submit.prevent="add_invoice_line()">
+          <div class="row">
+
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">آیتم</label>
+                <select disabled v-model="invoice_line_item_id" class="form-control">
+                  <option :value="invoice_line_item.id" v-for="invoice_line_item in invoice_line_items"
+                    v-text=" invoice_line_item.title">
+                  </option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">تعداد</label>
+                <input v-model="quantity" type="text" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">واحد</label>  
+                <select v-model="unit_name" class="form-control">
+                  <option v-for="unit_name11 in unit_names" :nalue="unit_name11" v-text="unit_name11"></option>
+                </select>
+              <input v-model="unit_name" type="text" class="form-control" />
+
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">قیمت
+                  <small class="text-secondary my-2">
+                    <span v-text="to_price(unit_price)"></span>
+                    {{CURRENCY}}
+                  </small>
+                </label>
+                <input v-model="unit_price" type="number" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">
+                  درصد تخفیف
+
+                  <small class="text-secondary my-2">
+                    <span v-text="discount_percentage"></span> %
+                  </small>
+                </label>
+                <input max="100" min="0" v-model="discount_percentage" type="number" class="form-control" />
+              </div>
+            </div>
+              <div class="col-md-4">
+              <div class="form-group">
+                <label for="">وضعیت</label>
+                <select class="form-control" v-model="status" >
+                  <option value=""></option>
+                  {% for status in invoice_line_statuses %}
+                    
+                  <option value="{{status}}">{{status}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-12"></div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for=""> ضریب </label>
+                <input  min="0" v-model="coef" type="number" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">ذخیره قیمت در آیتم</label>
+                <input type="checkbox" class="form-control" v-model="save" />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">قیمت پیش فرض آیتم</label>
+                <input type="checkbox" class="form-control" v-model="default_price" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                  <label for="">توضیحات</label>
+                  <input type="text" class="form-control" v-model="description" />
+                </div>
+
+            </div>
+            <div class="col-md-12  text-muted">
+              <span v-text="to_price(unit_price)+'*'+quantity+'='+to_price(unit_price*quantity)"></span>
+
+              {{CURRENCY}}
+            </div>
+
+             <div class="col-md-12">
+              <span v-text="to_price(unit_price)+'*'+quantity+'='+to_price(unit_price*quantity*(100-discount_percentage)/100)"></span>
+
+              {{CURRENCY}}
+            </div>
+
+            <div class="col-md-12" v-if="show_add_btn && quantity>0 && unit_price>0">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+
+            <div class="col-md-12" v-if="waiting">
+              {% load static %}
+              <img src="{% static 'leo/img/loading' %}" width="48" alt="">
+            </div>
+            <div class="col-md-12 my-2" v-if="message.show">
+              <div :class="'alert alert-'+message.color">
+                <h4 class="my-2" v-text="message.title">
+                </h4>
+                <div v-html="message.body">
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-12 my-2" v-if="invoice_line_item_id==0 || !unit_price>0 || !quantity>0">
+              <div class="alert alert-warning">
+                <h5 class="my-2">
+                  داده های ورودی را اصلاح کنید.
+                </h5>
+                <div>
+                  <ul class="rtl">
+                    <li class="text-right rtl" v-if="invoice_line_item_id==0">
+                      آیتم را جستجو و انتخاب کنید.
+
+                    </li>
+
+                    <li class="text-right rtl" v-if="!quantity>0">
+                      تعداد را وارد کنید.
+
+                    </li>
+                    <li class="text-right rtl" v-if="!unit_price>0">
+                      قیمت را وارد کنید.
+
+                    </li>
+                  </ul>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+{% extends "phoenix/print-layout.html" %} {% block content %}
+{% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    <div class="card">
+      {% load to_price %}
+      <div class="card-body">
+        <div class="text-center">
+       
+         
+        </div> 
+        <div class="text-center">
+          درخواست
+          استعلام بها
+        </div>
+        <div class="row rtl">
+          <div class="col-8"> 
+          </div>
+          <div class="col-4">
+            <div>تاریخ : {{invoice.event_datetime|to_persian_datetime|safe}}</div>
+ 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    {% include "accounting/includes/invoice-lines-app/estelam-template.html" %}
+  </div>
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-center">
+          فروشنده
+          <br />
+          
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="card farsi">
+      <div class="card-body">
+        <p class="text-center">
+          خریدار
+          <br />
+        
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+{% include "accounting/includes/invoice-app/print-script.html" %}
+ 
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ {% endblock script %}

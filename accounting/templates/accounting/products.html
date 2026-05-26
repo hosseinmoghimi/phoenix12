@@ -1,0 +1,79 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+      
+<div class="col-md-12">
+  <div class="card" id="search-app">
+    <div class="card-header">
+        <h5>
+            جستجو
+        </h5>
+    </div>
+
+    <div class="card-body">
+      <form @submit.prevent="filter()">
+        <input type="text" class="form-control" v-model="search_for" >
+      </form>
+    </div>
+  </div>
+</div>
+    {% if add_product_form %}
+    <div class="col-md-8">
+        {% include "accounting/includes/add-product-app/template.html" %}
+    </div>
+    {% endif %}
+    {% if import_products_from_excel_form %}
+
+    <div class="col-md-4">
+        {% include "accounting/includes/import-products-from-excel-app/template.html" %}
+    </div>
+    {% endif %}
+    <div class="col-md-12 ">
+        {% include "accounting/includes/products-app/list-template.html" %}
+    </div>
+    {% if merge_product_form %}
+      
+    <div class="col-md-12 ">
+        {% include "accounting/includes/merge-product-app/template.html" %}
+    </div>
+    {% endif %}
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "accounting/includes/products-app/list-script.html" %}
+{% include "accounting/includes/merge-product-app/script.html" %}
+{% if add_product_form %}
+{% include "accounting/includes/add-product-app/script.html" %}
+
+{% endif %}
+
+{% if import_products_from_excel_form %}
+    {% include "accounting/includes/import-products-from-excel-app/script.html" %}
+{% endif %}
+
+ <script>
+      let search_app=new Vue({
+        el:"#search-app",
+        data:{
+          search_for:"",
+        },
+        methods:{
+          filter:function(){
+            products_app.search_for=search_app.search_for
+            products_app.filter()
+            console.log(search_app.search_for)
+          },
+        }
+      })
+    </script>
+
+{% endblock script %}

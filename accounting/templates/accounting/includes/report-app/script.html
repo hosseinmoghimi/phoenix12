@@ -1,0 +1,43 @@
+<script>
+  let report_app = new Vue({
+    el: "#report-app",
+    data: {
+      account_id: 0,
+      financial_document_id: 0,
+      financial_event_id: 0,
+      account_code: "8000002",
+      start_date: current_date,
+      end_date: current_date,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      get_report:function(){
+        let payload={
+          csrfmiddlewaretoken:csrfmiddlewaretoken,
+          account_id:parseInt(this.account_id),
+          account_code:(this.account_code),
+          financial_document_id:parseInt(this.financial_document_id),
+          financial_event_id:parseInt(this.financial_event_id),
+        }
+        console.log(payload)
+        let url="{% url 'accounting:report' %}"
+        $.post(url,payload).done(data=>{
+          if(data.result==='SUCCEED')
+        {
+          
+          if(typeof financial_document_lines_app != "undefined"){
+            financial_document_lines_app.financial_document_lines=data.financial_document_lines
+            financial_document_lines_app.calc_total()
+          }
+          if(typeof financial_events_app != "undefined"){
+            financial_events_app.financial_events=data.financial_events
+          }
+        }
+        })
+
+      },
+    },
+  });
+</script>

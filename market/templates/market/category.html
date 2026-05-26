@@ -1,0 +1,56 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+
+
+
+ 
+<div class="text-center rtl">
+  
+  {% if category.parent %}
+  
+  {{category.parent.get_market_breadcrumb_link|safe}}
+  {% else %}
+  <a href="{% url 'market:category' pk=0 %}">خانه</a>
+  {% endif %}
+</div>
+
+<h4 class="text-center rtl">
+    {{category.title}}
+    {% if perms.accounting.change_category %}
+      <a target="_blank" href="{{category.get_edit_url}}" title="ویرایش">
+        <i class="fa fa-edit text-warning"></i>
+      </a>
+
+      <a target="_blank" href="{{category.get_absolute_url}}" title="حسابداری">
+        <i class="fa fa-edit text-info"></i>
+      </a>
+    {% endif %}
+</h4>
+ 
+ 
+
+<div class="col-md-12">
+  {% include "market/includes/categories-app/template.html" %}
+</div>
+
+<div class="col-md-12">
+  {% include "market/includes/products-app/template.html" %}
+</div>
+
+
+{% endblock content %}
+
+
+
+
+{% block script %}
+
+<script>
+  let category_id=parseInt("{{category.id}} ")
+</script>
+
+{% include "market/includes/categories-app/script.html" %}
+
+
+{% include "market/includes/products-app/script.html" %}
+{% endblock script %}

@@ -1,0 +1,8 @@
+<div  v-if="message.show">
+  <div :class="'alert alert-'+message.color">
+    <div class="rtl text-right">
+      <h5 v-html="message.title"></h5>
+      <span v-html="message.body"></span>
+    </div>
+  </div>
+</div>

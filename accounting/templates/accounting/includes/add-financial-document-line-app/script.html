@@ -1,0 +1,186 @@
+
+{% include "accounting/includes/financial-document-app/select-script.html" %}
+{% include "accounting/includes/financial-event-app/select-script.html" %}
+{% include "accounting/includes/account-app/select-script.html" %}
+
+
+
+<script>
+    let amount_for_add_financial_document_line_app=0
+let financial_document_for_add_financial_document_line_app={id:0,title:'سند بی نام'}
+let financial_event_for_add_financial_document_line_app={id:0,title:''}
+let account_for_add_financial_document_line_app={code:'0'}
+let account_code_for_add_financial_document_line_app=""
+let title_for_add_financial_document_line_app=""
+</script>
+{% if financial_document %}
+<script>
+        financial_document_for_add_financial_document_line_app=JSON.parse(`{{financial_document_s|escapejs}}`)
+        </script>
+{% endif %}
+{% if financial_event %}
+ 
+<script>
+
+    
+ account_for_add_financial_document_line_app={code:`{{financial_event.bedehkar.code}}`,get_absolute_url:`{{financial_event.bedehkar.get_absolute_url}}`,title:"{{financial_event.bedehkar.title}}",thumbnail:"{{financial_event.bedehkar.thumbnail}}"}
+ account_code_for_add_financial_document_line_app="{{financial_event.bedehkar.code}}"
+
+    amount_for_add_financial_document_line_app=parseInt(`{{financial_event.amount}}`)
+    title_for_add_financial_document_line_app="{{financial_event.title}}"
+    financial_event_for_add_financial_document_line_app=JSON.parse(`{{financial_event_s|escapejs}}`)
+  </script>
+{% endif %}
+{% if account %}
+ 
+<script>
+    account_for_add_financial_document_line_app=JSON.parse(`{{account_s|escapejs}}`)
+    account_code_for_add_financial_document_line_app="{{account.code}}"
+  </script>
+{% endif %}
+
+<script>
+    let add_financial_document_line_app = new Vue({
+        el: "#add-financial-document-line-app",
+        data: {
+            title:title_for_add_financial_document_line_app,
+            date_time: current_date,
+            bedehkar: amount_for_add_financial_document_line_app,
+            bestankar: 0,
+            status:"پیش نویس",
+            account_code:account_code_for_add_financial_document_line_app,
+            account: account_for_add_financial_document_line_app,
+            financial_event: financial_event_for_add_financial_document_line_app,
+            financial_document: financial_document_for_add_financial_document_line_app,
+            message: { show: false }
+
+        },
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+        methods: {
+            paste_account:async ()=>{
+                console.log('paste_account ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_financial_document_line_app.account_code=String(text)
+                    add_financial_document_line_app.select_account()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+            
+            set_account:function(code,bedehkar,bestankar){
+                add_financial_document_line_app.account_code=code
+                add_financial_document_line_app.bedehkar=bedehkar
+                add_financial_document_line_app.bestankar=bestankar
+                add_financial_document_line_app.select_account()
+            },
+ 
+
+            to_price: vall => to_price(vall),
+            to_price_colored: vall => to_price_colored(vall),
+            num2persian: function (vall) {
+                return num2persian(vall)
+            },
+            add_financial_document_line: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    bedehkar: parseInt(this.bedehkar),
+                    bestankar: parseInt(this.bestankar),
+                    account_code: (this.account.code),
+                    account_id: (this.account.id),
+                    status: (this.status),
+                    date_time: (this.date_time),
+                    financial_event_id: parseInt(this.financial_event.id),
+                    financial_document_title: this.financial_document.title,
+                    financial_document_id: parseInt(this.financial_document.id),
+                } 
+                let url = "{% url 'accounting:add_financial_document_line' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    if (data.result === "SUCCEED") {
+                        if(add_financial_document_line_app.financial_document.id==0){
+
+                            add_financial_document_line_app.financial_document=data.financial_document
+                        }
+                        if (typeof financial_document_lines_app != "undefined") {
+                            financial_document_lines_app.add_financial_document_line(data.financial_document_line)
+                        }
+                        add_financial_document_line_app.message = {
+                            color: "success",
+                            show: true,
+                            body: `${data.message} <br><a href="${data.financial_document_line.get_absolute_url}">${data.financial_document_line.title}</a>`,
+                        }
+                        setTimeout(() => {
+                            add_financial_document_line_app.message.show = false
+                        }, 5000);
+                    }
+
+                    if (data.result != "SUCCEED") {
+
+                        add_financial_document_line_app.message = {
+                            show: true,
+                            color: "danger",
+                            body: `${data.message}  `,
+                        }
+                        setTimeout(() => {
+                            add_financial_document_line_app.message.show = false
+                        }, 5000);
+                    }
+
+                })
+            },
+            swap: function () {
+                let a = this.bestankar
+                this.bestankar = this.bedehkar
+                this.bedehkar = a
+            },
+            select_account: function () {
+                select_account_by_code(this.account_code).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_financial_document_line_app.account = data.account
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_financial_document_line_app.account={}
+                    }
+                })
+            },
+            select_financial_event_by_id: function () {
+                select_financial_event_by_id(this.financial_event.id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        add_financial_document_line_app.financial_event = data.financial_event
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_financial_document_line_app.financial_event.title=''
+                    }
+                })
+            },
+
+              select_financial_document_by_id: function () {
+                select_financial_document_by_id(this.financial_document.id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        add_financial_document_line_app.financial_document = data.financial_document
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_financial_document_line_app.financial_document.title=''
+                    }
+                })
+            },
+
+
+        },
+    })
+</script>

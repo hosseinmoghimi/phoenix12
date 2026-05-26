@@ -1,0 +1,68 @@
+<div id="accordion-set-account-parent">
+
+    <div id="set-account-parent-app" class="card">
+        <div id="heading-set-account-parent" class="card-header">
+            <h5 class="text-center">
+                <button data-toggle="collapse" data-target="#collapse-set-account-parent" aria-expanded="false"
+                    aria-controls="collapse-set-account-parent" class="btn btn-link collapsed">
+                    تغییر حساب والد
+
+
+                    <!----></button>
+            </h5>
+        </div>
+
+        <div id="collapse-set-account-parent" aria-labelledby="heading-set-account-parent" data-parent="#accordion-set-account-parent"
+            class="collapse">
+
+
+            <div class="card-body">
+                <h6>
+                    کد حساب والد را وارد کنید.
+                </h6>
+                <form @submit.prevent="set_account_parent()">
+                    <input @input="select_parent()" type="text" v-model="parent.code" class="form-control">
+                    <button class="btn btn-info" type="submit"> تایید</button>
+                </form>
+                <a :href="parent.get_absolute_url" v-if="parent.name">
+                    <div class="media">
+                        <img :src="parent.thumbnail" width="64" alt="">
+                        <div class="mr-2 media-body">
+                            <h5 class="my-2">
+                                <span :class="'text-'+parent.color" v-text="parent.name"></span>
+                            </h5>
+                            <h6>
+                                <span :class="'text-'+parent.color" v-text="parent.code"></span>
+
+                            </h6>
+                            <h6>
+                                <span v-html="to_price_colored(parent.balance)"></span>
+                            </h6>
+
+
+                            <h6>
+                                <small :class="'text-'+parent.color" v-text="parent.full_name"></small>
+
+                            </h6>
+
+                        </div>
+                    </div>
+                </a>
+                <div v-if="!parent.name">
+                    <h5 class="text-danger">
+
+                        حسابی انتخاب نشده است.
+                    </h5>
+                </div>
+
+                <div :class="'alert alert-'+message.color" v-if="message.show">
+                    <div class="my-2">
+                        <h4 v-html="message.title" class="my-2"></h4>
+                        <div v-html="message.body" class="my-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

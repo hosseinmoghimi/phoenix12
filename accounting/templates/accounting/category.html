@@ -1,0 +1,66 @@
+  {% extends "accounting/layout.html" %}
+  {% block content %}
+
+
+
+  
+  <div class="text-center rtl">
+    
+    {% if category.parent %}
+    
+    {{category.parent.get_breadcrumb_link|safe}}
+    {% else %}
+    <a href="{% url 'accounting:category' pk=0 %}">خانه</a>
+    {% endif %}
+  </div>
+
+  <h4 class="text-center rtl">
+      {{category.title}}
+      {% if perms.accounting.change_category %}
+        <a target="_blank" href="{{category.get_edit_url}}" title="ویرایش">
+          <i class="fa fa-edit text-warning"></i>
+        </a>
+      {% endif %}
+
+       <a class="mr-2" target="_blank" href="{{category.get_market_absolute_url}}" title="مارکت">
+          <i class="fa fa-edit text-info"></i>
+        </a>
+  </h4>
+  
+  
+
+  <div class="col-md-12">
+    {% include "accounting/includes/categories-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "accounting/includes/products-app/template.html" %}
+  </div>
+
+  {% if add_product_to_category_form %}
+    
+  <div class="col-md-12">
+    {% include "accounting/includes/add-product-to-category-app/template.html" %}
+  </div>
+  {% endif %}
+
+
+  {% endblock content %}
+
+
+
+
+  {% block script %}
+
+  <script>
+    let category_id=parseInt("{{category.id}} ")
+  </script>
+
+  {% include "accounting/includes/categories-app/script.html" %}
+
+  {% if add_product_to_category_form %}
+    {% include "accounting/includes/add-product-to-category-app/script.html" %}
+  {% endif %}
+
+  {% include "accounting/includes/products-app/script.html" %}
+  {% endblock script %}

@@ -1,0 +1,59 @@
+<script>
+  let invoice_line_item_units = JSON.parse("{{invoice_line_item_units_s|escapejs}}");
+  let base_price_ = parseInt("{{base_price}}");
+  let invoice_line_item_units_app = new Vue({
+    el: "#invoice-line-item-units-app",
+    data: {
+      invoice_line_item_units: invoice_line_item_units,
+      new_item: {
+        invoice_line_item_id: parseInt("{{invoice_line_item.id}}"),
+        default: true,
+        unit_price: base_price_,
+        unit_name: "عدد",
+        coef: 1,
+      },
+      waiting: false,
+      show_form: false,
+
+      base_price: base_price_,
+      message: { show: false },
+    },
+    methods: {
+      update_price: function () {
+        this.new_item.unit_price = this.new_item.coef * this.base_price;
+      },
+      
+      to_price: (vall) => to_price(parseInt(vall)),
+      add_invoice_line_item_unit: () => {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_line_item_id:invoice_line_item_units_app.new_item.invoice_line_item_id,
+          unit_price: invoice_line_item_units_app.new_item.unit_price,
+          unit_name: invoice_line_item_units_app.new_item.unit_name,
+          default: invoice_line_item_units_app.new_item.default,
+          coef: invoice_line_item_units_app.new_item.coef,
+        };
+        leolog(payload);
+        let url = "{% url 'accounting:add_invoice_line_item_unit' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data)
+          if (data.result != "SUCCEED") {
+            show_message(
+              invoice_line_item_units_app,
+              "خطا",
+              data.message,
+              "danger",
+              10000
+            );
+          }
+          if (data.result === "SUCCEED") {
+            if (typeof invoice_line_item_units_app != "undefined") { 
+              invoice_line_item_units_app.invoice_line_item_units=data.invoice_line_item_units
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

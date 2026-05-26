@@ -1,0 +1,91 @@
+{% load account_code_seperator %}
+{% load static %}
+{% load to_persian_date %}
+{% load to_price %}
+<div class="card rtl text-right">
+    <div class="card-header">
+        <h5 class="text-center">
+            حساب فول
+        </h5>
+    </div>
+    <div class="card-body">
+        {% if account.parent %}
+        <div>
+            {{account.parent_account.get_breadcrumb_link|safe}}
+        </div>
+        {% endif %}
+        <div class="mt-2" id="account-code-app" vcloack>
+            <h5 class="ltr" @click="copy_code_to_clipboard(account.code)" style="cursor: pointer;">
+                <span class="ltr">
+                    {{account.code | account_code_seperator}}
+                </span>
+
+            </h5>
+
+        </div>
+        <div>
+            <h3>
+
+                {{account.name}}
+                <span class="badge badge-{{account.color}}">{{account.type}}</span>
+            </h3>
+
+            <h6>
+                <small class="text-muted">
+                    تاریخ ایجاد :
+                </small>
+                {{page.date_added|to_persian_datetime|safe}}
+            </h6>
+
+        </div>
+        <div class="my-2">
+            <a href="{% url 'accounting:tree_chart' pk=account.id %}" target="_blank">
+                <img src="{% static 'accounting/img/tree-chart.png' %}" width="32" alt="">
+                نمودار درختی</a>
+        </div>
+        <div>
+            {% if perms.accounting.change_account %}
+            <a href="{{account.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+                <i class="fa fa-edit text-warning"></i> ویرایش
+            </a>
+            {% endif %}
+            {% if perms.accounting.delete_account %}
+            <a href="{{account.get_delete_url}}" class="my-2 text-danger mx-2" title="حذف" target="_blank">
+                <i class="fa fa-trash text-danger"></i> حذف
+            </a>
+            {% endif %}
+        </div> 
+        
+      {% if SHOW_BALANCE %}
+        
+      <div id="account-balance-app">
+          <small class="text-muted">مانده : </small>
+          {{account.balance|to_price_color_btn|safe}}
+          <small class="text-muted" v-show="show_balance_copied">کپی شد.</small>
+          
+        </div>
+        {% endif %}
+
+        <div>
+            <small class="text-muted">سطح : </small>
+            {{account.level}}
+        </div>
+        {% if person %}
+        <div>
+            <small class="text-muted">شخص : </small>
+            <a href="{{person.get_absolute_url}}">
+                {{person.full_name}}
+            </a>
+        </div>
+        {% endif %}
+        <div>
+            <small class="text-muted">نوع : </small>
+            {{account.type}}
+        </div>
+        <div>
+            <small class="text-muted">ماهیت : </small>
+            {{account.nature}}
+        </div>
+      
+    </div>
+</div>

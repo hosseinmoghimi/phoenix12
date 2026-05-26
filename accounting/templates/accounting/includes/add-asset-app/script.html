@@ -1,0 +1,55 @@
+{% include "authentication/includes/person-app/select-script.html" %}
+
+<script>
+    let add_asset_app = new Vue({
+        el: "#add-asset-app",
+        data: {
+            title: "",
+            owner_id:0,
+            owner:{id:0},
+            show_form: false,
+            message: { show: false },
+        },
+        methods: {
+                select_person:function(){
+                    select_person_by_id(add_asset_app.owner_id).done(data=>{
+                        console.log(data.person)
+                        if(data.person){
+                            add_asset_app.owner=data.person
+                        }
+                        else{
+                            add_asset_app.owner={}
+                        }
+                    })
+                },
+            add_asset: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    owner_id: this.owner_id,
+                    title: this.title,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_asset' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    
+                    if (data.result === "SUCCEED") {
+                        if (typeof assets_app != "undefined") {
+                            assets_app.assets.push(data.asset)
+                        }
+                        show_message(add_asset_app, "موفقیت آمیز", data.message, "success", 5000)
+                    }
+
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_asset_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

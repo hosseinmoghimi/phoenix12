@@ -1,0 +1,149 @@
+{% load to_persian_date %} {% load to_price %}
+
+<div class="card bg-success4 farsi" id="financial-document-lines-app">
+  <div class="card-header" id="heading-financial-document-line-lines">
+    <h5 class="text-center">
+      <button
+        class="btn btn-link"
+        data-toggle="collapse"
+        data-target="#collapse-financial-document-lines"
+        aria-expanded="true"
+        aria-controls="collapse-financial-document-lines"
+      >
+        ریز اسناد حسابداری
+
+        <span v-if="total.bestankar>total.bedehkar" class="badge badge-success">
+          <span v-text="to_price(total.bestankar-total.bedehkar)"> </span>
+          بستانکار
+        </span>
+
+        <span v-if="total.bedehkar>total.bestankar" class="badge badge-danger">
+          <span v-text="to_price(total.bedehkar-total.bestankar)"> </span>
+          بدهکار
+        </span>
+
+        <span
+          v-if="total.bedehkar==total.bestankar"
+          class="badge badge-primary"
+        >
+          تراز
+        </span>
+      </button>
+    </h5>
+  </div>
+
+  <div class="card-body">
+      <div v-if="financial_document_lines.length>0">
+        <table class="table table-striped rtl">
+          <thead>
+            <th>ردیف</th>
+            <th>شرح</th>
+
+          
+            
+            
+
+            
+             
+
+            
+            <th>تاریخ</th>
+            <th>مبلغ</th>
+            <th>بدهکار</th>
+            <th>بستانکار</th>
+            <th>مانده</th>
+ 
+          </thead>
+          <tbody>
+            <tr
+              v-for="(financial_document_line, index) in financial_document_lines"
+              :key="financial_document_line.id"
+            >
+              <td>
+                <span v-text="index + 1"></span>
+              </td>
+              <td>
+                <div>
+                    <span v-text="financial_document_line.title"></span>
+                </div>
+              </td> 
+
+              <td>
+                <span v-html="financial_document_line.persian_date_time"></span>
+              </td>
+              <td>
+                <span v-text="to_price(financial_document_line.amount)"></span>
+              </td>
+              <td>
+                <span 
+                  v-if="financial_document_line.bedehkar!='0'"
+                >
+                  <span
+                    v-text="to_price(financial_document_line.bedehkar)"
+                  ></span>
+                </span>
+              </td>
+              <td>
+                <span 
+                  v-if="financial_document_line.bestankar!='0'"
+                >
+                  <span
+                    v-text="to_price(financial_document_line.bestankar)"
+                  ></span>
+                </span>
+              </td>
+              <td>
+                <span v-text="to_price(financial_document_line.rest)"></span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="9">&nbsp;</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <th></th>
+            <th></th>
+            
+            <th></th>
+            <th>
+              <div class="text-left farsi">جمع</div>
+            </th>
+            <th>
+              <span class="text-danger">
+                <span v-text="to_price(total.bedehkar)"></span>
+              </span>
+            </th>
+            <th>
+              <span class="text-success">
+                <span v-text="to_price(total.bestankar)"></span>
+              </span>
+            </th>
+            <th>
+              <div v-if="total.bestankar>total.bedehkar">
+                <span class="badge badge-success">
+                  <span v-text="to_price(total.bestankar-total.bedehkar)">
+                  </span>
+                  بستانکار
+                </span>
+              </div>
+              <div v-if="total.bedehkar>total.bestankar">
+                <span class="badge badge-danger">
+                  <span v-text="to_price(total.bedehkar-total.bestankar)">
+                  </span>
+                  بدهکار
+                </span>
+              </div>
+
+              <div v-if="total.bedehkar==total.bestankar">
+                <span class="badge badge-primary"> تراز </span>
+              </div>
+            </th>
+          </tfoot>
+        </table>
+      </div>
+      <div v-else>
+        <h5>سطری وجود ندارد.</h5>
+      </div>
+   
+  </div>
+</div>

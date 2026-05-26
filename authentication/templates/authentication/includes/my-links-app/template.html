@@ -1,0 +1,40 @@
+{% if my_links %}
+<li class="nav-item dropdown" id="my-links-app">
+  <a
+    class="nav-link dropdown-toggle text-right"
+    href="#"
+    id="navbarDropdown"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    لینک
+  </a>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <div v-for="my_link in my_links">
+      <div class="row rtl my-2">
+        <div class="col-8">
+          <a
+            target="_blank"
+            class="dropdown-item"
+            style="text-align: right"
+            :href="my_link.url"
+          >
+            <span v-text="my_link.title"></span>
+          </a>
+        </div>
+        <div class="col-2">
+          <button
+            class="btn btn-sm btn-danger"
+            @click="delete_my_link(my_link.id)"
+          >
+            -
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+
+{% endif %}

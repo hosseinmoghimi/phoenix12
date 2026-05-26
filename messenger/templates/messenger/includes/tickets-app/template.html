@@ -1,0 +1,45 @@
+<div class="card" id="tickets-app">
+    <div class="card-header">
+        <h5 class="text-center">
+            تیکت ها
+
+        </h5>
+    </div>
+    <div class="card-body">
+        {% for ticket in tickets %}
+
+        <div class="media">
+            <img src="{{ticket.image}}" class="rounded-circle" width="64" alt="">
+            <div class="media-body mr-3">
+                <div>
+
+                    <a href="{{ticket.get_absolute_url}}">
+                        {{ticket.title}}
+                    </a>
+                </div>
+
+                <div>
+
+                    <a href="{{ticket.get_absolute_url}}">
+                        <small class="text-secondary">
+
+                            {{ticket.name}}
+                        </small>
+                    </a>
+                </div>
+
+                {% if ticket.description %}
+
+                <div>
+                    <span class="farsi">
+                        <small class="text-muted">
+                            {{ticket.description}}
+                        </small>
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

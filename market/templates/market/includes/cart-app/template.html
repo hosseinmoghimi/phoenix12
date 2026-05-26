@@ -1,0 +1,53 @@
+<div class="row rtl farsi" id="checkout-cart-app">
+  <div class="col-md-12">
+    <h6 class="text-center">سبد خرید</h6>
+
+    <h6 class="text-center">
+      مشتری :
+      <a href="{{customer.get_absolute_url}}"> {{customer.person_account.person.full_name}} </a>
+    </h6>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div v-if="cart_items.length==0">
+          <h5>سبد خرید شما خالی می باشد.</h5>
+        </div>
+        <table   class="table">
+            <tbody>
+                <template v-for="cart_item in cart_items" >
+                    <cart-item-component :cart_item="cart_item"> </cart-item-component>
+                </template>
+            </tbody>
+        </table>
+      
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12"  v-if="cart_items.length>0">
+    <div class="card">
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">آدرس</label>
+              <input type="text" class="form-control" v-model="address" />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">کد پستی</label>
+              <input type="text" class="form-control" v-model="postal_code" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          {% include "utility/includes/message-app/alert.html" %}
+        </div>
+        <button @click="checkout_cart()" class="btn btn-info">checkout</button>
+      </div>
+    </div>
+  </div>
+</div>

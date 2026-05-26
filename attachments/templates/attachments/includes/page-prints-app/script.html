@@ -1,0 +1,59 @@
+<script>
+  
+
+    let page_prints=JSON.parse("{{page_prints_s|escapejs}}")
+    let page_prints_X=page_prints.filter(page_print=>page_print.printed)
+</script>
+
+
+<script>
+    let page_prints_app=new Vue({
+        el:"#page-prints-app",
+        data:{
+            printing:false,
+            page_prints:page_prints_X,
+            only_printed:true,
+        },
+        methods:{
+            toggle:function(){
+                if(page_prints_app.only_printed){
+                    page_prints_app.only_printed=false
+                    page_prints_app.page_prints=page_prints
+                    return
+                }
+                if(!page_prints_app.only_printed){
+                    page_prints_app.only_printed=true
+                    page_prints_app.page_prints=page_prints_X
+                    return
+                }
+            },
+            print:function(){ 
+                 let url = "{% url 'attachments:add_page_print' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    page_id: parseInt("{{page.id}}"),
+                    type: ("{{add_page_print_form_type}}"),
+                }
+                $.post(url, payload).done(data => {
+                    console.log(data)
+                    if(data.result==SUCCEED){
+
+                        page_prints_app.page_prints.push(data.page_print)
+                    }
+                })
+
+                page_prints_app.printing = true
+                setTimeout(() => { 
+                    window.print()
+                }, 200);
+
+
+                setTimeout(() => {
+                    page_prints_app.printing = false
+                }, 100000);
+
+
+            },
+        }
+    })
+</script>

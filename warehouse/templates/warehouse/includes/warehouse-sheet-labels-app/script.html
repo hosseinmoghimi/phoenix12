@@ -1,0 +1,21 @@
+<script>
+    
+    let warehouse_sheet_labels_for_warehouse_sheet_labels_app=JSON.parse("{{warehouse_sheet_labels_s|escapejs}}")
+    let warehouse_sheet_labels_app = new Vue({
+        el: "#warehouse-sheet-labels-app",
+        data: {
+            warehouse_sheet_labels: warehouse_sheet_labels_for_warehouse_sheet_labels_app
+        },
+        methods: {
+             copy_code_to_clipboard:function(code){
+                copy_to_clipboard(code)
+                
+
+            },
+
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

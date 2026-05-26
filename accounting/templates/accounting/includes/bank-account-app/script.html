@@ -1,0 +1,82 @@
+
+
+
+<script>
+  let bank_account_app = new Vue({
+    el: "#bank-account-app",
+    data: {
+      show_balance_copied: false,
+      show_code_copied: false,
+      show_card_no_copied: false,
+      show_shaba_no_copied: false,
+      show_account_no_copied: false,
+      show_all_copied: false,
+    },
+    methods: {
+      copy_balance_to_clipboard: function (balance) {
+        copy_to_clipboard(balance);
+        bank_account_app.show_balance_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_balance_copied = false;
+        }, 2000);
+      },
+      copy_code_to_clipboard: function (code) {
+        copy_to_clipboard(code);
+        bank_account_app.show_code_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_code_copied = false;
+        }, 2000);
+      },
+
+      copy_card_no_to_clipboard: function (code) {
+        copy_to_clipboard(code);
+        bank_account_app.show_code_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_code_copied = false;
+        }, 2000);
+      },
+
+      copy_shaba_no_to_clipboard: function (shaba_no) {
+        copy_to_clipboard(shaba_no);
+        bank_account_app.show_shaba_no_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_shaba_no_copied = false;
+        }, 2000);
+      },
+      copy_account_no_to_clipboard: function (account_no) {
+        copy_to_clipboard(account_no);
+        bank_account_app.show_account_no_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_account_no_copied = false;
+        }, 2000);
+      },
+
+      copy_all_to_clipboard: function () {
+        
+        let account_no = `{% if bank_account.account_no %}{{bank_account.account_no}}{% else %}{% endif %}`;
+        let card_no = `{% if bank_account.card_no %}{{bank_account.card_no}}{% else %}{% endif %}`;
+        let shaba_no = `{% if bank_account.shaba_no %}{{bank_account.shaba_no}}{% else %}{% endif %}`;
+        
+
+
+        let first_name = `{{bank_account.person.first_name}}`;
+        let last_name = `{{bank_account.person.last_name}}`;
+        let full_name = `{{bank_account.person.full_name}}`;
+        let bank = `{{bank_account.bank.name}}`;
+        let text = `حساب ${bank}`;
+        text = text + ` به نام  ` + first_name + ` ` + last_name + `\n\n`;
+        // text = text + ` به نام  ` + full_name + `\n\n`;
+        if (account_no.length > 0)
+          text = text + `شماره حساب :  ` + account_no + `\n\n`;
+        if (card_no.length > 0)
+          text = text + `شماره کارت :  ` + card_no + `\n\n`;
+        if (shaba_no.length > 0) text = text + `شماره شبا :   ` + shaba_no;
+        copy_to_clipboard(text);
+        bank_account_app.show_all_copied = true;
+        setTimeout(() => {
+          bank_account_app.show_all_copied = false;
+        }, 2000);
+      },
+    },
+  });
+</script>

@@ -1,0 +1,110 @@
+
+<script>
+  let cart_items = []
+
+</script>
+{% if cart_items_s %}
+  
+<script>
+  cart_items = JSON.parse(`{{cart_items_s|escapejs}}`);
+    
+</script>
+{% endif %}
+
+
+<script>
+  let url_change_cart_item = "{% url 'market:change_cart_item' %}";
+  let cart_item_component_template = `{% include 'market/includes/cart-app/component.html' %}`;
+  let cart_item_component = Vue.component("cart-item-component", {
+    data: function () {
+      return {
+        confirm_delete: false,
+      };
+    },
+    methods: {
+      to_price: (vv) => to_price(vv),
+      change_quantity: function (shop,quantity) {
+        if(quantity<0){
+            return
+        }
+        if(quantity>this.cart_item.shop.available){
+            return
+        }
+        console.log(quantity)
+        console.log(shop.id)
+        this.cart_item.quantity=quantity
+        // let url = url_delete_comment;
+        // let payload = {
+        //   comment_id: comment_id,
+        //   csrfmiddlewaretoken: csrfmiddlewaretoken,
+        // };
+        // let posting = $.post(url, payload);
+        // posting.done(function (data) {
+        //   console.log(data);
+        //   if (data.result === "SUCCEED") {
+        //     comments_app.comments = comments_app.comments.filter((comment) => {
+        //       return comment.id != comment_id;
+        //     });
+        //     comment_component.confirm_delete = false;
+        //   }
+        // });
+      },
+    },
+    props: ["cart_item"],
+    template: cart_item_component_template,
+  });
+
+  let checkout_cart_app = new Vue({
+    el: "#checkout-cart-app",
+    data: {
+      address: `{{customer.person_account.peron.address}}`,
+      postal_code: `{{customer.person_account.peron.postal_code}}`,
+      message: { show: false },
+      waiting: false,
+      cart_items: cart_items,
+    },
+    components: {
+      cart_item_component,
+    },
+    methods: {
+      to_price: (vv) => to_price(vv),
+      checkout_cart: function () {
+        let cart_items=[]
+        this.cart_items.forEach(cart_item => {
+            cart_items.push({
+                shop_id:cart_item.shop.id,
+                quantity:cart_item.quantity,
+            })
+        });
+        cart_items=JSON.stringify(cart_items)
+        let payload = {
+          address: this.address,
+          postal_code: this.postal_code,
+          cart_items: (cart_items),
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        console.log(payload);
+        let url = "{% url 'market:checkout_cart' %}";
+        $.post(url, payload).done((data) => {
+          if (data.result === "SUCCEED") {
+            show_message(
+              checkout_cart_app,
+              "موفق",
+              data.message,
+              "success",
+              10000
+            );
+          } else {
+            show_message(
+              checkout_cart_app,
+              "خطا",
+              data.message,
+              "danger",
+              3000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

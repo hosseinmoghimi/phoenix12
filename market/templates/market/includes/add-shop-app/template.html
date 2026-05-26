@@ -1,0 +1,116 @@
+<div class="card" id="add-shop-app">
+    <div class="card-header">
+         <h5 class="text-right mt-3">
+            افزودن قیمت برای کالای موجود
+        </h5>
+         
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+
+            
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="dsrse6544">موجود
+                        
+                    </label>
+                    <input v-model="available" type="number" id="dsrse658944" class="form-control">
+
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="asdsadfweqe2343">نام واحد فروش</label>
+                    <select v-model="unit_name" id="asdsxc36adfweqe2343" class="form-control">
+                        {% for unit_name in unit_names_for_add_shop_app %}
+
+                        <option value="{{unit_name}}">{{unit_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input v-model="unit_name" type="text" id="asdsadfweqe2343d" class="form-control">
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="asdsadfw34eqe2343">سطح فروش</label>
+                    <select v-model="level" id="asdsadfw34eqrweee2343" class="farsi form-control">
+                        {% for level in levels_for_add_shop_app %}
+
+                        <option value="{{level}}">{{level}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="dsrse6544">قیمت واحد
+                        <small class="text-muted" v-text="to_price(unit_price)"></small>
+                        <small class="text-muted" v-text="'{{CURRENCY}}'"></small>
+                    </label>
+                    <input v-model="unit_price" type="number" id="dsrsgrehsfe6544" class="form-control">
+
+                </div>
+            </div>
+
+               <div class="col-md-3">
+                <div class="form-group">
+                    <label for="dsrse6544">ضریب
+                         
+                    </label>
+                    <input v-model="coef" type="number" id="dsrse6ddv544" class="form-control">
+
+                </div>
+            </div>
+
+               <div class="col-md-3">
+                <div class="form-group">
+                    <label for="dsrse6544">درصد تخفیف
+                    </label>
+                    <input max="100" min="0" v-model="discount_percentage" type="number" id="dsrswdwe6544" class="form-control">
+
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="exampleInputDate">تاریخ شروع</label>
+                    <date-picker v-model="start_date"></date-picker>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="exampleInputDate">تاریخ پایان</label>
+                    <date-picker v-model="end_date"></date-picker>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <btn @click="add_shop()" class="btn btn-success">
+                    افزودن
+                </btn>
+            </div>
+
+            <div class="col-md-12">
+                 <div :class="'alert alert-'+message.color" v-if="message.show">
+                    <h6 v-text="message.title"></h6>
+                    <div v-html="message.body"></div>
+                 </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<script>
+    
+    let employees_for_employees_app=JSON.parse("{{employees_s|escapejs}}")
+    let employees_app = new Vue({
+        el: "#employees-app",
+        data: {
+            employees: employees_for_employees_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

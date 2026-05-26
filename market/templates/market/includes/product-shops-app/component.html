@@ -1,0 +1,105 @@
+<div class="row rtl">
+  <div class="col-3">
+    <div>
+      <a :href="shop.supplier.get_absolute_url"
+        ><span v-text="shop.supplier.person_account.person.full_name"></span
+      ></a>
+    </div>
+    <div>
+      <small>
+        <small class="text-muted"> موجود برای </small>
+        <span v-text="shop.level"></span>
+      </small>
+    </div>
+  </div>
+  <div class="col-5">
+    <h6 v-if="shop.discount_percentage>0">
+      با
+      <span v-text="shop.discount_percentage"></span>
+      % تخفیف
+
+      <span
+        style="text-decoration: line-through"
+        v-text="to_price(shop.unit_price)"
+      ></span>
+      {{CURRENCY}}
+    </h6>
+    <h6>
+      از
+      <small class="text-muted">
+        <span v-text="shop.persian_start_date"></span>
+      </small>
+      تا
+      <small class="text-muted">
+        <span v-text="shop.persian_end_date"></span>
+      </small>
+    </h6>
+    <div class="badge badge-success">
+      <span v-text="shop.available"></span>
+      <span v-text="shop.unit_name"></span>
+      موجود است
+    </div>
+  </div>
+  <div class="col-4">
+    <h6>
+      هر
+      <span v-text="shop.unit_name"></span>
+    </h6>
+    <h5 class="text-danger">
+      <span
+        v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
+      ></span>
+      {{CURRENCY}}
+    </h5>
+    {% if add_cart_line_form %}
+
+    <button class="btn btn-danger" @click="add_to_cart(shop)">
+      <h5 class="text-center">خرید اینترنتی</h5>
+    </button>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+          <button
+            type="button"
+            class="btn btn-success btn-first"
+            @click="add_to_cart(1)"
+          >
+            افزودن به سبد خرید
+          </button>
+          <button v-show="in_cart>0" type="button" class="btn btn-light">
+              <span class="my-2">
+                <span v-text="in_cart" class="text-success"></span>
+                <span
+                  v-text="shop.unit_name"
+                  class="text-success"
+                ></span>
+              </span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-last"
+            @click="add_to_cart( -1)"
+          >
+            -
+          </button>
+        </div>
+    {% endif %}
+    <div>
+      {% if perms.market.change_shop %}
+      <a target="_blank" :href="shop.get_edit_url" title="ویرایش">
+        <i class="fa fa-edit text-warning"></i>
+      </a>
+      {% endif %} {% if perms.market.delete_shop %}
+      <a target="_blank" :href="shop.get_delete_url" title="حذف">
+        <i class="fa fa-trash text-danger"></i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div v-if="message.show" :class="'alert alert-'+message.color">
+      <span v-text="message.body"></span>
+    </div>
+    <hr />
+  </div>
+</div>

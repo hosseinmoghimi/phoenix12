@@ -1,0 +1,49 @@
+{% load to_persian_date %}
+<div id="accordion-comments">
+    <div class="card" id="comments-app">
+        <div class="card-header" id="heading-comments">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-comments"
+                    aria-expanded="true" aria-controls="collapse-comments">
+                    کامنت ها
+                    <span v-if="comments.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="comments.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-comments" class="collapse" aria-labelledby="heading-comments"
+            data-parent="#accordion-comments">
+            <div class="card-body">
+                <div class="py-3" v-for="comment in root_comments">
+                    <comment-component :comment="comment">
+                    </comment-component>
+                </div>
+                {% if add_comment_form %}
+                <div class="media rtl ">
+                    <img title="{{me_person.full_name}}" src="{{me_person.image}}" class="rounded-circle" width="64" alt="">
+                    <div class="media-body mr-2"> 
+                        <textarea maxlength="500" id="comment_inputed" v-model="comment" class="farsi form-control"
+                            rows="5"></textarea>
+                        <button @click="add_comment" class="btn btn-primary farsi btn-round btn-wd float-right mt-2">
+                            ثبت نظر
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            <small>
+                                (
+                                <span v-text="500-comment.length"></span>
+                                )
+                            </small>
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+                <div v-if="message.show" :class="'alert alert-'+message.color">
+                    <h4 v-html="message.title"></h4>
+                    <p v-html="message.body"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

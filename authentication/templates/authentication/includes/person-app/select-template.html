@@ -1,0 +1,14 @@
+<div id="select-person-app" class="text-right">
+<input placeholder="شناسه شخص" type="number" v-model="person_id" class="form-control" @input="select_person">
+<div v-if="person.id">
+    <div class="media my-3">
+        <img class="rounded" :src="person.image" width="64" alt="">
+        <div class="media-body mr-2">
+            <a :href="person.get_absolute_url">
+
+                <span v-text="person.full_name"></span>
+            </a>
+        </div>
+    </div>
+</div>
+</div>

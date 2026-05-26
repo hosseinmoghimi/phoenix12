@@ -1,0 +1,121 @@
+<div id="accordion-shop-packages" class="rtl text-right farsi">
+  <div id="shop-packages-app" class="card">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-shop-packages"
+          aria-expanded="true"
+          aria-controls="collapse-shop-packages"
+        >
+          بسته های آماده فروش
+          <span v-if="shop_packages.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="shop_packages.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-shop-packages"
+      class="collapse {% if expand_shop_packages %} show {% endif %}"
+      aria-labelledby="heading-shop-packages"
+      data-parent="#accordion-shop-packages"
+    >
+      <div class="card-body">
+        <div v-if="shop_packages.length==0" class="table-responsive">
+          <h6>بسته ای اعلام نشده است.</h6>
+        </div>
+        <div v-if="shop_packages.length>0" class="table-responsive">
+          <table class="table">
+            <thead>
+              <th>عنوان</th>
+
+              {% if not supplier %}
+              <th>فروشنده</th>
+              {% endif %}
+
+              <th>موجود</th>
+              <th>تعداد کل</th>
+
+              <th>سطح فروش</th>
+              <th>تاریخ</th>
+
+              {% if perms.market.change_shoppackage or perms.market.delete_shoppackage %}
+              <th>
+                
+              </th>
+
+              {% endif %}
+            </thead>
+            <tbody>
+              <tr v-for="shop_package in shop_packages">
+                <td>
+                  <a :href="shop_package.get_absolute_url"
+                    ><span v-text="shop_package.title"></span
+                  ></a>
+                </td>
+                {% if not supplier %}
+
+                <td>
+                  <a :href="shop_package.supplier.get_absolute_url"
+                    ><span v-text="shop_package.supplier.full_name"></span
+                  ></a>
+                </td>
+                {% endif %}
+
+                <td>
+                  <span v-text="shop_package.available"></span>
+                </td>
+                <td>
+                  <span v-text="shop_package.quantity"></span>
+                </td>
+
+                <td>
+                  <span v-text="shop_package.level"></span>
+                </td>
+
+                <td>
+                  <div>
+                    <small class="text-muted">
+                      <span v-text="shop_package.persian_start_date"></span>
+                    </small>
+                  </div>
+
+                  <div>
+                    <small class="text-muted">
+                      <span v-text="shop_package.persian_end_date"></span>
+                    </small>
+                  </div>
+                </td>
+                {% if perms.market.change_shoppackage or perms.market.delete_shoppackage %}
+                <td>
+                  {% if perms.market.change_shoppackage %}
+                  <a
+                    target="_blank"
+                    :href="shop_package.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_shoppackage %}
+                  <a
+                    target="_blank"
+                    :href="shop_package.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

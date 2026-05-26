@@ -1,0 +1,25 @@
+<div class="text-right">
+
+    {% for category in product.category_set.all %}
+    <div>
+
+        <small>
+
+            {{category.get_market_breadcrumb_link|safe}}
+        </small>
+    </div>
+    {% endfor %}
+    <h1>
+
+        {{product.title}}
+        {% if perms.accounting.product %}
+        <a target="_blank" href="{{product.get_edit_url}}" title="ویرایش">
+            <i class="fa fa-edit text-warning"></i>
+        </a>
+
+        <a target="_blank" href="{{product.get_absolute_url}}" title="حسابداری">
+            <i class="fa fa-edit text-info"></i>
+        </a>
+        {% endif %}
+    </h1>
+</div>

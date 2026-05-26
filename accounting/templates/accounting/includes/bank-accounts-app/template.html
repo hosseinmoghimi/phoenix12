@@ -1,0 +1,119 @@
+<div id="accordion-bank-accounts" class="rtl text-right farsi">
+  <div class="card" id="bank-accounts-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-bank-accounts"
+          aria-expanded="true"
+          aria-controls="collapse-bank-accounts"
+        >
+          حساب های بانکی
+          <span v-if="bank_accounts.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="bank_accounts.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-bank-accounts"
+      class="collapse"
+      aria-labelledby="heading-bank-accounts"
+      data-parent="#accordion-bank-accounts"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>کد</th>
+              <th>عنوان</th>
+              
+
+              <th>شخص</th>
+              {% if not bank %}
+
+              <th>بانک</th>
+              {% endif %}
+              
+              {% if SHOW_BALANCE %}
+                
+              <th>مانده</th>
+              {% endif %}
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="bank_account in bank_accounts">
+                <td>
+                  <a :href="bank_account.get_absolute_url">
+                    <span
+                      :class="'text-'+bank_account.color"
+                      v-text="bank_account.code"
+                    ></span>
+                  </a>
+                </td>
+                <td>
+                  <a :href="bank_account.get_absolute_url">
+                    <span
+                      :class="'text-'+bank_account.color"
+                      v-text="bank_account.name"
+                    ></span>
+                    <span
+                      :class="'badge badge-'+bank_account.color"
+                      v-text="bank_account.type"
+                    ></span>
+                  </a>
+                </td>
+
+                <td>
+                  <a :href="bank_account.person.get_accounting_absolute_url">
+                    <span v-text="bank_account.person.full_name"></span>
+                  </a>
+                </td>
+               {% if not bank %}
+
+                <td>
+                  <a :href="bank_account.bank.get_absolute_url">
+                    <span v-text="bank_account.bank.name"></span>
+                  </a>
+                </td>
+                {% endif %}
+                
+              {% if SHOW_BALANCE %}
+                
+              <td>
+                <span v-html="to_price(bank_account.balance)"></span>
+                <small class="text-muted mr-1"> {{CURRENCY}} </small>
+              </td>
+              {% endif %}
+                <td>
+                  <a
+                    target="_blank"
+                    :href="bank_account.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="bank_account.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+{% load to_price %}
+<div class="row" id="related-pages-app">
+    <div class="col-md-12">
+        <h2 class="text-center farsi">
+            صفحات مرتبط
+        </h2>
+    </div>
+    <div class="col-md-12 mb-3">
+        {% if add_related_page_form %}
+
+        {% include "blog/includes/related-pages-app/form.html" %}
+        {% endif %}
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6 mr-auto ml-auto" v-for="related_page in related_pages">
+        <div class="card card-product">
+            <div class="card-header card-header-image">
+                <a :href="related_page.get_absolute_url">
+                    <img class="img" :src="related_page.thumbnail">
+                </a>
+            </div>
+            <div class="card-body">
+                <h6 class="card-category text-rose" v-text="related_page.sub_title"></h6>
+                <h4 class="farsi card-title">
+                    <a :href="related_page.get_absolute_url" v-text="related_page.title"></a>
+                </h4>
+                
+            </div>
+            <div class="card-footer justify-content-between">
+               
+                <div class="stats">
+                    <button type="button" rel="tooltip" title="Saved to Wishlist"
+                        class="btn btn-just-icon btn-link btn-rose">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

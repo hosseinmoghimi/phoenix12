@@ -1,0 +1,225 @@
+<div class="card">
+  <div class="card-header">
+    <h5>
+      
+      شخص
+    {{person.id}}
+    </h5>
+  </div>
+  <div class="card-body">
+    
+    {% if person.image %}
+    <img src="{{person.image}}" width="128" alt="">
+    
+    {% endif %}
+    <h4>
+
+        {{person.full_name}}
+    </h4>
+
+    {% if person.user %}
+    <h5>
+        <a href="{{ADMIN_URL}}auth/user/{{person.user.id}}">
+
+            <small class="text-muted">یوزر :</small>
+            {{person.user.username}}
+        </a>
+    </h5> 
+    {% endif %}
+    {% if person.prefix %}
+    <h5>
+        <small class="text-muted">پیشوند :</small>
+        {{person.prefix}}
+    </h5> 
+    {% endif %}
+
+
+    
+    {% if person.title %}
+    <h5>
+        <small class="text-muted">عنوان :</small>
+        {{person.title}}
+    </h5> 
+    {% endif %}
+
+    {% if person.first_name %}
+      
+    <h5>
+        <small class="text-muted">نام :</small>
+        {{person.first_name}}
+    </h5> 
+
+    
+    {% endif %}
+
+    {% if person.last_name %}
+      
+    <h5>
+        <small class="text-muted">نام خانوادگی :</small>
+        {{person.last_name}}
+    </h5> 
+
+    {% endif %}
+
+
+    {% if person.father_name %}
+      
+    <h5>
+        <small class="text-muted">نام پدر :</small>
+        {{person.father_name}}
+    </h5> 
+
+    {% endif %}
+    {% if person.melli_code %}
+      
+    
+    <h5>
+        <small class="text-muted">کد ملی :</small>
+        {{person.melli_code}}
+    </h5> 
+
+    
+    {% endif %}
+
+    
+    {% if person.birth_date %}
+      
+    
+    <h5>
+        <small class="text-muted">تاریخ تولد :</small>
+        {{person.birth_date}}
+    </h5> 
+
+    
+    {% endif %}
+    {% if person.birth_location %}
+      
+    
+    <h5>
+        <small class="text-muted">محل تولد :</small>
+        {{person.birth_location}}
+    </h5> 
+
+    
+    {% endif %}
+
+
+    
+    {% if person.tel %}
+      
+    <h5>
+      <small class="text-muted">تلفن :</small>
+      <a href="tel:{{person.tel}}">
+
+        {{person.tel}}
+      </a>
+    </h5> 
+    {% endif %}
+
+
+    {% if person.mobile %}
+      
+    <h5>
+        <small class="text-muted">موبایل :</small>
+        <a href="tel:{{person.mobile}}">
+
+        {{person.mobile}}
+      </a>
+    </h5> 
+    {% endif %}
+
+    
+
+    {% if person.type %}
+      
+    <h5>
+        <small class="text-muted">type :</small>
+        {{person.type}}
+    </h5> 
+    {% endif %}
+
+    
+
+
+    {% if person.type2 %}
+      
+    <h5>
+        <small class="text-muted">type2 :</small>
+        {{person.type2}}
+    </h5> 
+    {% endif %}
+
+
+     
+
+    {% if person.email %}
+      
+    <h5>
+        <small class="text-muted">ایمیل :</small>
+        {{person.email}}
+    </h5> 
+    {% endif %}
+
+
+    {% if person.bio %}
+      
+    <h5>
+        <small class="text-muted">بیو :</small>
+        {{person.bio}}
+    </h5> 
+    {% endif %}
+   
+
+     <div>
+
+       
+       <a href="{% url 'authentication:login_as' pk=person.id %}" title="ورود"
+       class="mx-2 text-info"><i class="fa fa-key text-success" aria-hidden="true"></i>ورود</a>
+       
+      </div> 
+    
+{% if perms.core.change_person %}
+<div>
+  <a
+    href="{{person.get_edit_url}}"
+    class="my-2 text-warning mx-2"
+    title="ویرایش"
+    target="_blank"
+  >
+    <i class="fa fa-edit text-warning"></i>
+    ویرایش
+  </a>
+</div>
+{% endif %}
+
+
+{% if perms.core.change_person %}
+<div>
+  <a
+    href="{{person.get_change_password_url}}"
+    class="my-2 text-danger mx-2"
+    title="تغییر کلمه عبور"
+    target="_blank"
+  >
+    <i class="fa fa-key text-danger"></i>
+    تغییر دادن کلمه عبور
+  </a>
+</div>
+{% endif %}{% if perms.core.delete_person %}
+
+<div>
+  <a
+    href="{{person.get_delete_url}}"
+    class="my-2 text-danger mx-2"
+    title="حذف"
+    target="_blank"
+  >
+    <i class="fa fa-trash text-danger"></i>
+    حذف
+  </a>
+</div>
+{% endif %}
+
+     
+  </div>
+</div>

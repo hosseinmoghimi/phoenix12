@@ -1,0 +1,22 @@
+<div class="media">
+  <img :src="shop.product.thumbnail" width="128" alt="" />
+  <div class="media-body mr-2">
+    <h6 class="text-right">
+      <a :href="shop.product.get_absolute_url">
+
+        <span v-text="shop.product.title"></span>
+      </a>
+    </h6>
+
+    <h6 class="text-right">
+      هر
+      <span v-text="shop.unit_name"></span>
+
+      <span v-text="to_price(shop.unit_price)"></span> {{CURRENCY}}
+    </h6>
+    <input type="number" v-model="quantity" class="form-control" />
+    <button class="btn btn-danger" @click="add_to_cart(shop)">
+      افزودن به سبد خرید
+    </button>
+  </div>
+</div>

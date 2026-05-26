@@ -1,0 +1,207 @@
+<div id="accordion-add-warehouse-sheet" class="rtl text-right farsi">
+  <div class="card" id="add-warehouse-sheet-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-warehouse-sheet"
+          aria-expanded="true"
+          aria-controls="collapse-add-warehouse-sheet"
+        >
+          افزودن برگه انبار
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-warehouse-sheet"
+      class="collapse"
+      aria-labelledby="heading-add-warehouse-sheet"
+      data-parent="#accordion-add-warehouse-sheet"
+    >
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">توضیحات</label>
+              <input v-model="description" type="text" class="form-control" />
+            </div>
+          </div>
+          {% if not warehouse %}
+            
+          <div class="col-md-6"> 
+                <div class="form-group">
+                  <label for="warehouse_id">انبار</label>
+                  
+                  <select v-model="warehouse_id" class="form-control" id="">
+                    {% for warehouse in warehouses %}
+                    <option value="{{warehouse.id}}">{{warehouse.name}}</option> 
+                    {% endfor %}
+                  </select>
+ 
+                </div> 
+
+               
+          </div>
+{% if nnnn %}
+  
+           <div class="col-md-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="warehouse_id">انبار</label>
+                  <button
+                    @click="paste_from_clipboard()"
+                    class="btn btn-sm btn-info"
+                  >
+                    <i class="fa fa-paste"></i>
+                  </button>
+                  
+
+                  <input 
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    id="warehouse_id"
+                    @input="select_warehouse()"
+                    v-model="warehouse_id"
+                  />
+                </div>
+              </div>
+
+              <div class="col-6 mt-3">
+                <div v-if="warehouse.id">
+                  {% include "warehouse/includes/warehouse-app/media.html" %}
+                </div>
+                <div v-if="!warehouse.id">
+                  <h5 class="text-danger">انبار انتخاب نشده است.</h5>
+                  <div>
+                    <a target="_blank" href="{% url 'warehouse:warehouses' %}">
+                      همه انبار ها
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+{% endif %}
+
+          {% endif %}
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for=""> وضعیت </label>
+              <select class="form-control" v-model="status" >
+                  {% for status in statuses_for_add_warehouse_sheet_app %}
+                    
+                  <option value="{{status}}">{{status}}</option>
+                  {% endfor %}
+                </select>
+
+              
+            </div>
+          </div>
+          
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for=""> نوع حواله انبار </label>
+              <select class="form-control" v-model="type" >
+                  {% for type in types_for_add_warehouse_sheet_app %}
+                    
+                  <option value="{{type}}">{{type}}</option>
+                  {% endfor %}
+                </select>
+
+            
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">واحد درخواست کننده</label>
+              <select v-model="organizational_unit_id" class="form-control" id="">
+                {% for organizational_unit in organizational_units %}
+                <option value="{{organizational_unit.id}}">{{organizational_unit.title}}</option> 
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          
+          {% if not invoice_line %}
+            
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="invoice_line_id">سطر فاکتور</label>
+
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    id="invoice_line_id"
+                    @input="select_invoice_line()"
+                    v-model="invoice_line_id"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">جهت</label>
+              <select v-model="direction" type="text" class="form-control">
+                {% for direction in directions_for_add_warehouse_sheet_app %}
+
+                <option value="{{direction}}">{{direction}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">قفسه</label>
+              <input v-model="shelf" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">ردیف</label>
+              <input v-model="row" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">ستون</label>
+              <input v-model="col" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-2" v-if="message.show">
+            <div :class="'alert alert-'+message.color">
+              <div class="rtl text-right">
+                <h5 v-html="message.title"></h5>
+                <span v-html="message.body"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button class="btn btn-success" @click="add_warehouse_sheet()">
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

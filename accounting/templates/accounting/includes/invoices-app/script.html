@@ -1,0 +1,46 @@
+<script>
+  let invoices_app_invoices = JSON.parse(`{{invoices_s|escapejs}}`);
+  let invoices_app = new Vue({
+    el: "#invoices-app",
+    data: {
+      invoices: invoices_app_invoices,
+      search_for: "",
+      waiting: false,
+    },
+    methods: {
+      copy_code_to_clipboard: function (code) {
+        copy_to_clipboard(code);
+      },
+
+      filter: function () {
+        invoices_app.invoices = invoices_app_invoices.filter(function (
+          invoice
+        ) {
+          if (invoice.title.indexOf(invoices_app.search_for) > -1) {
+            return true;
+            console.log(invoices_app.search_for);
+          }
+          if (
+            invoice.bedehkar.full_name.indexOf(invoices_app.search_for) > -1
+          ) {
+            console.log(invoices_app.search_for);
+            return true;
+          }
+          if (
+            invoice.bestankar.full_name.indexOf(invoices_app.search_for) > -1
+          ) {
+            console.log(invoices_app.search_for);
+            return true;
+          }
+          return false;
+        });
+      },
+      to_price_colored: function (vall, curr) {
+        return to_price_colored(vall, curr);
+      },
+      to_price: function (vall, curr) {
+        return to_price(vall, curr);
+      },
+    },
+  });
+</script>

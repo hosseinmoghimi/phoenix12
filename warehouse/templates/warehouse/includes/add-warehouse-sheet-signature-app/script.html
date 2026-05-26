@@ -1,0 +1,42 @@
+{% include "organization/includes/organizational-unit-app/select-script.html" %}
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_warehouse_sheet_signature_app = new Vue({
+    el: "#add-warehouse-sheet-signature-app",
+    data: {
+    description: "", 
+    warehouse_sheet_id:parseInt("{{warehouse_sheet.id}}"),
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+       add_warehouse_sheet_signature: function (status,status_color) {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          status: status,
+          description: this.description,
+          warehouse_sheet_id: this.warehouse_sheet_id,
+        };
+        console.log(payload);
+        let url = "{% url 'warehouse:add_warehouse_sheet_signature' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof warehouse_sheet_signatures_app != "undefined") {
+              warehouse_sheet_signatures_app.warehouse_sheet_signatures.push(data.warehouse_sheet_signature);
+            }
+
+            
+            if (typeof warehouse_sheet_app != "undefined") {
+              warehouse_sheet_app.status_color=status_color
+              warehouse_sheet_app.status=status
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

@@ -1,0 +1,39 @@
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // let channel_id = parseInt("{{channel.id}}")
+   
+
+    // Vue application
+    let notification_app = new Vue({
+        el: "#notification-app",
+        data: { 
+            message_title: "",
+            message_body: "",
+            waiting: false,
+            member_id:"",
+        },
+        methods: {
+             send_notification: function () {
+                notification_app.waiting = true
+                let url = "{% url 'messenger:send_notification' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    message_title: this.message_title,
+                    message_body: this.message_body,
+                    member_id: this.member_id,
+                }
+                $.post(url, payload).done((data) => {
+                    notification_app.waiting = false
+                    if (data.result === "SUCCEED") {
+
+
+                        notification_app.message_title = ""
+                        notification_app.message_body = ""
+                    }
+                })
+            },
+       
+        }
+    });
+</script>

@@ -1,0 +1,103 @@
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    let channel_id = parseInt("{{channel.id}}")
+    // let member = JSON.parse("{{member_s|escapejs}}")
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher(member.channel.key, {
+        cluster: member.channel.cluster
+    });
+
+    var channel = pusher.subscribe(member.channel.name);
+    channel.bind(member.event, function (data) {
+        let message = JSON.stringify(data)
+        message = JSON.parse(message)
+        chat_app.messages = chat_app.messages.reverse()
+        chat_app.messages.push(message);
+        chat_app.messages = chat_app.messages.reverse()
+    });
+
+    // Vue application
+    let chat_app = new Vue({
+        el: '#chat-app',
+        data: {
+            messages: [],
+            message_title: "",
+            message_body: "",
+            waiting: false,
+            profile_id: "",
+            message: { show: false }
+        },
+        methods: {
+            send_message: function () {
+                chat_app.waiting = true
+                let url = "{% url 'messenger:send_message' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    message_title: this.message_title,
+                    message_body: this.message_body,
+                    channel_id: channel_id,
+                    event: member.event,
+                }
+                let posting = $.post(url, payload)
+                posting.fail(data => {
+                    chat_app.message = { show: true, body: "خطا", color: 'danger' }
+                    setTimeout(() => {
+                        chat_app.message = { show: false }
+                    }, 3000);
+                })
+                posting.done((data) => {
+                    chat_app.waiting = false
+                    if (data.result === "SUCCEED") {
+
+
+                        chat_app.message_title = ""
+                        chat_app.message_body = ""
+
+                        chat_app.message = { show: true, body: "ارسال شد", color: 'success' }
+                        setTimeout(() => {
+                            chat_app.message = { show: false }
+                        }, 1500);
+
+                    }
+
+                    else {
+
+
+
+                        chat_app.message = { show: true, body: "خطا", color: 'danger' }
+                        setTimeout(() => {
+                            chat_app.message = { show: false }
+                        }, 3000);
+
+                    }
+
+                })
+            },
+            send_notification: function () {
+                chat_app.waiting = true
+                let url = "{% url 'messenger:send_message' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    message_title: this.message_title,
+                    message_body: this.message_body,
+                    profile_id: profile_id,
+                    channel_id: channel_id,
+                    event: member.event,
+                }
+                $.post(url, payload).done((data) => {
+                    chat_app.waiting = false
+                    if (data.result === "SUCCEED") {
+
+
+                        chat_app.message_title = ""
+                        chat_app.message_body = ""
+                    }
+                })
+            },
+
+        }
+    });
+</script>

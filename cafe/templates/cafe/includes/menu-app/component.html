@@ -1,0 +1,60 @@
+<div>
+  <div class="media">
+    <a :href="menu_item.shop.product.get_market_absolute_url">
+      <img :src="menu_item.shop.product.thumbnail" height="128" alt="" />
+    </a>
+    <div class="media-body mr-2">
+      <a :href="menu_item.shop.product.get_market_absolute_url">
+        <h6 class="text-right">
+          <span v-text="menu_item.shop.product.title"></span>
+        </h6>
+      </a>
+
+      <h6 class="text-right">
+        هر
+        <span v-text="menu_item.shop.unit_name"></span>
+
+        <span v-text="to_price(menu_item.shop.unit_price)"></span> {{CURRENCY}}
+      </h6>
+
+      <div class="text-right">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button
+            type="button"
+            class="btn btn-success btn-first"
+            @click="add_to_cart(menu_item.shop,1)"
+          >
+            افزودن به سبد خرید
+          </button>
+          <button v-show="menu_item.in_cart>0" type="button" class="btn btn-light">
+              <span class="my-2">
+                <span v-text="menu_item.in_cart" class="text-success"></span>
+                <span
+                  v-text="menu_item.shop.unit_name"
+                  class="text-success"
+                ></span>
+              </span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-last"
+            @click="add_to_cart(menu_item.shop,-1)"
+          >
+            -
+          </button>
+        </div>
+      </div>
+      <div class="text-right">
+        <div v-if="menu_item.in_cart>0">
+          <span class="my-2">
+            <span v-text="menu_item.in_cart" class="text-success"></span>
+            <span v-text="menu_item.shop.unit_name" class="text-success"></span>
+          </span>
+          در سبد خرید
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+</div>

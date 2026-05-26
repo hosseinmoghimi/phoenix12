@@ -1,0 +1,129 @@
+<div id="accordion-warehouse-sheet-labels" class="rtl text-right farsi">
+  <div class="card" id="warehouse-sheet-labels-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-warehouse-sheet-labels"
+          aria-expanded="true"
+          aria-controls="collapse-warehouse-sheet-labels"
+        >
+          لیبل های برگه انبار
+          <span v-if="warehouse_sheet_labels.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="warehouse_sheet_labels.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-warehouse-sheet-labels"
+      class="collapse {% if expand_warehouses %} show {% endif %}"
+      aria-labelledby="heading-warehouse-sheet-labels"
+      data-parent="#accordion-warehouse-sheet-labels"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+               {% if not warehouse_sheet %}
+              <th>warehouse_sheet</th>
+              <th>کالا</th>
+                 
+               {% endif %}
+              <th>serial_no</th>
+              <th>تصویر</th>
+              <th> تاریخ</th> 
+              <th>توضیحات</th>
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="warehouse_sheet_label in warehouse_sheet_labels">
+              
+             {% if not warehouse_sheet %}
+              <td>
+                
+                <a :href="warehouse_sheet_label.warehouse_sheet.get_absolute_url">برگه انبار</a>
+              </td>
+
+               <td>
+                <div v-for="product in [warehouse_sheet_label.warehouse_sheet.invoice_line.invoice_line_item]">
+                    {% include "accounting/includes/product-app/media.html" %}
+                </div>
+                 
+              </td>
+                 
+               {% endif %}
+
+                 <td>
+                  
+                  
+                  <div>
+                        <span v-text="warehouse_sheet_label.serial_no"></span>             
+                  </div>
+                  
+
+                </td>
+                
+                <td>
+                   <a v-if="warehouse_sheet_label.label" target="_blank" :href="warehouse_sheet_label.label">تصویر</a>
+                 
+                  
+
+                </td>
+
+
+                <td>
+                    <span v-text="warehouse_sheet_label.persian_date_added"></span>
+                </td>
+                  <td>
+                  <div>
+                        <span v-text="warehouse_sheet_label.description"></span>             
+                  </div>
+                  
+
+                </td>
+                <td>
+
+                    <a
+                    target="_blank"
+                    :href="warehouse_sheet_label.get_absolute_url"
+                    title="نمایش"
+                    class="text-info mx-2"
+                  >
+                    <i class="fa fa-edit text-info"> </i>
+                    نمایش
+                  </a>
+
+                  <a
+                    target="_blank"
+                    :href="warehouse_sheet_label.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="warehouse_sheet_label.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

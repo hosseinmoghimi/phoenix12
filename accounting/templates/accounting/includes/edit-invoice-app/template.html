@@ -1,0 +1,282 @@
+{% load static %}
+<div id="accordion-edit-invoice" class="rtl text-right farsi">
+  <div class="card" id="edit_invoice-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-edit-invoice"
+          aria-expanded="true"
+          aria-controls="collapse-edit-invoice"
+        >
+          ویرایش فاکتور
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-edit-invoice"
+      class="collapse"
+      aria-labelledby="heading-edit-invoice"
+      data-parent="#accordion-edit-invoice"
+    >
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">عنوان</label>
+              <input type="text" class="form-control" v-model="title" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for=""> تخفیف</label>
+              
+                <span v-text="to_price(discount)"></span> {{CURRENCY}}
+              <input
+                type="number"
+                class="form-control"
+                v-model="discount"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">درصد مالیات</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="tax_percentage"
+              />
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">هزینه حمل
+
+                <span v-text="to_price(shipping_fee)"></span> {{CURRENCY}}
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="shipping_fee"
+              />
+            </div>
+          </div>
+
+            <div class="col-md-4">
+            <div class="form-group">
+              <label for="">مبلغ 
+
+                <span v-text="to_price(amount)"></span> {{CURRENCY}}
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="amount"
+              />
+            </div>
+          </div>
+
+
+          
+          <div class="col-4">
+              <div class="form-group">
+              <label for="status">قابل محاسبه</label>
+              
+              <input type="checkbox" class="form-control" v-model="valid" name="" id="">
+              
+              </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">وضعیت</label>
+              <select name="" v-model="status" class="form-control">
+                {% for status in invoice_statuses %}
+                  <option value="{{status}}">{{status}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">نحوه پرداخت</label>
+              <select name="" v-model="payment_method" class="form-control">
+                {% for payment_method in payment_methods_for_edit_invoice_form %}
+                  <option value="{{payment_method}}">{{payment_method}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">توضیحات کوتاه</label>
+              <input type="text" class="form-control" v-model="short_description" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">توضیحات</label>
+              <input type="text" class="form-control" v-model="description" />
+            </div>
+          </div>
+          
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="bedehkar_code">بدهکار</label>
+                  <button class="btn btn-info btn-sm" @click="paste_bedehkar()">
+                    <i class="fa fa-paste"></i>
+                  </button>
+
+                  <input type="text" placeholder="" class="form-control" id="bedehkar_code" @input="select_bedehkar()"
+                    v-model="bedehkar_code" />
+                </div>
+              </div>
+
+              <div class="col-6 mt-3">
+                <hr />
+                <a :href="bedehkar.get_absolute_url" v-if="bedehkar">
+                  <div class="media">
+                    <img :src="bedehkar.thumbnail" width="64" alt="" />
+                    <div class="mr-2 media-body">
+                      <h5 class="my-2">
+                        <span :class="'text-'+bedehkar.color" v-text="bedehkar.name"></span>
+                      </h5>
+                      <h6>
+                        <span :class="'text-'+bedehkar.color" v-text="bedehkar.code"></span>
+                      </h6>
+
+                      <h6>
+                        <span v-html="to_price_colored(bedehkar.balance)"></span>
+                      </h6>
+
+                      <h6>
+                        <small :class="'text-'+bedehkar.color" v-text="bedehkar.full_name"></small>
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+                <div v-if="!bedehkar">
+                  <h5 class="text-danger">بدهکار انتخاب نشده است.</h5>
+                  <a target="_blank" href="{% url 'accounting:accounts' %}">همه حسابها</a>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <button class="my-2 btn btn-info" title="جابجا کردن بدهکار و بستانکار" @click="swap()">
+              {% load static %}
+              <img width="32" src="{% static 'img/icons/exchange3.png' %}" alt="">
+            </button>
+          </div>
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="bestankar_code">بستانکار</label>
+                  <button class="btn btn-info btn-sm" @click="paste_bestankar()">
+                    <i class="fa fa-paste"></i>
+                    
+                  </button>
+                  <input type="text" placeholder="" class="form-control" id="bestankar_code" @input="select_bestankar()"
+                    v-model="bestankar_code" />
+                </div>
+              </div>
+              <div class="col-6 mt-3">
+                <hr />
+                <a :href="bestankar.get_absolute_url" v-if="bestankar">
+                  <div class="media">
+                    <img :src="bestankar.thumbnail" width="64" alt="" />
+                    <div class="mr-2 media-body">
+                      <h5 class="my-2">
+                        <span :class="'text-'+bestankar.color" v-text="bestankar.name"></span>
+                      </h5>
+                      <h6>
+                        <span :class="'text-'+bestankar.color" v-text="bestankar.code"></span>
+                      </h6>
+                      <h6>
+                        <span v-html="to_price_colored(bestankar.balance)"></span>
+                      </h6>
+
+                      <h6>
+                        <small :class="'text-'+bestankar.color" v-text="bestankar.full_name"></small>
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+                <div v-if="!bestankar">
+                  <h5 class="text-danger">بستانکار انتخاب نشده است.</h5>
+                  <a target="_blank" href="{% url 'accounting:accounts' %}">همه حسابها</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ</label>
+              <date-picker v-model="event_date"></date-picker>
+
+              <input type="text" required class="form-control" v-model="event_date" />
+            </div>
+          </div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">زمان</label>
+
+              <input type="text" required class="form-control" v-model="event_time" />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button v-if="!show_confirm" class="btn btn-success" @click="show_confirm=true">
+              ذخیره
+            </button>
+
+            <div v-if="show_confirm">
+              <h6 class="my-3">
+                تغییرات ذخیره شود؟
+              </h6>
+              <button @click="show_confirm=false" class="btn btn-link">
+                خیر
+              </button>
+               <button class="btn btn-success" @click="edit_invoice()">
+              بله ، ذخیره کن
+            </button>
+
+            </div>
+          </div>
+          <div class="col-md-12">
+            <img
+              src="{% static 'leo/img/loading.gif' %}"
+              width="32"
+              v-if="waiting"
+              alt=""
+            />
+
+            <div v-if="message.show" class="my-2">
+              <div :class="'alert alert-'+message.color">
+                <h5 v-html="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

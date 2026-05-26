@@ -1,0 +1,34 @@
+<script>
+    let page_priority_app = new Vue({
+        el: "#page-priority-app",
+        data: {
+            priority: parseInt("{{page.priority}}"),
+        },
+        methods: {
+            increase_priority: function () {
+                this.priority++
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    priority: this.priority,
+                    page_id: parseInt("{{page.id}}"),
+                }
+                let posting = $.post("{% url 'core:set_page_priority' %}", payload)
+                posting.done(data => {
+                    // console.log(data)
+                })
+            },
+            decrease_priority: function () {
+                this.priority--
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    priority: this.priority,
+                    page_id: parseInt("{{page.id}}"),
+                }
+                let posting = $.post("{% url 'core:set_page_priority' %}", payload)
+                posting.done(data => {
+                    leolog(data)
+                })
+            },
+        }
+    })
+</script>

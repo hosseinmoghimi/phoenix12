@@ -1,0 +1,118 @@
+<div id="accordion-links">
+
+
+    <div class="card" id="links-app">
+        <div class="card-header" id="heading-links">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-links"
+                    aria-expanded="true" aria-controls="collapse-links">
+                    لینک ها
+
+                    <span v-if="links.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="links.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-links" class="collapse " aria-labelledby="heading-links"
+            data-parent="#accordion-links">
+
+            <div class="card-body">
+
+
+                <div v-for="link in links" class="mb-3">
+                     {% if not page %}
+                    <a :href="link.page.get_absolute_url" class="mt-3">
+
+                        <div class="media">
+                            <img :src="link.page.thumbnail" class="rounded" width="32" alt="">
+                            <div class="media-body mr-2">
+                                <h6 v-text="link.page.title"></h6>
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+                    <div class="row">
+                      
+
+                            <h6>
+
+                                <a class="mr-2" target="_blank" :href="link.url">
+                                    <span class="ml-2" v-html="link.get_icon_tag"></span>
+                                    <!-- <small class="mr-2 text-secondary">
+
+                                        (<span v-text="link.priority">
+                                        </span>
+                                        )
+                                    </small> -->
+                                    <span v-text="link.title">
+                                    </span>
+                                </a>
+                                <span class="mx-3">
+
+                                    {% if perms.core.change_link %}
+                                    <a :href="link.get_edit_url" target="_blank" title="ویرایش"
+                                        class="ml-2 docs-creator">
+                                        <i class="fa fa-edit text-info"></i>
+                                    </a>
+                                    {% endif %}
+
+                                    {% if perms.core.delete_link %}
+                                    <a :href="link.get_delete_url" target="_blank" title="حذف"
+                                        class="ml-2 docs-creator">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </span>
+
+                            </h6>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            {% if add_link_form %}
+            <div class="card-footer">
+
+                <p class="text-right" v-if="!show_add_link">
+
+                    <a style="cursor: pointer;" class="farsi a" @click="show_add_link=true">
+                        <i class="material-icons">
+                            add
+                        </i>
+                        افزودن لینک
+                    </a>
+                </p>
+
+
+                <form v-if="show_add_link" @submit.prevent="add_link()">
+                    <div class="row">
+                        <div class="col-12">
+                            <input required type="text" v-model="new_link_title" class=" mb-2 farsi form-control"
+                                placeholder="عنوان لینک جدید" maxlength="300">
+                            <input required type="text" v-model="new_link_url" class=" mb-2 farsi form-control"
+                                placeholder="آدرس لینک جدید">
+                            <input required type="number" v-model="priority" class=" mb-2 farsi form-control"
+                                placeholder="ترتیب">
+
+                        </div>
+                        <div class="col-12">
+                            <button class="farsi btn btn-primary btn-block mb-2 " type="submit"> <i
+                                    class="fa fa-plus mx-1"></i>
+                                افزودن</button>
+                            <button @click="show_add_link=!show_add_link"
+                                class="farsi btn btn-secondary btn-block mb-2 " type="reset">انصراف</button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

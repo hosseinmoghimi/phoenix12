@@ -1,0 +1,33 @@
+{% extends "market/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+
+    {% if add_supplier_form %}
+
+    <div class="col-md-12 ">
+        {% include "market/includes/add-supplier-app/template.html" %}
+    </div>
+    {% endif %}
+
+    <div class="col-md-12 ">
+        {% include "market/includes/suppliers-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+
+
+
+
+</script>
+
+{% include "market/includes/suppliers-app/script.html" %}
+
+{% if add_supplier_form %}
+
+{% include "market/includes/add-supplier-app/script.html" %}
+{% endif %}
+{% endblock script %}

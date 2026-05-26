@@ -1,0 +1,30 @@
+<script>
+    select_person_by_id = function (person_id) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, person_id: person_id  }
+        return $.post("{% url 'authentication:select_person' %}", payload2)
+    }
+</script>
+
+
+<script>
+    let select_person_app=new Vue({
+        el:"#select-person-app",
+        data:{
+            person_id:0,
+            person:{},
+        },
+        methods:{
+            select_person:function(){
+                select_person_by_id(select_person_app.person_id).done(data=>{
+                    if(data.result==='SUCCEED'){
+                        select_person_app.person=data.person
+                    }
+                    else{
+                        select_person_app.person={}
+
+                    }
+                })
+            }
+        }
+    })
+</script>

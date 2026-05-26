@@ -1,0 +1,40 @@
+<div class="media aaa">
+    <a :title="comment.person.full_name" :href="comment.person.get_absolute_url">
+        <img :src="comment.person.image" class="rounded-circle" width="64" alt="">
+    </a>
+    <div class="media-body mr-2">
+        <div class="text-right">
+            <a target="_blank" :href="comment.person.get_absolute_url">
+                <span class="farsi text-right text-primary" v-text="comment.person.full_name"></span>
+            </a>
+            <span class="farsi small text-secondary mr-2 text-right" v-text="comment.persian_datetime_added"></span>
+        </div>
+        <div class="alert alert-light farsi  text-right fade show" role="alert">
+            
+            {% if not page %}
+            <a :href="comment.page.get_absolute_url"  class="mt-3">
+
+                <div class="media">
+                    <img :src="comment.page.thumbnail" class="rounded" width="32" alt="">
+                    <div class="media-body mr-2">
+                        <h6 v-text="comment.page.title"></h6>
+                    </div>
+                </div>
+            </a>
+            {% endif %}
+                
+            <div class="small farsi text-dark text-right" v-html="comment.comment">
+            </div>
+            <div>
+                 
+                {% if me_person or perms.attachments.delete_comment%}
+                <a v-if="comment.person.id=={{me_person.id}}" target="_blank" :href="comment.get_delete_url"  
+                    class="small text-danger mr-auto1 mx-2" >
+                    <i class="fa fa-trash text-danger"></i>
+                    حذف  
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

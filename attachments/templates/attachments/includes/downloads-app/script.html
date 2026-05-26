@@ -1,0 +1,58 @@
+<script>
+    let url_add_download = "{% url 'attachments:add_download' %}"
+    let downloads=JSON.parse(`{{downloads_s|escapejs}}`)
+    let downloads_app = new Vue({
+        el: "#downloads-app",
+        data: {
+            new_download_title: "",
+            downloads: downloads,
+            waiting: false,
+            new_download_file: '',
+            has_download_file:false,
+            show_add_download_form: false,
+            message:{show:false},
+        },
+        methods: {
+            add_download: function () {
+                downloads_app.waiting = true
+                let title = this.new_download_title
+                let formData = new FormData();
+                let file1 = $('#add-download-form')[0].elements[1].files[0]
+                formData.append("file1", file1);
+                formData.append("title", title);
+                formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+                formData.append("page_id", page_id);
+
+                $.ajax({
+                    url: url_add_download,
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false, 
+                    error :function(data){
+                        downloads_app.waiting = false
+                            
+                    },
+                    success: function (data) {
+                        downloads_app.waiting = false
+                        console.log(data)    
+                        if(data.result!="SUCCEED"){
+                            show_message(downloads_app,'خطا',data.message,'danger',5000)
+                        }
+                            // //console.log(data)
+                        if (data.result === 'SUCCEED') {
+                            downloads_app.downloads.push(data.download)
+                            downloads_app.new_download_title = ''
+                            downloads_app.new_download_file = ''
+                        show_message(downloads_app,'موفق',data.message,'success',5000)
+
+
+                        } 
+                    },
+                });
+
+            },
+
+        }
+    })
+</script>

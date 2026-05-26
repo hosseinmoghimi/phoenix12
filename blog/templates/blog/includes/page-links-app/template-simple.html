@@ -1,0 +1,30 @@
+{% if links %}
+  
+<div class="card mb-3" id="page-links-app">
+    <div class="card-header" id="headinglinks">
+        <h5 class="text-center">
+                 لینک های مرتبط
+          </h5>
+    </div>
+
+    <div class="card-body">
+        {% for link in links %}
+        <div>
+
+            <h6>
+                {{link.get_icon_tag|safe}}
+                <a class="mr-2" target="_blank" href="{{link.url}}">
+                    {{link.title}}
+                </a>
+                {% if perms.core.change_link %}
+                {{link.get_edit_btn|safe}}
+
+                {% endif %}
+            </h6>
+        </div>
+        {% endfor %}
+     
+    </div>
+   
+</div>
+{% endif %}

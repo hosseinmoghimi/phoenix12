@@ -1,0 +1,42 @@
+    <div class="card">
+      <div class="card-body">
+        <div class="media">
+          <div class="row">
+            <div class="col-6">
+              <a href="{{employee.person_account.person.get_absolute_url}}">
+                <img
+                  src="{{employee.person_account.person.image}}"
+                  width="128"
+                  class="rounded"
+                  alt=""
+                />
+              </a>
+            </div>
+            <div class="col-6">
+              <a href="{{employee.organizational_unit.get_absolute_url}}">
+                <img
+                  src="{{employee.organizational_unit.thumbnail}}"
+                  width="128"
+                  class="rounded"
+                  alt=""
+                />
+              </a>
+            </div>
+          </div>
+          <div class="media-body mr-2">
+            <h5>
+              <a href="{{employee.person_account.person.get_absolute_url}}">
+                {{employee.person_account.person.full_name}}
+              </a>
+            </h5>
+
+            <h6>
+              <a href="{{employee.organizational_unit.get_absolute_url}}">
+                {{employee.organizational_unit.title}}
+              </a>
+            </h6>
+            <h6>{{employee.job_title}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>

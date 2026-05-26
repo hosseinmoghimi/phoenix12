@@ -1,0 +1,119 @@
+
+<div id="accordion-persons" class="rtl text-right farsi">
+  <div class="card" id="persons-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-persons"
+          aria-expanded="true"
+          aria-controls="collapse-persons"
+        >
+          اشخاص
+        <span v-if="persons.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="persons.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-persons"
+      class="collapse {% if expand_persons %} show {% endif %}"
+      aria-labelledby="heading-persons"
+      data-parent="#accordion-persons"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+               
+              <th>نام </th>
+              <th>نام کاربری</th>
+              <th>تماس</th>
+ 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="person in persons">
+                
+                <td>
+
+                  <a :href="person.get_absolute_url">
+                    <div class="media">
+                      <img :src="person.image" width="32" class="rounded" alt="">
+                      <div class="media mr-2">
+                        <span v-text="person.full_name"></span>
+
+                      </div>
+                    </div>
+                  </a>
+
+                  
+
+ 
+                </td>
+
+                <td>
+                  <a target="_blank" :href="'{{ADMIN_URL}}auth/user/'+person.user_id">
+                    <span v-text="person.username"></span>
+                  </a>
+                </td>
+
+                <td>
+                  <div>
+
+                    <a class="my-2 text-primary" v-if="person.tel"   :href="'tel:'+person.tel">
+                      <span v-text="person.tel"></span>
+                      <i class="fa fa-phone "></i>
+                    </a>
+                  </div>
+
+                  
+                  <div>
+
+                    <a class="my-2  text-success" v-if="person.mobile"   :href="'tel:'+person.mobile">
+                      <span v-text="person.mobile"></span>
+                      <i class="fa fa-phone"></i>
+                    </a>
+                  </div>
+                </td>
+
+                  
+
+ 
+                </td>
+                
+                <td>
+                  <a
+                    target="_blank"
+                    :href="person.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="person.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

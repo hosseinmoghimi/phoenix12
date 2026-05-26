@@ -1,0 +1,138 @@
+{% load to_persian_date %} {% load to_price %} {% load to_amount_color %} {% load static %}
+<div id="accordion-remote-clients">
+  <div class="card" id="remote-clients-app">
+    <div class="card-header" id="heading-remote-clients">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-remote-clients"
+          aria-expanded="true"
+          aria-controls="collapse-remote-clients"
+        >
+          کلاینت ها
+          <span v-if="remote_clients.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="remote_clients.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-remote-clients"
+      class="collapse {% if expand_remote_clients %}show{% endif %}"
+      aria-labelledby="heading-remote-clients"
+      data-parent="#accordion-remote-clients"
+    >
+      <div class="card-body pt-3 rtl">
+        <img
+          src="{% static 'leo/img/loading.gif' %}"
+          width="32"
+          v-if="waiting"
+          alt=""
+        />
+        <div class="table-responsive rtl">
+          <input
+            type="text"
+            v-model="search_for"
+            id=""
+            class="form-control"
+            @input="filter()"
+          />
+          <table class="table table-striped rtl">
+            <thead>
+              <th>نام</th>
+              {% if not project %}
+              <th>پروژه</th>
+              {% endif %}
+
+              <th>local ip</th>
+
+              <th>برند</th>
+
+              <th>کالا</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="remote_client in remote_clients">
+                <td>
+                  <a :href="remote_client.get_absolute_url">
+                    <span v-text="remote_client.name"></span>
+                  </a>
+                </td>
+                {% if not project %}
+                <td>
+                  <a :href="remote_client.get_project_absolute_url">
+                    <span v-text="remote_client.get_project_title"></span>
+                  </a>
+                </td>
+                {% endif %}
+                <td>
+                  <a target="_blank" :href="'http://'+remote_client.local_ip">
+                    <span v-text="remote_client.local_ip"></span>
+                  </a>
+                </td>
+
+                <td>
+                  <div class="media rtl" v-if="remote_client.brand">
+                    <a :href="remote_client.brand.get_absolute_url">
+                      <img
+                        :src="remote_client.brand.logo"
+                        width="48"
+                        class="rounded"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="remote_client.brand.get_absolute_url">
+                        <span v-text="remote_client.brand.name"></span>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                   <div class="media rtl" v-if="remote_client.product">
+                    <a :href="remote_client.product.get_absolute_url">
+                      <img :src="remote_client.product.thumbnail" width="48" class="rounded" alt="" />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="remote_client.product.get_absolute_url">
+                        <span v-text="remote_client.product.title"></span>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="text-right">
+                    {% if perms.projectmanager.change_remoteclient %}
+                    <a
+                      class="mx-2"
+                      title="ویرایش"
+                      target="_blank"
+                      :href="remote_client.get_edit_url">
+                      <i class="fa fa-edit text-warning"></i>
+                    </a>
+                    {% endif %}
+                     {% if perms.projectmanager.delete_remoteclient %}
+                      <a class="mx-2" title="حذف" target="_blank"
+                    :href="remote_client.get_delete_url">
+                    <i class="fa fa-trash text-danger"></i>
+                        </a>  
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% if add_remote_client_form %}
+      <div class="card-footer">
+        {% include "projectmanager/includes/remote-clients-app/add-remote-client-form.html" %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

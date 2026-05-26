@@ -1,0 +1,93 @@
+{% extends "messenger/layout.html" %}
+{% load static %}
+{% load to_persian_date %}
+
+
+
+{% block content %}
+<div class="row rtl">
+
+    <div class="col-md-12">
+
+
+
+        <div id="accordion">
+
+            <div class="card">
+                <div class="card-header" id="headingticket">
+                    <h5 class="text-center">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseticket"
+                            aria-expanded="true" aria-controls="collapseticket">
+                            {{ticket.title}}
+                        </button>
+
+                    </h5>
+                </div>
+                <div id="collapseticket" class="collapse  " aria-labelledby="headingticket" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="media">
+                            <img src="{{ticket.image}}" class="rounded-circle" width="96" alt="">
+                            <div class="media-body mr-3">
+                                <p>
+
+                                    {% if perms.messenger.change_ticket %}
+
+                                    <a href="{{ticket.get_edit_url}}" target="_blank">
+
+                                        ویرایش کانال
+
+                                    </a>
+                                    {% endif %}
+                                </p>
+
+                                <h5>
+                                    اعضای کانال
+                                    <i class="material-icons">
+                                        person
+                                    </i>
+                                    {{ticket.member_count}}
+                                </h5>
+                                <p class="text-muted">
+
+
+
+                                </p>
+                                {% for member in ticket.member_set.all %}
+                                <div class="mb-3">
+
+                                    <a href="{{member.profile.get_absolute_url}}">
+                                        <img src="{{member.profile.image}}" class="rounded-circle" width="48" alt="">
+                                        {{member.profile.full_name}}
+                                    </a>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-12">
+        {% include "messenger/includes/chat-app/template.html" %}
+
+    </div>
+
+    <div class="col-12">
+        {% include "messenger/includes/notification-app/template.html" %}
+
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+{% include "messenger/includes/chat-app/script.html" %}
+{% include "messenger/includes/notification-app/script.html" %}
+{% endblock script %}

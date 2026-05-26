@@ -1,0 +1,31 @@
+{% extends "accounting/layout.html" %}
+
+
+{% block content %}
+<div class="row rtl farsi">
+       
+   {% if add_person_category_form %}
+     
+    <div class="col-md-12">
+        {% include "accounting/includes/add-person-category-app/template.html" %}
+    </div>
+  
+    {% endif %}
+     
+   <div class="col-md-12">
+     {% include 'accounting/includes/person-categories-app/template.html' %}
+   </div>
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% include 'accounting/includes/person-categories-app/script.html' %}
+
+    {% if add_person_category_form %}
+    {% include "accounting/includes/add-person-category-app/script.html" %}
+    {% endif %}
+{% endblock script %}

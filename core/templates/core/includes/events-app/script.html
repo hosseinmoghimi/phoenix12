@@ -1,0 +1,18 @@
+<script>
+    
+    let events_for_events_app=JSON.parse("{{events_s|escapejs}}")
+    let events_app = new Vue({
+        el: "#events-app",
+        data: {
+            events: events_for_events_app
+        },
+        methods: {
+            to_price: function(vall) {
+                let color="primary"
+                if(vall>0)color="success"
+                if(vall<0)color="danger"
+                return "<span class='text-"+color+"'>"+to_price(vall)+"</span>"
+            }
+        }
+    })
+</script>

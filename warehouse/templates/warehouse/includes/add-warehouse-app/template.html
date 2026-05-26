@@ -1,0 +1,113 @@
+<div id="accordion-add-warehouse" class="rtl text-right farsi">
+  <div class="card" id="add-warehouse-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-warehouse"
+          aria-expanded="true"
+          aria-controls="collapse-add-warehouse"
+        >
+          افزودن انبار
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-warehouse"
+      class="collapse"
+      aria-labelledby="heading-add-warehouse"
+      data-parent="#accordion-add-warehouse"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_warehouse()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input v-model="name" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="account_code">حساب</label>
+                    <button @click="paste_from_clipboard()" class="btn btn-sm btn-info">
+                      <i class="fa fa-paste"></i>
+                    </button>
+                    <input
+                      type="text"
+                      placeholder=""
+                      class="form-control"
+                      id="account_code"
+                      @input="select_account()"
+                      v-model="account_code"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-6 mt-3">
+                  <a :href="account.get_absolute_url" v-if="account.id">
+                    <div class="media">
+                      <img :src="account.thumbnail" width="64" alt="" />
+                      <div class="mr-2 media-body">
+                        <h5 class="my-2">
+                          <span
+                            :class="'text-'+account.color"
+                            v-text="account.name"
+                          ></span>
+                        </h5>
+                        <h6>
+                          <span
+                            :class="'text-'+account.color"
+                            v-text="account.code"
+                          ></span>
+                        </h6>
+
+                        <h6>
+                          <span
+                            v-html="to_price_colored(account.balance)"
+                          ></span>
+                        </h6>
+
+                        <h6>
+                          <small
+                            :class="'text-'+account.color"
+                            v-text="account.full_name"
+                          ></small>
+                        </h6>
+                      </div>
+                    </div>
+                  </a>
+                  <div v-if="!account.id">
+
+                    <h5 class="text-danger">حساب انتخاب نشده است.</h5>
+                    <div>
+                      <a target="_blank" href="{% url 'accounting:person_accounts' %}">
+                        همه حساب های اشخاص
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+                   
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

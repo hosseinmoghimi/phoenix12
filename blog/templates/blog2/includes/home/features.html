@@ -1,0 +1,135 @@
+{% load static %}
+{% load social_share %}
+
+<!-- features -->
+<div class="cd-section" id="features">
+    <div class="container">
+        <!--     *********     FEATURES 1      *********      -->
+        <div class="features-1">
+            <div class="row">
+                <div class="col-md-12 ml-auto mr-auto">
+                    <h2 class="title farsi">
+
+                        {{web.OUR_FEATURES_TITLE.value}}
+  {% if perms.app.change_parameter %}
+                    {{web.OUR_FEATURES_TITLE.get_edit_btn|safe}}
+                    {% endif %}
+                    </h2>
+
+                  
+                    <h5 class="description">
+
+                        {{web.OUR_FEATURES_SLOGAN.value}}
+
+                    {% if perms.app.change_parameter %}
+                    {{web.OUR_FEATURES_SLOGAN.get_edit_btn|safe}}
+                    {% endif %}
+
+
+                    </h5>
+
+
+
+                    <div class="">
+                        {% if perms.dashboard.add_feature %}
+
+                        {{admin_utility.get_add_feature|safe}}
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row rtl">
+
+                {% for feature in features %}
+
+                <div class="col-md-3"> 
+                    {% if FEATURE_ROTATE_CARD %}
+                    <div class="rotating-card-container" style="margin-bottom: 30px;">
+                        <div class="card card-rotate">
+                            <div class="front" style="width: 395px;">
+                                <div class="card-body1">
+                                    <img class="rounded w-100" src="{{feature.thumbnail}}" alt="">
+                                </div>
+                            </div>
+                            <div class="back" style="width: 395px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{feature.title}}
+                                    </h5>
+                                    {% if feature.short_description %}
+                                    <p class="card-description text-center">
+                                        {{feature.short_description}}
+                                    </p>
+                                    {% endif %}
+                                    <p class="card-description text-center">
+
+                                        {{feature.persian_date_added_tag|safe}}
+
+                                    </p>
+
+                                    {% if feature.profile %}
+                                    <p class="card-description text-center">
+                                        <a href="{{feature.profile.get_absolute_url}}">
+
+                                            <img alt="64x64" src="{{feature.profile.image}}" width="32"
+                                                class="rounded-circle shadow">
+
+                                            <b> {{feature.profile.name}}</b>
+                                        </a>
+                                    </p>
+                                    {% endif %}
+                                    <div class="footer text-center">
+                                        <a href="{{feature.get_absolute_url}}" class="btn btn-rose btn-round">
+                                            <i class="material-icons" aria-hidden="true">subject</i> بیشتر
+                                        </a>
+                                        {% post_to_whatsapp feature.get_absolute_url 'shareeeee' %}
+                                        {% post_to_telegram obj_or_url=feature.get_absolute_url title=feature.title %}
+
+
+
+                                        <!-- <a href="#pablo" class="btn btn-just-icon btn-round btn-twitter">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#pablo" class="btn btn-just-icon btn-round btn-dribbble">
+                                            <i class="fa fa-dribbble"></i>
+                                        </a>
+                                        <a href="#pablo" class="btn btn-just-icon btn-round btn-facebook">
+                                            <i class="fa fa-facebook"></i>
+                                        </a> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="info">
+                        <a href="{{feature.get_absolute_url}}">
+
+                            <div class="icon icon-info">
+                                {{feature.icon.get_icon_tag|safe}}
+                            </div>
+                        </a>
+                        <a href="{{feature.get_absolute_url}}">
+                            <h4 class="info-title farsi">{{feature.title}}</h4>
+                        </a>
+                        {% if feature.short_description %}
+                        <p class="text-center">
+                            {{feature.short_description|safe}}
+                        </p>
+                        {% endif %}
+
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!--     *********    END FEATURES 1      *********      -->
+
+    </div>
+
+</div>

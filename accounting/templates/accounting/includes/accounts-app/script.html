@@ -1,0 +1,65 @@
+<script>
+  let accounts_for_accounts_app = JSON.parse("{{accounts_s|escapejs}}");
+  let accounts_app = new Vue({
+    el: "#accounts-app",
+    data: {
+      accounts: accounts_for_accounts_app,
+      search_for: "",
+      sort_field: "",
+    },
+    methods: {
+      copy_code_to_clipboard: (vall,name)=>copy_to_clipboard(vall,name),
+
+      copy_balance_to_clipboard: (vall,name)=>copy_to_clipboard(vall,name),
+
+      sort: function (field) {
+        console.log(field);
+        console.log(this.sort_field);
+        if (this.sort_field === field) {
+          field = "-" + field;
+        }
+        this.sort_field = field;
+        
+        if (field === "balance") {
+          accounts_app.accounts = accounts_for_accounts_app.sort(
+            (a, b) => a.balance - b.balance
+          );
+        }
+
+        if (field === "-balance") {
+          accounts_app.accounts = accounts_for_accounts_app.sort(
+            (b, a) => a.balance - b.balance
+          );
+        }
+
+ 
+
+
+        
+          
+
+
+
+      },
+      filter: function () {
+        accounts_app.accounts = accounts_for_accounts_app.filter((account) => {
+          if (account.title.toUpperCase().indexOf(accounts_app.search_for) > -1)
+            return true;
+
+          if (account.code.toUpperCase().indexOf(accounts_app.search_for) > -1)
+            return true;
+
+          // if(account.full_title.toUpperCase().indexOf(accounts_app.search_for)>-1)
+          //     return true
+        });
+      },
+      to_price: function (vall) {
+        let color = "primary";
+        if (vall > 0) color = "success";
+        if (vall < 0) color = "danger";
+        return "<span class='text-" + color + "'>" + to_price(vall) + " {{CURRENCY}} </span>";
+      },
+      to_price_colored:(vall,curr)=>to_price_colored(vall,curr),
+    },
+  });
+</script>

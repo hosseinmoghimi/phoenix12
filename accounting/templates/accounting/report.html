@@ -1,0 +1,18 @@
+{% extends "accounting/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    {% include "accounting/includes/report-app/template.html" %}
+  </div>
+
+
+  
+  <div class="col-md-12">
+    {% include "accounting/includes/financial-document-lines-app/template.html" %}
+  </div>
+
+</div>
+{% endblock content %} {% block script %}
+{% include "accounting/includes/report-app/script.html" %}
+    {% include "accounting/includes/financial-document-lines-app/script.html" %}
+
+    {% endblock script %}

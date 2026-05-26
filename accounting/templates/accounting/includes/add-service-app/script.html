@@ -1,0 +1,45 @@
+<script>
+    let add_service_app = new Vue({
+        el: "#add-service-app",
+        data: {
+            unit_price: 0,
+            unit_name: "عدد",
+            title: "",
+            coef:1,
+            show_form: false,
+            message: { show: false },
+        },
+        methods: {
+            add_service: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    unit_name: this.unit_name,
+                    coef: this.coef,
+                    unit_price: parseInt(this.unit_price),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_service' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    
+                    if (data.result === "SUCCEED") {
+                        if (typeof services_app != "undefined") {
+                            services_app.services.push(data.service)
+                        }
+                        show_message(add_service_app, "موفقیت آمیز", data.message, "success", 5000)
+                    }
+
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_service_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

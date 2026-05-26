@@ -1,0 +1,55 @@
+<script>
+    let financial_years_for_financial_years_app = JSON.parse(`{{financial_years_s|escapejs}}`)
+    let financial_years_app = new Vue({
+        el: "#financial-years-app",
+        data: {
+            financial_years: financial_years_for_financial_years_app,
+            search_for: '',
+            waiting: false,
+            new_item: { name: "", start_date: current_date, end_date: current_date,description:"", status:"{{default_status}}"},
+            show_form: false,
+            message: { show: false },
+
+        },
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+        methods: {
+            add_year: function () {
+                financial_years_app.waiting=true
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    start_date: this.new_item.start_date,
+                    end_date: this.new_item.end_date,
+                    status: this.new_item.status,
+                    name: this.new_item.name,
+                    description: this.new_item.description,
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_financial_year' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                financial_years_app.waiting=false
+
+                    if (data.result === "SUCCEED") {
+                        // financial_years_app.financial_years.push(data.financial_year)
+                        financial_years_app.financial_years=(data.financial_years)
+                        show_message(financial_years_app, "موفقیت آمیز", "ایجاد سال مالی جدید موفقیت آمیز بود."+"<br>"+"<a href='"+data.financial_year.get_absolute_url+"'>"+data.financial_year.name+"</a>", "success", 10000)
+                    }
+                    if (data.result != "SUCCEED") {
+                        show_message(financial_years_app, "خطا", "ایجاد سال مالی جدید با خطا مواجه شد.<br>" + data.message, "danger", 10000)
+
+                    }
+                })
+            },
+            filter: function () {
+                this.financial_years = financial_years_for_financial_years_app.filter(financial_year => financial_year.name.indexOf(this.search_for) > -1)
+            },
+            to_price: function (vall) {
+                return to_price(vall, "{{CURRENCY}}")
+            },
+
+        }
+    })
+</script>

@@ -1,0 +1,31 @@
+<script>
+    let person_categories_app_person_categories = JSON.parse(`{{person_categories_s|escapejs}}`)
+    let person_categories_app = new Vue({
+        el: "#person-categories-app",
+        data: {
+            person_categories: person_categories_app_person_categories,
+            search_for: '',
+            waiting: false,
+
+        },
+        methods: {
+            filter: function () {
+                this.person_categories = person_categories_app_person_categories.filter(function (person_category) {
+
+                    if (person_category.title.indexOf(this.search_for) > -1)
+                        return true
+                    if (person_category.bedehkar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    if (person_category.bestankar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    return false
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall, " ")
+            },
+
+        }
+    })
+</script>

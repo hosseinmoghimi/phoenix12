@@ -1,0 +1,101 @@
+{% include "authentication/includes/user-app/select-script.html" %}
+
+<script>
+  let add_person_app = new Vue({
+    el: "#add-person-app",
+    data: {
+      name: "", 
+      prefix:'آقای',
+      title:'',
+      first_name:'',
+      last_name:'',
+      mobile:'',
+      address:'',
+      birth_location:'',
+      birth_date:'',
+      bio:'',
+      melli_code:'',
+      type:'حقیقی',
+      type2:'حقیقی',
+      email:'',
+      gender:'مرد',
+      postal_code:'',
+      economic_no:'',
+      father_name:'',
+      tel:'',
+      username:'',
+      user_id:0,
+      message:{show:false},
+      waiting:false,
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+       
+       
+      add_person: function () {
+        add_person_app.waiting=true
+        add_person_app.message.show=false
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          prefix: this.prefix,
+          first_name: this.first_name,
+          last_name: this.last_name,
+          father_name: this.father_name,
+          title: this.title,
+          mobile: this.mobile,
+          address: this.address,
+          type: this.type,
+          type2: this.type2,
+          postal_code:this.postal_code,
+          user_id:parseInt(this.user_id),
+          economic_no:this.economic_no,
+          tel:this.tel,
+          gender: this.gender,
+          email: this.email,
+          melli_code: this.melli_code,
+          bio: this.bio,
+          birth_date: this.birth_date,
+          birth_location: this.birth_location, 
+        };
+
+        console.log(payload);
+        let url = "{% url 'authentication:add_person' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          add_person_app.waiting=false
+
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof persons_app != "undefined") {
+              persons_app.persons.push(data.person);
+              show_message(add_person_app,"موفق",data.message+`<a href="${data.person.get_absolute_url}"><h5>${data.person.full_name}</h5></a>`,'success',10000)
+            }
+          }else{
+            show_message(add_person_app,"خطا",data.message,'danger',10000)
+          }
+        });
+      },
+    },
+  });
+</script>

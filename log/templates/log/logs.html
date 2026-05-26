@@ -1,0 +1,27 @@
+{% extends "log/layout.html" %}
+
+{% block content %}
+
+<h3>
+    لاگ ها
+</h3>
+<div class="row">
+    <div class="col-md-12 mb-5">
+        <div class="col-md-12 mb-5">
+            {% include 'log/includes/logs-app/template.html' %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+
+{% block script %}
+    {% include 'log/includes/logs-app/script.html' %}
+
+{% endblock script %}
+    
+    

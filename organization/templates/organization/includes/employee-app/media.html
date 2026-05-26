@@ -1,0 +1,32 @@
+<div class="media">
+        <a :href="employee.get_absolute_url">
+            <img :src="employee.person_account.person.image" class="rounded" width="48" alt="">
+        </a>
+    <div class="media-body mr-2">
+                <a :href="employee.get_absolute_url">
+                    <h5>
+                        <span v-text="employee.person_account.person.full_name"></span>
+                    </h5>
+                </a>
+
+                 <a :href="employee.organizational_unit.get_absolute_url">
+                    <h6>
+                        <small class="text-muted">
+                            سازمان
+                        </small>
+                        <span v-text="employee.organizational_unit.title"></span>
+                    </h6>
+                </a>
+
+
+                  <a :href="employee.person_account.get_absolute_url">
+                    <h6>
+                             <small class="text-muted">
+                            شخص
+                        </small>
+                        <span v-text="employee.person_account.person.full_name"></span>
+
+                    </h6>
+                </a>
+    </div>
+</div>

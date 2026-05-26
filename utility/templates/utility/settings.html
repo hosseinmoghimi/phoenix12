@@ -1,0 +1,121 @@
+{% extends "utility/layout.html" %}
+
+{% block content %} 
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    ادمین سایت
+                </h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav rtl text-right">
+
+                    {% if perms.core.change_parameter %}
+                    <li class="nav-item my-auto mx-2">
+                        <a target="_blank" class="nav-link farsi " href="{{ADMIN_URL}}">
+                            <i class="material-icons" aria-hidden="true">settings</i>
+                            مدیریت
+                        </a>
+                    </li>
+                    {% endif %}
+
+                 
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h4>
+            بکاپ و تهیه فایل های پشتیبان
+                </h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav rtl text-right">
+ 
+
+                    {% if perms.core.change_parameter %}
+                    <li class="nav-item my-auto mx-2">
+                        <a target="_blank" class="nav-link farsi " href="{% url 'utility:download_db' %}">
+                           <i class="fa fa-database"></i>
+                            دانلود داده های پایگاه داده
+                        </a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if perms.core.change_parameter %}
+                    <li class="nav-item my-auto mx-2">
+                        <a target="_blank" href="{% url 'utility:download_media' %}" class="nav-link farsi">
+                            <i class="material-icons" aria-hidden="true">settings</i>
+                            دانلود تصاویر عمومی
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if perms.core.change_parameter %}
+                    <li class="nav-item my-auto mx-2">
+
+                        <a target="_blank" href="{% url 'utility:download_privates' %}" class="nav-link farsi">
+                            <i class="material-icons" aria-hidden="true">settings</i>
+                            دانلود فایل های محرمانه 
+                        </a>
+
+
+                    </li>
+                    {% endif %}
+
+
+                   
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header">
+                <h4>
+                    پارامتر های برنامه
+                </h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav rtl text-right">
+
+                   
+
+                    {% if perms.core.change_parameter %}
+                    <li class="nav-item my-auto mx-2">
+                        <a class="nav-link farsi " target="_blank"
+                            href="{% url 'utility:parameters' %}">
+                            <span class="material-icons">
+                                construction
+                            </span>
+
+                            پارامتر ها
+                        </a>
+                    </li>
+
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
+
+{% block script %} 
+
+{% endblock script %}

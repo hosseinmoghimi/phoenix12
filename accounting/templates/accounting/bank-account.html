@@ -1,0 +1,69 @@
+{% extends "accounting/layout.html" %}
+
+
+{% block content %}
+<div class="row rtl farsi">
+    <div class="col-md-4">
+        {% include "accounting/includes/bank-account-app/card.html" %}
+    </div>
+    
+    <div class="col-md-4">
+        {% include "accounting/includes/account-app/card-full.html" %}
+    </div>
+
+  <div class="col-md-4">
+        {% include "accounting/includes/set-account-parent-app/template.html" %}
+    </div>
+    <div class="col-md-4">
+        {% include "accounting/includes/bank-app/card.html" %}
+    </div>
+
+    <div class="col-md-12">
+        {% include "accounting/includes/accounts-app/template.html" %}
+    </div>
+
+    <div class="col-md-12">
+        {% include "accounting/includes/financial-document-lines-app/template.html" %}
+    </div>
+
+    <div class="col-md-12">
+        {% include "accounting/includes/financial-events-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+        {% include "accounting/includes/add-account-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+        {% include "accounting/includes/set-account-parent-app/template.html" %}
+    </div>
+    {% if add_financial_document_line_form %}
+     
+    <div class="col-md-12">
+        {% include "accounting/includes/add-financial-document-line-app/template.html" %}
+    </div>
+  
+    {% endif %}
+     
+    {% if add_person_account_form %}
+     
+    <div class="col-md-12">
+        {% include "accounting/includes/add-person-account-app/template.html" %}
+    </div>
+  
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "accounting/includes/bank-app/script.html" %}
+{% include "accounting/includes/bank-account-app/script.html" %}
+
+{% include "accounting/includes/account-app/script.html" %}
+        {% include "accounting/includes/set-account-parent-app/script.html" %}
+ 
+{% if add_person_account_form %}
+{% include "accounting/includes/add-person-account-app/script.html" %}
+{% endif %}
+
+{% endblock script %}

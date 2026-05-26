@@ -1,0 +1,85 @@
+<div id="accordion-edit-person-category">
+
+    <div id="edit-person-category-app" class="card">
+        <div id="heading-edit-person-category" class="card-header">
+            <h5 class="text-center">
+                <button data-toggle="collapse" data-target="#collapse-edit-person-category" aria-expanded="false"
+                    aria-controls="collapse-edit-person-category" class="btn btn-link collapsed">
+                    ویرایش دسته بندی اشخاص
+                    </button>
+            </h5>
+        </div>
+
+        <div id="collapse-edit-person-category" aria-labelledby="heading-edit-person-category" data-parent="#accordion-edit-person-category"
+            class="collapse">
+
+
+            <div class="card-body">
+                <h6>
+                    کد حساب والد را وارد کنید.
+                </h6>
+                <form @submit.prevent="edit_person_category()">
+                    <div class="row rtl">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> عنوان</label>
+                                <input type="text" class="form-control" v-model="title">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>طول کد</label>
+                                <input type="number" class="form-control" v-model="code_length">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>کد حساب مرتبط</label>
+                                <input @input="select_account()" type="text" v-model="account_code" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-info" type="submit"> تایید</button>
+                </form>
+                <a :href="account.get_absolute_url" v-if="account.title">
+                    <div class="media">
+                        <img :src="account.thumbnail" width="64" alt="">
+                        <div class="mr-2 media-body">
+                            <h5 class="my-2">
+                                <span :class="'text-'+account.color" v-text="account.title"></span>
+                            </h5>
+                            <h6>
+                                <span :class="'text-'+account.color" v-text="account.code"></span>
+
+                            </h6>
+                            <h6>
+                                <span v-html="to_price_colored(account.balance)"></span>
+                            </h6>
+
+
+                            <h6>
+                                <small :class="'text-'+account.color" v-text="account.full_name"></small>
+
+                            </h6>
+
+                        </div>
+                    </div>
+                </a>
+                <div v-if="!account.name">
+                    <h5 class="text-danger">
+
+                        حسابی انتخاب نشده است.
+                    </h5>
+                </div>
+
+                <div :class="'alert alert-'+message.color" v-if="message.show">
+                    <div class="my-2">
+                        <h4 v-html="message.title" class="my-2"></h4>
+                        <div v-html="message.body" class="my-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

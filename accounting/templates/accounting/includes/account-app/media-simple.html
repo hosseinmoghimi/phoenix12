@@ -1,0 +1,55 @@
+{% load to_price %}
+<div class="media">
+  <a href="{{account.get_absolute_url}}">
+
+    <img src="{{account.thumbnail}}" width="72" alt="">
+  </a>
+  <div class="media-body mr-2">
+    <div>
+      {{account.parent.get_full_link|safe}}
+    </div>
+    <div>
+      <h3>
+        <a href="{{account.get_absolute_url}}">
+          {{account.name}}
+
+
+          <span class="badge badge-{{account.color}}">
+            {{account.type}}
+          </span>
+        </a>
+      </h3>
+    </div>
+    <div>
+      <!-- <a href="{{account.parent.get_absolute_url}}">
+                <h6>{{account.parent.full_title}}
+
+                </h6>
+            </a> -->
+
+    </div>
+    <h6 class="text-{{account.color}}">
+      <small class="text-muted">
+
+        {{account.code}}
+      </small>
+
+    </h6>
+
+      {% if SHOW_BALANCE %}
+        
+      <h6 class="text-{{account.color}}">
+        
+        <span class="mr-2">
+          
+          {{account.balance|to_price_color|safe}}
+        </span>
+      </h6>
+      {% endif %}
+
+    <a href="">
+
+      <h6>{{account.parent_account}}</h6>
+    </a>
+  </div>
+</div>

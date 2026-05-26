@@ -1,0 +1,32 @@
+{% extends "market/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+
+    {% if add_customer_form %}
+
+    <div class="col-md-12 ">
+        {% include "market/includes/add-customer-app/template.html" %}
+    </div>
+    {% endif %}
+
+    <div class="col-md-12 ">
+        {% include "market/includes/customers-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+
+
+
+
+</script>
+
+{% include "market/includes/customers-app/script.html" %}
+
+{% if add_customer_form %}
+{% include "market/includes/add-customer-app/script.html" %}
+{% endif %}
+{% endblock script %}

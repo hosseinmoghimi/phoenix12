@@ -1,0 +1,90 @@
+<div id="accordion-brands" class="rtl text-right farsi">
+  <div class="card" id="brands-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-brands"
+          aria-expanded="true"
+          aria-controls="collapse-brands"
+        >
+          برند ها
+          <span v-if="brands.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="brands.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-brands"
+      class="collapse"
+      aria-labelledby="heading-brands"
+      data-parent="#accordion-brands"
+    >
+      <div class="card-body">
+        <div class="my-2">
+          <input
+            type="text"
+            class="form-control"
+            v-model="search_for"
+            @input="filter()"
+          />
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>نام</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="brand in brands">
+                <td>
+                  <a :href="brand.get_absolute_url">
+                    <div class="media">
+                      <img
+                        :src="brand.logo"
+                        width="96"
+                        class="rounded"
+                        alt=""
+                      />
+                      <div class="media-body mr-2">
+                        <h5 v-text="brand.name"></h5>
+                      </div>
+                    </div>
+                  </a>
+                </td>
+
+                <td>
+                  {% if perms.accounting.change_brand %}
+                  <a
+                    :href="brand.get_edit_url"
+                    class="my-2 text-warning mx-2"
+                    title="ویرایش"
+                    target="_blank"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.accounting.delete_brand %}
+                  <a
+                    :href="brand.get_delete_url"
+                    class="my-2 text-danger mx-2"
+                    title="حذف"
+                    target="_blank"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

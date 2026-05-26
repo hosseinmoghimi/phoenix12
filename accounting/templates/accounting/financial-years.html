@@ -1,0 +1,13 @@
+{% extends "accounting/layout.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+        {% include "accounting/includes/financial-years-app/template.html" %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block script %}
+{% include "accounting/includes/financial-years-app/script.html" %}
+{% endblock script %}

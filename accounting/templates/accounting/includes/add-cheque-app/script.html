@@ -1,0 +1,198 @@
+<script>
+    let add_cheque_app = new Vue({
+        el: "#add-cheque-app",
+        data: {
+            title: "",
+            amount: 0,
+            bedehkar: { code: "0", name: false },
+            bestankar: { code: "0", name: false },
+            status:"",
+            description:"",
+            cheque_date: current_date,
+            cheque_time: current_time,
+            waiting:false,
+            message: { show: false },
+        },
+        components: {
+            DatePicker: VuePersianDatetimePicker
+
+        },
+        methods: {
+            paste_bestankar:async ()=>{
+                console.log('paste_bestankar ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_cheque_app.bestankar_code=String(text)
+                    add_cheque_app.select_bestankar()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+            paste_bedehkar:async ()=>{
+                console.log('paste_bedehkar ')
+
+                try {
+                    const text = await navigator.clipboard.readText();
+                    add_cheque_app.bedehkar_code=String(text)
+                    add_cheque_app.select_bedehkar()
+                    
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                }
+
+            },
+      
+            
+            
+
+            swap: function () {
+                let bed = add_cheque_app.bedehkar
+                let bes = add_cheque_app.bestankar
+                add_cheque_app.bedehkar = bes
+                add_cheque_app.bestankar = bed
+            },
+            to_price_colored: function (vall) {
+                let colorr = "primary"
+                if (vall > 0) {
+                    colorr = "success"
+                }
+
+
+                if (vall < 0) {
+                    colorr = "danger"
+                }
+
+                return `<span class="text-${colorr}">${to_price(vall)} {{CURRENCY}}</span>`
+            },
+
+            
+            to_price: function (vall) {
+                return  to_price(vall)+" {{CURRENCY}}" 
+            },
+
+            add_cheque: function () {
+
+                
+                if( !add_cheque_app.bedehkar.name){
+                    add_cheque_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>بدهکار را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+
+                if(!add_cheque_app.bestankar.name){
+                    add_cheque_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>بستانکار را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+
+
+                if (!add_cheque_app.amount > 0) {
+                    add_cheque_app.message = {
+                        show: true,
+                        header: "خطا ",
+                        body: `<div  class="text-right text-danger1 farsi"><h4>خطا</h4><p>مبلغ صحیح را وارد کنید.</p> </div>`,
+                        color: "danger",
+                    }
+                    return
+                }
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    status: this.status,
+                    bestankar_id: this.bestankar.id,
+                    bedehkar_id: this.bedehkar.id,
+                    description: this.description,
+                    amount: parseInt(this.amount),
+                    event_datetime: (this.cheque_date)+' '+(this.cheque_time),
+                    title: (this.title),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_cheque' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if(typeof cheques_app !="undefined"){
+                            cheques_app.cheques.push(data.cheque)
+                        }
+                        // add_cheque_app.message = {
+                        //     show: true,
+                        //     header: "موفقیت آمیز",
+                        //     body: `<div  class="text-right farsi"><p>${data.message}</p><a target="_blank" href="${data.cheque.get_absolute_url}">${data.cheque.title}</a></div>`,
+                        //     color: "success",
+                        // }
+                        show_message(add_cheque_app,"موفقیت آمیز", `<div  class="text-right farsi"><p>${data.message}</p><a target="_blank" href="${data.cheque.get_absolute_url}">${data.cheque.title}</a></div>`,"success",50000)
+                    }
+                    if (data.result != "SUCCEED") {
+                        // add_cheque_app.message = {
+                        //     show: true,
+                        //     header: "خطا",
+                        //     body: `<div  class="text-right farsi"><p>${data.message}</p></div>`,
+                        //     color: "danger",
+                        // }
+                        show_message(add_cheque_app,"خطا", `<div  class="text-right farsi"><p>${data.message}</p></div>`,"danger",50000)
+
+                    }
+
+                })
+
+            },
+            select_bedehkar: function () {
+              
+                setTimeout(() => {
+                     select_account_by_code(this.bedehkar_code).done(data => {
+                    console.log(data)
+
+                    if (data.result === "SUCCEED") {
+                        console.log(data.account)
+                        if(data.account.nature==="{{ONLY_BESTANKAR}}"){
+
+                            return
+                        }
+                        add_cheque_app.bedehkar = data.account
+                    }
+                    else {
+                        add_cheque_app.bedehkar = { code: add_cheque_app.bedehkar.code, name: false }
+
+                    }
+                })
+            
+                }, 200);
+           
+            },
+            select_bestankar: function () {
+                setTimeout(() => {
+                    select_account_by_code(this.bestankar_code).done(data => {
+                    console.log(data)
+                    if (data.result === "SUCCEED") {
+                        if(data.account.nature==="{{ONLY_BEDEHKAR}}"){
+                            
+                            return
+                        }
+
+                        console.log(data.account)
+                        add_cheque_app.bestankar = data.account
+                    }
+
+                    else {
+                        add_cheque_app.bestankar = { code: add_cheque_app.bestankar.code, name: false }
+
+                    }
+                })
+                }, 200);
+                
+            }
+
+        },
+    })
+</script>

@@ -1,0 +1,93 @@
+{% if me_person %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-right" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <img src="{{me_person.image}}" class="rounded-circle" width="32" alt="">
+
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" style="text-align: center;" href="{{me_person.get_absolute_url}}">
+            <img src="{{me_person.image}}" class="rounded-circle" width="128" alt="">
+        </a>
+        <div class="dropdown-divider"></div>
+
+        <a class="dropdown-item" style="text-align: center;" href="{{me_person.get_absolute_url}}">
+            {{me_person.full_name}}
+
+        </a>
+
+         <a class="dropdown-item" style="text-align: center;" href="{{me_person.get_change_password_url}}">
+          تغییر دادن کلمه عبور
+        </a>
+
+      {% if APP_NAVBAR %}
+
+      {% include APP_NAVBAR %}
+      {% endif %}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item text-center" href="{% url 'authentication:logout' %}">
+            <span class="text-danger">
+
+                <i class="fa fa-key"></i>
+                خروج
+            </span>
+        </a>
+    </div>
+</li>
+
+
+
+{% else %}
+<li class="nav-item  ">
+    <a class="nav-link   text-right" href="{% url 'authentication:login' %}" role="button">
+        ورود
+
+    </a>
+   
+</li>
+<li class="nav-item  ">
+    <a class="nav-link   text-right" href="{% url 'authentication:register' %}" role="button">
+        ثبت نام
+
+    </a>
+   
+</li>
+
+
+{% endif %}
+
+
+
+
+
+{% if notifications %} 
+<li class="nav-item dropdown">
+    <a title="پیام های شما" class="nav-link dropdown-toggle text-right" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        
+        <span class="mx-1 text-danger">
+            {{notifications|length}}
+        </span>
+        <i class="fa fa-bell text-danger" aria-hidden="true"></i>
+
+          
+    </a>
+    <div class="dropdown-menu text-right" aria-labelledby="navbarDropdown" >
+        {% for notification in notifications %}
+          
+        <a class="dropdown-item text-right"  href="{{notification.get_absolute_url}}">
+            <h6 class="text-right">
+        <i class="fa fa-bell text-danger" aria-hidden="true"></i>
+
+                {{notification.title}}
+            </h6>
+        </a>
+        {% endfor %}
+
+        
+    </div>
+</li>
+
+
+ 
+{% endif %}

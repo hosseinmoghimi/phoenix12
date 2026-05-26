@@ -1,0 +1,30 @@
+<div id="page-description-app">
+{% if page.description %}
+
+    <div id="accordion-page-description">
+        <div class="card">
+            <div class="card-header" id="heading-page-description">
+                <h5 class="mb-0 text-center">
+                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                        data-target="#collapse-page-description" aria-expanded="false"
+                        aria-controls="collapse-page-description">
+                        توضیحات کامل 
+                        <!-- درباره
+                        {{page.title}} -->
+                    </button>
+                </h5>
+            </div>
+            <div id="collapse-page-description" class="collapse" aria-labelledby="heading-page-description"
+                data-parent="#accordion-page-description">
+                <div class="card-body ltr text-right ltr">
+                    <div v-if="description.length==0">
+
+                        {{page.description|safe}}
+                    </div>
+                    <span v-html="description"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,91 @@
+{% load static %}
+
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+<div id="accordion-logs">
+
+
+    <div class="card" id="logs-app">
+        <div class="card-header" id="heading-logs">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-logs" aria-expanded="true"
+                    aria-controls="collapse-logs">
+                    لاگ ها
+
+
+                    <span v-if="logs.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="logs.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+
+
+        </div>
+        <div id="collapse-logs" class="collapse {% if expand_logs %} show {% endif %}" aria-labelledby="heading-logs" data-parent="#accordion-logs">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <th>
+                            عنوان
+                        </th>
+                        <th>
+                            کاربر
+                        </th>
+                        <th>
+زمان و تاریخ
+                        </th>
+                        <th>
+                            
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+
+                        <tr>
+                            <td>
+                                <a href="{{log.get_absolute_url}}">
+
+                                    {{log.title}}
+                                </a>
+                            </td>
+                            <td>
+
+                                <a href="{{log.person.get_absolute_url}}">
+                                <div class="media">
+                                        <img src="{{me_person.image}}" class="rounded-circle" width="48" alt="">
+                                    <div class="media-body mr-2">
+                                        <h6>
+                                            {{log.person.full_name}}
+                                        </h6>
+                                    </div>
+                                </div>
+                             </a>
+                            </td>
+                            <td>
+                                {{log.date_added|to_persian_datetime|safe}}
+                            </td>
+                            <td>
+                                {% if perms.accounting.change_log %}
+                                <a href="{{log.get_edit_url}}" target="_blank" title="ویرایش" class="mx-2"><i
+                                        class="fa fa-edit text-info"></i></a>
+                                {% endif %}
+                                {% if perms.accounting.delete_log %}
+                                <a href="{{log.get_delete_url}}" target="_blank" title="حذف" class="mx-2"><i
+                                        class="fa fa-trash text-danger"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

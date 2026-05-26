@@ -1,0 +1,51 @@
+<div id="accordion-add-blog" class="rtl text-right farsi">
+  <div class="card" id="add-blog-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-blog"
+          aria-expanded="true"
+          aria-controls="collapse-add-blog">
+          افزودن بلاگ جدید
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-blog"
+      class="collapse"
+      aria-labelledby="heading-add-blog"
+      data-parent="#accordion-add-blog"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_blog()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="name">نام بلاگ جدید</label>
+                    <input type="text" class="form-control" required v-model="title" />
+                  </div>
+                </div>
+              </div>
+            </div>
+ 
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-md-12 mt-2">
+              {% include "utility/includes/message-app/alert.html" %}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

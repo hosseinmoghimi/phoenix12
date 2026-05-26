@@ -1,0 +1,77 @@
+<tr>
+  <td>
+    <div class="media">
+      <a :href="cart_item.shop.product.get_market_absolute_url">
+        <img
+          :src="cart_item.shop.product.thumbnail"
+          width="64"
+          class="rounded"
+          alt=""
+        />
+      </a>
+
+      <div class="media-body mr-2">
+        <h6>
+          <a :href="cart_item.shop.product.get_market_absolute_url">
+            <span v-text="cart_item.shop.product.title"> </span>
+          </a>
+        </h6>
+        <h6>
+          <small>
+            <a :href="cart_item.shop.supplier.get_absolute_url">
+              <span
+                v-text="cart_item.shop.supplier.person_account.person.full_name"
+              >
+              </span>
+            </a>
+          </small>
+        </h6>
+      </div>
+    </div>
+  </td>
+
+  <td>
+    <button
+      type="button"
+      class="btn btn-danger"
+      @click="change_quantity(cart_item.shop,cart_item.quantity-1)"
+      style="border-radius: 0 5px 5px 0"
+    >
+      -
+    </button>
+    <button type="button" class="btn btn-light">
+        <div class="text-center">
+      <span class="farsi" v-text="cart_item.quantity"> </span>
+        <span v-text="cart_item.shop.unit_name"> </span>
+      </div>
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      @click="change_quantity(cart_item.shop,cart_item.quantity+1)"
+      style="border-radius: 5px 0 0 5px"
+    >
+      +
+    </button>
+
+    *
+    <span v-text="to_price(cart_item.shop.unit_price)"> </span> {{CURRENCY}}
+  </td>
+
+  <td>
+    <div>
+      <small v-text="cart_item.persian_date_added"> </small>
+    </div>
+    <div>
+      {% if perms.market.change_cartitem %}
+      <a target="_blank" :href="cart_item.get_edit_url" title="ویرایش">
+        <i class="fa fa-edit text-warning"></i>
+      </a>
+      {% endif %} {% if perms.market.delete_cartitem %}
+      <a target="_blank" :href="cart_item.get_delete_url" title="حذف">
+        <i class="fa fa-trash text-danger"></i>
+      </a>
+      {% endif %}
+    </div>
+  </td>
+</tr>

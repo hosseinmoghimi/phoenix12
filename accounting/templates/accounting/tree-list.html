@@ -1,0 +1,51 @@
+{% extends "accounting/layout.html" %}
+{% load to_price %}
+{% block content %}
+<div class="row rtl farsi">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+                    حساب ها
+                </h5>
+            </div>
+            <div class="card-body">
+                {% for account in accounts %}
+                <h5 class="text-center">
+                    <a href="{{account.get_absolute_url}}">
+                        {{account.name}}
+                        <small>
+                           (
+                               {{account.balance|to_price_color|safe}}
+                           )
+                        </small>
+                    </a>
+                </h5>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        {% include "accounting/includes/add-account-app/template.html" %}
+    </div>
+    <div class="col-md-12 ">
+        {% include "accounting/includes/accounts-app/template.html" %}
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+    const account_id=0
+    const account_color="primary"
+
+</script> 
+
+{% include "accounting/includes/add-account-app/script.html" %}
+{% include "accounting/includes/accounts-app/script.html" %}
+
+{% endblock script %}

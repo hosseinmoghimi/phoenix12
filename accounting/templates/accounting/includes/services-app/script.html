@@ -1,0 +1,29 @@
+<script>
+    let services_for_services_app=JSON.parse("{{services_s|escapejs}}")
+    let services_app = new Vue({
+        el: "#services-app",
+        data: {
+            services: services_for_services_app,
+            search_for:"",
+        },
+        methods: {
+            filter: () => {
+                let search_for = (services_app.search_for).toUpperCase()
+                console.log(search_for)
+                services_app.services = services_for_services_app.filter(function (service) {
+                    let title=(service.title).toUpperCase()
+                    
+                    if(title.indexOf(search_for) > -1){
+                        return true
+                    }
+                    return false
+                })
+
+            },
+
+            to_price: (vall) => {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

@@ -1,0 +1,41 @@
+<script>
+    let add_product_to_category_app = new Vue({
+        el: "#add-product-to-category-app",
+        data: {
+            product_id:"",
+            product_barcode:"",
+            product: {},
+            message: { show: false },
+        },
+        methods: {
+             
+            add_product_to_category: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    product_id: parseInt(this.product_id),
+                    product_barcode: (this.product_barcode),
+                    category_id: parseInt("{{category.id}}"),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_product_to_category' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    console.log(data)
+
+                    if (data.result === "SUCCEED") {
+                        show_message(add_product_to_category_app,'موفقیت آمیز',data.message,"success",3000)
+                        if(typeof products_app != 'undefined')
+                            products_app.products.push(data.product)
+                    }
+                    if (data.result != "SUCCEED") {
+                        show_message(add_product_to_category_app,'خطا',data.message,"danger",3000)
+                         
+                    }
+
+                })
+            },
+             
+        },
+
+    })
+</script>

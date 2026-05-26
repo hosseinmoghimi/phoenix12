@@ -1,0 +1,38 @@
+<div class="" id="related-pages-app">
+
+
+
+    <div class="">
+        <div class="row">
+
+            <div class="col-lg-2 col-md-3 col-6 mb-3" v-for="related_page in related_pages">
+                <div class="card">
+                    <div class="card-body">
+                        <a :href="'/market/product/'+related_page.id">
+                            <div class="text-center mb-3">
+
+                                <img :src="related_page.thumbnail" class="rounded" width="80%" alt="">
+                            </div>
+                        </a>
+                        <h6 class="text-muted text-center">
+                            <small>
+
+                                <span v-text="related_page.class_title"></span>
+                            </small>
+                        </h6>
+                        <a :href="'/market/product/'+related_page.id" target="_blank">
+
+                            <h6 class="text-center">
+                                <span v-text="related_page.title"></span>
+                            </h6>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>

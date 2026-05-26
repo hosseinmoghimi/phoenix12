@@ -1,0 +1,18 @@
+<script>
+    
+    let organizational_units_for_organizational_units_app=JSON.parse("{{organizational_units_s|escapejs}}")
+    let organizational_units_app = new Vue({
+        el: "#organizational-units-app",
+        data: {
+            organizational_units: organizational_units_for_organizational_units_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            },
+            to_price_colored: function(vall) { 
+                return  to_price_colored(vall) 
+            },
+        }
+    })
+</script>

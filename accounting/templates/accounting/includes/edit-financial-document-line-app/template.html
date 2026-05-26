@@ -1,0 +1,213 @@
+{% load static %}
+
+<div id="accordion-edit-financial-document-line">
+  <div class="card" id="edit-financial-document-line-app">
+    <div class="card-header">
+      <h5 class="card-title text-center farsi">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-edit-financial-document-line"
+          aria-expanded="true"
+          aria-controls="collapse-edit-financial-document-line"
+        >
+          <i class="fa fa-plus"></i>
+          ویرایش سطر سند مالی
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-edit-financial-document-line"
+      class="collapse {% if expand_edit_financial_document_line %} show {% endif %}"
+      aria-labelledby="heading-edit-financial-document-line"
+      data-parent="#accordion-edit-financial-document-line"
+    >
+      <div class="card-body">
+        
+          <div class="row rtl">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input
+                  required
+                  class="form-control"
+                  v-model="title"
+                  type="text"
+                />
+              </div>
+            </div>
+
+            
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">حساب</label>
+
+             
+
+                <input
+                  class="form-control"
+                  v-model="account_code"
+                  @input="select_account()"
+                  type="text"
+                />
+
+                <div class="my-2" v-if="account.title">
+                  {% include "accounting/includes/account-app/media.html" %}
+                </div>
+
+                <h6 class="text-danger my-2">
+                  <a target="_blank" href="{% url 'accounting:person_accounts' %}">
+                    <span> همه حساب های اشخاص </span>
+                  </a>
+                </h6>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">رویداد</label>
+
+                <input
+                  class="form-control"
+                  v-model="financial_event.id"
+                  @input="select_financial_event_by_id()"
+                  type="number"
+                />
+
+                <div class="my-2">
+                  <h5 v-if="financial_event.title">
+                    <a :href="financial_event.get_absolute_url">
+                      <span v-text="financial_event.title"></span>
+                    </a>
+                  </h5>
+                </div>
+
+                <h6 class="text-danger">
+                  <a
+                    target="_blank"
+                    href="{% url 'accounting:financial_events' %}"
+                  >
+                    <span> همه رویداد ها </span>
+                  </a>
+                </h6>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">سند</label>
+
+                <input
+                  class="form-control"
+                  v-model="financial_document.id"
+                  @input="select_financial_document_by_id()"
+                  type="number"
+                />
+                  
+                <input type="text"  v-if="financial_document.id==0" v-model="financial_document.title" class="form-control" placeholder="نام سند جدید">
+                
+
+                <div class="my-2">
+                  <h5 v-if="financial_document.title">
+                    <a :href="financial_document.get_absolute_url">
+                      <span v-text="financial_document.title"></span>
+                    </a>
+                  </h5>
+                </div>
+                {% if not financial_document %}
+
+                <h6 class="text-danger">
+                  <a
+                    target="_blank"
+                    href="{% url 'accounting:financial_documents' %}"
+                  >
+                    <span> همه سند ها </span>
+                  </a>
+                </h6>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ</label>
+                <date-picker v-model="date_time"></date-picker>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="date_time"
+                  name=""
+                  id=""
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for=""
+                  >بدهکار
+
+                  <span class="text-danger" v-text="to_price(bedehkar)"></span>
+                  {{CURRENCY}}
+                </label>
+                <input class="form-control" v-model="bedehkar" type="number" />
+              </div>
+              <btn class="btn btn-info" @click="swap()">
+                <img
+                  src="{% static 'leo/img/exchange-v.png' %}"
+                  width="16"
+                  alt=""
+                />
+              </btn>
+
+              <div class="form-group">
+                <label for=""
+                  >بستانکار
+
+                  <span
+                    class="text-success"
+                    v-text="to_price(bestankar)"
+                  ></span>
+                  {{CURRENCY}}
+                </label>
+                <input class="form-control" v-model="bestankar" type="number" />
+              </div>
+            </div>
+
+            
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">وضعیت</label>
+                <select v-model="status" class="form-control">
+                  <option value="{{financial_document_line.status}}">{{financial_document_line.status}}</option>
+                  {% for status in financial_document_line_statuses %}
+                    
+                  <option value="{{status}}">{{status}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button @click="edit_financial_document_line()" type="submit" class="btn btn-success">
+                <i class="fa fa-plus"></i>تایید و ذخیره
+              </button>
+            </div>
+            <div class="col-md-12 my-2" v-if="message.show">
+              <div :class="'alert alert-'+message.color">
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+            <!-- <div class="col-md-12" vb-show="message.show">
+                    <div class="'alert alert-'message.color">
+                        <div vb-html="message.body"></div>
+                    </div>
+                </div> -->
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

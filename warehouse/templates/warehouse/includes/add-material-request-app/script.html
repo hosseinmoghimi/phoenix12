@@ -1,0 +1,167 @@
+{% include "accounting/includes/product-app/select-script.html" %}
+<script>
+  let unit_names = JSON.parse("{{unit_names_for_edit_invoice_line_s|escapejs}}")
+
+  let add_material_request_app = new Vue({
+    el: "#add-material-request-app",
+    data: {
+      title: "",
+      unit_names:unit_names,
+      product_id: 0,
+      invoice_id: 0,
+      warehouse_id: 0,
+      organizational_unit_id: 0,
+      direction: "خروج",
+      barcode: "",
+      status: "",
+      row:1,
+      save: false,
+      default_price: false,
+      products: [],
+      product: {},
+      quantity:0,
+      type:"",
+      status:"",
+      unit_name:"عدد",
+      coef:1,
+      unit_price:0,
+      invoice_line_item_units:[],
+      product_in_warehouses:[],
+      message:{show:false},
+      waiting:false,
+    },
+    methods: {
+      search: function () {
+        let url = "{% url 'accounting:select_product' %}";
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+      
+          save: this.save,
+          default_price: this.default_price,
+
+        };
+        if (this.title.length > 0) {
+          payload.title = this.title;
+        }
+
+        if (this.product_id > 0 ){
+          payload.id = this.product_id;
+        }
+
+        if (this.barcode.length > 2) {
+          payload.barcode = this.barcode;
+        }
+        console.log(payload)
+        $.post(url, payload).done((data) => {
+          if (typeof data.products != "undefined") {
+            console.log(data.products);
+            this.products = data.products;
+          }
+          if (typeof data.product != "undefined") {
+            console.log(data.product);
+            this.products = [data.product];
+            let url = "{% url 'accounting:select_product' %}";
+            let payload = {
+              csrfmiddlewaretoken: csrfmiddlewaretoken,
+            };
+          }
+        });
+      },
+      to_price:(vall,curr)=>to_price(vall,curr),
+      to_price_colored:(vall,curr)=>to_price_colored(vall,curr),
+      select_product: function () {},
+      select_invoice_line_item_unit: function (invoice_line_item_unit) {
+        console.log(invoice_line_item_unit)
+        add_material_request_app.unit_price = invoice_line_item_unit.unit_price
+        add_material_request_app.unit_name = invoice_line_item_unit.unit_name
+        add_material_request_app.coef = invoice_line_item_unit.coef
+        add_material_request_app.save = false
+        add_material_request_app.default_price = false
+      },
+      add_material_request:function(){
+        let sw=true
+        if(this.quantity<=0){
+            show_message(add_material_request_app,'خطا','تعداد را وارد کنید.','danger',3000)
+            sw=false
+        }
+        if(!sw){
+          return
+        }
+        let payload={
+          csrfmiddlewaretoken:csrfmiddlewaretoken,
+          row:this.row,
+          unit_name:this.unit_name,
+          product_id:parseInt(this.product_id),
+          organizational_unit_id:parseInt(this.organizational_unit_id),
+          save:(this.save),
+          type:(this.type),
+          status:(this.status),
+          default_price:(this.default_price),
+          warehouse_id:parseInt(this.warehouse_id),
+          direction:this.direction,
+          invoice_id:parseInt(this.invoice_id),
+          status:this.status,
+          quantity:parseFloat(this.quantity),
+          unit_price:(this.unit_price),
+          coef:parseFloat(this.coef),
+        }
+        console.log(payload)
+        let url="{% url 'warehouse:add_material_request' %}"
+        $.post(url,payload).done(data=>{
+          console.log(data)
+          if(data.result==='SUCCEED'){
+            show_message(add_material_request_app,'موفق',data.message,'success',3000)
+            add_material_request_app.row=add_material_request_app.row+1
+            if(typeof invoice_lines_app != 'undefined'  && typeof data.invoice_line != 'undefined' ){
+              invoice_lines_app.invoice_lines.push(data.invoice_line)
+            }
+            if(typeof warehouse_sheets_app != 'undefined'  && typeof data.warehouse_sheet != 'undefined' ){
+              warehouse_sheets_app.warehouse_sheets.push(data.warehouse_sheet)
+            }
+          }
+          else{
+            show_message(add_material_request_app,'خطا',data.message,'danger',3000)
+
+          }
+        })
+      },
+      select_product_in_warehouse:(product_in_warehouse)=>{
+        // console.log(product_in_warehouse.product.title)
+        // console.log(product_in_warehouse.warehouse.name)
+        // console.log(product_in_warehouse.quantity)
+        // console.log(product_in_warehouse.unit_name)
+        add_material_request_app.unit_name = product_in_warehouse.unit_name
+        add_material_request_app.quantity = product_in_warehouse.quantity
+        add_material_request_app.warehouse_id = product_in_warehouse.warehouse.id
+
+      },
+      select_item: function (invoice_line_item) {
+        add_material_request_app.products = [invoice_line_item]
+        add_material_request_app.title = invoice_line_item.title
+        add_material_request_app.product = invoice_line_item
+        add_material_request_app.product_id = invoice_line_item.id
+        add_material_request_app.unit_name = invoice_line_item.unit_name
+        add_material_request_app.unit_price = invoice_line_item.unit_price
+        add_material_request_app.invoice_line_items = [invoice_line_item]
+        add_material_request_app.buffer_items = [invoice_line_item]
+        let url = "{% url 'warehouse:product_in_warehouse' %}"
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          product_id: parseInt(invoice_line_item.id),
+        }
+        
+        console.log('1542')
+        console.log(payload)
+        $.post(url, payload).done(data => {
+          console.log(data)
+          if(data.result==='SUCCEED'){
+            add_material_request_app.product_in_warehouses=data.product_in_warehouses
+          }
+          // add_material_request_app.invoice_line_item_units = data.invoice_line_item_units
+        })
+      },
+      
+    },
+    components: {},
+  });
+</script>

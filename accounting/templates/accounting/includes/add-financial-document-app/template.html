@@ -1,0 +1,40 @@
+<div id="accordion-add-financial-document" class="rtl text-right farsi">
+  <div class="card" id="add-financial-document-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-financial-document"
+          aria-expanded="true"
+          aria-controls="collapse-add-financial-document"
+        >
+          افزودن سند مالی
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-add-financial-document"
+      class="collapse  "
+      aria-labelledby="heading-add-financial-document"
+      data-parent="#accordion-add-financial-document"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_financial_document()">
+          <div class="row rtl">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">وضعیت</label>
+                <select class="form-control" name="" id="">
+                  {% for status in financial_year_statuses %}
+                  <option value="{{status}}">{{status}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

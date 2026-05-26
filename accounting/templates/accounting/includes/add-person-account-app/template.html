@@ -1,0 +1,145 @@
+<div id="accordion-add-person-account">
+  <div class="card" id="add-person-account-app">
+    <div class="card-header" id="heading-add-person-account">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-person-account"
+          aria-expanded="true"
+          aria-controls="collapse-add-person-account"
+        >
+          افزودن حساب شخص
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-add-person-account"
+      class="collapse"
+      aria-labelledby="heading-add-person-account"
+      data-parent="#accordion-add-person-account"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_person_account()">
+          <div class="row rtl">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for=""
+                  >شناسه شخص
+
+                  <a href="{% url 'authentication:persons' %}" target="_blank"
+                    >همه اشخاص</a
+                  >
+                </label>
+                <input
+                  type="number"
+                  @input="select_person()"
+                  required
+                  class="form-control"
+                  v-model="person_id"
+                />
+              </div>
+
+                <div v-if="person.full_name">
+                <a :href="person.get_absolute_url">
+                  <div class="media">
+                    <img
+                      :src="person.image"
+                      class="rounded-circle"
+                      width="48"
+                      alt=""
+                    />
+                    <div class="media-body mr-2">
+                      <h6 :class="'text-'+person.color" v-text="person.full_name"></h6>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+            </div>
+ 
+            
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">رنگ</label>
+                <select name="" id="" class="form-control" v-model="color">
+                  <option value="success">سبز</option>
+
+                  <option value="secondary">خاکستری</option>
+
+                  <option value="primary">آبی</option>
+
+                  <option value="danger">قرمز</option>
+
+                  <option value="warning">نارنجی</option>
+
+                  <option value="dark">تیره</option>
+
+                  <option value="info">آبی روشن</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">ماهیت</label>
+                <select name="" id="" class="form-control" v-model="nature">
+                  {% for nature in account_natures_for_add_person_account %}
+                  <option value="{{nature}}">{{nature}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">دسته بندی</label>
+                <select
+                  name=""
+                  id=""
+                  class="form-control"
+                  v-model="person_category_id"
+                >
+                  {% for person_category in person_categories %}
+                  <option value="{{person_category.id}}">
+                    {{person_category.title}}
+                  </option>
+                  {% endfor %}
+                </select>
+                <a target="_blank" href="{{SITE_URL}}admin/accounting/personcategory/add/">افزودن دسته بندی</a>
+                /
+                <a target="_blank" href="{% url 'accounting:person_categories' %}"> دسته بندی ها</a>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">اولویت</label>
+                <input
+                  type="number"
+                  required
+                  class="form-control"
+                  v-model="priority"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن حساب
+              </button>
+            </div>
+            <div class="col-md-12 mt-2" v-if="message.show">
+              <div :class="'alert alert-'+message.color">
+                <div class="rtl text-right">
+                  <h5 v-html="message.title"></h5>
+                  <span v-html="message.body"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

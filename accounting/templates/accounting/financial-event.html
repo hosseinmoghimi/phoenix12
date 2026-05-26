@@ -1,0 +1,63 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl">
+  <div class="col-md-3">
+    {% include "accounting/includes/financial-event-app/card.html" %}
+  </div>
+  <div class="col-md-9">
+    <div class="row rtl farsi">
+      <div class="col-md-12">
+        {% include "core/includes/page-description-app/short-description.html" %}
+        {% include "core/includes/page-description-app/description.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/downloads-app/template.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/links-app/template.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/comments-app/template.html" %}
+      </div>
+      <div class="col-md-12">
+        {% include "attachments/includes/images-app/template.html" %}
+      </div>
+
+      {% if edit_financial_event_form %}
+      <div class="col-md-12">
+        {% include "accounting/includes/edit-financial-event-app/template.html" %}
+      </div>
+      {% endif %}
+      
+      <div class="col-md-12">
+        {% include "core/includes/page-thumbnail-header-app/template.html" %}
+      </div>
+      <div class="col-md-12">
+        {% include "accounting/includes/financial-document-lines-app/template.html" %}
+      </div>
+      {% if add_financial_document_line_form %}
+      <div class="col-md-12">
+        {% include "accounting/includes/add-financial-document-line-app/template.html" %}
+      </div>
+      {% endif %}
+
+      {% if logs %}
+      
+      <div class="col-md-12">
+            {% include 'log/includes/logs-app/template.html' %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock content %} 
+{% block script %}
+    {% include "accounting/includes/financial-event-app/script.html" %} 
+    
+      {% if logs %}
+      
+            {% include 'log/includes/logs-app/script.html' %}
+      {% endif %}
+
+{% endblock script %}

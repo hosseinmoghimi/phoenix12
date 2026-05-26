@@ -1,0 +1,140 @@
+<div id="invoice-lines-app" class="card">
+  {% load to_price %}
+
+  <div class="card-body">
+    <div class="table-responsive rtl">
+      <div v-show="invoice_lines.length==0">
+        <h5 class="text-canter text-danger">سطری وجود ندارد.</h5>
+      </div>
+      <div v-show="invoice_lines.length>0">
+        <table class="table table-striped farsi rtl">
+          <thead>
+            <th class="bordered farsi text-right">ردیف</th>
+            {% if not invoice_line_item %}
+
+            <th class="bordered farsi text-right">شرح</th>
+            {% endif %} {% if not invoice %}
+
+            <th class="bordered farsi text-right">فاکتور</th>
+
+            {% endif %}
+
+            <th class="bordered farsi text-right">تعداد</th>
+
+            <th class="bordered farsi text-right">فی</th>
+
+            <th class="bordered farsi text-right">تخفیف</th>
+
+            <th class="bordered farsi text-right">
+              مبلغ
+              <small class="text-muted"> ( {{CURRENCY}} ) </small>
+            </th>
+          </thead>
+          <tbody>
+            <tr v-for="(invoice_line, index) in invoice_lines" :key="invoice_line.id">
+              <td class="bordered farsi text-right">
+                <span v-text="index + 1"></span>
+              </td>
+
+              {% if not invoice_line_item %}
+
+              <td class="bordered farsi text-right">
+                <span v-text="invoice_line.invoice_line_item.title"></span>
+              </td>
+              {% endif %} {% if not invoice %}
+              <td class="bordered farsi text-right">
+                <span v-text="invoice_line.invoice.title"></span>
+                <div>
+                  <span
+                    v-text="invoice_line.invoice.persian_invoice_datetime"
+                  ></span>
+                </div>
+                <div class="row rtl">
+                  <div class="col-6">
+                    <small>
+                      <span
+                        v-text="invoice_line.invoice.bestankar.title"
+                      ></span>
+                    </small>
+                  </div>
+                  <div class="col-6">
+                    <small>
+                      <span v-text="invoice_line.invoice.bedehkar.title"></span>
+                    </small>
+                  </div>
+                </div>
+              </td>
+
+              {% endif %}
+              <td class="bordered farsi text-right">
+                <span v-text="invoice_line.quantity"></span>
+                <span v-text="invoice_line.unit_name"></span>
+              </td>
+              <td class="bordered farsi text-right">
+                
+                <div>
+                 
+                </div>
+              </td>
+
+              <td class="bordered farsi text-right">
+                <div  > 
+                  
+                  <div class="text-success"
+                  >
+                    
+                  
+                 
+                  </div>
+                </div>
+               
+              </td>
+
+              <!-- <td class="bordered farsi text-right">
+                                        <div>
+                                            <span
+                                                v-text="to_price(invoice_line.unit_price*invoice_line.quantity)"></span>
+                                        </div>
+                                        <div class="text-danger">
+                                            <span v-text="to_price(invoice_line.discount)"></span>
+                                        </div>
+                                    </td> -->
+
+              <td class="bordered farsi text-right">
+                <div  >
+                  
+                </div>
+
+                <div>
+                  
+                </div>
+              </td>
+            </tr> 
+
+            <tr>
+              <td colspan="4">
+                <div class="text-left">
+                  
+                </div>
+              </td>
+
+              <td  >
+                <div class="text-right"> 
+                 
+              </td>
+              <td class="bordered farsi text-right">
+            
+              </td>
+            </tr>
+           
+  
+  
+           
+ 
+          </tbody>
+          
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

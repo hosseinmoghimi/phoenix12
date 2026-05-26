@@ -1,0 +1,166 @@
+{% load static %} {% load to_price %}
+
+<div id="accordion-projects">
+  <div class="card" id="sub-projects-app">
+    <div class="card-header" id="heading-projects">
+      <div class="row rtl">
+        <div class="col-3"></div>
+
+        <div class="col-6">
+          <h5 class="card-title text-center farsi">
+            <button
+              class="btn btn-link"
+              data-toggle="collapse"
+              data-target="#collapse-projects"
+              aria-expanded="true"
+              aria-controls="collapse-projects"
+            >
+              زیر پروژه ها
+              <span v-if="projects.length>0">
+                <small class="text-danger mx-2">
+                  <span v-text="projects.length"></span>
+                </small>
+              </span>
+            </button>
+          </h5>
+        </div>
+
+        <div class="col-3">
+          <span
+            v-show="show_detail"
+            title="حذف جزئیات"
+            class="material-icons text-muted"
+            style="cursor: pointer"
+            @click="show_detail=false"
+          >
+            loupe
+          </span>
+
+          <span
+            v-show="!show_detail"
+            title="نمایش جزئیات"
+            class="material-icons text-primary"
+            style="cursor: pointer"
+            @click="show_detail=true"
+          >
+            loupe
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      id="collapse-projects"
+      class="collapse {% if expand_projects %} show {% endif %}"
+      aria-labelledby="heading-projects"
+      data-parent="#accordion-projects"
+    >
+      <div class="card-body rtl">
+        <div v-for="project in projects" class="farsi mx-2 mb-3">
+          <a title="جزئیات" :href="project.get_absolute_url">
+            <div class="media">
+              <img :src="project.thumbnail" class="rounded" width="32" alt="" />
+
+              <div class="media-body farsi">
+                <h5 v-text="project.title" class="rtl mx-2">
+                  <span v-text="project.title"></span>
+                </h5>
+                <h6 v-if="project.sub_title">
+                  <span
+                    class="text-secondary rtl"
+                    v-html="project.sub_title"
+                  ></span>
+                </h6>
+                {% if not project %}
+                <h6 class="text-secondary">
+                  <span v-text="project.employer.title"></span>
+                  <!-- <span v-text="project.employer.title"></span> -->
+                </h6>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+
+          <h6 class="text-secondary ltr my-1" v-show="show_detail">
+            <small>
+              <div class="row rtl">
+                <div class="col-2">
+                  <span title="پیشرفت زیرپروژه">
+                    <span v-text="project.percentage_completed"></span>
+                    %
+                  </span>
+                </div>
+
+                <div class="col-8">
+                  <span title="ارزش زیرپروژه">
+                    <span v-text="to_price(project.amount)"></span>
+                    <small> {{CURRENCY}} </small>
+                  </span>
+                </div>
+                <div class="col-2 text-left">
+                  <span title="وزن زیرپروژه">
+                    <span v-text="project.weight"></span>
+                    <small class="ml-1"> X </small>
+                  </span>
+                </div>
+              </div>
+            </small>
+          </h6>
+
+          <div class="progress mb-3" v-show="show_detail" style="height: 5px">
+            <div
+              role="progressbar"
+              :aria-valuenow="project.percentage_completed"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              class="progress-bar bg-primary"
+              :style="'width: '+project.percentage_completed+'%;'"
+            ></div>
+          </div>
+        </div>
+      </div>
+      {% if add_sub_project_form %}
+      <div class="card-footer">
+        <form v-cloak @submit.prevent="add_project()">
+          <div class="row">
+            <div class="col-8">
+              <input
+                required
+                type="text"
+                v-model="new_project_title"
+                class="farsi form-control"
+                placeholder="پروژه جدید"
+              />
+            </div>
+            <div class="col-4">
+              <img
+                v-if="waiting"
+                width="32"
+                src="{% static 'leo/img/loading.gif' %}"
+                alt=""
+              />
+
+              <button
+                v-if="!waiting"
+                class="btn btn-primary btn-link text-light"
+                type="submit"
+                title="افزودن"
+              >
+                <i class="material-icons"> add </i>
+              </button>
+            
+            </div>
+            <div class="col-12">
+                  <div v-if="message.show">
+                <div :class="'my-2 alert alert-'+message.color">
+                  <h5 v-text="message.title"></h5>
+                  <div v-html="message.body"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

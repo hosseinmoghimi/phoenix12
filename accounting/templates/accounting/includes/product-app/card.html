@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header">
+    <h5>{{product.title}}</h5>
+  </div>
+
+  <div class="card-body">
+    {% for product_category in product.category_set.all %}
+    <div class="rtl text-right">
+      دسته بندی : {{product_category.get_breadcrumb_link|safe}}
+    </div>
+    {% endfor %}
+   
+    {% include "accounting/includes/product-app/card-contents.html" %}
+  </div>
+</div>

@@ -1,0 +1,93 @@
+{% include 'core/includes/page-app/card-contents.html' %}
+ {% load to_price %}
+ {% load to_persian_date %}
+<hr />
+
+{% if invoice %}
+  <h5>
+    <small class="text-muted">
+    شماره فاکتور :
+
+    </small>
+  {{invoice.invoice_no}}
+  </h5>
+{% endif %}
+<h6>
+
+  {% if financial_event.valid %}
+  valid
+  {% else %}
+  invalid
+  {% endif %}
+</h6>
+<h5>
+  <small class="text-muted"> تاریخ :</small>
+  {{financial_event.event_datetime|to_persian_datetime|safe}}  
+</h5>
+<hr />
+
+      {% if SHOW_PRICE %}
+        
+<h5>
+  <small class="text-muted"> مبلغ :</small>
+  {{financial_event.amount|to_price}} {{CURRENCY}}
+</h5>
+<h5>
+  <small class="text-muted"> تراز :</small>
+  
+                   <span   class="badge badge-primary"> 
+                     
+                    {{financial_event.balance|to_price}} 
+                    {{CURRENCY}}
+                     
+                  </span>
+ 
+ 
+</h5>
+      {% endif %}
+<hr />
+<small> بدهکار : </small>
+<div>
+  <a href="{{financial_event.bedehkar.get_absolute_url}}">
+    <div class="media">
+      <img src="{{financial_event.bedehkar.thumbnail}}" width="48" alt="" />
+      <div class="media-body mr-2">
+        <h6 class="text-{{financial_event.bedehkar.color}}">
+          {{financial_event.bedehkar.name}}
+        </h6>
+        <h6 class="text-{{financial_event.bedehkar.color}}">
+          {{financial_event.bedehkar.code}}
+        </h6>
+      </div>
+    </div>
+  </a>
+</div>
+
+<hr />
+
+<small> بستانکار : </small>
+<div>
+  <a href="{{financial_event.bestankar.get_absolute_url}}">
+    <div class="media">
+      <img src="{{financial_event.bestankar.thumbnail}}" width="48" alt="" />
+      <div class="media-body mr-2">
+        <h6 class="text-{{financial_event.bestankar.color}}">
+          {{financial_event.bestankar.name}}
+        </h6>
+
+        <h6 class="text-{{financial_event.bestankar.color}}">
+          {{financial_event.bestankar.code}}
+        </h6>
+      </div>
+    </div>
+  </a>
+</div>
+<hr />
+<h6>
+  <small class="text-muted"> وضعیت: </small>
+  {{financial_event.status}}
+</h6>
+<h6>
+  <small class="text-muted"> نحوه پرداخت: </small>
+  {{financial_event.payment_method}}
+</h6>

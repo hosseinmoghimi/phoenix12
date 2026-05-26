@@ -1,0 +1,18 @@
+<script>
+    
+    let pages_for_pages_app=JSON.parse("{{pages_s|escapejs}}")
+    let pages_app = new Vue({
+        el: "#pages-app",
+        data: {
+            pages: pages_for_pages_app
+        },
+        methods: {
+            to_price: function(vall) {
+                let color="primary"
+                if(vall>0)color="success"
+                if(vall<0)color="danger"
+                return "<span class='text-"+color+"'>"+to_price(vall)+"</span>"
+            }
+        }
+    })
+</script>

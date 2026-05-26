@@ -1,0 +1,16 @@
+ 
+<script>
+    
+     
+    let financial_event=JSON.parse('{{financial_event_s|escapejs}}')
+    let financial_event_id=parseInt('{{financial_event.id}}')
+    
+</script>
+{% include "core/includes/page-app/script.html" %}
+{% include "accounting/includes/financial-document-lines-app/script.html" %}
+
+
+{% if edit_financial_event_form %}
+{% include "accounting/includes/edit-financial-event-app/script.html" %}
+{% endif %}
+ 

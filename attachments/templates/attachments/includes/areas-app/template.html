@@ -1,0 +1,181 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-areas">
+
+
+    <div class="card" id="areas-app">
+        <div class="card-header" id="heading-areas">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-areas" aria-expanded="true"
+                    aria-controls="collapse-areas">
+                    محدوده ها
+
+
+                    <span v-if="areas.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="areas.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+
+        </div>
+        <div id="collapse-areas" class="collapse" aria-labelledby="heading-areas" data-parent="#accordion-areas">
+
+
+            <div class="card-body">
+
+                {% if add_area_form %}
+                <div class="text-right">
+                    <button @click="show_form=true" v-if="!show_form" class="btn btn-success">
+                        <i class="fa fa-plus"></i>
+                        افزودن
+                    </button>
+                </div>
+                <div v-if="show_form">
+
+                    <form @submit.prevent="add_area()">
+                        <div class="row rtl">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">عنوان محدوده</label>
+                                    <input type="text" v-model="title" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">کد</label>
+                                    <input type="text" v-model="code" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">رنگ</label>
+                                    <select v-model="color" class="form-control">
+                                        {% for color in colors %}
+                                        
+                                        <option value="{{color}}">{{color}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">محدوده</label>
+                                    <input type="text" v-model="area" class="form-control">
+                                </div>
+                                <p>
+                                    <a target="_blank" href="https://www.google.com/maps" class="farsi">
+                                        <i class="material-icons">map</map></i>
+                                        استفاده از نقشه
+                                    </a>
+                                </p>
+                            </div>
+
+                            <div class="col-md-4 text-right">
+
+                                <button class="btn btn-success btn-sm" type="submit">
+
+                                    <i class="fa fa-plus"></i>
+                                    افزودن
+                                </button>
+
+
+                            </div>
+                        </div>
+                    </form>
+                    <div class="text-right">
+                        <button @click="show_form=false" v-if="show_form" class="btn btn-secondary">
+
+                            انصراف
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                عنوان
+                            </th>
+                            <th>
+                                کد
+                            </th>
+                            <th>
+                                رنگ
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="area in areas">
+                                <td>
+                                    <a :href="area.get_absolute_url">
+                                        <div>
+
+                                            <span v-text="area.title"></span>
+                                        </div>
+
+                                    </a>
+
+
+                                </td>
+                                <td>
+                                    <a :href="area.get_absolute_url">
+                                        <div>
+
+                                            <span v-text="area.code"></span>
+                                        </div>
+
+                                    </a>
+
+                                </td>
+
+                                <td>
+                                    <span :class="'badge badge-'+area.color">
+
+                                        <span v-text="area.color"></span>
+                                    </span>
+
+
+                                </td>
+
+
+                                <td>
+
+                                    {% if perms.map.change_location %}
+
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>

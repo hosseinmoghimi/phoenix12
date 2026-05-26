@@ -1,0 +1,66 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+    let merge_account_app=new Vue({
+        el:"#merge-account-app",
+        data:{
+            deleting_account:{},
+            deleting_account_code:"",
+            
+            updating_account:{},
+            updating_account_code:"",
+
+            waiting:false,
+            message:{show:false},
+            show_confirm:false,
+        },
+        methods:{
+            to_price_colored:(vall,curr)=>to_price_colored(vall,curr),
+            select_deleting_account:function(){
+                select_account_by_code(this.deleting_account_code).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        merge_account_app.deleting_account=data.account
+                    }
+                })
+            },
+            select_updating_account:function(){
+                select_account_by_code(this.updating_account_code).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        merge_account_app.updating_account=data.account
+                    }
+                })
+            },
+            merge:function(){
+                this.waiting=true
+                this.show_confirm=false
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    deleting_account_id:parseInt(this.deleting_account.id),
+                    updating_account_id:parseInt(this.updating_account.id),
+                }
+                let url="{% url 'accounting:merge_account' %}"
+                let posting= $.post(url,payload)
+                posting.done(data=>{
+                    merge_account_app.waiting=false
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        show_message(merge_account_app,'موفق',data.message,'success',30000)
+                    }
+                    if(data.result!='SUCCEED'){
+                        show_message(merge_account_app,'خطا',data.message,'danger',10000)
+                    }
+                })
+
+                posting.fail(data=>{
+                    merge_account_app.waiting=false
+                    console.log(data)
+                     
+                        show_message(merge_account_app,'خطا',data.message,'danger',10000)
+                     
+                })
+
+            },
+        }
+    })
+</script>

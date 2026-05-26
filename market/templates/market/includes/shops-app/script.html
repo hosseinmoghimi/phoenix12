@@ -1,0 +1,29 @@
+<script>
+    let shops_for_shops_app = []
+</script>
+{% if shops_s_for_shops_app %}
+<script>
+    shops_for_shops_app = JSON.parse("{{shops_s_for_shops_app|escapejs}}")
+
+</script>
+{% endif %}
+
+
+{% if shops_s %}
+<script>
+    shops_for_shops_app = JSON.parse("{{shops_s|escapejs}}")
+
+</script>
+{% endif %}
+
+<script>
+    let shops_app = new Vue({
+        el: "#shops-app",
+        data: {
+            shops: shops_for_shops_app,
+        },
+        methods: {
+            to_price: vall => to_price(vall),
+        },
+    })
+</script>

@@ -1,0 +1,162 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-financial-years" class="rtl text-right farsi">
+
+
+    <div class="card" id="financial-years-app">
+        <div class="card-header" id="heading-financial-years">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-financial-years"
+                    aria-expanded="true" aria-controls="collapse-financial-years">
+
+                    سال های مالی
+
+                    <span v-if="financial_years.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="financial_years.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+            {% if page_pre_description %}
+
+            <h5 class="text-center">
+                {{page_pre_description}}
+            </h5>
+            {% endif %}
+            {% if page_description %}
+
+            <h4 class="text-center">
+                {{page_description}}
+            </h4>
+            {% endif %}
+        </div>
+        <div id="collapse-financial-years" class="collapse {% if expand_financial_years %} show {% endif %}"
+            aria-labelledby="heading-financial-years" data-parent="#accordion-financial-years">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prfinancial_year="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                عنوان
+                            </th>
+
+                            <th>
+                                شروع
+                            </th>
+                            <th>
+                                پایان
+                            </th>
+
+                            <th>
+                                وضعیت
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="financial_year in financial_years">
+                                <td>
+                                    <a :href="financial_year.get_absolute_url">
+                                        <span v-text="financial_year.name">
+
+                                        </span>
+                                    </a>
+                                     
+                                    <span v-if="financial_year.in_progress" class="badge badge-danger">جاری</span>
+                                </td>
+
+
+
+
+
+                                <td>
+
+                                    <span v-text="financial_year.persian_start_date">
+
+                                    </span>
+
+
+
+                                </td>
+
+                                <td>
+
+                                    <span v-text="financial_year.persian_end_date">
+
+                                    </span>
+
+
+
+                                </td>
+                                <td>
+
+                                    <span v-text="financial_year.status">
+
+                                    </span>
+
+
+
+                                </td>
+
+                                <td>
+
+                                    {% if perms.accounting.change_financialyear %}
+                                    <a class="my-2" target="_blank" title="ویرایش" :href="financial_year.get_edit_url">
+                                        <i class="fa fa-edit text-warning"></i>
+                                        <!-- <span class="text-warning">
+                                            ویرایش
+                                        </span> -->
+                                    </a>
+                                    {% endif %}
+
+                                    {% if perms.accounting.delete_financialyear %}
+                                    <a class="my-2" target="_blank" title="حذف" :href="financial_year.get_delete_url">
+                                        <i class="fa fa-trash text-danger"></i>
+                                        <!-- <span class="text-danger">
+                                            حذف
+                                        </span> -->
+                                    </a>
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+
+                {% include "accounting/includes/financial-years-app/form.html" %}
+            </div>
+        </div>
+
+
+    </div>
+</div>

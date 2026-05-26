@@ -1,0 +1,33 @@
+<tr>
+
+    <td class="bordered">
+        <input min="0" type="number" style="width:4em;display: inline;"  v-model="invoice_line.row"
+        class="form-control">
+    </td>
+
+    <td class="bordered">
+        <a target="_blank" :href="invoice_line.product_or_service.get_absolute_url">
+            <span v-text="invoice_line.product_or_service.title"></span>
+        </a>
+    </td>
+    <td class="bordered">
+        <input min="0" type="number" style="width:5em;display: inline;" v-model="invoice_line.quantity"
+            class="form-control">
+
+        <select style="width: 6em;display: inline;" class="form-control" v-model="invoice_line.unit_name">
+            {% for unit_name in unit_names %}
+            <option value="{{unit_name}}">{{unit_name}}</option>
+            {% endfor %}
+        </select>
+
+    </td>
+    <td class="bordered">
+        <input style="display: inline;width: 10em;" type="number" v-model="invoice_line.unit_price" class="form-control">
+        {{CURRENCY}}
+
+    </td>
+
+    <td class="bordered">
+        <span v-text="to_price(invoice_line.unit_price*invoice_line.quantity)"></span>
+    </td>
+</tr>

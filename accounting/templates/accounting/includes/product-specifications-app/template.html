@@ -1,0 +1,194 @@
+{% load to_persian_date %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-product-specifications" class="rtl text-right farsi">
+
+
+    <div class="card" id="product-specifications-app">
+        <div class="card-header" id="heading-product-specifications">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-product-specifications"
+                    aria-expanded="true" aria-controls="collapse-product-specifications">
+                    ویژگی های کالاها
+                    <span v-if="product_specifications.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="product_specifications.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+            {% if page_pre_description %}
+
+            <h5 class="text-center">
+                {{page_pre_description}}
+            </h5>
+            {% endif %}
+            {% if page_description %}
+
+            <h4 class="text-center">
+                {{page_description}}
+            </h4>
+            {% endif %}
+        </div>
+        <div id="collapse-product-specifications"
+            class="collapse {% if expand_product_specifications %} show {% endif %}"
+            aria-labelledby="heading-product-specifications" data-parent="#accordion-product-specifications">
+
+
+            <div class="card-body">
+
+                {% load static %}
+
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            {% if not product %}
+
+                            <th>
+                                کالا
+                            </th>
+                            {% endif %}
+                            <th>
+                                ویژگی
+                            </th>
+                            <th>
+                                مقدار
+
+                            </th>
+
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+                            <tr v-for="product_specification in product_specifications">
+
+                                {% if not product %}
+
+                                <td>
+                                    <a :href="product_specification.product.get_absolute_url">
+                                        <span v-text="product_specification.product.title">
+
+                                        </span>
+                                    </a>
+
+                                    <div class="media">
+                                        <a :href="product_specification.product.get_absolute_url">
+                                            <img :src="product_specification.product.thumbnail" class="rounded" width="32"
+                                                alt="">
+                                        </a>
+                                        <div class="media-body mr-3">
+                                            <div>
+
+                                                <a :href="product_specification.product.get_absolute_url">
+                                                    <span v-text="product_specification.product.name "></span>
+                                                </a>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+
+                                </td>
+                                {% endif %}
+                                <td>
+                                    <span v-text="product_specification.name">
+
+                                    </span>
+
+
+                                </td>
+
+                                <td>
+                                    <span v-text="product_specification.value">
+
+                                    </span>
+
+
+
+                                </td>
+                                <td>
+
+                                    {% if perms.accounting.change_productspecification %}
+                                    <a class="my-2" target="_blank" title="ویرایش"
+                                        :href="product_specification.get_edit_url">
+                                        <i class="fa fa-edit text-warning"></i>
+                                        <!-- <span class="text-warning">
+                                            ویرایش
+                                        </span> -->
+                                    </a>
+                                    {% endif %}
+
+                                    {% if perms.accounting.delete_productspecification %}
+                                    <a class="my-2" target="_blank" title="حذف"
+                                        :href="product_specification.get_delete_url">
+                                        <i class="fa fa-trash text-danger"></i>
+                                        <!-- <span class="text-danger">
+                                            حذف
+                                        </span> -->
+                                    </a>
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button @click="show_form=true" v-if="!show_form" class="btn btn-info">افزودن ویژگی جدید</button>
+                {% if add_product_specification_form %}
+
+                <div v-if="show_form">
+                    <button @click="show_form=false" v-if="show_form" class="btn btn-secondary">انصراف </button>
+                    <div class="row rtl">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">واحد</label>
+                                <select class="form-control" id="" v-model="new_item.name">
+                                    {% for specification_name in specification_names %}
+                                    <option value="{{specification_name}}">{{specification_name}}</option>
+                                    {% endfor %}
+                                </select>
+
+                                <input type="text" class="form-control" v-model="new_item.name">
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">مقدار</label>
+                                <input type="text" class="form-control" v-model="new_item.value">
+                            </div>
+                        </div>
+
+
+                        
+
+                        <div class="col-md-4">
+                            <button class="btn btn-success" @click="add_product_specification()">ثبت</button>
+                        </div>
+
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+</div>

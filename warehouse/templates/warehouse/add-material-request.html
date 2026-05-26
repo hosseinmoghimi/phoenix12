@@ -1,0 +1,29 @@
+{% extends "warehouse/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <h4 class="text-center">
+            افزودن درخواست متریال از انبار
+        </h4>
+    </div>
+    <div class="col-12">
+        {% include "warehouse/includes/add-material-request-app/template.html" %}
+    </div>
+    <div class="col-12">
+        {% include "accounting/includes/invoice-lines-app/template.html" %}
+    </div>
+    
+    <div class="col-md-12">
+        
+        {% include "warehouse/includes/warehouse-sheets-app/template.html" %}
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+{% include "warehouse/includes/add-material-request-app/script.html" %}
+{% include "accounting/includes/invoice-lines-app/script.html" %}
+{% include "warehouse/includes/warehouse-sheets-app/script.html" %}
+
+{% endblock script %}

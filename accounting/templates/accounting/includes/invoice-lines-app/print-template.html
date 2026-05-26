@@ -1,0 +1,232 @@
+<div id="invoice-lines-app" class="card">
+  {% load to_price %}
+
+  <div class="card-body">
+        <h5 v-show="invoice_lines.length==0" class="text-center">سطری برای این فاکتور وجود ندارد.</h5>
+      
+    <div class="table-responsive rtl">
+       
+      <div v-show="invoice_lines.length>0">
+        <table class="table table-striped farsi rtl">
+          <thead>
+            <th class="bordered farsi text-right">ردیف</th>
+            
+
+            <th class="bordered farsi text-right">شرح</th>
+          
+
+            <th class="bordered farsi text-right">تعداد</th>
+
+            <th class="bordered farsi text-right">فی</th>
+
+            <th class="bordered farsi text-right">تخفیف</th>
+
+            <th class="bordered farsi text-right">
+              مبلغ
+              <small class="text-muted"> ( {{CURRENCY}} ) </small>
+            </th>
+          </thead>
+          <tbody>
+            <tr v-for="(invoice_line, index) in invoice_lines" :key="invoice_line.id">
+              <td class="bordered farsi text-right">
+                <span v-text="index + 1"></span>
+              </td>
+
+            
+
+              <td class="bordered farsi text-right">
+                <span v-text="invoice_line.invoice_line_item.title"></span>
+                <div v-if="invoice_line.status && invoice_line.status!='نو'" class="text-muted">
+                  <small>
+
+                    (
+                      
+                      <span v-text="invoice_line.status"></span>
+                      )
+                    </small>
+                </div>
+              </td>
+               
+              <td class="bordered farsi text-right">
+                <span v-text="invoice_line.quantity"></span>
+                <span v-text="invoice_line.unit_name"></span>
+              </td>
+              <td class="bordered farsi text-right">
+                <div v-if="invoice_line.discount_percentage>0">
+                  <div
+                    style="text-decoration: line-through"
+                    v-text="to_price(invoice_line.unit_price)"
+                  ></div>
+                  <div
+                    v-text="to_price(invoice_line.unit_price*(100-invoice_line.discount_percentage)/100)"
+                  ></div>
+                </div>
+                <div v-if="invoice_line.discount_percentage==0">
+                  <span v-text="to_price(invoice_line.unit_price)"></span>
+                </div>
+              </td>
+
+              <td class="bordered farsi text-right">
+                <div v-if="invoice_line.discount_percentage>0"> 
+                  
+                  <div class="text-success"
+                  >
+                    <h6>
+                    <span
+                      v-text="to_price(invoice_line.discount_percentage)">
+                  </span>
+                    %
+                  </h6>
+                  <h6
+                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"
+                  ></h6>
+                 
+                  </div>
+                </div>
+                <div v-if="invoice_line.discount_percentage==0"></div>
+              </td>
+ 
+
+              <td class="bordered farsi text-right">
+                <div v-if="invoice_line.discount_percentage>0">
+                  <span
+                    style="text-decoration: line-through"
+                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity)"
+                  ></span>
+                </div>
+
+                <div>
+                  <span v-text="to_price(invoice_line.line_total)"></span>
+
+                  
+
+                </div>
+              </td>
+            </tr> 
+
+            <tr>
+              <td colspan="4">
+                <div class="text-left">
+                  
+                </div>
+              </td>
+
+              <td  >
+                <div class="text-right"> 
+               
+
+                <span class="text-success" v-if="sum_discounts()>0" v-text="to_price(sum_discounts())"></span>
+
+                </div>
+              </td>
+              <td class="bordered farsi text-right">
+                 <div v-if="sum_discounts()>0">
+  
+                  <span style="text-decoration: line-through" v-text="to_price(sum_prices())"></span>
+                  
+                </div> 
+                <span v-text="to_price(lines_total())"></span>
+
+              </td>
+            </tr>
+           
+   {% if invoice.tax_percentage > 0 %}
+
+            <tr>
+              <td colspan="5">
+                <div class="text-left">
+                  <span> {{invoice.tax_percentage}} </span>
+                  درصد مالیات بر ارزش افزوده
+                </div>
+              </td>
+
+              <td class="bordered farsi text-right">
+                <span> {{invoice.tax_amount|to_price}} </span>
+              </td>
+            </tr>
+            {% endif %} 
+
+            {% if invoice.shipping_fee > 0 %}
+
+            <tr>
+              <td colspan="5">
+                <div class="text-left">هزینه ارسال</div>
+              </td>
+
+              <td class="bordered farsi text-right">
+                <span> {{invoice.shipping_fee|to_price}} </span>
+              </td>
+           
+            </tr>
+            {% endif %}{% if invoice.discount > 0 %}
+
+            <tr>
+              <td colspan="5">
+                <div class="text-left">تخفیف</div>
+              </td>
+
+              <td class="bordered farsi text-right">
+                <span> {{invoice.discount|to_price}} </span>
+              </td>
+            </tr>
+            {% endif %}
+            
+           
+ 
+          </tbody>
+          <tfoot>
+            <th colspan="1">
+              <div class="text-left"></div>
+            </th>
+
+            {% if not invoice_line_item %}
+
+            <th colspan="1">
+              <div class="text-left"></div>
+            </th>
+            {% endif %} {% if not invoice %}
+
+            <th colspan="1">
+              <div class="text-left"></div>
+            </th>
+
+            {% endif %}
+
+            <th colspan="1">
+              <div class="text-left"></div>
+            </th>
+            <th colspan="1">
+              <div class="text-left"></div>
+            </th>
+
+            <th>
+              <!-- <div class="text-left">
+                جمع بدون تخفیف :
+                <span v-text="to_price(sum_prices())"></span>
+                {{CURRENCY}}
+              </div>
+              <div class="text-success text-left">
+                تخفیف :
+                <span v-text="to_price(sum_discounts())"></span>
+                {{CURRENCY}}
+              </div> -->
+            </th>
+
+            <th>
+              <div class="alert alert-success">
+                <!-- <div style="text-decoration:  line-through;"
+                                        v-text="to_price(sum_prices())"></div> -->
+
+                <div>
+                  
+                  {{invoice.amount|to_price}} 
+                  {{CURRENCY}}
+                </div>
+              </div>
+            </th>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+{% extends "attachments/layout.html" %}
+{% load to_persian_date %}
+{% block content %}
+
+<h5 class="text-center">
+    {{image.title}}
+</h5>
+<p class="text-center farsi rtl">
+    <a class="mx-3 text-success" href="{{image.get_download_url}}">
+        <i class="fa fa-download"></i>
+        دانلود تصویر
+    </a>
+
+    <a class="mx-3 text-warning" href="{{image.get_edit_url}}">
+        <i class="fa fa-edit"></i>
+        ویرایش تصویر
+    </a>
+    <a class="mx-3 text-danger" href="{{image.get_delete_url}}">
+        <i class="fa fa-trash "></i>
+
+        حذف تصویر
+    </a>
+
+
+
+
+</p>
+<div class="text-center">
+
+    <a href="{{image.image}}">
+
+        <img src="{{image.image}}" style="max-width: 100%;" alt="">
+    </a>
+    {% if image.description %}
+    <div class="container">
+
+        <div class="my-3">
+            {{image.description|safe}}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<p class="text-center farsi my-4 rtl">
+    <span class="text-muted">
+        تاریخ ایجاد :
+
+    </span>
+    {{image.date_added|to_persian_datetime|safe}}
+    توسط
+
+    <a href="{{image.creator.get_absolute_url}}">
+        {{image.creator.name}}
+    </a>
+
+</p>
+    {% if image.page %}
+    <hr>
+<h3 class="text-center">
+    صفحه مرتبط
+</h3>
+
+<!-- <h5 class="text-center text-muted">
+
+        {{image.page.class_title}}
+
+</h5> -->
+<h4 class="text-center">
+    <small class="mx-1">
+        (
+
+        {{image.page.class_title}}
+
+        )
+    </small>
+    <a href="{{image.page.get_absolute_url}}">
+        {{image.page.title}}
+        {{image.page.full_title}}
+    </a>
+
+</h4>
+
+{% endif %}
+{% endblock content %}
+
+
+
+{% block script %}
+
+{% endblock script %}

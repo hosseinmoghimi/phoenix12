@@ -1,0 +1,51 @@
+<div id="accordion-add-my-link" class="rtl text-right farsi">
+  <div class="card" id="add-my-link-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-my-link"
+          aria-expanded="true"
+          aria-controls="collapse-add-my-link"
+        >
+          افزودن لینک سریع
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-add-my-link"
+      class="collapse"
+      aria-labelledby="heading-add-my-link"
+      data-parent="#accordion-add-my-link"
+    >
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">عنوان</label>
+              <input type="text" class="form-control" v-model="title" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">لینک</label>
+              <input type="text" class="form-control" v-model="url" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">اولویت</label>
+              <input type="number" class="form-control" v-model="priority" />
+            </div>
+          </div>
+          <div class="col-md-12 my-2">
+            <button @click="add()" class="btn btn-success">افزودن</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

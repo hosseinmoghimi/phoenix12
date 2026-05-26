@@ -1,0 +1,33 @@
+<div class="card" id="bank-app">
+    <div class="card-header">
+        بانک
+    </div>
+    <div class="card-body">
+        <a :href="bank.get_absolute_url">
+            <span v-text="bank.name"></span>
+        </a>
+
+        <div>
+              {% if perms.accounting.change_bank %}
+                  <a
+                    href="{{bank.get_edit_url}}"
+                    class="my-2 text-warning mx-2"
+                    title="ویرایش"
+                    target="_blank"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.accounting.delete_bank %}
+                  <a
+                    href="{{bank.get_delete_url}}"
+                    class="my-2 text-danger mx-2"
+                    title="حذف"
+                    target="_blank"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+        </div>
+        
+    </div>
+</div>

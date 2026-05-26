@@ -1,0 +1,11 @@
+{% include "accounting/includes/invoice-line-item-app/card-contents.html" %}
+<h5>
+  <a href="{% url 'accounting:product' pk=product.id %}">
+    کالا : {{product.title}}
+  </a>
+</h5>
+{% for spec in product.productspecification_set.all %}
+<div>
+  {{spec.name}} : {{spec.value}}
+</div>
+{% endfor %}

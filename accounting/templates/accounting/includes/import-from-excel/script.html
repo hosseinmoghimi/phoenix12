@@ -1,0 +1,56 @@
+<script>
+    let url_import_from_excel = "{% url 'accounting:import_from_excel' %}"
+    let import_export_excel_app = new Vue({
+        el: "#import-export-excel-app",
+        data: {
+            waiting: false,
+            new_download_file: '',
+            count:1000,
+            is_open: false,
+            message:{show:false},
+        },
+        methods: {
+            import_from_excel: function () {
+                console.log('erererererer')
+                console.log('erererererer')
+                console.log('erererererer')
+                import_export_excel_app.waiting = true
+                let title = this.new_download_title
+                let formData = new FormData();
+                let file1 = $('#import-from-excel-form')[0].elements[0].files[0]
+                formData.append("file1", file1);
+                formData.append("is_open", import_export_excel_app.is_open);
+                formData.append("count", import_export_excel_app.count);
+                formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+                $.ajax({
+                    url: url_import_from_excel,
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        import_export_excel_app.waiting = false
+
+                        if (data != 0) {
+                            console.log(data)
+                            if (data.result === 'SUCCEED') { 
+                                show_message(import_export_excel_app,"موفقیت آمیز",data.message_products+'<br><hr><br>'+data.message_services+'<br><hr><br>'+data.message_accounts+'<br>',"success",20000)   
+                                if(typeof products_app != "undefined"){
+                                        products_app.products=(data.products)
+                                }
+                            }
+                            if (data.result != 'SUCCEED') { 
+                                show_message(import_export_excel_app,"خطا",data.message_products+'<br>'+data.message_services+'<br>'+data.message_accounts+'<br>',"danger",20000)   
+
+                            }
+                        }
+                        else {
+                        }
+                    },
+                });
+
+            },
+
+        }
+    })
+</script>

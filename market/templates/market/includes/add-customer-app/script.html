@@ -1,0 +1,51 @@
+<script>
+    let person_accounts_s = JSON.parse("{{person_accounts_s|escapejs}}")
+ 
+</script>
+
+<script>
+    let add_customer_app = new Vue({
+        el: "#add-customer-app",
+        data: {
+            level: "", 
+            person_account_id:0,
+            person_accounts: person_accounts_s,
+            waiting: false,
+            message: { show: false },
+            show_form: false, 
+
+        },
+        methods: {
+
+            to_price: vall => to_price(vall),
+            
+          
+            add_customer: function () {
+
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    person_account_id: this.person_account_id,
+                    level: this.level,
+                }
+ 
+
+                let url = "{% url 'market:add_customer' %}"
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        if (typeof customers_app != "undefined") {
+                            customers_app.customers.push(data.customer)
+                        }
+                        show_message(add_customer_app, "موفقیت آمیز", data.message, "success", 10000)
+                        add_customer_app.persons=add_customer_app.person_accounts.filter(person_account=>person_account.id!=data.customer.person_account.id)
+                    }
+                    else {
+                        show_message(add_customer_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        },
+    })
+</script>

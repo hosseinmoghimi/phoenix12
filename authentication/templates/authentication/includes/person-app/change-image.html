@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <h5>
+      تغییر دادن تصویر
+    </h5>
+  </div>
+  <div class="card-body">
+    <form
+      enctype="multipart/form-data"
+      action="{% url 'authentication:change_person_image' %}"
+      method="POST"
+    >
+      {% csrf_token %}
+      <input type="hidden" name="person_id" value="{{person.id}}" />
+      <input required type="file" name="image" id="" />
+
+      <button type="submit" class="my-2 btn btn-success">تایید</button>
+    </form>
+  </div>
+</div>

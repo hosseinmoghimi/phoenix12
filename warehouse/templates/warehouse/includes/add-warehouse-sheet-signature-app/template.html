@@ -1,0 +1,52 @@
+<div id="accordion-add-warehouse-sheet-signature" class="rtl text-right farsi">
+  <div class="card" id="add-warehouse-sheet-signature-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-warehouse-sheet-signature"
+          aria-expanded="true"
+          aria-controls="collapse-add-warehouse-sheet-signature"
+        >
+          افزودن امضا
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-warehouse-sheet-signature"
+      class="collapse show"
+      aria-labelledby="heading-add-warehouse-sheet-signature"
+      data-parent="#accordion-add-warehouse-sheet-signature"
+    >
+      <div class="card-body"> 
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">توضیحات</label>
+                <input v-model="description" type="text" class="form-control" />
+              </div>
+            </div>
+
+             
+ 
+
+
+                   
+
+            {% for status in warehouse_sheet_signature_statuses %}
+            <div class="col-3">
+                      
+               <button @click="add_warehouse_sheet_signature(`{{status.status}}`,`{{status.color}}`)" class="btn btn-{{status.color}}" >
+                 <i class="fa fa-plus"></i>
+                  {{status.status}}
+                </button>
+              </div>
+                {% endfor %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

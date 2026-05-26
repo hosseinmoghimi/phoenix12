@@ -1,0 +1,58 @@
+<div class="media rtl ">
+
+    <a class="float-left" :href="comment.profile_get_absolute_url">
+        <div class="avatar">
+            <img class="media-object" :src="comment.profile_image" alt="...">
+        </div>
+    </a>
+    <div class="media-body">
+        <a :href="comment.profile_get_absolute_url">
+            <h4 class="media-heading text-right farsi rtl">
+                <small class="farsi">
+
+                    <span v-text="comment.profile_name">
+
+                    </span>
+                </small>
+                <small class="mx-3" v-text="comment.persian_date_added">
+
+                </small>
+            </h4>
+        </a>
+
+        <p>
+<small class="text-dark" v-text="comment.text">
+
+</small>
+
+        </p>
+        <div class="media-footer">
+            <a href="#pablo" class="btn btn-primary btn-link float-right" rel="tooltip" title=""
+                data-original-title="Reply to Comment">
+                <i class="material-icons"   aria-hidden="true" >reply</i> پاسخ
+            </a>
+            <a href="#pablo" class="btn btn-danger btn-link float-right">
+                <i class="material-icons"   aria-hidden="true" >favorite</i> 243
+            </a>
+            <button v-if="comment.profile_id==profile_id && !confirm_delete_comment"
+                @click="confirm_delete_comment=true" class="btn btn-warning btn-link float-right">
+                <i class="material-icons"   aria-hidden="true" >delete</i>
+            </button>
+            <button v-if="confirm_delete_comment" @click="CancelDeleteComment"
+                class="btn btn-info btn-link float-right">
+                <i class="material-icons"   aria-hidden="true" >delete</i>
+            </button>
+            <button v-if="confirm_delete_comment" @click="ConfirmDeleteComment(comment.id)"
+                class="btn btn-danger btn-link float-right">
+                <i class="material-icons"   aria-hidden="true" >delete</i>
+                <span class="farsi">
+
+                    حذف کن
+                </span>
+
+            </button>
+
+        </div>
+    </div>
+
+</div>

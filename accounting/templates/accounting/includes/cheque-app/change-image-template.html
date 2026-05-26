@@ -1,0 +1,38 @@
+<div id="accordion-change-cheque-image">
+  <div class="card">
+    <div class="card-header" id="heading-change-cheque-image">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-change-cheque-image"
+          aria-expanded="true"
+          aria-controls="collapse-change-cheque-image"
+        >
+          تغییر دادن تصویر چک
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-change-cheque-image"
+      class="collapse"
+      aria-labelledby="heading-change-cheque-image"
+      data-parent="#accordion-change-cheque-image"
+    >
+      <div class="card-body">
+        <form
+          enctype="multipart/form-data"
+          action="{% url 'accounting:change_cheque_image' %}"
+          method="POST"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="cheque_id" value="{{cheque.id}}" />
+          <input type="file" name="image" id="" />
+
+          <button type="submit" class="btn btn-success">تایید</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

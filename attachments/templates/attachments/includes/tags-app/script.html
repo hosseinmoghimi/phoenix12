@@ -1,0 +1,31 @@
+<script>
+    let url_add_tag = "{% url 'attachments:add_tag' %}"
+    let tags_for_tags_app = JSON.parse(`{{tags_s|escapejs}}`)
+    let tags_app = new Vue({
+        el: "#tags-app",
+        data: {
+            title: "",
+            tags: tags_for_tags_app,
+            show_add_tag: false,
+            waiting:false,
+        },
+        methods: {
+            add_tag: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    page_id: page_id,
+                    title: this.title,
+                }
+                let posting = $.post(url_add_tag, payload)
+                posting.done((data) => {
+
+                    if (data.result === 'SUCCEED') {
+
+                        tags_app.title = ""
+                        tags_app.tags = data.tags
+                    }
+                })
+            },
+        }
+    })
+</script>

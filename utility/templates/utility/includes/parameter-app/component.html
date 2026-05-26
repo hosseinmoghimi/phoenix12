@@ -1,0 +1,26 @@
+{% load static %}
+<form @submit.prevent="set_parameter()">
+    <div class="row rtl">
+        <div class="col-9">
+            <div class="form-group">
+                <label for=""> <a title="ویرایش" target="_blank" :href="parameter.get_edit_url">
+                        <i class="fa fa-edit text-warning"></i>
+                    </a>
+                    <a title="حذف" target="_blank" :href="parameter.get_delete_url">
+                        <i class="fa fa-trash text-danger"></i>
+                    </a>
+                    <span v-text="parameter.name"></span>
+                </label>
+                <input type="text" class="form-control" v-model="parameter.value">
+            </div>
+        </div>
+        <div class="col-3">
+            <button type="submit" class="btn btn-success">تایید</button>
+            <div>
+                <img  v-if="waiting" width="48" src="{% static 'leo/img/loading.gif' %}" alt="">
+             
+                <img  v-if="saved" width="32" src="{% static 'icons/done.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,76 @@
+{% include "accounting/includes/set-account-parent-app/script.html" %}
+
+<script>
+    let account_id=parseInt("{{account.id}}")
+    const account_color="{{account.color}}"
+
+</script>
+<script>
+    let account_app=new Vue({
+        el:"#account-app",
+        data:{
+            show_code_copied: false,
+            show_balance_copied: false,
+        },
+        methods:{
+            copy_balance_to_clipboard:function(balance){
+                copy_to_clipboard(balance,'مانده {{account.title}}')
+                account_app.show_balance_copied = true
+                setTimeout(() => {
+                    account_app.show_balance_copied = false
+                }, 2000);
+
+            },
+            copy_code_to_clipboard:function(code,name){
+                copy_to_clipboard(code,name)
+                account_app.show_code_copied = true
+                setTimeout(() => {
+                    account_app.show_code_copied = false
+                }, 2000);
+
+            },
+
+            copy_balance:function(){
+                navigator.clipboard.writeText("{{account.balance}}");
+                this.show_balance_copied = true
+                setTimeout(() => {
+                    account_app.show_balance_copied = false
+                }, 2000);
+            },
+
+
+            
+        }
+    })
+</script>
+
+<script>
+    let account_balance_app=new Vue({
+        el:"#account-balance-app",
+        data:{
+            show_balance_copied:false
+        },
+        methods:{
+            copy_balance:function(){
+                navigator.clipboard.writeText("{{account.balance}}");
+                this.show_balance_copied = true
+                setTimeout(() => {
+                    account_balance_app.show_balance_copied = false
+                }, 2000);
+            },
+
+            
+        }
+    })
+</script>
+
+
+{% include "core/includes/page-app/script.html" %}
+{% include "accounting/includes/financial-events-app/script.html" %}
+
+{% include "accounting/includes/accounts-app/script.html" %}
+{% include "accounting/includes/add-account-app/script.html" %}
+{% include "accounting/includes/financial-document-lines-app/script.html" %}
+ 
+
+    

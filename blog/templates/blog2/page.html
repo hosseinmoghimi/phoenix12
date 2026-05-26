@@ -1,0 +1,525 @@
+{% extends "blog2/layout.html" %}
+{% load social_share %}
+
+{% block head %}
+<style>
+    .front-background:after {
+        background-color: rgba(0, 0, 0, 0.0) !important;
+    }
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    div {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+{% load static %}
+{% block content %}
+<div class="">
+
+    <div class="page-header header-filter" data-parallax="true"
+        style="background-image: url(&quot;{{page.image_header}}&quot;); transform: translate3d(0px, 0px, 0px);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+
+
+                    <h1 class="title farsi text-center">
+                        {{page.title}}
+                    </h1>
+                    <h4 class=" farsi text-center" >
+                        {% if page.short_description %}
+
+                        {{page.short_description}}
+                        {% endif %}
+                    </h4>
+                    <br>
+                    {% if perms.dashboard.change_page %}
+                    <a href="{{page.get_edit_url}}" class="btn btn-info btn-round btn-lg">
+                        <i class="material-icons" aria-hidden="true">rate_review</i> ویرایش
+                    </a>
+                    {% endif %}
+                    <!-- <a href="{{page.get_absolute_url}}" class="btn btn-rose btn-round btn-lg">
+                    <i class="material-icons"   aria-hidden="true" >format_align_left</i> توضیحات بیشتر
+                </a> -->
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main main-raised">
+        <div class="container">
+            <div>
+                <div class="section section-text" id="page-app">
+                    <div class="row">
+                        <div class="col-md-8 ml-auto mr-auto">
+                            {% if page.image %}
+                            <img :src="page.image" class="w-100" alt="">
+                            {% endif %}
+                           
+                            <div >
+                                <h3 class="title farsi text-right" v-text="page.title">
+                                </h3>
+
+                                <div class="rtl" v-html="page.description">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        {% if page.images.all %}
+                          
+                        <div class="section col-md-10 ml-auto mr-auto" >
+                            <div class="row rtl">
+                                {% for image in page.images.all %}
+                                <div class="col-md-4">
+
+
+                                    <div class="rotating-card-container" style="margin-bottom: 30px;">
+                                        <div class="card card-rotate card-background">
+                                            <div class="front front-background"
+                                                style="background-image: url(&quot;{{image.thumbnail}}&quot;); width: 350px;">
+                                                <div class="card-body">
+
+                                                </div>
+                                            </div>
+                                            <div class="back back-background"
+                                                style="background-image: url(&quot;{{image.thumbnail}}&quot;); width: 350px;">
+                                                <div class="card-body">
+                                                    <h5 class="card-title farsi text-center">
+                                                        {{image.image_title}}
+                                                    </h5>
+                                                    <p class="card-description farsi text-center">
+
+                                                        {% if image.image_description %}
+                                                        {{image.image_description}}
+                                                        {% endif %}
+
+                                                    </p>
+                                                    <div class="footer text-center">
+                                                        <a target="_blank" href="{{image.get_absolute_url}}"
+                                                            class="btn btn-info btn-just-icon btn-fill btn-round google-drive-opener">
+                                                            <i class="material-icons" aria-hidden="true">subject</i>
+                                                        </a>
+                                                        <a href="{{image.get_edit_url}}"
+                                                            class="btn btn-success btn-just-icon btn-fill btn-round btn-wd google-drive-opener">
+                                                            <i class="material-icons" aria-hidden="true">mode_edit</i>
+                                                        </a>
+                                                        <a href="#pablo"
+                                                            class="btn btn-danger btn-just-icon btn-fill btn-round google-drive-opener">
+                                                            <i class="material-icons" aria-hidden="true">delete</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                                {% endfor %}
+
+
+
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <div class="section section-blog-info">
+                    <div class="row">
+                        <div class="col-md-8 ml-auto mr-auto">
+                            <div class="row rtl">
+                                <div class="col-md-12"   id="page-tags-app"
+                                 >
+                                    <div v-if="tags.length>0  || can_add_tag" 
+                                        class="blog-tags text-right mx-3 my-3">
+                                        برچسب ها:
+
+
+                                        <div class="bootstrap-tagsinput danger-badge">
+                                            <template v-for="tag in tags">
+
+                                                {% verbatim %}
+                                                <span class="tag badge mx-2">
+                                                    <a :href="tag.get_absolute_url" class="text-light">
+                                                        {{tag.title}}
+                                                    </a>
+
+                                                    <span @click="remove_tag(tag.id)" data-role="remove"></span>
+                                                </span>
+
+
+
+
+                                                {% endverbatim %}
+                                            </template>
+
+                                            {% if add_tag_form %}
+
+                                            <form class="d-inline mx-2" v-on:submit.prevent="add_tag">
+                                                <span class="bmd-form-group"><input v-model="tag_title" type="text"
+                                                        class="form-control" placeholder="تگ جدید"></span>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <!-- links -->
+                                <div class="col-md-6" id="page-links-app"
+                              >
+                                    <div class="card card-stats"
+                                       v-if="links.length>0 || can_add_link"
+                                    >
+                                        <div class="card-header card-header-primary card-header-icon rtl text-right">
+
+                                            <span class="card-icon mx-2">
+                                                <i class="fa fa-link"></i>
+                                            </span>
+
+                                            <span class=" h3 mt-3 farsi text-right">لینک ها</span>
+
+
+                                        </div>
+                                        <div class="card-body pt-5">
+
+                                            <template v-for="link in links" class="">
+                                                <div class="mr-4 mb-3 text-right">
+                                                    <span v-html="link.get_link"></span>
+                                                    {% if perms.core.change_link %}
+                                                    <span class="mr-4 text-right">
+                                                        <a class="text-secondary" :href="link.get_edit_url">ویرایش</a>
+                                                    </span>
+                                                    {% endif %}
+                                                </div>
+                                               
+                                            </template>
+                                            {% if add_link_form %}
+                                            <form id="add-link-form" @submit.prevent="add_link">
+                                                <div>
+                                                    <input placeholder="عنوان لینک جدید" type="text"
+                                                        class="form-control" v-model="link_title">
+                                                    <input placeholder="آدرس لینک جدید" type="text" class="form-control"
+                                                        v-model="link_url">
+                                                    <button v-if="link_url && link_title"
+                                                        class="btn btn-warning btn-round" type="submit">تایید</button>
+                                                </div>
+                                            </form>
+                                            {% endif %}
+
+                                        </div>
+                                        <!-- <div class="card-footer">
+                                    <div class="stats">
+                                        <i class="material-icons"   aria-hidden="true" >date_range</i> Last 24 Hours
+                                    </div>
+                                </div> -->
+                                    </div>
+                                </div>
+
+                                <!-- downloads -->
+                                <div class="col-md-6"  id="page-documents-app"
+                                
+                                >
+                                <div class="card card-stats"
+                                v-if="documents.length>0 || can_add_document"
+                                
+                                    >
+                                        <div class="card-header rtl text-right card-header-success card-header-icon">
+                                            <span class="card-icon mx-2">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </span>
+                                            <span class="mt-3 h3 farsi text-right">
+                                                دانلود ها</span>
+
+                                        </div>
+                                        <div class="card-body pt-5">
+
+
+
+                                            <template v-for="document in documents">
+                                                <div class="mr-4 mb-3 text-right">
+                                                    <span>
+                                                        <a v-if="document.profile" :title="document.profile.name"
+                                                        :href="document.profile.get_absolute_url">
+                                                        <img :src="document.profile.image" class="rounded-circle"
+                                                            width="32px">
+                                                    </a>
+                                                    </span>
+                                                    <span class="mx-2" v-html="document.get_link"></span>
+                                                    {% if perms.core.change_document %}
+                                                    <span class="mr-4 text-right">
+                                                        <a class="text-secondary" :href="document.get_edit_url">ویرایش</a>
+                                                    </span>
+                                                    {% endif %}
+                                                </div>
+
+                                            </template>
+                                            {% if add_document_form %}
+                                            <form id="add-document-form" @submit.prevent="add_document"
+                                                enctype="multipart/form-data">
+                                                <div>
+                                                    <input placeholder="عنوان فایل دانلود" type="text" name="title"
+                                                        class="form-control" v-model="document_title">
+
+                                                    <div>
+                                                        <span class="btn btn-raised btn-round btn-default btn-file">
+                                                            <span class="fileinput-new">انتخاب فایل</span>
+                                                            <input type="hidden" value="" name="..."><input type="file"
+                                                                v-on:change="document_file=true" name="">
+                                                            <div class="ripple-container"></div>
+                                                        </span>
+
+                                                        <button v-if="(document_file && document_title) || false"
+                                                            class="btn btn-info btn-round" type="submit">آپلود</button>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </form>
+                                            {% endif %}
+
+                                        </div>
+                                        <!-- <div class="card-footer">
+                                    <div class="stats">
+                                        <i class="material-icons"   aria-hidden="true" >date_range</i> Last 24 Hours
+                                    </div>
+                                </div> -->
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="col-md-12 rtl">
+
+
+
+
+                                    <button class="btn btn-round btn-danger" v-if="is_like" @click="toggle_like">
+                                        <i class="material-icons">favorite</i>
+                                        <span v-text="likes_count"></span>
+                                    </button>
+                                    <button class="btn btn-round btn-secondary" v-if="!is_like" @click="toggle_like">
+                                        <i class="material-icons">favorite</i>
+                                        <span v-text="likes_count"></span>
+                                    </button>
+
+                                    {% post_to_whatsapp page.get_whatsapp_url 'shareeeee' %}
+                                    {% post_to_telegram obj_or_url=page.get_absolute_url title=page.title %}
+
+
+                                    <a href="{{page.get_excel_url}}" class="btn btn-info btn-round">
+
+
+                                        <i class="material-icons" aria-hidden="true">get_app</i>
+
+
+                                        دانلود فایل اکسل Excel</a>
+
+
+                                </div>
+                            </div>
+                            <hr>
+                            {% if page.profile %}
+
+                            <div class="card card-profile card-plain">
+                                <div class="row rtl">
+                                    <div class="col-md-2">
+                                        <div class="card-avatar">
+                                            <a href="{{page.profile.get_absolute_url}}">
+                                                <img class="img" src="{{page.profile.image}}">
+                                            </a>
+                                            <div class="ripple-container"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <a href="{{page.profile.get_absolute_url}}">
+
+
+                                            <h4 class="card-title farsi">{{page.profile.name}}</h4>
+                                        </a>
+                                        {% if page.profile.bio %}
+                                        <p class="description text-center">
+                                            {{page.profile.bio}}
+                                        </p>
+                                        {% endif %}
+
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-default pull-right btn-round">دنبال
+                                            کنید</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section section-comments" id="comment-app">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <div class="media-area">
+                            <h3 class="title text-center rtl farsi text-right" v-text="comments.length+' نظر'"></h3>
+                            <template v-for="comment in comments">
+                                <comment-component :comment="comment">
+                                </comment-component>
+
+                            </template>
+
+                        </div>
+                        {% if profile.name %}
+                        <h3 class="title text-center farsi">دیدگاه خود را وارد کنید</h3>
+                        <div class="media media-post rtl">
+                            <a class="author float-left" href="{{profile.get_absolute_url}}">
+                                <div class="avatar">
+                                    <img class="media-object" alt="64x64" src="{{profile.image}}">
+                                </div>
+                            </a>
+                            <div class="media-body">
+                                <form @submit.prevent="add_comment">
+                                    <div class="form-group label-floating bmd-form-group">
+                                        <label class="form-control-label bmd-label-floating" for="exampleBlogPost">
+                                            نظر شما
+                                        </label>
+                                        <textarea v-model="text" class="form-control farsi" rows="5"
+                                            id="exampleBlogPost"></textarea>
+                                    </div>
+                                    <div class="media-footer">
+                                        <button type="submit" class="btn btn-primary btn-round btn-wd float-right">ارسال
+                                            نظر</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> <!-- end media-post -->
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% if page.related_pages.all %}
+
+<div class="section">
+    <div class="container">
+        <div class="row rtl">
+            <div class="col-md-12">
+                <h2 class="title text-center farsi">صفحه های مرتبط</h2>
+                <br>
+                <div class="row">
+                    {% for related_page in page.related_pages.all %}
+                    <div class="col-md-4">
+                        <div class="card card-blog">
+                            {% if related_page.thumbnail %}
+                            <div class="card-header card-header-image">
+                                <a href="{{related_page.get_absolute_url}}">
+                                    <img class="img img-raised" src="{{related_page.thumbnail}}">
+
+
+                                </a>
+                                <div class="colored-shadow"
+                                    style="background-image: url(&quot;{{related_page.thumbnail}}&quot;); opacity: 1;">
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h6 class="category farsi text-info">{{related_page.category}}</h6>
+                                <h4 class="card-title text-right farsi ">
+                                    <a href="{{related_page.get_absolute_url}}">{{related_page.title}}</a>
+                                </h4>
+                                <div class="card-description">
+                                    {{related_page.short_description|safe}}
+
+                                    <a class="badge badge-secondary" href="{{related_page.get_absolute_url}}">ادامه
+                                        مطلب</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+
+{% if is_like %}
+<script>
+    let is_like = true
+</script>
+{% else %}
+<script>
+    let is_like = false
+</script>
+{% endif %}
+
+
+<script>
+    let page = JSON.parse(`{{page_s|escapejs}}`)
+    let comments = JSON.parse(`{{comments_s|escapejs}}`)
+    let page_id = parseInt("{{page.id}}")
+
+    var comment_template = `{% include 'blog2/includes/comment.html' %}`
+    let likes_count = parseInt("{{likes_count}}")
+    var tags = JSON.parse(`{{tags_s|escapejs}}`)
+    var links = JSON.parse(`{{links_s|escapejs}}`)
+    var documents = JSON.parse(`{{documents_s|escapejs}}`)
+    var images = JSON.parse(`{{images_s|escapejs}}`)
+    let url_add_tag = "{% url 'attachments:add_tag' %}"
+    let url_edit_page_description = "{% url 'core:edit_page_description' %}"
+    let url_delete_comment = "{% url 'core:delete_comment' %}"
+    let url_add_comment = "{% url 'core:add_comment' %}"
+    let url_remove_tag = "{% url 'core:remove_tag' %}"
+    let url_toggle_like = "{% url 'core:toggle_like' %}"
+    let url_add_image = "{% url 'core:add_image' %}"
+    let url_add_link = "{% url 'core:add_link' %}"
+    let url_add_document = "{% url 'core:add_document' %}"
+
+
+
+    let can_add_tag = "{% if add_tag_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_link = "{% if add_link_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_document = "{% if add_document_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_image = "{% if add_image_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_comment = "{% if add_comment_form %}true{% else %}false{% endif %}" === 'true'
+
+</script>
+
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+<script src="{% static 'dashboard/leo/comment-app.js' %}"></script>
+<script src="{% static 'core/js/page.js' %}"></script>
+
+
+{% endblock %}

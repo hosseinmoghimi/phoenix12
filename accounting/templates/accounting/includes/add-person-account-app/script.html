@@ -1,0 +1,104 @@
+
+<script>
+    let person={}
+    let person_id=0
+    let person_category={}
+    let person_category_id=0
+    // const colors_for_add_account_app = JSON.parse("{a{colors_s|escapejs}}")
+</script>
+{% if person_s %}
+  <script>
+    person=JSON.parse("{{person_s|escapejs}}")
+    person_id=person.id
+  </script>
+{% endif %}
+
+
+{% if person_category %}
+  <script>
+    person_category=JSON.parse("{{person_category_s|escapejs}}")
+    person_category_id=parseInt("{{person_category.id}}")
+  </script>
+{% endif %}
+
+{% include 'authentication/includes/person-app/select-script.html' %}
+{% include 'accounting/includes/account-app/select-script.html' %}
+<script>
+    let add_person_account_app = new Vue({
+        el: "#add-person-account-app",
+        data: { 
+            person_category_id:person_category_id,
+            person:person,
+            person_id:person_id,
+            priority: 100,
+            type: "",
+            nature: "بدون کنترل",
+            color: 'success',
+            // colors: colors_for_add_account_app,
+            message: { show: false }
+        },
+        methods: {
+            select_person:function(){
+                select_person_by_id(this.person_id).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_person_account_app.person = data.person
+                        console.log(data.person)
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_person_account_app.person.full_name=''
+                    }
+                })
+            },
+
+            
+            select_account:function(){
+                select_account_by_code(this.account_code).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_person_account_app.account = data.account
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_person_account_app.account={}
+                    }
+                })
+            },
+
+            add_person_account: function () {
+                const url = "{% url 'accounting:add_person_account'  %}"
+                const payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    priority: parseInt(this.priority),
+                    parent_id:0, 
+                    person_id: parseInt(this.person.id),
+                    person_category_id: parseInt(this.person_category_id),
+                    color: this.color,
+                    // type: this.type,
+                    nature: this.nature,
+
+                }
+                leolog(payload)
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        show_message(add_person_account_app, "موفقیت آمیز", data.message, "success", 10000)
+                        if (typeof person_accounts_app != "undefined") {
+
+                            person_accounts_app.person_accounts.push(data.person_account)
+                        }
+                    }
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_person_account_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        }
+    })
+</script>

@@ -1,0 +1,58 @@
+{% load static %}
+{% if add_page_tag_form %} 
+
+    <div class="card" id="page-tags-app">
+        <div class="card-header" id="headingPageTags">
+            <h5 class="text-center farsi">
+                      برچسب ها  
+            </h5>
+
+
+        </div>
+
+
+
+            <div class="card-body">
+                <div class="rtl text-right farsi">
+             
+
+                    <template v-for="page_tag in page_tags" class=" mx-2 my-2 farsi">
+
+                        <a :href="page_tag.get_tag_url" class=" mx-1 farsi">
+                            <span class="material-icons">
+                                local_offer
+                            </span>&nbsp;<span v-text="page_tag.tag_title"></span>
+                        </a>&nbsp;{% if remove_page_tag_form %}<span style="cursor: pointer;" title="حذف برچسب" class="material-icons text-secondary"
+                            @click="remove_tag(tag.id)">
+                            clear
+                        </span>
+                        {% endif %}
+                    </template>
+
+                    {% if add_page_tag_form %}
+
+
+                    <img src="{% static 'leo/img/loading.gif' %}" v-if="waiting" alt="">
+                    <form @submit.prevent="add_page_tag()">
+                        <input required type="text" v-model="new_tag" class="form-control farsi" style="width: 8em;"
+                            placeholder="تگ جدید">
+
+
+
+
+
+                    </form>
+
+                    {% endif %}
+                </div>
+
+            </div>
+
+    </div>
+
+    
+{% elif page_tags %}  
+
+    {% include "web/includes/page-tags-app/template-simple.html" %}
+ 
+{% endif %}

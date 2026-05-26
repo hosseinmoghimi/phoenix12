@@ -1,0 +1,65 @@
+{% extends 'attachments/layout.html' %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:links' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                لینک ها
+            </h6>
+        </a>
+    </div>
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:downloads' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                دانلود ها
+            </h6>
+        </a>
+    </div>
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:images' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                تصاویر
+            </h6>
+        </a>
+    </div>
+
+    
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:tags' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                تگ ها
+            </h6>
+        </a>
+    </div>
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:comments' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                کامنت ها
+            </h6>
+        </a>
+    </div>
+
+    
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'attachments:locations' %}">
+            <img src="{% static 'core/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                موقعیت ها
+            </h6>
+        </a>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

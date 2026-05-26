@@ -1,0 +1,33 @@
+<script>
+    let products_for_products_app=JSON.parse("{{products_s|escapejs}}")
+    let products_app = new Vue({
+        el: "#products-app",
+        data: {
+            products: products_for_products_app,
+            search_for:"",
+        },
+        methods: {
+            filter: () => {
+                let search_for = (products_app.search_for).toUpperCase()
+                products_app.products = products_for_products_app.filter(function (product) {
+                    let title=(product.title).toUpperCase()
+                    
+                    if(title.indexOf(search_for) > -1){
+                        return true
+                    }
+                        let model=product.model
+                        
+                    if( model !=null && model.indexOf(search_for) > -1){
+                        return true
+                    }
+                    return false
+                })
+
+            },
+
+            to_price: (vall) => {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

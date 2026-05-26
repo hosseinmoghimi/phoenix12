@@ -1,0 +1,80 @@
+ 
+{% if edit_person_form %}
+  
+<script>
+    let person_for_edit_person_app=JSON.parse(`{{person_s|escapejs}}`)
+    let edit_person_app=new Vue({
+        el:"#edit-person-app",
+        data:{
+            full_name: "", 
+            prefix:person_for_edit_person_app.prefix,
+            title:person_for_edit_person_app.title,
+            first_name:person_for_edit_person_app.first_name,
+            last_name:person_for_edit_person_app.last_name,
+            father_name:person_for_edit_person_app.father_name,
+            mobile:person_for_edit_person_app.mobile,
+            address:person_for_edit_person_app.address,
+            birth_location:person_for_edit_person_app.birth_location,
+            birth_date:person_for_edit_person_app.birth_date,
+            bio:person_for_edit_person_app.bio,
+            melli_code:person_for_edit_person_app.melli_code,
+            type:person_for_edit_person_app.type,
+            type2:person_for_edit_person_app.type2,
+            email:person_for_edit_person_app.email,
+            gender:person_for_edit_person_app.gender,
+            postal_code:person_for_edit_person_app.postal_code,
+            economic_no:person_for_edit_person_app.economic_no,
+            tel:person_for_edit_person_app.tel,  
+            message:{show:false},
+            waiting:false,
+        },
+
+        components: {
+            DatePicker: VuePersianDatetimePicker,
+        },
+        methods:{
+            edit_person: function () {
+                edit_person_app.waiting=true
+                edit_person_app.message.show=false
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    person_id: parseInt("{{person.id}}"),
+                    prefix: this.prefix,
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    father_name: this.father_name,
+                    title: this.title,
+                    mobile: this.mobile,
+                    address: this.address,
+                    type: this.type,
+                    type2: this.type2,
+                    postal_code:this.postal_code, 
+                    economic_no:this.economic_no,
+                    tel:this.tel,
+                    gender: this.gender,
+                    email: this.email,
+                    melli_code: this.melli_code,
+                    bio: this.bio,
+                    birth_date: this.birth_date,
+                    birth_location: this.birth_location, 
+                };
+
+                console.log(payload);
+                let url = "{% url 'authentication:edit_person' %}";
+                let posting = $.post(url, payload);
+                posting.done((data) => {
+                edit_person_app.waiting=false
+
+                console.log(data);
+                if (data.result === "SUCCEED") {
+                    show_message(edit_person_app,"موفق",data.message,'success',6000)
+                    
+                }else{
+                    show_message(edit_person_app,"خطا",data.message,'danger',6000)
+                }
+                });
+            },
+        }
+    })
+</script>
+{% endif %}

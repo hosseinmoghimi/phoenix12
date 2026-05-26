@@ -1,0 +1,128 @@
+{% load to_persian_date %} {% load to_price %} {% load to_amount_color %} {% load static %}
+<div id="accordion-cheques" class="rtl text-right farsi">
+  <div class="card" id="cheques-app">
+    <div class="card-header" id="heading-cheques">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-cheques"
+          aria-expanded="true"
+          aria-controls="collapse-cheques"
+        >
+                  
+          چک ها
+          <span v-if="cheques.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="cheques.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+
+      {% if page_pre_description %}
+
+      <h5 class="text-center">{{page_pre_description}}</h5>
+      {% endif %} {% if page_description %}
+
+      <h4 class="text-center">{{page_description}}</h4>
+      {% endif %}
+    </div>
+    <div
+      id="collapse-cheques"
+      class="collapse {% if expand_cheques %} show {% endif %}"
+      aria-labelledby="heading-cheques"
+      data-parent="#accordion-cheques"
+    >
+      <div class="card-body">
+        <input
+          type="text"
+          v-model="search_for"
+          class="form-control"
+          placeholder="جستجو ..."
+          @input="filter()"
+        />
+
+        <div class="table-responsive rtl">
+          <img
+            v-if="false"
+            width="32"
+            src="{% static 'leo/img/loading.gif' %}"
+            alt=""
+          />
+          <h6 v-if="false">
+            <span class="text-muted">در حال بار گذاری ... </span>
+          </h6>
+          <table class="table table-striped rtl">
+            <thead>
+              <th>عنوان</th>
+
+              <th>بدهکار</th>
+
+              <th>بستانکار</th>
+              <th>تاریخ</th>
+              <th>مبلغ</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="cheque in cheques">
+                <td>
+                  <a :href="cheque.get_absolute_url">
+                    <span v-text="cheque.title"> </span>
+                  </a>
+                </td>
+
+                <td>
+                  <div v-for="account in [cheque.bedehkar]">
+                    {% include "accounting/includes/account-app/media.html" %}
+                  </div>
+                </td>
+                <td>
+                  <div v-for="account in [cheque.bestankar]">
+                    {% include "accounting/includes/account-app/media.html" %}
+                  </div>
+                </td>
+                <td>
+                  <span v-text="cheque.persian_event_datetime"></span>
+                </td>
+                <td>
+                  <span v-text="to_price(cheque.amount)"> </span>
+
+                  <small class="text-muted"> {{CURRENCY}} </small>
+                </td>
+
+                <td>
+                  {% if perms.accounting.change_cheque %}
+                  <a
+                    class="my-2"
+                    target="_blank"
+                    title="ویرایش"
+                    :href="cheque.get_edit_url"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                    <!-- <span class="text-warning">
+                                            ویرایش
+                                        </span> -->
+                  </a>
+                  {% endif %} {% if perms.accounting.delete_cheque %}
+                  <a
+                    class="my-2"
+                    target="_blank"
+                    title="حذف"
+                    :href="cheque.get_delete_url"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                    <!-- <span class="text-danger">
+                                            حذف
+                                        </span> -->
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

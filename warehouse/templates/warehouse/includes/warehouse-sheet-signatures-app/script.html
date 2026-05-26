@@ -1,0 +1,21 @@
+<script>
+    
+    let warehouse_sheet_signatures_for_warehouse_sheet_signatures_app=JSON.parse("{{warehouse_sheet_signatures_s|escapejs}}")
+    let warehouse_sheet_signatures_app = new Vue({
+        el: "#warehouse-sheet-signatures-app",
+        data: {
+            warehouse_sheet_signatures: warehouse_sheet_signatures_for_warehouse_sheet_signatures_app
+        },
+        methods: {
+             copy_code_to_clipboard:function(code){
+                copy_to_clipboard(code)
+                
+
+            },
+
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

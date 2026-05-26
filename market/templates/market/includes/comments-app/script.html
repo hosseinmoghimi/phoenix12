@@ -1,0 +1,113 @@
+<script>
+
+    
+
+    let url_add_comment = "{% url 'attachments:add_comment' %}"
+    let url_delete_comment = "{% url 'attachments:delete_comment' %}"
+    let comments = JSON.parse(`{{comments_s|escapejs}}`)
+    let comment_component_template=`{% include 'market/includes/comments-app/component.html' %}`
+    let root_comments = comments.filter(comment=>comment.reply_to_id==null)
+    
+    let comment_component = Vue.component('comment-component', {
+        data: function () {
+            return {
+                confirm_delete: false,
+                show_add_reply:false,
+                reply:'',
+            }
+        },
+        methods: {
+            clear_reply:function(){
+                this.reply=''
+            },
+            add_reply:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    parent_id:parseInt(this.comment.id),
+                    comment:this.reply,
+                    page_id: page_id,
+                }
+                console.log(payload) 
+                let comment=this.comment
+                let posting = $.post(url_add_comment, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+
+                        comment.childs.push(data.comment) 
+                    }
+                })
+
+            },
+            delete_comment: function (comment_id) {
+                this.confirm_delete = false
+
+                let url = url_delete_comment
+                let payload = {
+                    comment_id: comment_id,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                }
+                let posting = $.post(url, payload)
+                
+                posting.done(function (data) {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+                        comments_app.comments = comments_app.comments.filter((comment) => {
+                            return (comment.id != comment_id)
+                        })
+
+                         comments_app.root_comments = comments_app.root_comments.filter((comment) => {
+                            return (comment.id != comment_id)
+                        })
+
+                        comment_component.confirm_delete = false
+                    }
+                })
+            },
+
+
+        },
+        props: ['comment'],
+        template: comment_component_template,
+    })
+
+
+    let comments_app = new Vue({
+        el: "#comments-app",
+        components: {
+            comment_component
+        },
+        data: {
+            comment: "",
+            root_comments: root_comments,
+            comments:comments,
+
+            message: { show: false },
+            waiting: false,
+        },
+        methods: {
+            add_comment: function () { 
+                this.comment = $("#comment_inputed").val()
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    page_id: page_id,
+                    comment: this.comment,
+                }
+                if (comments_app.comment.length > 500) {
+                    show_message(comments_app,"خطا","متن وارد شده باید کمتر از 500 کاراکتر داشته باشد.","danger",5000)
+                    return
+                }
+                let posting = $.post(url_add_comment, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+
+                        comments_app.root_comments.push(data.comment)
+                        comments_app.comments.push(data.comment)
+                        comments_app.comment = ""
+                    }
+                })
+            },
+        }
+    })
+</script>

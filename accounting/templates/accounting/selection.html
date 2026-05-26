@@ -1,0 +1,256 @@
+{% extends "accounting/layout.html" %}
+{% load static %} 
+
+{% block content %}
+<div class="row rtl" id="selection-app">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+
+                <a class="btn btn-primary farsi" href="{% url 'accounting:tree_chart' pk=0 %}" target="_blank"> درخت
+                    حساب
+                    ها</a>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center farsi">
+
+                    گروه های حساب
+                </h5>
+            </div>
+            <div class="card-body">
+
+
+                <div v-for="account_group in account_groups">
+                    <div class="mb-2 text-center">
+
+
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="account_group.get_absolute_url" type="button"
+                                :class="'btn farsi btn-'+account_group.color"
+                                style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;">
+                                جزئیات</a>
+                            <button
+                                style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_account_group_id==account_group.id ?' farsi w-100 btn btn-'+account_group.color: 'farsi w-100 btn btn-secondary'"
+                                @click="select_account_group(account_group.id)">
+
+                                <div>
+                                    <span v-text="account_group.code"></span>
+
+                                </div>
+                                <div>
+
+                                    <span v-text="account_group.title"></span>
+                                    <span v-html="to_price(account_group.balance)"></span>
+
+                                </div>
+                            </button>
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3" v-if="basic_accounts.length>0">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center farsi">
+
+                    حساب های کل
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="basic_account in basic_accounts">
+                    <div class="mb-2 text-center">
+
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="basic_account.get_absolute_url" type="button"
+                                :class="'btn farsi btn-'+basic_account.color"
+                                style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;">
+                                جزئیات</a>
+                            <button
+                                style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_basic_account_id==basic_account.id ?'farsi w-100 btn btn-'+basic_account.color: 'farsi w-100 btn btn-secondary'"
+                                @click="select_basic_account(basic_account.id)">
+                                <div>
+                                    <span v-text="basic_account.code"></span>
+
+                                </div>
+                                <div>
+
+                                    <span v-text="basic_account.title"></span>
+
+                                    <span v-html="to_price(basic_account.balance)"></span>
+                                </div>
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-md-3" v-if="moein_accounts.length>0">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center  farsi">
+
+                    حساب های معین
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="moein_account in moein_accounts">
+
+                    <div class="mb-2 rtl">
+                        <div class="btn-group w-100 rtl" role="group" aria-label="Basic example">
+                            <a :href="moein_account.get_absolute_url" type="button"
+                                :class="'btn farsi btn-'+moein_account.color"
+                                style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:.25rem;border-bottom-right-radius:.25rem;">
+                                جزئیات</a>
+                            <button
+                                style="border-top-right-radius:0;border-bottom-right-radius:0;border-top-left-radius:.25rem;border-bottom-left-radius:.25rem;"
+                                :class="selected_moein_account_id==moein_account.id ?'farsi w-100 btn btn-'+moein_account.color: 'farsi w-100 btn btn-secondary'"
+                                @click="select_moein_account(moein_account.id)">
+
+
+                                <div>
+                                    <span v-text="moein_account.code"></span>
+
+                                </div>
+                                <div>
+
+                                    <span v-text="moein_account.title"></span>
+
+                                    <span v-html="to_price(moein_account.balance)"></span>
+                                </div>
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" v-if="moein2_accounts.length>0">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center farsi">
+
+                    حساب های معین سطح دو
+                </h5>
+            </div>
+            <div class="card-body">
+                <div v-for="moein_account2 in moein2_accounts">
+                    <a :class="'farsi mb-2 btn w-100 btn-'+moein_account2.color"
+                        :href="moein_account2.get_absolute_url">
+                        <div>
+                            <span v-text="moein_account2.code"></span>
+                        </div>
+                        <div>
+                            <span v-text="moein_account2.title"></span>
+                            <span v-html="to_price(moein_account2.balance)"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    let account_groups = JSON.parse("{{account_groups_s|escapejs}}")
+    let basic_accounts = JSON.parse("{{basic_accounts_s|escapejs}}")
+    let moein_accounts = JSON.parse("{{moein_accounts_s|escapejs}}")
+    let moein2_accounts = JSON.parse("{{moein2_accounts_s|escapejs}}")
+
+    let selection_app = new Vue({
+        el: "#selection-app",
+        data: {
+            account_groups: account_groups,
+            basic_accounts: [],
+            moein_accounts: [],
+            moein2_accounts: [],
+            selected_account_group_id: 0,
+            selected_basic_account_id: 0,
+            selected_moein_account_id: 0,
+        },
+        methods: {
+            to_price: function (val) {
+                if (val == 0) {
+                    return ""
+                }
+                let price = to_price(val)
+                let color = "primary"
+                if (val > 0)
+                    color = "success"
+                if (val < 0)
+                    color = "danger"
+                return `<span class="farsi badge badge-${color}">${price}</span>`
+            },
+            select_account_group: function (account_group_id) {
+
+                selection_app.selected_account_group_id = account_group_id
+                selection_app.basic_accounts = basic_accounts.filter(basic_account =>
+                    basic_account.parent_id == account_group_id
+                )
+                selection_app.moein2_accounts = []
+
+                selection_app.moein_accounts = []
+
+            },
+            select_basic_account: function (basic_account_id) {
+
+
+                selection_app.selected_basic_account_id = basic_account_id
+
+                selection_app.moein_accounts = moein_accounts.filter(moein_account =>
+                    moein_account.parent_id == basic_account_id
+                )
+                selection_app.moein2_accounts = []
+
+            },
+            select_moein_account: function (moein_account_id) {
+                console.log(moein_account_id)
+                selection_app.selected_moein_account_id = moein_account_id
+
+                selection_app.moein2_accounts = moein2_accounts.filter(moein_account2 =>
+                    moein_account2.parent_id == moein_account_id
+                )
+
+            },
+        }
+    })
+</script>
+{% endblock script %}

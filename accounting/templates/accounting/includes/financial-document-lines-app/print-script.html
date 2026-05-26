@@ -1,0 +1,31 @@
+
+ 
+<script>
+    financial_document_lines_for_financial_document_lines_app= JSON.parse("{{financial_document_lines_s|escapejs}}")
+ 
+
+    let financial_document_lines_app = new Vue({
+        el: "#financial-document-lines-app",
+        data: {
+            financial_document_lines: financial_document_lines_for_financial_document_lines_app,
+            total: { bestankar: 0, bedehkar: 0 },
+
+        }, 
+        methods: { 
+            to_price: vall => to_price(vall),
+            to_price_colored: vall => to_price_colored(vall),
+             
+            calc_total: function () {
+                bestankar = 0
+                bedehkar = 0
+                this.financial_document_lines.forEach(financial_document_line => {
+                    bedehkar += financial_document_line.bedehkar
+                    bestankar += financial_document_line.bestankar
+                })
+                this.total = { bedehkar: bedehkar, bestankar: bestankar }
+            },
+
+        },
+
+    })
+</script> 

@@ -1,0 +1,60 @@
+{% extends "log/layout.html" %}
+
+
+{% block content %}
+<div>
+  <div class="card">
+    <div class="card-body rtl">
+
+
+      <h4 class="text-center">
+        {{log.title}}
+      </h4>
+      <div class="text-center">
+        {% if perms.accounting.change_log %}
+        <a href="{{log.get_edit_url}}" target="_blank" title="ویرایش" class="mx-2"><i
+            class="fa fa-edit text-info"></i></a>
+        {% endif %}
+        {% if perms.accounting.delete_log %}
+        <a href="{{log.get_delete_url}}" target="_blank" title="حذف" class="mx-2"><i
+            class="fa fa-trash text-danger"></i></a>
+        {% endif %}
+      </div>
+
+      <h6>
+        {{log.persian_date_added}}
+      </h6>
+
+
+      <div class="text-right my-3">
+        <a href="{{log.person.get_absolute_url}}">
+          <div class="media">
+            <img src="{{log.person.image}}" class="rounded-circle" width="48" alt="">
+            <div class="media-body mr-2">
+              <h6>
+                {{log.person.full_name}}
+
+              </h6>
+            </div>
+          </div>
+
+        </a>
+      </div>
+
+      {% if log.url %}
+
+      <div class="ltr text-left">
+        <a href="{{log.url}}">{{log.url}}</a>
+
+      </div>
+      {% endif %}
+
+
+      <div class="text-right alert alert-info">
+        {{log.description|safe}}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}

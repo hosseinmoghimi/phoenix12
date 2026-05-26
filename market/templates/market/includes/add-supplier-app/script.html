@@ -1,0 +1,52 @@
+<script>
+    let person_accounts_s = JSON.parse("{{person_accounts_s|escapejs}}")
+    let supplier_category_id = 0
+</script>
+
+<script>
+    let add_supplier_app = new Vue({
+        el: "#add-supplier-app",
+        data: {
+            level: "", 
+            person_account_id:0,
+            person_accounts: person_accounts_s,
+            waiting: false,
+            message: { show: false },
+            show_form: false, 
+
+        },
+        methods: {
+
+            to_price: vall => to_price(vall),
+            
+          
+            add_supplier: function () {
+
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    person_account_id: this.person_account_id,
+                    level: this.level,
+                }
+ 
+
+                leolog(payload)
+                let url = "{% url 'market:add_supplier' %}"
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        if (typeof suppliers_app != "undefined") {
+                            suppliers_app.suppliers.push(data.supplier)
+                        }
+                        show_message(add_supplier_app, "موفقیت آمیز", data.message, "success", 10000)
+                        add_supplier_app.persons=add_supplier_app.person_accounts.filter(person_account=>person_account.id!=data.supplier.person_account.id)
+                    }
+                    else {
+                        show_message(add_supplier_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        },
+    })
+</script>

@@ -1,0 +1,25 @@
+{% load static %}
+<form @submit.prevent="add_page_location()">
+    <div class="row">
+        <div class="col-md-9">
+            <select v-model="location_id" class="form-control" id="">
+                {% for location_ in all_locations %}
+                <option value="{{location_.id}}">
+                    {{location_.title}}
+                </option>
+
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <div class="text-right">
+
+                <button type="submit" class="btn btn-success">
+                    <i class="material-icons">
+                        add
+                    </i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

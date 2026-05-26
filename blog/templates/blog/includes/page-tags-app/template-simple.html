@@ -1,0 +1,22 @@
+{% if page_tags %}
+{% load static %}
+    <div class="card" id="page-tags-app">
+        <div class="card-header" id="headingPageTags">
+            <h5 class="text-center">
+                      برچسب ها  
+            </h5>
+        </div>
+            <div class="card-body">
+                <div class="rtl text-right">
+                    {% for page_tag in page_tags %}
+                        <a class="mx-1 my-1 farsi" href="{{page_tag.tag.get_absolute_url}}">
+                            <span class="material-icons">
+                                local_offer
+                            </span>
+                            {{page_tag.tag.title}}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+{% endif %}

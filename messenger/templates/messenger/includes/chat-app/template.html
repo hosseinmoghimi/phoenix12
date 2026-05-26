@@ -1,0 +1,100 @@
+{% load static %}
+<div class="card" id="chat-app">
+    <div class="card-body">
+        {% include "messenger/includes/chat-app/send-message.html" %}
+
+        <div class="mb-5"></div>
+        <div v-for="message in messages" class="mb-5">
+
+            <div class="media" class="mb-5">
+                <a :href="message.sender.get_absolute_url" :title="message.sender.full_name">
+
+                    <img :src="message.sender.image" width="96" class="rounded-circle" alt="">
+                </a>
+                <div class="media-body mr-3">
+
+                    <h5>
+                        <a :href="message.get_absolute_url">
+                            <span v-text="message.title"></span>
+
+                        </a>
+                        {% if perms.messenger.change_message %}
+                        <a :href="message.get_edit_url" title="ویرایش" target="_blank"><i
+                                class="fa fa-edit text-warning mx-2"></i></a>
+                        {% endif %}
+                        {% if perms.messenger.change_message %}
+                        <a :href="message.get_delete_url" title="حذف" target="_blank"><i
+                                class="fa fa-trash text-danger mx-2"></i></a>
+                        {% endif %}
+                    </h5>
+
+                    <div class="text-muted mb-4 text-right">
+
+                        <span v-html="message.body"></span>
+                    </div>
+                    <h6 class="text-muted">
+                        <a :href="message.sender.get_absolute_url">
+                            <span v-text="message.sender.full_name"></span>
+                        </a>
+                        <small class="mr-2">
+
+                            <span v-text="message.perisan_date_send"></span>
+                        </small>
+                    </h6>
+                </div>
+            </div>
+
+        </div>
+        {% for message in messages %}
+
+        <div class="media mb-5">
+            <a href="{{message.sender.get_absolute_url}}" title="{{message.sender.full_name}}">
+
+                <img src="{{message.sender.image}}" width="96" class="rounded-circle" alt="">
+            </a>
+            <div class="media-body mr-3">
+
+                <h5>
+                    <a href="{{message.get_absolute_url}}">
+
+                        <span>{{message.title}}</span>
+                    </a>
+                    {% if perms.messenger.change_message %}
+                    <a href="{{message.get_edit_url}}" title="ویرایش" target="_blank"><i
+                            class="fa fa-edit text-warning mx-2"></i></a>
+                    {% endif %}
+                    {% if perms.messenger.change_message %}
+                    <a href="{{message.get_delete_url}}" title="حذف" target="_blank"><i
+                            class="fa fa-trash text-danger mx-2"></i></a>
+                    {% endif %}
+                </h5>
+                <p>
+
+                </p>
+                <div class="text-muted mb-4">
+
+                    {{message.body|safe}}
+                </div>
+                <h6 class="text-muted">
+                    <a href="{{message.sender.get_absolute_url}}">
+                        {{message.sender.full_name}}
+                    </a>
+                    <small class="mr-2">
+
+                        {{message.perisan_date_send}}
+                    </small>
+                </h6>
+            </div>
+        </div>
+
+
+        {% endfor %}
+
+
+
+
+    </div>
+    <div class="card-footer">
+
+    </div>
+</div>

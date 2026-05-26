@@ -1,0 +1,37 @@
+<div id="page-short-description-app">
+  {% if page.short_description %}
+
+  <div id="accordion-page-short-description">
+    <div class="card">
+      <div class="card-header" id="heading-page-short-description">
+        <h5 class="mb-0 text-center">
+          <button
+            class="btn btn-link collapsed"
+            data-toggle="collapse"
+            data-target="#collapse-page-short-description"
+            aria-expanded="false"
+            aria-controls="collapse-page-short-description"
+          >
+            توضیحات کوتاه
+             <!-- درباره 
+             {{page.title}} -->
+          </button>
+        </h5>
+      </div>
+      <div
+        id="collapse-page-short-description"
+        class="collapse"
+        aria-labelledby="heading-page-short-description"
+        data-parent="#accordion-page-short-description"
+      >
+        <div class="card-body ltr text-right">
+          <div v-if="short_description.length==0">
+            {{page.short_description|safe}}
+          </div>
+          <span v-html="short_description"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>

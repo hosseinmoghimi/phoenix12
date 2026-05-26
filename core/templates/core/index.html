@@ -1,0 +1,46 @@
+{% extends "core/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-12 my-3"> 
+        <div class="text-center">
+          <h6 class="text-center">
+            آفیس مجازی
+          </h6>
+
+          <h5 class="text-center">
+            فونیکس
+            <!-- <small class="text-muted"> ورژن {{VERSION}} </small> -->
+          </h5> 
+    </div>
+  </div>
+  {% if pages %}
+    
+  <div class="col-md-12">
+    {% include "core/includes/pages-app/template.html" %}
+    
+  </div>
+  {% endif %}
+  {% for phoenix_app in phoenix_apps %} {% if phoenix_app.on_index %}
+
+  <div class="col-4 col-md-3 col-lg-2 text-center my-3">
+    <a href="{{phoenix_app.url}}">
+      <img src="{{phoenix_app.logo}}" width="64em" class="mb-2" alt="" />
+      <h6 class="text-center">{{phoenix_app.title}}</h6>
+    </a>
+  </div>
+  {% endif %} {% endfor %}
+    
+
+</div>
+{% endblock content %} {% block script %}
+<script>
+  console.log("name1: {{name1}}");
+  console.log("name2: {{name2}}");
+  console.log("name3: {{name3}}");
+</script>
+
+  {% if pages %}
+    
+    {% include "core/includes/pages-app/script.html" %}
+    
+  {% endif %}
+{% endblock script %}

@@ -1,0 +1,23 @@
+{% if add_page_location_form or add_location_form %}
+<div class="card-footer">
+    <p>
+        <button @click="show_add_location_form=true" v-if="!show_add_location_form" class="btn btn-success">
+            <i class="material-icons">
+                add
+            </i>
+        </button>
+    </p>
+
+    <div v-if="show_add_location_form">
+
+        {% if add_location_form and page %}
+        {% include "attachments/includes/locations-app/add-page-location-form.html" %}
+        {% endif %}
+
+        {% if add_location_form %}
+        {% include "attachments/includes/locations-app/add-location-form.html" %}
+        {% endif %}
+    </div>
+
+</div>
+{% endif %}

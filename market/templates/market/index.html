@@ -1,0 +1,92 @@
+{% extends "market/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:index' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+
+                Market
+            </h6>
+        </a>
+    </div>
+
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:products' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+
+                کالا ها
+            </h6>
+        </a>
+    </div>
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:shop_packages' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+
+                بسته ها
+            </h6>
+        </a>
+    </div>
+
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:category' pk=0 %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                دیکو
+            </h6>
+        </a>
+    </div>
+
+     
+    
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:suppliers' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                فروشنده ها
+            </h6>
+        </a>
+    </div>
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:customers' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                مشتری ها
+            </h6>
+        </a>
+    </div>
+
+    
+    <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'market:shippers' %}">
+            <img src="{% static 'market/img/logo.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                حمل کننده ها
+            </h6>
+        </a>
+    </div>
+
+
+
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+<script>
+    console.log("name1: {{name1}}")
+    console.log("name2: {{name2}}")
+    console.log("name3: {{name3}}")
+</script>
+
+
+{% endblock script %}

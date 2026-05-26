@@ -1,0 +1,43 @@
+<div class="card" id="add-to-cart-app">
+    <div class="card-header">
+        خرید
+    </div>
+
+    <div class="card-body">
+        <div v-for="shop in shops">
+            <table class="table">
+                <tr>
+                    <td>
+                        <input type="number" min="1" :max="shop.available" class="form-control" v-model="quantity">
+                        <span v-text="shop.unit_name"></span>
+                    </td>
+                    <td>
+                        <a :href="shop.supplier.get_absolute_url">
+                            <span v-text="shop.supplier.title"></span>
+                        </a>
+                    </td>
+
+                    
+                    <td>
+                        موجودی
+                            <span v-text="shop.available"></span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success" @click="add_to_cart(shop)">
+                            <span v-text="to_price(shop.unit_price)"></span> 
+                            {{CURRENCY}}   
+                            |
+                            افزودن به سبد خرید</button>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div :class="'alert alert-'+message.color" v-if="message.show">
+            <h6 v-text="message.title"></h6>
+            <div v-html="message.body"></div>
+         </div>
+         
+    </div>
+</div>

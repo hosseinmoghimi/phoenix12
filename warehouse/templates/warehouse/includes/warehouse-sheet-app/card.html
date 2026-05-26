@@ -1,0 +1,307 @@
+<div class="card" id="warehouse-sheet-app">
+  {% load to_normal_number %} {% load to_price %} {% load to_persian_date %} {% load to_text_color %}
+  <div class="card-header">برگه انبار</div>
+  <div class="card-body">
+    {% if perms.warehouse.change_warehousesheet %}
+    <a
+      href="{{warehouse_sheet.get_edit_url}}"
+      target="_blank"
+      title="ویرایش"
+      class="text-warning mx-2 my-2"
+    >
+      <i class="fa fa-edit"></i>
+    </a>
+    {% endif %} {% if perms.warehouse.change_warehousesheet %}
+    <a
+      href="{{warehouse_sheet.get_delete_url}}"
+      target="_blank"
+      title="حذف"
+      class="text-danger mx-2 my-2"
+    >
+      <i class="fa fa-trash"></i>
+    </a>
+    {% endif %}
+
+    <table class="table">
+      <tbody>
+        <tr>
+          <td class="field_name">انبار</td>
+          <td class="field_value">
+            <div class="media">
+              <a href="{{warehouse_sheet.warehouse.get_absolute_url}}">
+                <img
+                  src="{{warehouse_sheet.warehouse.thumbnail}}"
+                  class="rounded"
+                  width="64"
+                  alt=""
+                />
+              </a>
+              <div class="media-body mr-2">
+                <h6>
+                  <a href="{{warehouse_sheet.warehouse.get_absolute_url}}">
+                    {{warehouse_sheet.warehouse.name}}
+                  </a>
+                </h6>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="field_name">واحد درخواست کننده</td>
+          <td class="field_value">
+            {% if warehouse_sheet.organizational_unit %}
+            <div class="media">
+              <a
+                href="{{warehouse_sheet.organizational_unit.get_absolute_url}}"
+              >
+                <img
+                  src="{{warehouse_sheet.organizational_unit.thumbnail}}"
+                  class="rounded"
+                  width="64"
+                  alt=""
+                />
+              </a>
+              <div class="media-body mr-2">
+                <h6>
+                  <a
+                    href="{{warehouse_sheet.organizational_unit.get_absolute_url}}"
+                  >
+                    {{warehouse_sheet.organizational_unit.title}}
+                  </a>
+                </h6>
+
+                
+              </div>
+            </div>
+            {% else %}
+            
+              <i class="fa fa-exclamation-triangle text-warning"></i>
+            
+              ندارد {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">فاکتور</td>
+          <td class="field_value">
+            {% if warehouse_sheet.invoice_line.invoice %}
+            <div class="media">
+              <a
+                href="{{warehouse_sheet.invoice_line.invoice.get_absolute_url}}"
+              >
+                <img
+                  src="{{warehouse_sheet.invoice_line.invoice.thumbnail}}"
+                  class="rounded"
+                  width="64"
+                  alt=""
+                />
+              </a>
+              <div class="media-body mr-2">
+                <h6>
+                  <a
+                    href="{{warehouse_sheet.invoice_line.invoice.get_absolute_url}}"
+                  >
+                    {{warehouse_sheet.invoice_line.invoice.title}}
+                  </a>
+                </h6>
+
+                <h6>
+                  <a href="{{warehouse_sheet.invoice_line.get_absolute_url}}">
+                    ردیف {{warehouse_sheet.invoice_line.row}}
+                  </a>
+                </h6>
+              </div>
+            </div>
+            {% else %}
+              <i class="fa fa-exclamation-triangle text-warning"></i>
+            
+              ندارد {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">ردیف</td>
+          <td class="field_value">
+            <h6>
+              <a href="{{warehouse_sheet.invoice_line.get_absolute_url}}">
+                ردیف {{warehouse_sheet.invoice_line.row}}
+              </a>
+            </h6>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">کالا</td>
+          <td class="field_value">
+            <div class="media">
+              <a
+                href="{{warehouse_sheet.invoice_line.invoice_line_item.get_absolute_url}}"
+              >
+                <img
+                  src="{{warehouse_sheet.invoice_line.invoice_line_item.thumbnail}}"
+                  class="rounded"
+                  width="64"
+                  alt=""
+                />
+              </a>
+              <div class="media-body mr-2">
+                <h6>
+                  <a
+                    href="{{warehouse_sheet.invoice_line.invoice_line_item.get_absolute_url}}"
+                  >
+                    {{warehouse_sheet.invoice_line.invoice_line_item.title}}
+                  </a>
+                </h6>
+                <h6>
+                  {{warehouse_sheet.invoice_line.quantity|to_normal_number}}
+                  {{warehouse_sheet.invoice_line.unit_name}}
+                </h6>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">تعداد</td>
+          <td class="field_value">
+            <div class=" ">
+              {{warehouse_sheet.invoice_line.quantity|to_normal_number}}
+              {{warehouse_sheet.invoice_line.unit_name}}
+              <small class="text-muted mx-2">
+                {{warehouse_sheet.invoice_line.status}}
+              </small>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">مبلغ جزء</td>
+          <td class="field_value">
+            <div class=" ">
+              {{warehouse_sheet.invoice_line.unit_price|to_price}} {{CURRENCY}}
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">جمع</td>
+          <td class="field_value">
+            <div class=" ">
+              <h4>
+
+                {{warehouse_sheet.invoice_line.line_total|to_price}} {{CURRENCY}}
+              </h4>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field_name">جهت</td>
+          <td class="field_value">
+            <div class="text-{{warehouse_sheet.direction|to_text_color}}">
+              {{warehouse_sheet.direction}}
+            </div>
+          </td>
+        </tr>
+        {% if warehouse_sheet.shelf %}
+
+        <tr>
+          <td class="field_name">قفسه</td>
+          <td class="field_value">
+            <div>{{warehouse_sheet.shelf}}</div>
+          </td>
+        </tr>
+        {% endif %} {% if warehouse_sheet.col %}
+
+        <tr>
+          <td class="field_name">ستون</td>
+          <td class="field_value">
+            <div>{{warehouse_sheet.col}}</div>
+          </td>
+        </tr>
+        {% endif %} {% if warehouse_sheet.row %}
+
+        <tr>
+          <td class="field_name">ردیف</td>
+          <td class="field_value">
+            <div>{{warehouse_sheet.row}}</div>
+          </td>
+        </tr>
+        {% endif %}
+
+        <tr>
+          <td class="field_name">تاریخ</td>
+          <td class="field_value">
+            <div class=" ">
+              {{warehouse_sheet.date_added|to_persian_datetime|safe}}
+            </div>
+          </td>
+        </tr>
+
+        {% if warehouse_sheet.description %}
+
+        <tr>
+          <td class="field_name">توضیحات</td>
+          <td class="field_value">
+            <div>{{warehouse_sheet.description}}</div>
+          </td>
+        </tr>
+        {% endif %}
+
+        
+        {% if warehouse_sheet.status %}
+
+        <tr>
+          <td class="field_name">وضعیت برگه انبار</td>
+          <td class="field_value">
+            <div :class="'alert alert-'+status_color">
+              <span v-text="status"></span>
+            </div>
+          </td>
+        </tr>
+        {% endif %}
+
+        
+        {% if warehouse_sheet.type %}
+
+        <tr>
+          <td class="field_name">نوع برگه انبار</td>
+          <td class="field_value">
+            <div>{{warehouse_sheet.type}}</div>
+          </td>
+        </tr>
+        {% endif %}
+
+         <tr>
+              <td class="field-name">ثبت توسط</td>
+
+              <td class="field-value">
+                <div class="media">
+                  <a href="{{warehouse_sheet.employee.get_absolute_url}}">
+                    <img src="{{warehouse_sheet.employee.person_account.person.image}}" width="48" class="rounded-circle" alt="">
+                  </a>
+                  <div class="media-body mr-2">
+                    <h6>
+
+                      <a href="{{warehouse_sheet.employee.get_absolute_url}}">
+                        {{warehouse_sheet.employee.person_account.person.full_name}}
+                      </a>
+                    </h6>
+
+                    
+                    <h6>
+
+                      <a href="{{warehouse_sheet.employee.organizational_unit.get_absolute_url}}">
+                        {{warehouse_sheet.employee.organizational_unit.title}}
+                      </a>
+                    </h6>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer"></div>
+</div>

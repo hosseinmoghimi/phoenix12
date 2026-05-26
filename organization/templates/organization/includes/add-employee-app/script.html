@@ -1,0 +1,88 @@
+{% include "accounting/includes/person-account-app/select-script.html" %}
+<script>
+  let organizational_unit_id_for_add_employee_app=0
+</script>
+{% if organizational_unit %}
+  <script>
+  organizational_unit_id_for_add_employee_app=parseInt("{{organizational_unit.id}}")
+</script>
+{% endif %}
+<script>
+  let add_employee_app = new Vue({
+    el: "#add-employee-app",
+    data: {
+    job_title: "",
+    person_account_code:"0",
+    person_account:{},
+    organizational_unit_id:organizational_unit_id_for_add_employee_app,
+    organizational_unit:false,
+    event_date: current_date,
+    event_time: "00:00:00",
+    event_datetime: current_datetime,
+    message:{show:false},
+    waiting:false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      select_person_account: function () {
+          select_person_account_by_code(add_employee_app.person_account_code).done((data) => { 
+              if (data.result === "SUCCEED") {
+                  add_employee_app.person_account = data.person_account;
+              } else {
+                  add_employee_app.person_account = {}
+              }
+        });
+      },
+      
+
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+     
+      add_employee: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          job_title: this.job_title,
+          person_account_id: this.person_account.id,
+          organizational_unit_id: this.organizational_unit_id,
+          event_datetime: this.event_date+" "+this.event_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'organization:add_employee' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(add_employee_app,'موفق',data.message,'success',2000)
+            if (typeof employees_app != "undefined") {
+              employees_app.employees.push(data.employee);
+            }
+          }
+          
+          else{
+            show_message(add_employee_app,'خطا',data.message,'danger',2000)
+          }
+        });
+      },
+    },
+  });
+</script>

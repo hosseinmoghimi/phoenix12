@@ -1,0 +1,19 @@
+ 
+ 
+
+      <a class="dropdown-item" style="text-align: center;" href="{{me_customer.get_absolute_url}}">
+       خریدار
+      </a>
+
+
+      <a class="dropdown-item" style="text-align: center;" href="{{me_customer.get_absolute_url}}">
+        {{me_customer.full_name}}
+
+      </a>
+      <a class="dropdown-item" style="text-align: center;" href="{% url 'market:cart' customer_id=me_customer.id %}">
+        {% load to_price %}
+        {{me_customer.total_in_cart|to_price}} {{CURRENCY}}  در سبد خرید شما
+      </a>
+      {% include "market/includes/cart-items-app/navbar-template.html" %}
+
+      

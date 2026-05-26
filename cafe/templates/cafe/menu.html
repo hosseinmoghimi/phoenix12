@@ -1,0 +1,40 @@
+{% extends "cafe/layout.html" %} {% load static %} {% block content %}
+
+<div class="text-center">
+  <h1 class="text-center rtl">{{menu.title}}</h1>
+
+  {% if perms.cafe.change_menu %}
+  <h3>
+    <a
+      href="{{menu.get_edit_url}}"
+      class="my-2 text-warning mx-2"
+      title="ویرایش"
+      target="_blank"
+      ><i class="fa fa-edit text-warning"></i
+    ></a>
+    {% endif %} {% if perms.cafe.delete_menu %}
+    <a
+      href="{{menu.get_delete_url}}"
+      class="my-2 text-danger mx-2"
+      title="حذف"
+      target="_blank"
+      ><i class="fa fa-trash text-danger"></i
+    ></a>
+  </h3>
+  {% endif %}
+
+  <h4 class="text-center rtl">
+    <a href="{{menu.supplier.get_absolute_url}}">
+      {{menu.supplier.person_account.person.full_name}}
+    </a>
+  </h4>
+</div>
+<hr />
+    {% include "cafe/includes/menu-app/template.html" %}
+ 
+{% endblock content %} {% block script %}
+    {% include "cafe/includes/menu-app/script.html" %}
+
+
+
+{% endblock script %}

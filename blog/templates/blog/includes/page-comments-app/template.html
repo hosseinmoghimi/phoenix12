@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-body">
+
+        <div id="page-comments-app">
+
+            <div class="media-area">
+                <h3 class="title text-center farsi">
+                    <span v-text="page_comments.length"></span>
+                    نظر در این صفحه ثبت شده است.
+                </h3>
+
+
+                <div class="py-3" v-for="page_comment in page_comments">
+                    <page-comment-component :page_comment="page_comment">
+                    </page-comment-component>
+
+                </div>
+
+
+
+            </div>
+            {% if profile %}
+
+            <h3 class="title text-center farsi">نظر خود را ثبت کنید.</h3>
+            <div class="media media-post">
+                <a class="author float-left" title="{{profile.name}}" href="#pablo">
+                    <div class="avatar">
+                        <img class="media-object" alt="64x64" src="{{profile.image}}">
+                    </div>
+                </a>
+                <div class="media-body">
+                    <div class="form-group label-floating bmd-form-group pt-0 mt-0">
+
+
+                        <textarea id="comment_inputed" v-model="comment" class="farsi form-control" rows="5"
+                            id="exampleBlogPost"></textarea>
+                    </div>
+                    <div class="media-footer">
+                        <button @click="add_comment" class="btn btn-primary farsi btn-round btn-wd float-right">ثبت
+                            نظر</button>
+                    </div>
+                </div>
+            </div> <!-- end media-post -->
+            {% endif %}
+        </div>
+    </div>
+</div>
+ 

@@ -1,0 +1,73 @@
+<div id="accordion-add-supplier">
+  <div class="card" id="add-supplier-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-supplier"
+          aria-expanded="true"
+          aria-controls="collapse-add-supplier"
+        >
+          افزودن فروشنده جدید
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-add-supplier"
+      class="collapse {% if expand_add_supplier %} show{% endif %}"
+      aria-labelledby="heading-add-supplier"
+      data-parent="#accordion-add-supplier"
+    >
+      <div class="card-body">
+        <div class="text-right">
+          <form @submit.prevent="add_supplier()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="">شخص</label>
+                  <select class="form-control" v-model="person_account_id">
+                    <option
+                      v-for="person_account in person_accounts"
+                      :value="person_account.id"
+                      v-text="person_account.person.full_name+' => '+person_account.full_name"
+                    ></option>
+                  </select>
+                  <a href="{% url 'accounting:person_accounts'  %}" target="_blank">همه حساب های اشخاص</a>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="">سطح فروشنده</label>
+                  <select class="form-control" v-model="level">
+                    {% for level in levels %}
+                    <option value="{{level}}">{{level}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <button class="btn btn-success" type="submit">
+                  <i class="fa fa-plus"></i> افزودن
+                </button>
+                <button @click="show_form=false" class="btn btn-secondary">
+                  انصراف
+                </button>
+              </div>
+              <div class="col-md-12 mt-2" v-if="message.show">
+                <div :class="'alert alert-'+message.color">
+                  <div class="rtl text-right">
+                    <h5 v-html="message.title"></h5>
+                    <span v-html="message.body"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

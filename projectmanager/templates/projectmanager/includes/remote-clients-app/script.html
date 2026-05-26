@@ -1,0 +1,157 @@
+<script>
+
+    let remote_clients = JSON.parse(`{{remote_clients_s|escapejs}}`)
+    let remote_clients_app = new Vue({
+        el: "#remote-clients-app",
+        data: {
+            remote_clients: remote_clients,
+            search_for: '',
+            waiting: false,
+            status: "",
+            show_form: false,
+            message: { show: false },
+            product_id:0,
+            pattern:"",
+            remote_client_id:0,
+            name: "",
+            active_directory: "",
+            work_group: "",
+            os: "",
+            url: "",
+            local_ip: "",
+            remote_ip: "",
+            any_desk_address: "",
+            any_desk_password: "",
+            dorsan_desk_address: "",
+            dorsan_desk_password: "",
+            username: "",
+            password: "",
+            identity: "",
+            ssid: "",
+            preshared_key: "",
+            frequency: "",
+            protocol: "",
+            channel_width: "",
+            adsl_username: "",
+            adsl_password: "",
+            telephone: "",
+            contact: "",
+            mac_address: "",
+            brand_id: 0,
+            wireless_band: "",
+            id_name: "",
+            model_name: "",
+            serial_no: "",
+            wireless_mode: "",
+            part_no: "",
+            description: "",
+        },
+        methods: {
+            filter: function () {
+                this.remote_clients = remote_clients.filter(remote_client => 
+                remote_client.name.indexOf(this.search_for) > -1
+                 
+                )
+
+            },
+            add_remote_client: function (request_id) {
+                let url = "{% url 'projectmanager:add_remote_client' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    remote_client_id:this.remote_client_id,
+                    project_id: project_id,
+                    name: this.name,
+                    active_directory: this.active_directory,
+                    work_group: this.work_group,
+                    os: this.os,
+                    url: this.url,
+                    local_ip: this.local_ip,
+                    remote_ip: this.remote_ip,
+                    any_desk_address: this.any_desk_address,
+                    pattern: this.pattern,
+                    any_desk_password: this.any_desk_password,
+                    dorsan_desk_address: this.dorsan_desk_address,
+                    dorsan_desk_password: this.dorsan_desk_password,
+                    username: this.username,
+                    password: this.password,
+                    identity: this.identity,
+                    wireless_band: this.wireless_band,
+                    ssid: this.ssid,
+                    preshared_key: this.preshared_key,
+                    frequency: this.frequency,
+                    protocol: this.protocol,
+                    wireless_mode: this.wireless_mode,
+                    channel_width: this.channel_width,
+                    adsl_username: this.adsl_username,
+                    adsl_password: this.adsl_password,
+                    telephone: this.telephone,
+                    contact: this.contact,
+                    description: this.description,
+                    part_no: this.part_no,
+                    serial_no: this.serial_no,
+                    id_name: this.id_name,
+                    model_name: this.model_name,
+                    brand_id: parseInt(this.brand_id),
+                    product_id: parseInt(this.product_id),
+                    mac_address: this.mac_address,
+                }
+                console.log(payload)
+                $.post(url, payload).done(data => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+                        if(data.remote_client==null){
+                            remote_clients_app.remote_clients=remote_clients_app.remote_clients.filter(remote_client=>remote_client.id!=remote_clients_app.remote_client_id)
+                            remote_clients_app.remote_client_id = 0
+                            remote_clients_app.message = { show: true, body: data.message, color: 'warning' }
+                            
+                        }
+                        else{
+                            remote_clients_app.remote_clients.push(data.remote_client)
+                            remote_clients_app.message = { show: true, body: data.message, color: 'success' }
+
+                        }
+
+                        setTimeout(() => {
+                            remote_clients_app.message = { show: false }
+                        }, 3000);
+
+                        remote_clients_app.remote_client_id = 0
+                        remote_clients_app.name = ""
+                        remote_clients_app.active_directory = ""
+                        remote_clients_app.work_group = ""
+                        remote_clients_app.url = ""
+                        remote_clients_app.local_ip = ""
+                        remote_clients_app.remote_ip = ""
+                        remote_clients_app.any_desk_address = ""
+                        remote_clients_app.any_desk_password = ""
+                        remote_clients_app.dorsan_desk_address = ""
+                        remote_clients_app.dorsan_desk_password = ""
+                        remote_clients_app.username = ""
+                        remote_clients_app.password = ""
+                        remote_clients_app.identity = ""
+                        remote_clients_app.ssid = ""
+                        remote_clients_app.preshared_key = ""
+                        remote_clients_app.frequency = ""
+                        remote_clients_app.wireless_mode = ""
+                        remote_clients_app.protocol = ""
+                        remote_clients_app.channel_width = ""
+                        remote_clients_app.adsl_username = ""
+                        remote_clients_app.adsl_password = ""
+                        remote_clients_app.telephone = ""
+                        remote_clients_app.contact = ""
+                        remote_clients_app.description = ""
+                        remote_clients_app.show_form = false
+                    }
+                    else {
+                        remote_clients_app.message = { show: true, body: data.message, color: 'danger' }
+                        setTimeout(() => {
+                            remote_clients_app.message = { show: false }
+                        }, 3000);
+                    }
+                })
+            },
+
+        }
+    })
+
+</script>

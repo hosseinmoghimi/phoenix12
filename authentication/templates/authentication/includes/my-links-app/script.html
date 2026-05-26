@@ -1,0 +1,35 @@
+{% if my_links %}
+<script>
+    my_links=JSON.parse("{{my_links_s|escapejs}}")
+    console.log("my links app started !!!!")
+    let my_links_app=new Vue({
+        el:'#my-links-app',
+        data:{
+            my_links:my_links,
+        },
+        methods:{
+            delete_my_link:function(my_link_id){
+                console.log(my_link_id)
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    my_link_id:my_link_id
+                }
+                let url="{% url 'authentication:delete_my_link' %}"
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED')
+                        my_links_app.my_links=data.my_links
+                })
+            },
+            copy_to_clipboard:function(text){
+                copy_to_clipboard(text)
+            },
+            clear_all_my_links:function(){
+                    console.log("clear_all_my_links")
+            },
+        },
+
+    })
+</script>
+  
+{% endif %}

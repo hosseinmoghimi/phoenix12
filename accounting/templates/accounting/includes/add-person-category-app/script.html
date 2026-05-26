@@ -1,0 +1,63 @@
+
+<script>
+    // const colors_for_add_account_app = JSON.parse("{a{colors_s|escapejs}}")
+</script>
+{% include 'accounting/includes/account-app/select-script.html' %}
+<script>
+    let add_person_category_app = new Vue({
+        el: "#add-person-category-app",
+        data: { 
+            account_code:'',
+            account:{},
+            code_length: 5,
+            title: "",
+            color: 'success',
+            // colors: colors_for_add_account_app,
+            message: { show: false },
+            waiting:false,
+        },
+        methods: {
+            to_price:p=>to_price(p),
+            select_account:function(){
+                select_account_by_code(this.account_code).done(data => {
+                    if (data.result === "SUCCEED") {
+                        leolog(data.account)
+                        add_person_category_app.account = data.account
+                    }
+
+                    if (data.result === "FAILED") {
+
+                        add_person_category_app.account={}
+                    }
+                })
+            },
+            add_person_category: function () {
+                const url = "{% url 'accounting:add_person_category'  %}"
+                const payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    code_length: parseInt(this.code_length),
+                    account_id: parseInt(this.account.id),
+                    title: this.title,
+
+                }
+                leolog(payload)
+                $.post(url, payload).done(data => {
+                    leolog(data)
+                    if (data.result === "SUCCEED") {
+                        show_message(add_person_category_app, "موفقیت آمیز", data.message, "success", 10000)
+                        if (typeof person_categories_app != "undefined") {
+
+                            person_categories_app.person_categories.push(data.person_category)
+                        }
+                    }
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_person_category_app, "خطا", data.message, "danger", 10000)
+
+                    }
+
+                })
+            },
+        }
+    })
+</script>

@@ -1,0 +1,14 @@
+<div class="media">
+    <a :href="organizational_unit.get_absolute_url">
+        <img class="rounded" width="48" :src="organizational_unit.thumbnail"> 
+    </a>
+    <div class="media-body mr-2">
+        <a :href="organizational_unit.get_absolute_url">
+            <h5>
+
+                <span v-text="organizational_unit.title"></span>
+            </h5>
+        </a>
+        
+    </div>
+</div>

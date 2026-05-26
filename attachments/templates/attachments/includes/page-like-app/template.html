@@ -1,0 +1,24 @@
+{% if not dont_show_page_likes %}
+
+
+{% if me_person %}
+
+<span id="page-like-app" class="text-right" v-cloak>
+    <span @click="toggle_like()" class="" style="cursor: pointer;" :title="likes_count_message()">
+        {% if toggle_page_like_form %}
+
+        <i v-if="!my_like" class="fa fa-star text-secondary " aria-hidden="true"></i>
+        <i v-if="my_like" class="fa fa-star " style="color:#f5c103" aria-hidden="true"></i>
+        {% endif %}
+        <span v-text="likes_count_message()"></span>
+    </span>
+</span>
+{% else %}
+
+<span title="{{likes_count}}">
+
+    <i class="fa fa-star " style="color:#f5c103" aria-hidden="true"></i>
+</span>
+{% endif %}
+
+{% endif %}

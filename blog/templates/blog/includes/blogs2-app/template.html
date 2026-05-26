@@ -1,0 +1,71 @@
+<div id="accordion-blogs" class="rtl text-right farsi">
+  <div class="card" id="blogs-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-blogs"
+          aria-expanded="true"
+          aria-controls="collapse-blogs"
+        >
+          بلاگ ها
+          <span v-if="blogs.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="blogs.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-blogs"
+      class="collapse {% if expand_blogs %} show {% endif %}"
+      aria-labelledby="heading-blogs"
+      data-parent="#accordion-blogs"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>بلاگ</th>
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="blog in blogs">
+                <td>
+                  <a :href="blog.get_absolute_url">
+                    <span v-text="blog.title"></span>
+                  </a>
+                </td>
+                <td>
+                  <a
+                    target="_blank"
+                    :href="blog.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="blog.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+{% include "accounting/includes/product-app/select-script.html" %}
+<script>
+    let merge_product_app=new Vue({
+        el:"#merge-product-app",
+        data:{
+            deleting_product:{},
+            deleting_product_code:"",
+            
+            updating_product:{},
+            updating_product_code:"",
+
+            waiting:false,
+            message:{show:false},
+            show_confirm:false,
+        },
+        methods:{
+            select_deleting_product:function(){
+                select_product_by_barcode(this.deleting_product_code).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        merge_product_app.deleting_product=data.product
+                    }
+                })
+            },
+            select_updating_product:function(){
+                select_product_by_barcode(this.updating_product_code).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        merge_product_app.updating_product=data.product
+                    }
+                })
+            },
+            merge:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    deleting_product_id:parseInt(this.deleting_product.id),
+                    updating_product_id:parseInt(this.updating_product.id),
+                }
+                let url="{% url 'accounting:merge_product' %}"
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        show_message(merge_product_app,'موفق',data.message,'success',30000)
+                    }
+                    if(data.result!='SUCCEED'){
+                        show_message(merge_product_app,'خطا',data.message,'danger',10000)
+                    }
+                })
+            },
+        }
+    })
+</script>

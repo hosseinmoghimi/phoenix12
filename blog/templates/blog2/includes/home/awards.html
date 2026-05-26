@@ -1,0 +1,75 @@
+{% load static %}
+
+<!-- teams -->
+<div class="cd-section" id="teams">
+    <!--     *********    award 1     *********      -->
+    <div class="team-1" id="awards">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <h2 class="farsi title">
+                        {{web.AWARDS_TITLE.value}}
+                        {% if perms.app.change_parameter %}
+                        {{web.AWARDS_TITLE.get_edit_btn|safe}}
+                        {% endif %}
+
+
+                    </h2>
+                    <h5 class="farsi description">
+                        {{web.AWARDS_SLOGAN.value}}
+                        {% if perms.app.change_parameter %}
+                        {{web.AWARDS_SLOGAN.get_edit_btn|safe}}
+                        {% endif %}
+
+                    </h5>
+                   <div class="">
+                       
+                    {% if perms.web.add_award %}
+
+                    {{admin_utility.get_add_award|safe}}
+
+                    {% endif %}
+
+                   </div>
+                </div>
+            </div>
+            <div class="row rtl">
+                {% for award in awards %}
+                <div class="col-md-3">
+                    <div class="card card-profile card-plain">
+                        <div class="card-header card-avatar">
+                            <a href="{{award.get_absolute_url}}">
+                                <img class="img" src="{{award.thumbnail}}">
+                            </a>
+                        </div>
+                        <div class="card-body ">
+                            <a href="{{award.get_absolute_url}}">
+                                <h4 class="card-title farsi">{{award.title}}</h4>
+                            </a>
+                            {% if award.short_description%}
+                            <p class="card-description">
+                                {{award.short_description}}
+                            </p>
+                            {% endif %}
+
+                        </div>
+                        <div class="card-footer justify-content-center">
+
+
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <!--     *********    END award 1      *********      -->
+
+
+
+</div>

@@ -1,0 +1,61 @@
+<script>
+    let url_add_invoice_warehouse_sheets="{% url 'warehouse:add_invoice_warehouse_sheets' %}"
+</script>  
+<script>
+
+    let add_invoice_warehouse_sheets_app=new Vue({
+        el:"#add-invoice-warehouse-sheets-app",
+        data:{
+            warehouse_id:0,
+            invoice_id:parseInt("{{invoice.id}}"),
+            description:"",
+            shelf:"",
+            organizational_unit_id:0,
+            status:"",
+            type:"",
+            row:"",
+            col:"",
+            direction:'',
+            message:{show:false},
+            waiting:false,
+        },
+        methods:{ 
+            add_invoice_warehouse_sheets:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    warehouse_id:parseInt(this.warehouse_id),
+                    organizational_unit_id:parseInt(this.organizational_unit_id),
+                    invoice_id:parseInt(this.invoice_id),
+                    description:(this.description),
+                    status:(this.status),
+                    type:(this.type),
+                    shelf:(this.shelf),
+                    row:(this.row),
+                    col:(this.col),
+                    direction:this.direction,
+
+                }
+                console.log(payload)
+                $.post(url_add_invoice_warehouse_sheets,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        if(typeof warehouse_sheets_app !='undefined'){
+                            data.warehouse_sheets.forEach(warehouse_sheet => {
+                                
+                                warehouse_sheets_app.warehouse_sheets.push(warehouse_sheet)
+                            });
+                            warehouse_sheets_app.calculate_total()
+                        }
+                        add_invoice_warehouse_sheets_app.direction=''
+                        show_message(add_invoice_warehouse_sheets_app,'موفق',data.message,'success',3000)
+                    }
+                    else{
+                        show_message(add_invoice_warehouse_sheets_app,'خطا',data.message,'danger',3000)
+                    }
+                })
+
+            }, 
+             
+        }
+    })
+</script>

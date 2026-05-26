@@ -1,0 +1,20 @@
+{% extends "authentication/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+ 
+  {% if add_person_form %}
+  <div class="col-md-12">
+    {% include "authentication/includes/add-person-app/template.html" %}
+  </div>
+  {% endif %}
+  <div class="col-md-12">
+    {% include "authentication/includes/persons-app/template.html" %}
+  </div>
+</div>
+{% endblock content %} 
+{% block script %} 
+    {% include "authentication/includes/persons-app/script.html" %} 
+    {% if add_person_form %}
+        {% include "authentication/includes/add-person-app/script.html" %}
+    {% endif %}
+    {% include "authentication/includes/person-app/select-script.html" %}
+{% endblock script %}

@@ -1,0 +1,100 @@
+{% load static %}
+
+<div id="accordion-import-products" class="rtl text-right farsi">
+    <div id="import-products-from-excel-app" class="card">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-import-products"
+                    aria-expanded="true" aria-controls="collapse-import-products">
+
+                    بازیابی محصولات از فایل اکسل
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-import-products" class="collapse " aria-labelledby="heading-import-products"
+            data-parent="#accordion-import-products">
+            <div class="card-body">
+
+
+                <div class="my-2">
+                    <a target="_blank" href="{% url 'accounting:export_products_to_excel' %}" class="btn btn-info">
+
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                        دانلود فایل اکسل</a>
+                </div>
+                <p class="text-right">
+
+
+                    بازیابی از فایل اکسل
+
+                </p>
+                <form id="import-products-from-excel-form" @submit.prevent="import_products_from_excel()"
+                    enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+
+
+
+                            <span class="btn btn-raised btn-round btn-default btn-file">
+                                <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                                <input type="file" name="">
+                                <div class="ripple-container"></div>
+                            </span>
+
+
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-check-label mr-4" for="flexCheckChecked">
+                                    تعداد
+
+                                </label>
+                                <input v-model="count" class="form-control" type="number">
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input v-model="is_open" class="form-check-input" type="checkbox" id="flexCheckChecked">
+                                <label class="form-check-label mr-4" for="flexCheckChecked">
+                                    دسترسی آزاد برای همه
+                                </label>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="col-12">
+                            <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                            <button class="farsi btn btn-primary btn-block" v-if="!waiting" type="submit">
+                                <i class="fa fa-plus mx-1"></i>
+                                بازیابی</button>
+
+
+                        </div>
+
+                        <div class="col-md-12 my-2">
+                            <div :class="'alert alert-'+message.color" v-if="message.show">
+                                <div class="my-2">
+                                    <h4 v-html="message.title" class="my-2"></h4>
+                                    <div v-html="message.body" class="my-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

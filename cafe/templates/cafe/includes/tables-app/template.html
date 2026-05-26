@@ -1,0 +1,103 @@
+<div id="accordion-tables" class="rtl text-right farsi">
+  <div class="card" id="tables-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-tables"
+          aria-expanded="true"
+          aria-controls="collapse-tables"
+        >
+          میز ها
+          <span v-if="tables.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="tables.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-tables"
+      class="collapse {% if expand_tables %} show {% endif %}"
+      aria-labelledby="heading-tables"
+      data-parent="#accordion-tables"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>شماره</th>
+              <th>نام</th>
+              <th>فروشنده</th>
+
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="table in tables">
+
+                <td>
+                  <a :href="table.get_absolute_url">
+                    <span v-text="table.table_no"></span>
+                  </a>
+
+                  <div></div>
+                </td>
+                <td>
+                  <a :href="table.get_absolute_url">
+                    <span v-text="table.title"></span>
+                  </a>
+
+                </td>
+                <td>
+                  <a :href="table.supplier.get_absolute_url">
+                    <div class="media">
+                    <img class="rounded-circle" width="32" :src="table.supplier.person_account.person.image"> 
+
+                      <div class="media-body mr-2">
+                    <span v-text="table.supplier.full_name"></span>
+
+                      </div>
+                    </div>
+                  </a>
+
+                </td>
+
+                <td>
+                  <div v-for="table_item in table.items">
+                    <a :href="table_item.get_absolute_url">
+                      <span v-text="table_item.title"></span>
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <a
+                    target="_blank"
+                    :href="table.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="table.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

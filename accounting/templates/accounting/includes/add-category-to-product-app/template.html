@@ -1,0 +1,67 @@
+{% load static %}
+
+
+<div id="accordion-add-category-to-product">
+
+    <div class="card" id="add-category-to-product-app">
+        <div class="card-header">
+            <h5 class="card-title text-center farsi">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-category-to-product"
+                    aria-expanded="true" aria-controls="collapse-add-category-to-product">
+                    افزودن دسته بندی برای محصول
+                </button>
+            </h5>
+
+
+        </div>
+        <div id="collapse-add-category-to-product"
+            class="collapse {% if expand_add_category_to_product %} show {% endif %}"
+            aria-labelledby="heading-add-category-to-product" data-parent="#accordion-add-category-to-product">
+            <div class="card-body">
+                <a target="_blank" href="{% url 'accounting:category' pk=0 %}">همه دسته بندی ها</a>
+                <div class="my-3">
+                    <h6>دسته بندی های این محصول</h6>
+                    <div v-for="product_category in product_categories">
+                        <a :href="product_category.get_absolute_url">
+                            <span v-text="product_category.full_title"></span>
+                        </a>
+                        <button class="btn btn-link mx-2" title="حذف" @click="remove(product_category.id)"><i
+                                class="fa fa-minus text-danger"></i></button>
+                    </div>
+                </div>
+                <form @submit.prevent="add_product_to_category()">
+                    <div class="row rtl">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">عنوان</label>
+                                <input type="text" class="form-control" v-model="search_for" @input="filter()">
+                                <select required class="form-control" v-model="category_id">
+                                    <option v-for="category in all_categories":value="category.id" v-text="category.full_title"></option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fa fa-plus"></i> افزودن
+                            </button>
+                        </div>
+
+                        <div class="col-md-12 my-2" v-if="message.show">
+                            <div :class="'alert alert-'+message.color">
+                                <div v-html="message.body"></div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

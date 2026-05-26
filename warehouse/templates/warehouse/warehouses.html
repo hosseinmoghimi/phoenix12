@@ -1,0 +1,27 @@
+
+{% extends "warehouse/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_warehouse_form %}
+      <div class="col-md-12">
+          {% include "warehouse/includes/add-warehouse-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "warehouse/includes/warehouses-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "warehouse/includes/warehouses-app/script.html" %}
+{% if add_warehouse_form %}
+{% include "warehouse/includes/add-warehouse-app/script.html" %}
+{% endif %}
+{% endblock script %}

@@ -1,0 +1,251 @@
+{% load to_persian_date %} 
+{% load to_price %}
+ {% load to_amount_color %}
+ {% load static %}
+<div id="accordion-invoice-line-item-units" class="rtl text-right farsi">
+  <div class="card" id="invoice-line-item-units-app">
+    <div class="card-header" id="heading-invoice-line-item-units">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-invoice-line-item-units"
+          aria-expanded="true"
+          aria-controls="collapse-invoice-line-item-units"
+        >
+          قیمت های ثبت شده
+
+          <span v-if="invoice_line_item_units.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="invoice_line_item_units.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+
+      {% if page_pre_description %}
+
+      <h5 class="text-center">{{page_pre_description}}</h5>
+      {% endif %} {% if page_description %}
+
+      <h4 class="text-center">{{page_description}}</h4>
+      {% endif %}
+    </div>
+    <div
+      id="collapse-invoice-line-item-units"
+      class="collapse {% if expand_invoice_line_item_units %} show {% endif %}"
+      aria-labelledby="heading-invoice-line-item-units"
+      data-parent="#accordion-invoice-line-item-units"
+    >
+      <div class="card-body">
+        {% load static %}
+
+        <div class="table-responsive rtl">
+          <img
+            v-if="false"
+            width="32"
+            src="{% static 'leo/img/loading.gif' %}"
+            alt=""
+          />
+          <h6 v-if="false">
+            <span class="text-muted">در حال بار گذاری ... </span>
+          </h6>
+          <table class="table table-striped rtl">
+            <thead>
+              {% if not invoice_line_item %}
+                
+              <th>کالا</th>
+              {% endif %}
+
+              <th>پیشفرض</th>
+              <th>نام واحد</th>
+              <th>قیمت واحد</th>
+              <th>تاریخ</th>
+              <th>ضریب</th>
+              <th>قیمت جزء</th>
+              <th>درصد</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="invoice_line_item_unit in invoice_line_item_units">
+                 {% if not invoice_line_item %}
+                 <td>
+                 
+                  <div class="media">
+                    <a :href="invoice_line_item_unit.invoice_line_item.get_absolute_url">
+                      <img
+                        :src="invoice_line_item_unit.invoice_line_item.thumbnail"
+                        class="rounded"
+                        width="32"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-3">
+                      <div>
+                        <a :href="invoice_line_item_unit.invoice_line_item.get_absolute_url">
+                          <span v-text="invoice_line_item_unit.invoice_line_item.title "></span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              {% endif %}
+
+
+                
+                <td>
+                  <span v-if="invoice_line_item_unit.default">
+                    <i class="fa fa-check"></i>
+                  </span>
+                  <span v-if="!invoice_line_item_unit.default"> </span>
+                </td>
+                <td>
+                  <span v-text="(invoice_line_item_unit.unit_name)"> </span>
+
+                 
+                </td>
+
+
+                <td>
+                  <h5>
+
+                    <span v-text="to_price(invoice_line_item_unit.unit_price)"> </span>
+                    {{CURRENCY}}
+                  </h5>
+                </td>
+                
+                <td>
+                  <span v-text="invoice_line_item_unit.persian_date_added"> </span>
+                </td>
+                <td>
+                  <span v-text="invoice_line_item_unit.coef"> </span>
+               
+                </td>
+                <td>
+                  
+                  <span
+                    v-text="to_price(invoice_line_item_unit.unit_price/invoice_line_item_unit.coef)"
+                  >
+                  </span>
+                 
+                </td>
+                <td>
+                  <div v-html="invoice_line_item_unit.percentage_tag">
+                  </div>
+                 
+                </td>
+                <td>
+                  {% if perms.accounting.change_productprice %}
+                  <a
+                    class="my-2"
+                    target="_blank"
+                    title="ویرایش"
+                    :href="invoice_line_item_unit.get_edit_url"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                    <!-- <span class="text-warning">
+                                            ویرایش
+                                        </span> -->
+                  </a>
+                  {% endif %} {% if perms.accounting.delete_productprice %}
+                  <a
+                    class="my-2"
+                    target="_blank"
+                    title="حذف"
+                    :href="invoice_line_item_unit.get_delete_url"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                    <!-- <span class="text-danger">
+                                            حذف
+                                        </span> -->
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button @click="show_form=true" v-if="!show_form" class="btn btn-info">
+          افزودن قیمت جدید
+        </button>
+        {% if add_invoice_line_item_unit_form %}
+
+        <div v-if="show_form">
+          <button
+            @click="show_form=false"
+            v-if="show_form"
+            class="btn btn-secondary"
+          >
+            انصراف
+          </button>
+          <div class="row rtl">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">واحد</label>
+
+                <select class="form-control" id="" v-model="new_item.unit_name">
+                  {% for unit_name in unit_names %}
+                  <option value="{{unit_name}}">{{unit_name}}</option>
+                  {% endfor %}
+                </select>
+                <input type="text" v-model="new_item.unit_name" class="form-control">
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">ضریب</label>
+                <input
+                  type="number"
+                  @input="update_price()"
+                  class="form-control"
+                  v-model="new_item.coef"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">قیمت</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  v-model="new_item.unit_price"
+                />
+                <div>
+                  <span v-text="to_price(new_item.unit_price)"></span>
+                  {{CURRENCY}}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">پیش فرض</label>
+                <input
+                  type="checkbox"
+                  class="form-control"
+                  v-model="new_item.default"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" @click="add_invoice_line_item_unit()">
+                ثبت
+              </button>
+            </div>
+
+          </div>
+          <div :class="'alert alert-'+message.color" v-if="message.show">
+            <h5 v-text="message.title"></h5>
+            <div v-html="message.body"></div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

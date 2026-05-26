@@ -1,0 +1,31 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+     
+    {% if add_brand_form %}
+    <div class="col-md-6">
+        {% include "accounting/includes/add-brand-app/template.html" %}
+    </div>
+    {% endif %}
+    
+    <div class="col-md-12 ">
+        {% include "accounting/includes/brands-app/template.html" %}
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "accounting/includes/brands-app/script.html" %}
+{% if add_brand_form %}
+{% include "accounting/includes/add-brand-app/script.html" %}
+{% endif %}
+ 
+{% endblock script %}

@@ -1,0 +1,125 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-assets" class="rtl text-right farsi">
+
+
+
+    <div class="card" id="assets-app">
+        <div class="card-header" id="heading-assets">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-assets"
+                    aria-expanded="true" aria-controls="collapse-assets">
+
+                    دارایی ها
+
+                    <span v-if="assets.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="assets.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+         
+        </div>
+        <div id="collapse-assets" class="collapse {% if expand_assets %} show {% endif %}"
+            aria-labelledby="heading-assets" data-parent="#accordion-assets">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prasset="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                عنوان
+                            </th>
+
+                            <th>
+                                مالک
+                            </th>
+                           
+                            <th>
+                                ارزش
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="asset in assets">
+                                <td>
+                                    <a :href="asset.get_absolute_url">
+                                        <span v-text="asset.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+
+                              
+                                <td>
+                                    <div class="media">
+                                        <a :href="asset.owner.get_absolute_url">
+                                            <img :src="asset.owner.image" class="rounded" width="32" alt="">
+                                        </a>
+                                        <div class="media-body mr-3">
+                                            <div>
+
+                                                <a :href="asset.owner.get_absolute_url">
+                                                    <span v-text="asset.owner.full_name"></span>
+                                                </a>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+
+                                </td>
+
+                        
+
+
+                                <td>
+
+                                    <span v-text="to_price(asset.amount)">
+
+                                    </span>
+
+                                    {{CURRENCY}}
+
+                                </td>
+
+                                <td>
+
+
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

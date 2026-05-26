@@ -1,0 +1,41 @@
+{% extends "organization/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl farsi">
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'organization:organizational_units' %}">
+      <img
+        src="{% static 'chef/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">سازمان ها</h6>
+    </a>
+  </div>
+
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'organization:employees' %}">
+      <img
+        src="{% static 'chef/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">کارکنان</h6>
+    </a>
+  </div>
+
+   
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+  console.log("name1: {{name1}}");
+  console.log("name2: {{name2}}");
+  console.log("name3: {{name3}}");
+</script>
+{% endblock script %}

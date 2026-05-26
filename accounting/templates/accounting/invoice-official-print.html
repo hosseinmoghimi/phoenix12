@@ -1,0 +1,178 @@
+{% extends "phoenix/print-layout.html" %}
+ {% block content %}
+  {% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    <div class="card">
+      {% load to_price %}
+      <div class="card-body">
+        <div class="text-center">
+          {% if invoice.thumbnail_origin %}
+          <img src="{{invoice.thumbnail}}" class="mb-2" width="96" alt="" />
+          {% else %}
+          <img
+            src="{{invoice.bestankar.thumbnail}}"
+            class="mb-2"
+            width="96"
+            alt=""
+          />
+          {% endif %}
+        </div>
+        <h5 class="text-center">{{invoice.title}}</h5>
+
+        <div class="text-left">
+          <span class="mx-5"
+            >تاریخ : {{invoice.event_datetime|to_persian_datetime|safe}}
+          </span>
+          <span class="mx-5"> شماره : {{invoice.id}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="text-center">مشخصات فروشنده</h6>
+      </div>
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-4 farsi text-right">
+            نام تجاری : {% if invoice.bestankar.title %}
+            {{invoice.bestankar.title}} {% endif %}
+          </div>
+
+          <div class="col-4 farsi text-right">
+            شماره اقتصادی : {% if invoice.bestankar.economic_no %}
+            {{invoice.bestankar.economic_no}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            شناسه ملی : {% if invoice.bestankar.melli_id %}
+            {{invoice.bestankar.melli_id}} {% endif %}
+          </div>
+
+          <div class="col-4 farsi text-right">
+            آدرس : {% if invoice.bestankar.address %}
+            {{invoice.bestankar.address}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            تلفن : {% if invoice.bestankar.tel %} {{invoice.bestankar.tel}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            کد پستی : {% if invoice.bestankar.postal_code %}
+            {{invoice.bestankar.postal_code}} {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h6 class="text-center">مشخصات خریدار</h6>
+      </div>
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-4 farsi text-right">
+            نام تجاری : {% if invoice.bedehkar.title %}
+            {{invoice.bedehkar.title}} {% endif %}
+          </div>
+
+          <div class="col-4 farsi text-right">
+            شماره اقتصادی : {% if invoice.bedehkar.economic_no %}
+            {{invoice.bedehkar.economic_no}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            شناسه ملی : {% if invoice.bedehkar.melli_id %}
+            {{invoice.bedehkar.melli_id}} {% endif %}
+          </div>
+
+          <div class="col-4 farsi text-right">
+            آدرس : {% if invoice.bedehkar.address %}
+            {{invoice.bedehkar.address}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            تلفن : {% if invoice.bedehkar.tel %} {{invoice.bedehkar.tel}} {% endif %}
+          </div>
+          <div class="col-4 farsi text-right">
+            کد پستی : {% if invoice.bedehkar.postal_code %}
+            {{invoice.bedehkar.postal_code}} {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    {% include "accounting/includes/invoice-lines-app/print-template.html" %}
+  </div>
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-center">
+          فروشنده
+          <br />
+          {{invoice.bestankar.title}}
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="card farsi">
+      <div class="card-body">
+        <p class="text-center">
+          خریدار
+          <br />
+          {{invoice.bedehkar.title}}
+        </p>
+
+        <div class="mb-5">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="media">
+          <img src="{{invoice.get_qrcode_url}}" width="128" alt="" />
+          <div class="media-body mr-2">
+            <div class="description">
+              <p class="rtl text-right">
+                امضای این برگه توسط خریدار به معنای
+                <strong> تحویل کامل </strong>
+                کالاها و خدمات لیست فوق می باشد.
+                <br />
+
+                قیمت ها بروز بوده و تنها 24 ساعت از تاریخ فاکتور اعتبار دارد.
+                <br />
+
+                کلیه اجناس موجود در فاکتور تا زمان تسویه کامل صورتحساب متعلق به
+                فروشنده می باشد و به صورت امانت تحویل خریدار می باشد.
+                <br />
+                این فاکتور فقط برای استعلام قیمت بوده و هیچ گونه ارزش قانونی
+                دیگری ندارد.
+
+                <br />
+                کلیه اقلام فاکتور سالم بوده ، تست شده و تحویل خریدار گردید.
+              </p>
+
+              {% if invoice.description %} {{invoice.description|safe}} {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 rtl text-right">
+    {% include "attachments/includes/page-prints-app/template.html" %} 
+  
+  </div>
+</div>
+{% endblock content %} {% block script %}
+ 
+
+{% include "accounting/includes/invoice-app/print-script.html" %}  
+ {% endblock script %}

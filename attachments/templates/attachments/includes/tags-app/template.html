@@ -1,0 +1,66 @@
+<div id="accordion-tags">
+
+
+    <div class="card" id="tags-app">
+        <div class="card-header" id="heading-tags">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-tags"
+                    aria-expanded="true" aria-controls="collapse-tags">
+                    تگ ها
+
+                    <span v-if="tags.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="tags.length"></span>
+                        </small>
+                    </span>
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-tags" class="collapse " aria-labelledby="heading-tags"
+            data-parent="#accordion-tags">
+            <div class="card-body farsi">
+                <div class="text-right">
+                    <span class="h5 mb-3 mx-2" v-for="tag in tags">
+                        <span>
+
+                            <a class="mr-2" target="_blank" :href="tag.get_absolute_url">
+                                <span v-text="tag.title">
+                                </span>
+                            </a> ،
+                        </span>
+
+                        <!-- {% if perms.core.change_tag %}
+                        <a :href="tag.get_edit_url" target="_blank" title="ویرایش" class="ml-2 docs-creator">
+                            <i class="fa fa-edit text-info"></i>
+                        </a>
+                        {% endif %}
+                        
+                        {% if perms.core.delete_tag %}
+                        <a :href="tag.get_delete_url" target="_blank" title="حذف" class="ml-2 docs-creator">
+                            <i class="fa fa-trash text-danger"></i>
+                        </a>
+                        {% endif %} -->
+
+                    </span>
+                </div>
+            </div>
+            {% if add_tag_form %}
+            <div class="card-footer">
+                <form @submit.prevent="add_tag()">
+                    <div class="row">
+                        <div class="col-12">
+                            <input required type="text" v-model="title" class=" mb-2 farsi form-control"
+                                placeholder="عنوان تگ جدید">
+                        </div>
+                        <div class="col-12">
+                            <button class="farsi btn btn-primary btn-block mb-2 " type="submit">   <i class="fa fa-plus mx-1"></i>
+                                افزودن</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

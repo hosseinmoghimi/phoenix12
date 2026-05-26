@@ -1,0 +1,128 @@
+<div id="accordion-accounts" class="rtl text-right farsi">
+  <div class="card" id="accounts-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-accounts"
+          aria-expanded="true"
+          aria-controls="collapse-accounts"
+        >
+          حساب ها
+          <span v-if="accounts.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="accounts.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-accounts"
+      class="collapse {% if expand_accounts %} show {% endif %}"
+      aria-labelledby="heading-accounts"
+      data-parent="#accordion-accounts"
+    >
+      <div class="card-body">
+        {% if not account %}
+        <div>
+          <input
+            type="text"
+            placeholder="جستجو"
+            class="form-control"
+            @input="filter()"
+            v-model="search_for"
+          />
+        </div>
+        <div>
+          ترتیب :
+          <button
+            class="btn btn-sm btn-info mx-2 my-2"
+            @click="sort('balance')"
+          >
+            مانده
+          </button>
+        </div>
+        {% endif %}
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th> حساب</th>
+              <th>کد</th>
+              {% if SHOW_BALANCE %}
+                
+              <th>مانده</th>
+              {% endif %}
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="account in accounts">
+                <td>
+
+                  {% include "accounting/includes/account-app/media.html" %}
+                 
+                </td>
+                <td>
+                   <div>
+      <div class="text-center">
+      <div class="my-2">
+          <button @click="copy_code_to_clipboard(account.code,account.title)" :class="'my-2 btn btn-'+account.color">
+            <small class=""> کد : </small>
+            <small v-text="account.code">   </small>
+            <i class="fa fa-copy"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+                </td>
+              
+              {% if SHOW_BALANCE %}
+                <td> 
+                  <div>
+
+                    <button @click="copy_balance_to_clipboard(account.balance)" class="my-2 btn btn-link ">
+                      <small class="text-muted"> مانده : </small>
+                      <span v-html="to_price_colored(account.balance,'{{CURRENCY}}')">
+
+                      </span>
+                      <i class="fa fa-copy"></i>
+                    </button>
+                  </div>
+
+                </td>
+                
+                
+              {% endif %}
+                <td>
+                  {% if perms.accounting.change_account %}
+                  <a
+                    target="_blank"
+                    :href="account.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  {% endif %} {% if perms.accounting.delete_account %}
+                  <a
+                    target="_blank"
+                    :href="account.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

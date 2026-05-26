@@ -1,0 +1,88 @@
+<div id="accordion-events" class="rtl text-right farsi">
+    <div class="card" id="events-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-events" aria-expanded="true"
+                    aria-controls="collapse-events">
+                    رویداد ها
+                    <span v-if="events.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="events.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-events" class="collapse {% if expand_events %} show {% endif %}" aria-labelledby="heading-events"
+            data-parent="#accordion-events">
+
+
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                           
+                            
+                            <th>
+                                عنوان
+                            </th>
+                            <th>
+                                تاریخ رویداد
+                            </th>  
+                            <th>
+                                تاریخ شروع
+                            </th>
+                             <th>
+                                تاریخ پایان
+                            </th>
+                           
+                            <th>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="event in events">
+                               
+                                <td>
+                                    <a :href="event.get_absolute_url">
+                                        <span  v-text="event.title"></span>
+                                    </a>
+
+                                </td> 
+                                 <td>
+                                        <span  v-text="event.persian_event_datetime"></span>
+                                </td> 
+                                 <td>
+                                        <span  v-text="event.persian_start_datetime"></span>
+                                </td> 
+                                 <td>
+                                        <span  v-text="event.persian_end_datetime"></span>
+                                </td> 
+                                
+                                <td>
+                                    <a target="_blank" :href="event.get_edit_url" title="ویرایش"
+                                        class=" text-warning mx-2">
+                                        <i class="fa fa-edit text-warning">
+                                        </i>
+                                        ویرایش
+                                    </a>
+                                    <a target="_blank" :href="event.get_delete_url" title="حذف"
+                                        class=" text-danger mx-2">
+                                        <i class="fa fa-trash text-danger">
+                                        </i>
+                                        حذف
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

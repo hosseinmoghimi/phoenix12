@@ -1,0 +1,235 @@
+{% load static %}
+{% load to_persian_date %}
+
+<!-- blogs -->
+<div class="cd-section" id="blogs">
+    <!--     *********     BLOGS 1      *********      -->
+    <div class="blogs-1" id="blogs-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 ml-auto mr-auto">
+                    <h2 class="title text-center farsi">
+                        {{web.BLOGS_TITLE.value}}
+
+                        {% if perms.core.change_parameter %}
+
+                        {{web.BLOGS_TITLE.get_edit_btn|safe}}
+
+                        {% endif %}
+
+
+                    </h2>
+                    <p class="text-center rtl">
+                        
+
+                            {{web.BLOGS_SLOGAN.value}}
+                            {% if perms.core.change_parameter %}
+                            
+                            {{web.BLOGS_SLOGAN.get_edit_btn|safe}}
+                            
+                            {% endif %}
+                      
+                    </p>
+
+
+                    {% if perms.dashboard.add_blog %}
+                    <div class="text-center">
+
+                        {{admin_utility.get_add_blog|safe}}
+                    </div>
+
+                    {% endif %}
+                    {% if not BLOG_ROTATE_CARD %}
+
+
+                    {% for blog in blogs %}
+
+                    {% if forloop.counter0|divisibleby:2 %}
+                    <div class="card card-plain card-blog mb-5">
+                        <div class="row rtl">
+                            <div class="col-md-5">
+                                <div class="card-header card-header-image">
+                                    <a href="{{blog.get_absolute_url}}">
+
+                                        <img class="img img-raised" src="{{blog.thumbnail}}">
+                                    </a>
+                                    <div class="colored-shadow"
+                                        style="background-image: url('{{blog.thumbnail}}'); opacity: 1;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <h4 class="card-category text-info text-right">
+                                    {{blog.icon.get_icon_tag|safe}}
+                                </h4>
+                                <h3 class="card-title text-right mt-3">
+                                    <a href="{{blog.get_absolute_url}}">{{blog.title}}</a>
+                                </h3>
+                                {% if blog.short_description %}
+
+                                <p class="card-description text-right">
+                                    {{blog.short_description|safe}}
+                                </p>
+                                {% endif %}
+                                <div class="text-right text-secondary">
+                                    <small>
+                                        {{blog.date_added|to_persian_date|safe}}
+                                    </small>
+                                </div>
+                                {% if blog.profile.name %}
+
+                                <p class="author">
+
+                                    <a href="{{blog.profile.get_absolute_url}}">
+                                        <i class="fa fa-user"></i>
+                                        <b>{{blog.profile.name}}</b>
+                                    </a>
+                                </p>
+                                {% endif %}
+                                <div class="text-right">
+                                    <a href="{{blog.get_absolute_url}}" class="my-3 mx-3 text-right"> ادامه مطلب </a>
+                                    {% if perms.app.change_blog %}
+
+                                    <a href="{% url 'core:page' pk=blog.pk %}" class="my-3 mx-3 text-right"> ویرایش </a>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% else %}
+
+                    <div class="card card-plain card-blog mb-5">
+                        <div class="row ltr">
+                            <div class="col-md-5">
+                                <div class="card-header card-header-image">
+                                    <a href="{{blog.get_absolute_url}}">
+                                        <img class="img" src="{{blog.thumbnail}}">
+                                    </a>
+                                    <div class="colored-shadow"
+                                        style="background-image: url(&quot;{{blog.thumbnail}}&quot;); opacity: 1;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <h4 class="card-category text-info text-right">
+                                    {{blog.icon.get_icon_tag|safe}}
+                                </h4>
+                                <h3 class="card-title text-left mt-3">
+                                    <a href="{{blog.get_absolute_url}}">{{blog.title}}</a>
+                                </h3>
+                                {% if blog.short_description %}
+
+                                <p class="card-description   text-left">
+                                    {{blog.short_description|safe}}
+
+
+                                </p>
+                                {% endif %}
+                                <div class="text-left text-secondary">
+                                    <small>
+                                        {{blog.date_added|to_persian_date|safe}}
+                                    </small>
+                                </div>
+                                {% if blog.profile.name %}
+
+                                <p class="author text-left">
+
+                                    <a href="{{blog.profile.get_absolute_url}}">
+                                        <i class="fa fa-user"></i>
+                                        <b>{{blog.profile.name}}</b>
+                                    </a>
+                                </p>
+                                {% endif %}
+                                <div class="text-left">
+                                    <a href="{{blog.get_absolute_url}}" class="my-3 mx-3 text-right"> ادامه مطلب </a>
+                                    {% if perms.app.change_blog %}
+
+                                    <a href="{{blog.get_edit_url}}" class="my-3 mx-3 text-right"> ویرایش </a>
+                                    {% endif %}
+                                    {{blog.get_edit_btn|safe}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% endfor %}
+
+
+                    {% endif %}
+
+
+
+
+                </div>
+            </div>
+            {% if BLOG_ROTATE_CARD %}
+
+            <div class="row rtl">
+                {% for blog in blogs %}
+
+
+                <div class="col-md-4">
+                    <div class="rotating-card-container" style="margin-bottom: 30px;">
+                        <div class="card card-rotate">
+                            <div class="front" style="width: 395px;">
+                                <div class="card-body1">
+                                    <img class="rounded w-100" src="{{blog.thumbnail}}" alt="">
+                                </div>
+                            </div>
+                            <div class="back" style="width: 395px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{blog.title}}
+                                    </h5>
+                                    {% if blog.short_description %}
+                                    <p class="card-description text-center">
+                                        {{blog.short_description}}
+                                    </p>
+                                    {% endif %}
+                                    <p class="card-description text-center">
+
+                                        {{blog.persian_date_added_tag|safe}}
+
+                                    </p>
+
+                                    {% if blog.profile %}
+                                    <p class="card-description text-center">
+                                        <a href="{{blog.profile.get_absolute_url}}">
+
+                                            <img alt="64x64" src="{{blog.profile.image}}" width="32"
+                                                class="rounded-circle shadow">
+
+                                            <b> {{blog.profile.name}}</b>
+                                        </a>
+                                    </p>
+                                    {% endif %}
+                                    <div class="footer text-center">
+                                        <a href="{{blog.get_absolute_url}}" class="btn btn-rose btn-round">
+                                            <i class="material-icons" aria-hidden="true">subject</i> بیشتر
+                                        </a>
+                                        <a href="#pablo" class="btn btn-just-icon btn-round btn-twitter">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                        <a href="#pablo" class="btn btn-just-icon btn-round btn-dribbble">
+                                            <i class="fa fa-dribbble"></i>
+                                        </a>
+                                        <a href="#pablo" class="btn btn-just-icon btn-round btn-facebook">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!--     *********    END BLOGS 1      *********      -->
+
+</div>

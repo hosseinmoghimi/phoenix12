@@ -1,0 +1,63 @@
+<script>
+    let url_add_image = "{% url 'attachments:add_image' %}"
+    let images = JSON.parse(`{{images_s|escapejs}}`)
+    let images_app = new Vue({
+        el: "#images-app",
+        data: {
+            add_image_form_title: "",
+            images: images,
+            download_file:false,
+            add_image_form_file: '',
+            show_add_image_form: false,
+            waiting: false,
+            selected_image: images.length>0?images[0]:false,
+        },
+        methods: {
+            select_image: function (image_id) {
+                this.images.forEach(image => {
+
+                    if (image.id == image_id) {
+
+                        images_app.selected_image = image
+                    }
+                });
+            },
+            add_image: function () {
+                images_app.waiting = true
+                let title = this.add_image_form_title
+                let formData = new FormData();
+                let image = $('#add-image-form')[0].elements[1].files[0]
+                formData.append("image", image);
+                formData.append("title", title);
+                formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+                formData.append("page_id", page_id);
+                $.ajax({
+                    url: url_add_image,
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        images_app.waiting = false
+
+                        if (data != 0) {
+                            if (data.result === 'SUCCEED') {
+                                images_app.images.push(data.image)
+                                images_app.add_image_form_title = ''
+                                images_app.add_image_form_file = ''
+                                images_app.show_add_image_form = false
+
+                            }
+                        }
+                        else {
+                        }
+                    },
+                });
+
+            },
+
+
+        
+        }
+    })
+</script>

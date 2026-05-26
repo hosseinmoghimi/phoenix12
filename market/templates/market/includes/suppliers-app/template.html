@@ -1,0 +1,81 @@
+<div id="accordion-suppliers">
+  <div class="card" id="suppliers-app">
+    <div class="card-header" id="heading-suppliers">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-suppliers"
+          aria-expanded="true"
+          aria-controls="collapse-suppliers"
+        >
+          فروشنده ها
+
+          <span v-if="suppliers.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="suppliers.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-suppliers"
+      class="collapse {% if expand_suppliers %} show{% endif %}"
+      aria-labelledby="heading-suppliers"
+      data-parent="#accordion-suppliers"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped rtl">
+            <thead>
+              <th>فروشنده</th>
+              <th>سطح</th>
+              <th>مانده</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="supplier in suppliers">
+                <td>
+                  <a :href="supplier.get_absolute_url">
+                    <span
+                      v-text="supplier.person_account.person.full_name"
+                    ></span>
+                  </a>
+                </td>
+
+                <td>
+                  <span v-text="supplier.level"></span>
+                </td>
+
+                <td>
+                  <span v-text="to_price(supplier.person_account.balance)"></span> {{CURRENCY    }}
+                </td>
+                <td>
+                  {% if perms.market.change_supplier %}
+                  <a
+                    target="_blank"
+                    :href="supplier.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_supplier %}
+                  <a
+                    target="_blank"
+                    :href="supplier.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

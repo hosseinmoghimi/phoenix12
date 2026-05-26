@@ -1,0 +1,21 @@
+<script>
+    let financial_documents_app_financial_documents = JSON.parse(`{{financial_documents_s|escapejs}}`)
+    let financial_documents_app = new Vue({
+        el:"#financial-documents-app",
+        data: {
+            financial_documents: financial_documents_app_financial_documents,
+            search_for:'',
+            waiting:false,
+
+        },
+        methods: {
+            filter:function(){
+                this.financial_documents = financial_documents_app_financial_documents.filter(financial_document=> financial_document.title.indexOf(this.search_for) > -1 )
+            },
+            to_price: function (vall) {
+                 return  to_price(vall,"")
+            },
+          
+        }
+    })
+</script>

@@ -1,0 +1,55 @@
+<script>
+  menu_items = JSON.parse(`{{menu_items_s|escapejs}}`);
+</script>
+
+<script>
+  let menu_item_component_template = `{% include 'cafe/includes/menu-app/component.html' %}`;
+  let menu_item_component = Vue.component("menu-item-component", {
+    data: function () {
+      return {
+        confirm_delete: false,
+      };
+    },
+    methods: {
+      to_price: (vv) => to_price(vv),
+      add_to_cart: function (shop, quantity) {
+        this.menu_item.in_cart += quantity;
+        if (this.menu_item.in_cart < 0) {
+          this.menu_item.in_cart = 0;
+        }
+
+        if (this.menu_item.in_cart > this.menu_item.shop.available) {
+          this.menu_item.in_cart = this.menu_item.shop.available;
+        }
+
+        let payload={
+            csrfmiddlewaretoken:csrfmiddlewaretoken,
+            shop_id:this.menu_item.shop.id,
+            quantity:this.menu_item.in_cart,
+        }
+        console.log(payload)
+        let url="{% url 'market:add_cart_item' %}"
+        $.post(url,payload).done(data=>{
+            console.log(data)
+        })
+      },
+    },
+    props: ["menu_item"],
+    template: menu_item_component_template,
+  });
+
+  let menu_app = new Vue({
+    el: "#menu-app",
+    data: {
+      message: { show: false },
+      waiting: false,
+      menu_items: menu_items,
+    },
+    components: {
+      menu_item_component,
+    },
+    methods: {
+      to_price: (vv) => to_price(vv),
+    },
+  });
+</script>

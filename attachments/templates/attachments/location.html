@@ -1,0 +1,173 @@
+{% extends "attachments/layout.html" %}
+
+{% load static %}
+{% load to_persian_date %}
+{% load to_price %}
+{% block content %}
+<div>
+    <h3 class="text-center">
+        <i class="material-icons">place</i>
+        <small class="text-secondary">
+            موقعیت مکانی
+        </small>
+        {{location.title}}
+        {% if perms.projectmanager.change_location %}
+        <a title="ویرایش" target="_blank" href="{{location.get_edit_url}}">
+            <i class="material-icons">
+                edit
+            </i>
+        </a>
+        {% endif %}
+    </h3>
+    <div class="row rtl ">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    {{location.location|safe}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-5 farsi">
+                <div class="card-body">
+                    <p>
+                        <span class="small text-secondary">
+                            موقعیت مکانی :
+                        </span>
+                        <span>
+                            <a class="mx-3" href="{{location.get_absolute_url}}">
+                                {{location.title}}
+                            </a>
+                        </span>
+                    </p>
+
+                    <p>
+                    <div class="row farsi">
+                        <div class="col-4 text-left">
+
+                            <small class="text-secondary">
+                                افزوده شده توسط :
+                            </small>
+                        </div>
+                        <div class="col-8">
+                            {{location.creator.media_tag|safe}}
+
+                        </div>
+                    </div>
+                    </p>
+                    <p>
+                        <small class="text-secondary">
+                            تاریخ :
+                        </small>
+                        <small class="">
+
+                            {{location.date_added|to_persian_datetime|safe}}
+                        </small>
+                    </p>
+                    <img src="{{location.image}}" class="rounded w-100" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            {% if location.page_set.all %}
+
+            <div id="accordion-page-locations">
+
+                <div class="card">
+                    <div class="card-header" id="heading-page-locations">
+                        <h5 class="text-center">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-page-locations"
+                                aria-expanded="true" aria-controls="collapse-page-locations">
+                                صفحات مرتبط
+
+
+
+
+
+
+                            </button>
+                        </h5>
+
+
+                    </div>
+
+                    <div id="collapse-page-locations" class="collapse" aria-labelledby="heading-page-locations"
+                        data-parent="#accordion-page-locations">
+                        <div class="card-body">
+                            <div class="card-body">
+                                <div>
+
+                                    <table class="table">
+                                        <!-- <thead>
+                                <th>
+                                    نوع
+                                </th>
+
+                                <th>
+                                    عنوان
+                                </th>
+                            </thead> -->
+                                        <tbody>
+                                            {% for page in location.page_set.all %}
+                                            <tr>
+                                                <td class="text-left farsi">
+                                                    <small class="text-muted ml-3">
+                                                        {{page.class_title}}
+                                                    </small>
+                                                </td>
+                                                <td class="text-right farsi">
+                                                    <a class="farsi" href="{{page.get_absolute_url}}">
+                                                        {{page.title}}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {% endif %}
+            </div>
+            {% if location.trip_source_set.all or location.trip_destination_set.all%}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="title">
+                            مسیر های سفر
+                        </h4>
+                    </div>
+                    <div class="card-body">
+
+                        {% for trip_path in location.trip_source_set.all %}
+                        <h5 class="mr-5">
+                            مبدا :
+                            <a href="{{trip_path.get_absolute_url}}">
+
+                                {{trip_path.title}}
+                            </a>
+                        </h5>
+                        {% endfor %}
+                        {% for trip_path in location.trip_destination_set.all %}
+                        <h5 class="mr-5">
+                            مقصد :
+                            <a href="{{trip_path.get_absolute_url}}">
+
+                                {{trip_path.title}}
+                            </a>
+                        </h5>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endblock %}
+    {% block script %}
+    {% endblock %}

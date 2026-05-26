@@ -1,0 +1,130 @@
+{% load static %}
+<div id="accordion-edit-financial-event" class="rtl text-right farsi">
+  <div class="card" id="edit_financial-event-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-edit-financial-event"
+          aria-expanded="true"
+          aria-controls="collapse-edit-financial-event"
+        >
+          ویرایش رویداد مالی
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-edit-financial-event"
+      class="collapse"
+      aria-labelledby="heading-edit-financial-event"
+      data-parent="#accordion-edit-financial-event"
+    >
+      <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">عنوان</label>
+              <input type="text" class="form-control" v-model="title" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">درصد تخفیف</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="discount_percentage"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">درصد مالیات</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="tax_percentage"
+              />
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">هزینه حمل
+
+                <span v-text="to_price(shipping_fee)"></span> {{CURRENCY}}
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="shipping_fee"
+              />
+            </div>
+          </div>
+
+            <div class="col-md-4">
+            <div class="form-group">
+              <label for="">مبلغ 
+
+                <span v-text="to_price(amount)"></span> {{CURRENCY}}
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="amount"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">وضعیت</label>
+              <select name="" v-model="status" class="form-control">
+                {% for status in financial_event_statuses %}
+                  <option value="{{status}}">{{status}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">نحوه پرداخت</label>
+              <select name="" v-model="payment_method" class="form-control">
+                {% for payment_method in payment_methods_for_edit_financial_event_form %}
+                  <option value="{{payment_method}}">{{payment_method}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button class="btn btn-success" @click="edit_financial_event()">
+              تایید
+            </button>
+          </div>
+          <div class="col-md-12">
+            <img
+              src="{% static 'leo/img/loading.gif' %}"
+              width="32"
+              v-if="waiting"
+              alt=""
+            />
+
+            <div v-if="message.show" class="my-2">
+              <div :class="'alert alert-'+message.color">
+                <h5 v-html="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

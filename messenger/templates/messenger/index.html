@@ -1,0 +1,95 @@
+{% extends "messenger/layout.html" %}
+{% load static %}
+{% load to_persian_date %}
+
+
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+            <h5>
+                <a href="{% url 'messenger:send_sms' %}">ارسال پیامک </a>
+            </h5>    
+            
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        {% include "messenger/includes/channels-app/template.html" %}
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Messenger
+                </h3>
+
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <th>
+                            عنوان
+                        </th>
+                        <th>
+                            زمان
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for message in messages %}
+
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <a title="{{message.creator.full_name}}" href="{{message.creator.get_absolute_url}}">
+
+                                        <img src="{{message.creator.image}}" class="rounded" width="48" alt="">
+
+                                    </a>
+                                    <div class="media-body">
+                                        <a class="text-{{message.color}}" href="{{message.get_absolute_url}}">
+                                            <h6>
+
+                                                {{message.title}}
+                                            </h6>
+                                        </a>
+                                        <p class="text-secondary small">
+                                            <small>
+
+                                                {{message.short_description|safe}}
+                                            </small>
+                                        </p>
+
+
+                                    </div>
+                                </div>
+
+
+
+                            </td>
+                            <td>
+                                <small class="text-secondary">
+
+                                    {{message.date_added|to_persian_date|safe}}
+                                </small>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block script %} 
+
+{% include "messenger/includes/channels-app/script.html" %}
+
+{% endblock %}

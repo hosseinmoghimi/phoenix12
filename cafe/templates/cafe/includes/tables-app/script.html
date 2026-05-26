@@ -1,0 +1,15 @@
+<script>
+    
+    let tables_for_tables_app=JSON.parse("{{tables_s|escapejs}}")
+    let tables_app = new Vue({
+        el: "#tables-app",
+        data: {
+            tables: tables_for_tables_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

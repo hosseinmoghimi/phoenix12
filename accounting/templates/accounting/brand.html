@@ -1,0 +1,17 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    {% include "accounting/includes/brand-app/card.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "accounting/includes/products-app/list-template.html" %}
+  </div>
+
+  <div class="col-md-12"></div>
+</div>
+{% endblock content %}
+{% block script %}
+    {% include "accounting/includes/products-app/list-script.html" %}
+    {% include "accounting/includes/brand-app/script.html" %} 
+{% endblock script %}

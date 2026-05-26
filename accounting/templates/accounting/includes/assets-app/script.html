@@ -1,0 +1,18 @@
+<script>
+    assets_for_assets_app=JSON.parse(`{{assets_s|escapejs}}`)
+    let assets_app=new Vue({
+        el:"#assets-app",
+        data:{
+            assets:assets_for_assets_app,
+            waiting:false,
+            search_for:'',
+        },
+        methods:{
+            filter:function(){
+
+            },
+            to_price:vall=>to_price(vall),  
+
+        }
+    })
+</script>

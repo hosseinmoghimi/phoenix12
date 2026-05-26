@@ -1,0 +1,55 @@
+<script>
+    let add_product_app = new Vue({
+        el: "#add-product-app",
+        data: {
+            brand_id:0,
+            model:'',
+            unit_price: 0,
+            unit_name: "عدد",
+            title: "",
+            barcode: "",
+            category_id:0,
+            rop:0,
+            coef:1,
+            show_form: false,
+            message: { show: false },
+        },
+        methods: {
+            add_product: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: this.title,
+                    category_id: this.category_id,
+                    brand_id: this.brand_id,
+                    model: this.model,
+                    unit_name: this.unit_name,
+                    coef: this.coef,
+                    barcode: this.barcode,
+                    unit_price: parseInt(this.unit_price),
+                    rop: parseInt(this.rop),
+                }
+                console.log(payload)
+                let url = "{% url 'accounting:add_product' %}"
+                let posting = $.post(url, payload)
+                posting.done(data => {
+                    
+                    if (data.result === "SUCCEED") {
+                        if (typeof products_app != "undefined") {
+                            products_app.products.push(data.product)
+                        }
+                        show_message(add_product_app, "موفقیت آمیز", data.message+`<br><a target="_blank" href="${data.product.get_absolute_url}">${data.product.title}</a>`, "success", 10000)
+                    }
+
+
+                    if (data.result != "SUCCEED") {
+                        show_message(add_product_app, "خطا", data.message, "danger", 5000)
+                    }
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

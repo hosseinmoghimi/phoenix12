@@ -1,0 +1,63 @@
+<div id="accordion-add-invoice-to-project" class="rtl text-right farsi">
+  <div class="card" id="add-invoice-to-project-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-invoice-to-project"
+          aria-expanded="true"
+          aria-controls="collapse-add-invoice-to-project"
+        >
+          افزودن فاکتور به پروژه
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-invoice-to-project"
+      class="collapse"
+      aria-labelledby="heading-add-invoice-to-project"
+      data-parent="#accordion-add-invoice-to-project"
+    >
+      <div class="card-body">
+        <div class="row">
+<div class="col-md-12">
+  {% for invoice in project.invoices.all %}
+    <a href="{{invoice.get_absolute_url}}" class="btn btn-info">{{invoice.pk}} - {{invoice.title}} </a>
+  {% endfor %}
+</div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">شماره فاکتور</label>
+              <input v-model="invoice_id" type="number" class="form-control" />
+            </div>
+              <button
+              class="btn btn-success"
+              @click="add_invoice_to_project()"
+              v-if="!waiting"
+              type="submit"
+            >
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+
+
+          <div class="col-md-6">
+             
+            <div v-if="message.show">
+              <div :class="'my-2 alert alert-'+message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

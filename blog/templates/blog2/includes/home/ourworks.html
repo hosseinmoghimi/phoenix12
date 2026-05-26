@@ -1,0 +1,99 @@
+{% load static %}
+{% load to_persian_date %}
+
+<!-- projects -->
+<div class="cd-section" id="projects">
+
+
+    <!--     *********    PROJECTS 3     *********      -->
+    <div class="projects-3 section-dark" id="projects-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <h2 class="farsi title mb-0">
+                        {{web.OUR_WORKS_TITLE.value}}
+                      
+                    {% if perms.app.change_parameter %}
+                    {{web.OUR_WORKS_TITLE.get_edit_btn|safe}}
+                    {% endif %}
+                    </h2>
+                    <h4 class="farsi category text-muted mb-3">
+
+                        {{web.OUR_WORKS_SLOGAN.value}}
+
+                        {% if perms.app.change_parameter %}
+                        {{web.OUR_WORKS_SLOGAN.get_edit_btn|safe}}
+                        {% endif %}
+
+                    </h4>
+                    <div class="">
+                        {% if perms.dashboard.add_ourwork %}
+
+                        {{admin_utility.get_add_ourwork|safe}}
+
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for ourwork in ourworks %}
+                <div class="col-md-5 ml-auto">
+                    <div class="card card-plain">
+                        <a href="{{ourwork.get_absolute_url}}">
+                            <div class="card-header card-header-image">
+                                <img src="{{ourwork.thumbnail}}">
+                            </div>
+                        </a>
+                        <div class="card-body ">
+                            <h6 class="card-category farsi">
+                                {% if ourwork.category %}
+                                {{ourwork.category}}
+
+                                {% else %}
+                                &nbsp;
+                                {% endif %}
+
+
+                            </h6>
+                            <a href="{{ourwork.get_absolute_url}}">
+                                <h4 class="card-title farsi">{{ourwork.title}}</h4>
+                            </a>
+                            {% if ourwork.short_description %}
+                            <p class="card-description text-center">
+
+                                {{ourwork.short_description}}
+                            </p>
+                            {% endif %}
+
+                            <div class="row farsi rtl">
+
+                                <div class="col-4">
+                                    <a href="{{ourwork.get_absolute_url}}" class="btn btn-info btn-round">
+                                        ادامه مطلب<div class="ripple-container"></div>
+                                    </a>
+                                </div>
+                                {% if perms.dashboard.change_ourwork %}
+                                <div class="col-4">
+                                    <a href="{{ourwork.get_edit_url}}" class="btn btn-info btn-round">
+
+                                        ویرایش
+                                        <div class="ripple-container"></div>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                <div class="col-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+    <!--     *********    END PROJECTS 3      *********      -->
+
+</div>

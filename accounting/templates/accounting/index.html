@@ -1,0 +1,304 @@
+{% extends "accounting/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:products'  %}">
+      <img
+        src="{% static 'accounting/img/product.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">کالا ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:categories' %}">
+      <img
+        src="{% static 'accounting/img/categories.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">دسته بندی کالا ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:brands'  %}">
+      <img
+        src="{% static 'accounting/img/brands.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">برند ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:services'  %}">
+      <img
+        src="{% static 'accounting/img/pages/thumbnail/service.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">خدمات</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:accounts' %}">
+      <img
+        src="{% static 'accounting/img/account.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">حساب ها</h6>
+    </a>
+  </div>
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:person_categories' %}">
+      <img
+        src="{% static 'core/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">دسته بندی اشخاص</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:person_accounts' %}">
+      <img
+        src="{% static 'accounting/img/person.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">حساب های اشخاص</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:banks' %}">
+      <img
+        src="{% static 'accounting/img/bank.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">بانک ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:bank_accounts' %}">
+      <img
+        src="{% static 'core/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">حساب های بانکی</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:assets' %}">
+      <img
+        src="{% static 'accounting/img/asset.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">دارایی ها</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:tree_chart' pk=0 %}">
+      <img
+        src="{% static 'accounting/img/tree.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">نمودار درختی</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:tree_list' %}">
+      <img
+        src="{% static 'accounting/img/tree.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">لیست درختی</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:financial_documents' %}">
+      <img
+        src="{% static 'accounting/img/financialdocument.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">اسناد مالی</h6>
+    </a>
+  </div>
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:financial_document_lines' %}">
+      <img
+        src="{% static 'accounting/img/financialdocument.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">سطر های اسناد مالی</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:financial_years'  %}">
+      <img
+        src="{% static 'accounting/img/financialyear.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">سال های مالی</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:invoices'  %}">
+      <img
+        src="{% static 'accounting/img/invoice.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">فاکتور ها</h6>
+    </a>
+  </div>
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:new_invoice'  %}">
+      <img
+        src="{% static 'accounting/img/invoice.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">فاکتور جدید</h6>
+    </a>
+  </div>
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:financial_events'  %}">
+      <img
+        src="{% static 'accounting/img/financialevent.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">رویداد های مالی</h6>
+    </a>
+  </div>
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:new_financial_event'  %}">
+      <img
+        src="{% static 'accounting/img/financialevent.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">افزودن رویداد مالی</h6>
+    </a>
+  </div>
+
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:cheques'  %}">
+      <img
+        src="{% static 'accounting/img/cheques.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">چک ها</h6>
+    </a>
+  </div>
+
+  <!-- <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <a href="{% url 'accounting:add_financial_event'  %}">
+            <img src="{% static 'accounting/img/addfinancialevent.png' %}" width="64em" class="mb-2" alt="">
+            <h6 class="text-center">
+                افزودن رویداد مالی
+            </h6>
+        </a>
+    </div> -->
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:selection'  %}">
+      <img
+        src="{% static 'accounting/img/select.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">انتخاب حساب</h6>
+    </a>
+  </div>
+
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:report'  %}">
+      <img
+        src="{% static 'accounting/img/select.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">گزارش</h6>
+    </a>
+  </div>
+
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:settings'  %}">
+      <img
+        src="{% static 'img/icons/settings.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">تنظیمات</h6>
+    </a>
+  </div>
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:help'  %}">
+      <img
+        src="{% static 'img/icons/help.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">راهنما</h6>
+    </a>
+  </div>
+</div>
+{% endblock content %} {% block script %} {% endblock script %}

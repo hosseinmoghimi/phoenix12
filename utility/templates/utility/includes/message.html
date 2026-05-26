@@ -1,0 +1,12 @@
+{% load static %}
+<div v-if="message.show" :class="'farsi text-right alert alert-'+message.color">
+    <h5 v-html="message.title">
+    </h5>
+    <div v-html="message.body">
+    </div>
+</div>
+<div v-if="waiting">
+    <div class="text-canter">
+        <img src="{% static 'leo/img/loading.gif' %}" width="64" alt="">
+    </div>
+</div>
