@@ -326,10 +326,10 @@
                     </div>
                 </div>
             </div>
-            <div class="section section-comments" id="comment-app">
+            <div class="section section-comments" id="comments-app">
                 <div class="row">
                     <div class="col-md-8 ml-auto mr-auto">
-                        <div class="media-area">
+                        <div class="media-area rtl">
                             <h3 class="title text-center rtl farsi text-right" v-text="comments.length+' نظر'"></h3>
                             <template v-for="comment in comments">
                                 <comment-component :comment="comment">
@@ -338,21 +338,21 @@
                             </template>
 
                         </div>
-                        {% if person.name %}
+                        {% if me_person.full_name %}
                         <h3 class="title text-center farsi">دیدگاه خود را وارد کنید</h3>
                         <div class="media media-post rtl">
-                            <a class="author float-left" href="{{person.get_absolute_url}}">
+                            <a class="author float-left" href="{{me_person.get_absolute_url}}">
                                 <div class="avatar">
-                                    <img class="media-object" alt="64x64" src="{{person.image}}">
+                                    <img class="media-object" alt="64x64" src="{{me_person.image}}">
                                 </div>
                             </a>
                             <div class="media-body">
-                                <form @submit.prevent="add_comment">
+                                <form @submit.prevent="add_comment()">
                                     <div class="form-group label-floating bmd-form-group">
                                         <label class="form-control-label bmd-label-floating" for="exampleBlogPost">
                                             نظر شما
                                         </label>
-                                        <textarea v-model="text" class="form-control farsi" rows="5"
+                                        <textarea id="comment_inputed" v-model="comment" class="form-control farsi" rows="5"
                                             id="exampleBlogPost"></textarea>
                                     </div>
                                     <div class="media-footer">

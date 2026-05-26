@@ -93,6 +93,7 @@
                     page_id: page_id,
                     comment: this.comment,
                 }
+                console.log(payload)
                 if (comments_app.comment.length > 500) {
                     show_message(comments_app,"خطا","متن وارد شده باید کمتر از 500 کاراکتر داشته باشد.","danger",5000)
                     return
