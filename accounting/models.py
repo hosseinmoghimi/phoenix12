@@ -17,13 +17,13 @@ from django.shortcuts import reverse
 from django.core.files.storage import FileSystemStorage
 from core.models import Event as CoreEvent,Page as CorePage
 from phoenix.server_settings import UPLOAD_ROOT,QRCODE_ROOT,QRCODE_URL,STATIC_URL,MEDIA_URL,ADMIN_URL,FULL_SITE_URL
-from .settings_on_server import  NO_DUPLICATED_ACCOUNT_NAME,NO_DUPLICATED_ACCOUNT_CODE
+from .server_settings import  NO_DUPLICATED_ACCOUNT_NAME,NO_DUPLICATED_ACCOUNT_CODE
 from django.utils import timezone
 from utility.log import leolog
 upload_storage = FileSystemStorage(location=UPLOAD_ROOT, base_url='/uploads')
 IMAGE_FOLDER = APP_NAME+"/images/"
 try:
-    from accounting.settings_on_server import DELETE_OLD_ITEM_UNIT
+    from accounting.server_settings import DELETE_OLD_ITEM_UNIT
 except:
     DELETE_OLD_ITEM_UNIT=True
 
@@ -174,7 +174,7 @@ class Account(CorePage,LinkHelper,PersonAccountHelper):
         message="خطا"
         
         global ACCOUNT_LEVEL_NAMES
-        from .settings_on_server import ACCOUNT_LEVEL_NAMES 
+        from .server_settings import ACCOUNT_LEVEL_NAMES 
         self.type=AccountTypeEnum.GROUP
         self.type=ACCOUNT_LEVEL_NAMES[self.level]
         result=FAILED

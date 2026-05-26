@@ -16,7 +16,7 @@ from utility.constants import FAILED,SUCCEED
 from .constants import EXCEL_PRODUCTS_DATA_START_ROW,EXCEL_SERVICES_DATA_START_ROW,EXCEL_ACCOUNTS_DATA_START_ROW
 from .defaults import default_accounts,default_persons,default_banks
 from .enums import AccountTypeEnum,AccountNatureEnum
-from .settings_on_server import ACCOUNT_LEVEL_NAMES
+from .server_settings import ACCOUNT_LEVEL_NAMES
 from authentication.models import Person
 
 from utility.repo import leolog,Repo

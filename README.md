@@ -39,6 +39,12 @@ list your apps in
 ```
  
 
+## Copy accounting config files
+
+for accounting app copy this file then edit it if needed
+```bash
+    cp accounting/sample_settings.py accounting/server_settings.py
+```
 
   ## Authors
 
