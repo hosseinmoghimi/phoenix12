@@ -49,6 +49,27 @@ class IndexView(View):
 
  
  
+class AdminView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        blogs=BlogRepo(request=request).list()
+        
+        if request.user.has_perm(APP_NAME,'.add_blog'):
+            context['blogs']=blogs
+            blogs_s=json.dumps(BlogSerializer(blogs,many=True).data)
+            context['blogs_s']=blogs_s
+            context['add_blog_form']=AddBlogForm()
+        if request.user.has_perm(APP_NAME,'.add_homeslider'):
+            homesliders=HomeSliderRepo(request=request).list(for_home=True)
+            context['homesliders']=homesliders
+
+
+ 
+        return render(request,TEMPLATE_ROOT+"admin.html",context)
+# Create your views here. 
+
+ 
+ 
 class BlogsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

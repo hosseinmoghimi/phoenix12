@@ -1,0 +1,55 @@
+<div id="blogs-app      ">
+  <div class="row rtl">
+    <table class="table table-striped rtl text-right">
+      <thead>
+        <th>بلاگ</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr v-for="blog in blogs">
+          <td>
+            <div class="media">
+                <a :href="blog.get_absolute_url">
+                    
+                    <img :src="blog.thumbnail" width="32" class="rounded" alt="">
+                </a>
+                <div class="media-body mr-2">
+
+                    <a :href="blog.get_absolute_url">
+                        <h6>
+
+                            <span v-text="blog.title"></span>
+                        </h6>
+                    </a>
+                </div>
+            </div>
+             
+          </td>
+          <td>
+            {% if perms.blog.change_blog %}
+            <a
+              :href="blog.get_edit_url"
+              title="ویرایش"
+              target="_blank"
+              class="text-warning"
+            >
+              <i class="fa fa-edit"></i>
+            </a>
+            {% endif %} {% if perms.blog.delete_blog %}
+            <a
+              :href="blog.get_delete_url"
+              title="حذف"
+              target="_blank"
+              class="text-danger"
+            >
+              <i class="fa fa-trash"></i>
+            </a>
+            {% endif %}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% include "blog2/includes/blogs-app/form.html" %}
