@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/SGFanoos-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/SGFanoos-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: regular;
+}
+
+ 
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/SGFanoos-Bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: bold;
+}
+
+
+
+ 
+.farsi{
+    font-family: "HMFONT"  !important;
+}

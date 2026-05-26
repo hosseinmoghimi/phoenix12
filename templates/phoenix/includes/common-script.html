@@ -1,0 +1,85 @@
+{% load static %}
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'vendor/js/popper.min.js' %}"></script>
+<script src="{% static 'utility/js/message.js' %}"></script>
+<script src="{% static 'utility/js/utility.js' %}"></script>
+<script src="{% static 'dashboard/js/plugins/bootstrap-notify.js' %}"></script>
+
+{% if VUE_VERSION_3 %}
+
+<script src="{% static 'persian/moment.js' %}"></script>
+<script src="{% static 'persian/moment-jalaali.js' %}"></script>
+<script src="{% static 'persian/vue-persian-datetime-picker-browser.js' %}"></script>
+{% endif %} {% if VUE_VERSION_2 %}
+
+<script src="{% static 'persian/moment.js' %}"></script>
+<script src="{% static 'persian/moment-jalaali.js' %}"></script>
+<script src="{% static 'persian/vue-persian-datetime-picker-browser.js' %}"></script>
+
+{% endif %}
+
+<script src="{% static 'utility/js/message.js' %}"></script>
+<script>
+  let DEBUG = false;
+</script>
+
+{% if DEBUG %} {% if VUE_VERSION_3 %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+{% endif %} {% if VUE_VERSION_2 %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% endif %}
+<script>
+  DEBUG = true;
+</script>
+{% else %} {% if VUE_VERSION_3 %}
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+{% endif %} {% if VUE_VERSION_2 %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %} {% endif %}
+
+<script>
+  let CURRENCY = "{{CURRENCY}}";
+  let current_datetime = "{{current_datetime}}";
+  let current_date = "{{current_date}}";
+  let current_time = "{{current_time}}";
+  function leolog(data) {
+    if (DEBUG) {
+      console.log(data);
+    }
+  }
+</script>
+<script>
+  var csrfmiddlewaretoken = "";
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val();
+
+    $(".notification-divider:last").addClass("d-none");
+  });
+</script>
+<script>
+  url_add_clipboard_item = "{% url 'authentication:add_clipboard_item'  %}";
+  url_clear_all_clipboard_item =
+    "{% url 'authentication:clear_all_clipboard_items'  %}";
+</script>
+{% if clipboard_items and not NOT_NAVBAR %} 
+  
+
+{% include "authentication/includes/clipboard-items-app/script.html" %} 
+{% endif %}
+{% if my_links and not NOT_NAVBAR %}
+{% include "authentication/includes/my-links-app/script.html" %}
+{% endif %} 
+{% if PUSHER_IS_ENABLE %}
+{% include "phoenix/includes/pusher-script.html" %}
+{% endif %}
+{% if APP_SCRIPT %}
+{% include APP_SCRIPT %} 
+{% endif %} 
+{% if me_person %}
+<script>
+  let me_person = JSON.parse(`{{me_person_s|escapejs}}`);
+</script>
+{% endif %}

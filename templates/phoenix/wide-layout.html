@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    {% include "phoenix/includes/head.html" %}
+    {% block head %}
+
+    {% endblock head %}
+
+
+    {% block style %}
+
+    {% endblock style %}
+</head>
+
+<body class="farsi" {% if app_background_image %}
+    style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('{{app_background_image.image}}');background-size:cover"
+    {% endif %}>
+    {% if not NO_NAVBAR %}
+    {% include "phoenix/includes/navbar.html" %}
+    {% endif %}
+    <div class="my-3 {% if WIDE_LAYOUT %}mx-3{% else %}container{% endif %}">
+
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+
+    {% if not NO_FOOTER %}
+    {% include "phoenix/includes/footer.html" %}
+    {% endif %}
+
+    {% csrf_token %}
+    {% include "phoenix/includes/common-script.html" %}
+    {% include "phoenix/includes/utility-script.html" %}
+    {% block script %}
+
+    {% endblock script %}
+    {% block base_script %}
+
+    {% endblock base_script %}
+</body>
+
+</html>

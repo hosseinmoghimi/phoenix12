@@ -1,0 +1,10 @@
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Far_Casablanca.woff") format("woff2");
+    font-style: normal;
+    font-weight: regular;
+}
+.farsi{
+    font-family: "HMFONT" !important ;
+}

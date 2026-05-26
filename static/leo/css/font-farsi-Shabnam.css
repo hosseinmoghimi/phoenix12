@@ -1,0 +1,22 @@
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Shabnam.woff2") format("woff2");
+    font-style: normal;
+    font-weight: regular;
+}
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Shabnam-Light.woff2") format("woff2");
+    font-style: normal;
+    font-weight: lighter;
+}
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Shabnam-Bold.woff2") format("woff2");
+    font-style: normal;
+    font-weight: bold;
+}
+.farsi{
+    font-family: "HMFONT" !important ;
+}

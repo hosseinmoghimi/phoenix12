@@ -1,0 +1,17 @@
+.rtl{
+    direction: rtl !important;
+}
+
+.ltr{
+    direction: ltr!important;
+}
+.farsi{
+    font-family: 'farsi';
+}
+.card{
+    text-align: right;
+    margin-top: 1em;
+}
+table{
+    direction: rtl;
+}

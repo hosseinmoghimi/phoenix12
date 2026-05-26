@@ -1,0 +1,5 @@
+django
+django-tinymce
+djangorestframework
+django-cleanup 
+pillow

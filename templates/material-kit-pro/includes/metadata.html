@@ -1,0 +1,55 @@
+
+<meta name="robots"
+  content="{{keywords}}" />
+<!--  end keywords -->
+
+
+
+
+<!--  Social tags      -->
+<meta name="keywords"
+  content="{{master_keywords}} , {{keywords}}">
+<meta name="description" content="{{keywords}}">
+<!-- Schema.org markup for Google+ -->
+<meta itemprop="name" content="{{keywords}}">
+<meta itemprop="description"
+  content="{{keywords}}">
+{% if page.thumbnail %}
+
+<meta itemprop="image" content="{{page.thumbnail}}">
+  
+{% endif %}
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="product">
+<meta name="twitter:site" content="@creativetim">
+<meta name="twitter:title" content="{{page.title}}">
+<meta name="twitter:description"
+  content="{{keywords}}">
+<meta name="twitter:creator" content="@creativetim">
+<meta name="twitter:image"
+  content="{{keywords}}">
+<!-- Open Graph data -->
+<meta property="fb:app_id" content="655968634437471">
+<meta property="og:title" content="{{page.title}}" />
+<meta property="og:type" content="article" />
+{% if page.get_absolute_url %}
+  
+<meta property="og:url" content="{{page.get_absolute_url}}" />
+{% endif %}
+
+{% if page.thumbnail %}
+  
+<meta property="og:image"
+content="{{page.thumbnail}}" />
+{% endif %}
+  {% if page.meta_description %}
+<meta property="og:description"
+  content="{{page.meta_description}}" />
+    
+  {% endif %}
+<meta property="og:site_name" content="{{page.title}}" />
+
+
+
+
+ 

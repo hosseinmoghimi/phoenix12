@@ -1,0 +1,56 @@
+<footer class="footer footer-white">
+  <div class="container">
+
+    <a class="footer-brand float-right farsi" href="{{app.home_url}}">{{app.title}}</a>
+
+
+    <ul class="pull-center rtl farsi">
+
+      <li>
+        <a href="{% url 'market:index' %}" target="_blank">
+          فروشگاه
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'blog:index' %}" target="_blank">
+          وب سایت
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'projectmanager:index' %}" target="_blank">
+          مدیریت پروژه
+        </a>
+      </li>
+    
+      <li>
+        <SMALL class="farsi">
+          بازدید از سایت :
+          {{visitor_counter}}
+        </SMALL>
+      </li>
+    </ul>
+    <ul class="social-buttons float-left">
+
+
+      <li>
+        <div class="copyright rtl float-left text-left">
+          <span class="farsi rtl small text-muted">
+            توسعه و اجرا :
+          </span>
+
+          <a title="حسین مقیمی" target="_blank" href="https://www.linkedin.com/in/hossein-moghimi-4597b973/"
+            class="btn btn-linkedin docs-creator">
+            <i class="fa fa-linkedin-square"></i>
+            <span class="farsi">
+
+              صفرویک
+            </span>
+            <div class="ripple-container"></div>
+            <div class="ripple-container"></div>
+          </a>
+
+        </div>
+      </li>
+    </ul>
+  </div>
+</footer>

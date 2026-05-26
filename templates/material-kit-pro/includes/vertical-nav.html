@@ -1,0 +1,67 @@
+{% if dddddd %}
+
+<nav id="cd-vertical-nav">
+
+
+  <ul class="mr-4">
+
+
+    {% for link in vertical_navs %}
+    <li>
+      <a href="{{link.url}}" data-number="{{link.pk}}">
+        <span class="cd-dot"></span>
+        <span class="cd-label">{{link.title}}</span>
+      </a>
+    </li>
+    {% empty %}
+    {% if not no_vertical_navbar %}
+
+    <li>
+      <a href="#headers" data-number="1">
+        <span class="cd-dot"></span>
+        <span class="cd-label">سربرگ ها</span>
+      </a>
+    </li>
+    <li>
+      <a href="#features" data-number="2">
+        <span class="cd-dot"></span>
+        <span class="cd-label">خدمات</span>
+      </a>
+    </li>
+    <li>
+      <a href="#blogs" data-number="3">
+        <span class="cd-dot"></span>
+        <span class="cd-label">مقالات</span>
+      </a>
+    </li>
+    <li>
+      <a href="#projects" data-number="5">
+        <span class="cd-dot"></span>
+        <span class="cd-label farsi">پروژه ها</span>
+      </a>
+    </li>
+    <li>
+      <a href="#teams" data-number="4">
+        <span class="cd-dot"></span>
+        <span class="cd-label">تیم ما</span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#testimonials" data-number="7">
+        <span class="cd-dot"></span>
+        <span class="cd-label">گفته ها</span>
+      </a>
+    </li>
+    <li>
+      <a href="#contactus" data-number="8">
+        <span class="cd-dot"></span>
+        <span class="cd-label">ارتباط با ما</span>
+      </a>
+    </li>
+    {% endif %}
+
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}

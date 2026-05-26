@@ -1,0 +1,42 @@
+<div id="membership-request-app" class="subscribe-line subscribe-line-image" data-parallax="true"
+    style="background-image: url(&apos;../assets/img/examples/ecommerce-header.jpg&apos;);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 ml-auto mr-auto">
+                <div class="text-center">
+                    <h3 class="title text-center">مشترک شوید</h3>
+                    <p class="description text-center">
+                        با اشتراک در مجموعه ما از تخفیف ها و جشنواره ها خبردار شوید.
+                    </p>
+                </div>
+                <div class="card card-raised card-form-horizontal">
+                    <div class="card-body">
+                        <form @submit.prevent="add_request()">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">phone</i>
+                                            </span>
+                                        </div>
+                                        <input required minlength="11" maxlength="11" type="text" class="form-control farsi " v-model="mobile"
+                                            placeholder="09xxxx... ">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="submit" class="btn btn-rose btn-block farsi">ثبت شماره
+                                        همراه</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div v-if="show_message" class="rounded my-3">
+                            <div v-html="message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

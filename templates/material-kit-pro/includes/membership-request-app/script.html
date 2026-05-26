@@ -1,0 +1,36 @@
+<script>
+    let membership_request_app = new Vue({
+        el: "#membership-request-app",
+        data: {
+            mobile: "",
+            message: "",
+            show_message: false,
+        },
+        methods: {
+            add_request: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    mobile: this.mobile,
+                    app_name: "{{APP_NAME}}",
+                }
+
+                let url = "{% url 'authentication:add_membership_request' %}"
+                console.log(payload)
+                $.post(url, payload).done((data) => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+                        membership_request_app.message = `<p class="alert alert-success">درخواست شما برای شماره 
+                            ${data.membership_request.mobile}
+                            با موفقیت ثبت شد.</p>`
+                        membership_request_app.show_message = true
+                        membership_request_app.mobile = ""
+                        setTimeout(() => {
+                            membership_request_app.show_message = false
+
+                        }, 2000);
+                    }
+                })
+            }
+        }
+    })
+</script>

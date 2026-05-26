@@ -1,0 +1,35 @@
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Vazir/Farsi-Digits/Vazir-FD.woff") format("woff");
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Vazir/Farsi-Digits/Vazir-FD.woff2") format("woff2");
+    font-style: normal;
+    font-weight: regular;
+}
+
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Vazir/Farsi-Digits/Vazir-FD.eot") format("eot");
+    font-style: normal;
+    font-weight: regular;
+}
+
+
+@font-face {
+    font-family: "HMFONT";
+    src: url("../font-farsi/Vazir/Farsi-Digits/Vazir-FD.ttf") format("ttf");
+    font-style: normal;
+    font-weight: regular;
+}
+
+
+ 
+.farsi{
+    font-family: "HMFONT"  !important;
+}
