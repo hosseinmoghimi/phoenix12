@@ -1,4 +1,4 @@
-{% extends "blog2/layout.html" %}
+{% extends "blog/layout.html" %}
 {% load static %}
 
 
@@ -16,16 +16,10 @@
 
 {% include 'web/includes/home/slider.html' %}
 {% include 'web/includes/home/features.html' %}
-<div class="row">
-    {% for icon in icons %}
-      <div class="col text-center">
-          {{icon.get_icon_tag|safe}}
-      </div>
-    {% endfor %}
-</div>
 {% include 'web/includes/home/ourworks.html' %}
 {% include 'web/includes/home/blogs.html' %}
 {% include 'web/includes/home/team.html' %}
+{% include 'web/includes/home/awards.html' %}
 
 
 

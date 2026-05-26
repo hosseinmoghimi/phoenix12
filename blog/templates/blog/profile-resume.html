@@ -1,4 +1,4 @@
-{% extends "blog2/layout.html" %}
+{% extends "blog/layout.html" %}
 {% load static %}
 
 
@@ -11,12 +11,12 @@
         transform: translate3d(0, -50%, 0);
     }
 </style>
-{% endblock %}
+{% endblock  %}
 
 
 {% block ofbar %}
 
-{% endblock %}
+{% endblock  %}
 
 
 {% block content %}
@@ -46,40 +46,35 @@
                         </div>
                     </div>
                     <div class="follow">
-                        {% if change_profile_form %}
-                        <a href="{% url 'dashboard:selected_dashboard' profile_id=selected_profile.id %}">
+                        <a href="{% url 'dashboard:home' %}">
                             <button class="btn btn-fab btn-primary btn-round" rel="tooltip" title=""
                                 data-original-title="دشبورد">
-                                <i class="material-icons" aria-hidden="true">dashboard</i>
+                                <i class="material-icons"   aria-hidden="true" >dashboard</i>
                             </button>
                         </a>
 
                         <a href="{{selected_profile.get_edit_url}}">
                             <button class="btn btn-fab btn-danger btn-round" rel="tooltip" title=""
                                 data-original-title="ویرایش پروفایل">
-                                <i class="material-icons" aria-hidden="true">construction</i>
+                                <i class="material-icons"   aria-hidden="true" >construction</i>
                             </button>
                         </a>
-                        {% endif %}
 
-
-
-                        <!-- <a href="{{selected_profile.get_resume_url}}">
+                        <a href="{{selected_profile.get_absolute_url}}">
                             <button class="btn btn-fab btn-success btn-round" rel="tooltip" title=""
-                                data-original-title="رزومه">
+                                data-original-title="پروفایل">
                                 <i class="fa fa-id-badge" aria-hidden="true"></i>
 
                             </button>
-                        </a> -->
-
+                        </a>
 
                     </div>
                 </div>
             </div>
             <div class="description text-center">
-                {% if selected_profile.bio %}
+                {% if profile.bio %}
                 <p class="text-center">
-                    {{selected_profile.bio}}
+                    {{profile.bio}}
                 </p>
                 {% endif %}
 
@@ -88,78 +83,46 @@
             <div>
                 {% block content_employee %}
 
-                {% endblock %}
+                {% endblock  %}
             </div>
-            <div v-if="resumecategories.length>0 || add_resume_category_form">
-                <h5 class="text-center">
-                    رزومه ها
-                </h5>
-            </div>
-            {% if add_resume_category_form %}
-            <form @submit.prevent="add_category">
-
-                <div class="row rtl">
-                    <div class="col-3"></div>
-                    <div class="col-3">
-
-                        <input type="text" placeholder="نام دسته بندی جدید" v-model="new_resumecategory_title"
-                            class="form-control">
-                    </div>
-                    <div class="col-3">
-                        <button class="btn btn-info" type="submit">
-                            افزودن دسته بندی
-                        </button>
-                    </div>
-                    <div class="col-3"></div>
-                </div>
-            </form>
-            {% endif %}
-
+            
 
             <div class="row rtl">
                 <div class="col-12">
-                    <div class="profile-tabs">
-                        <ul class="nav nav-pills nav-pills-icons justify-content-center nav-pills-success"
-                            role="tablist">
-                            <!--
-                                                        color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
-                                                -->
 
-                            <!-- {% if forloop.first %}active show{% endif %} -->
+                    <div class="mb-4 nav-item text-right" v-for="resumecategory in resumecategories"
+                        :id="'resumecategory_'+resumecategory.id">
+                        <a class="nav-link" :href="'#resumecategory'+resumecategory.id" role="tab" data-toggle="tab"
+                            aria-selected="true">
+                            <span v-html="resumecategory.get_icon_tag"></span>
+                            {% verbatim %}
+                            {{resumecategory.title}}
 
-                            <li class="nav-item " v-for="resumecategory in resumecategories"
-                                :id="'resumecategory_'+resumecategory.id">
-                                <a class="nav-link" :href="'#resumecategory'+resumecategory.id" role="tab"
-                                    data-toggle="tab" aria-selected="true">
+                            {% endverbatim %}
+                        </a>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-11">
+                                <ul>
 
-                                    <div v-html="resumecategory.get_icon_tag"></div>
-                                    {% verbatim %}
-                                    {{resumecategory.title}}
+                                    <li class="mx-4" v-for="resume in resumecategory.resumes">
 
-                                    {% endverbatim %}
-                                </a>
-                            </li>
+                                        <a :href="resume.get_absolute_url">
+
+                                            <h4 class="card-title farsi" v-text="resume.title"></h4>
+                                        </a>
+                                        <p class="mx-5 card-category text-right text-gray" v-text="resume.short_description">
+
+                                        </p>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
 
-
-
-
-
-                            <!-- <li class="nav-item">
-                                <a class="nav-link " href="#connections" role="tab" data-toggle="tab"
-                                    aria-selected="false">
-                                    <i class="material-icons"   aria-hidden="true" >people</i>
-                                    همکاران
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#media" role="tab" data-toggle="tab" aria-selected="false">
-                                    <i class="material-icons"   aria-hidden="true" >camera</i>
-                                    اسناد
-                                </a>
-                            </li> -->
-                        </ul>
                     </div>
+
                 </div>
             </div>
             <div class="tab-content tab-space">
@@ -168,26 +131,10 @@
                 <!-- {% if forloop.first %}active show{% endif %} -->
                 <div v-for="resumecategory in resumecategories" class="tab-pane work "
                     :id="'resumecategory'+resumecategory.id">
-                    <div class="row rtl">
-                         <div class="col-md-2 mr-auto ml-auto stats">
-                            <h4 class="title text-center">
-                                {% verbatim %}
-                                {{resumecategory.title}}
-                                {% endverbatim %}
-                            </h4>
-                            <a class="btn btn-info" :href="resumecategory.get_edit_url">
-                                اصلاح {{resumecategory.title}}
-                            </a>
-                            <!-- <ul class="list-unstyled">
-                                <li><b>60</b> Products</li>
-                                <li><b>4</b> Collections</li>
-                                <li><b>331</b> Influencers</li>
-                                <li><b>1.2K</b> Likes</li>
-                            </ul> -->
-       
-                        </div>
-                        <div class="col-md-7 ml-auto mr-auto ">
+                    <div class="row">
+                        <div class="col-md-8 ml-auto mr-auto ">
                             <!-- <h4 class="title farsi text-right">رزومه</h4> -->
+
 
 
 
@@ -219,20 +166,20 @@
                                         <div class="card-footer justify-content-center">
                                             <a :href="resume.get_absolute_url" title="جزییات . . ."
                                                 class="btn btn-info btn-just-icon btn-fill btn-round">
-                                                <i class="material-icons" aria-hidden="true">subject</i>
+                                                <i class="material-icons"   aria-hidden="true" >subject</i>
                                                 <div class="ripple-container"></div>
                                             </a>
 
 
                                             <a :href="resume.get_edit_url"
                                                 class="btn btn-success btn-just-icon btn-fill btn-round btn-wd">
-                                                <i class="material-icons" aria-hidden="true">mode_edit</i>
+                                                <i class="material-icons"   aria-hidden="true" >mode_edit</i>
                                                 <div class="ripple-container"></div>
                                             </a>
 
 
                                             <a href="#pablo" class="btn btn-danger btn-just-icon btn-fill btn-round">
-                                                <i class="material-icons" aria-hidden="true">delete</i>
+                                                <i class="material-icons"   aria-hidden="true" >delete</i>
                                                 <div class="ripple-container"></div>
                                             </a>
 
@@ -244,31 +191,49 @@
 
 
                             </div>
+                            <div class="row rtl">
+                                <div class="col-3"></div>
+                                <div class="col-3">
 
-                            <form @submit.prevent="add_resume(resumecategory.id)">
-
-                                <div class="row rtl">
-                                    <div class="col-3"></div>
-                                    <div class="col-3">
-
-                                        <input type="text" placeholder="نام رزومه جدید" v-model="new_resume_title"
-                                            class="form-control">
-                                    </div>
-                                    <div class="col-3">
-                                        <button class="btn btn-info" type="submit">
-                                            افزودن رزومه
-                                        </button>
-                                    </div>
-                                    <div class="col-3"></div>
+                                    <input type="text" placeholder="نام رزومه جدید" v-model="new_resume_title"
+                                        class="form-control">
                                 </div>
+                                <div class="col-3">
+                                    <button class="btn btn-info" @click="add_resume(resumecategory.id)">
+                                        افزودن رزومه
+                                    </button>
+                                </div>
+                                <div class="col-3"></div>
+                            </div>
 
-                            </form>
                             <!-- <p class="text-center">
 
-                               
+                                <a class="btn btn-info" :href="resumecategory.get_edit_url">
+                                    اصلاح {{resumecategory.title}}
+                                </a>
                             </p> -->
                         </div>
-                       
+                        <div class="col-md-2 mr-auto ml-auto stats">
+                            <h4 class="title">
+                                {% verbatim %}
+                                {{resumecategory.title}}
+                                {% endverbatim %}
+                            </h4>
+                            <ul class="list-unstyled">
+                                <li><b>60</b> Products</li>
+                                <li><b>4</b> Collections</li>
+                                <li><b>331</b> Influencers</li>
+                                <li><b>1.2K</b> Likes</li>
+                            </ul>
+                            <hr>
+                            <h4 class="title">About his Work</h4>
+                            <p class="description">French luxury footwear and fashion. The footwear has incorporated
+                                shiny, red-lacquered soles that have become his signature.</p>
+                            <hr>
+                            <h4 class="title">Focus</h4>
+                            <span class="badge badge-primary">Footwear</span>
+                            <span class="badge badge-rose">Luxury</span>
+                        </div>
                     </div>
                 </div>
 
@@ -277,7 +242,7 @@
 
 
 
-                <!-- <div class="tab-pane connections show" id="connections">
+                <div class="tab-pane connections show" id="connections">
                     <div class="row">
                         <div class="col-md-5 ml-auto mr-auto">
                             <div class="card card-profile card-plain">
@@ -398,19 +363,19 @@
                             <img src="{% static 'web/img/cynthia-del-rio.jpg' %}" class="rounded">
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{% endblock %}
+{% endblock  %}
 
 
 
 {% block modal %}
 
-{% endblock %}
+{% endblock  %}
 
 
 
@@ -474,28 +439,10 @@
 </script>
 
 
-
-
-
-
-{% if add_resume_category_form %}
-<script>
-    let add_resume_category_form = true
-
-</script>
-{% else %}
-<script>
-    let add_resume_category_form = false
-
-</script>
-{% endif %}
-
-
-
 <script>
     let resumecategories = JSON.parse(`{{resumecategories_s|escapejs}}`)
     profile_id = parseInt("{{selected_profile.id}}")
-    let url_add_resume_category = "{% url 'web:add_resume_category' %}"
+    let url_add_resume_category = "{% url 'dashboard:add_resume_category' %}"
     let url_add_resume = "{% url 'web:add_resume' %}"
 
     let app = new Vue({
@@ -504,11 +451,16 @@
             new_resumecategory_title: '',
             resumecategories: resumecategories,
             new_resume_title: '',
-            add_resume_category_form: add_resume_category_form
         },
         methods: {
             add_category: function () {
+
+
+
+
                 let title = this.new_resumecategory_title
+
+
                 var posting = $.post(url_add_resume_category,
                     {
                         profile_id: profile_id,
@@ -526,17 +478,25 @@
                         app.new_resumecategory_title = ''
                     }
                 })
+
+
             },
             add_resume: function (category_id) {
+
+
+
+
                 let title = this.new_resume_title
-                payload = {
-                    category_id: category_id,
-                    title: title,
-                    app_name: 'app',
-                    csrfmiddlewaretoken: csrfmiddlewaretoken
-                }
-                console.log(payload)
-                var posting = $.post(url_add_resume, payload);
+
+
+                var posting = $.post(url_add_resume,
+                    {
+                        category_id: category_id,
+                        title: title,
+                        app_name: 'app',
+                        csrfmiddlewaretoken: csrfmiddlewaretoken
+                    }
+                );
 
                 // Put the results in a div
                 posting.done(function (data) {
@@ -570,4 +530,4 @@
 
 </script>
 {% endfor %}
-{% endblock %}
+{% endblock  %}

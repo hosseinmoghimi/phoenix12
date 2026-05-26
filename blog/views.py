@@ -12,7 +12,7 @@ import json
 from utility.enums import UnitNameEnum
 from utility.log import leolog
 
-TEMPLATE_ROOT='blog2/'
+TEMPLATE_ROOT='blog/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"

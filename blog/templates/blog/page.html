@@ -1,4 +1,4 @@
-{% extends "blog2/layout.html" %}
+{% extends "blog/layout.html" %}
 {% load social_share %}
 
 {% block head %}
@@ -24,7 +24,7 @@
 <div class="">
 
     <div class="page-header header-filter" data-parallax="true"
-        style="background-image: url(&quot;{{page.header}}&quot;); transform: translate3d(0px, 0px, 0px);">
+        style="background-image: url(&quot;{{page.image_header}}&quot;); transform: translate3d(0px, 0px, 0px);">
         <div class="container">
             <div class="row">
                 <div class="col-md-8 ml-auto mr-auto text-center">
@@ -36,12 +36,12 @@
                     <h4 class=" farsi text-center" >
                         {% if page.short_description %}
 
-                        {{page.short_description|safe }}
+                        {{page.short_description}}
                         {% endif %}
                     </h4>
                     <br>
                     {% if perms.dashboard.change_page %}
-                    <a href="{% url 'core:page' pk=page.pk %}" class="btn btn-info btn-round btn-lg">
+                    <a href="{{page.get_edit_url}}" class="btn btn-info btn-round btn-lg">
                         <i class="material-icons" aria-hidden="true">rate_review</i> ویرایش
                     </a>
                     {% endif %}
@@ -58,12 +58,6 @@
     <div class="main main-raised">
         <div class="container">
             <div>
-                <div class="section section-text" id="page-app2">
-                    {% if page.description %}
-
-                        {{page.description|safe }}
-                        {% endif %}
-                </div>
                 <div class="section section-text" id="page-app">
                     <div class="row">
                         <div class="col-md-8 ml-auto mr-auto">
@@ -81,12 +75,11 @@
 
 
                         </div>
-
-                        {% if images %}
+                        {% if page.images.all %}
                           
                         <div class="section col-md-10 ml-auto mr-auto" >
                             <div class="row rtl">
-                                {% for image in images %}
+                                {% for image in page.images.all %}
                                 <div class="col-md-4">
 
 
@@ -112,15 +105,15 @@
 
                                                     </p>
                                                     <div class="footer text-center">
-                                                        <a title="نمایش" target="_blank" href="{{image.get_absolute_url}}"
+                                                        <a target="_blank" href="{{image.get_absolute_url}}"
                                                             class="btn btn-info btn-just-icon btn-fill btn-round google-drive-opener">
                                                             <i class="material-icons" aria-hidden="true">subject</i>
                                                         </a>
-                                                        <a title="ویرایش" href="{{image.get_edit_url}}" target="_blank"
+                                                        <a href="{{image.get_edit_url}}"
                                                             class="btn btn-success btn-just-icon btn-fill btn-round btn-wd google-drive-opener">
                                                             <i class="material-icons" aria-hidden="true">mode_edit</i>
                                                         </a>
-                                                        <a title="حذف" href="{{image.get_delete_url}}" target="_blank"
+                                                        <a href="#pablo"
                                                             class="btn btn-danger btn-just-icon btn-fill btn-round google-drive-opener">
                                                             <i class="material-icons" aria-hidden="true">delete</i>
                                                         </a>
@@ -151,27 +144,36 @@
                             <div class="row rtl">
                                 <div class="col-md-12"   id="page-tags-app"
                                  >
-                                    <div  
+                                    <div v-if="tags.length>0  || can_add_tag" 
                                         class="blog-tags text-right mx-3 my-3">
                                         برچسب ها:
 
 
                                         <div class="bootstrap-tagsinput danger-badge">
+                                            <template v-for="tag in tags">
 
-                                            {% for tag in tags %}
-                                              
-                                            <span class="h5 mb-3 mx-2" v-for="tag in tags">
-                                                <span>
-                                                    
-                                                    <a class="mr-2" target="_blank" href="{{tag.get_absolute_url}}">
-                                                       
+                                                {% verbatim %}
+                                                <span class="tag badge mx-2">
+                                                    <a :href="tag.get_absolute_url" class="text-light">
                                                         {{tag.title}}
-                                                    </a> ،
+                                                    </a>
+
+                                                    <span @click="remove_tag(tag.id)" data-role="remove"></span>
                                                 </span>
-                                                
-                                             
-                                            </span>
-                                            {% endfor %}
+
+
+
+
+                                                {% endverbatim %}
+                                            </template>
+
+                                            {% if add_tag_form %}
+
+                                            <form class="d-inline mx-2" v-on:submit.prevent="add_tag">
+                                                <span class="bmd-form-group"><input v-model="tag_title" type="text"
+                                                        class="form-control" placeholder="تگ جدید"></span>
+                                            </form>
+                                            {% endif %}
                                         </div>
 
 
@@ -183,7 +185,7 @@
                                 <div class="col-md-6" id="page-links-app"
                               >
                                     <div class="card card-stats"
-                                     
+                                       v-if="links.length>0 || can_add_link"
                                     >
                                         <div class="card-header card-header-primary card-header-icon rtl text-right">
 
@@ -197,16 +199,29 @@
                                         </div>
                                         <div class="card-body pt-5">
 
-                                            {% for page_link in links %}
-                                              <a class="mr-2" target="" href="{{page_link.url}}">
-                                        <h6>
-                                            {{page_link.get_icon_tag|safe}}
-                                            {{page_link.title}}
-                                        </h6>
-                                    </a> 
-                                      
-                                    {% endfor %}
-                                             
+                                            <template v-for="link in links" class="">
+                                                <div class="mr-4 mb-3 text-right">
+                                                    <span v-html="link.get_link"></span>
+                                                    {% if perms.core.change_link %}
+                                                    <span class="mr-4 text-right">
+                                                        <a class="text-secondary" :href="link.get_edit_url">ویرایش</a>
+                                                    </span>
+                                                    {% endif %}
+                                                </div>
+                                               
+                                            </template>
+                                            {% if add_link_form %}
+                                            <form id="add-link-form" @submit.prevent="add_link">
+                                                <div>
+                                                    <input placeholder="عنوان لینک جدید" type="text"
+                                                        class="form-control" v-model="link_title">
+                                                    <input placeholder="آدرس لینک جدید" type="text" class="form-control"
+                                                        v-model="link_url">
+                                                    <button v-if="link_url && link_title"
+                                                        class="btn btn-warning btn-round" type="submit">تایید</button>
+                                                </div>
+                                            </form>
+                                            {% endif %}
 
                                         </div>
                                         <!-- <div class="card-footer">
@@ -221,7 +236,10 @@
                                 <div class="col-md-6"  id="page-documents-app"
                                 
                                 >
-                                <div class="card card-stats">
+                                <div class="card card-stats"
+                                v-if="documents.length>0 || can_add_document"
+                                
+                                    >
                                         <div class="card-header rtl text-right card-header-success card-header-icon">
                                             <span class="card-icon mx-2">
                                                 <i class="fa fa-download" aria-hidden="true"></i>
@@ -233,31 +251,49 @@
                                         <div class="card-body pt-5">
 
 
-  {% for page_download in downloads %}
-   
+
+                                            <template v-for="document in documents">
                                                 <div class="mr-4 mb-3 text-right">
                                                     <span>
-                                                        <a  title="{{page_download.person.full_name}}"
-                                                        href="{{page_download.person.get_absolute_url}}">
-                                                        <img  src="{{page_download.person.image}}" class="rounded-circle"
+                                                        <a v-if="document.profile" :title="document.profile.name"
+                                                        :href="document.profile.get_absolute_url">
+                                                        <img :src="document.profile.image" class="rounded-circle"
                                                             width="32px">
                                                     </a>
                                                     </span>
-                                                    <span class="mx-2" >
-                                                        
-                                                         <a class="mr-2" target="" href="{{page_download.get_download_url}}">
-                                        <h6>
-                                            {{page_download.get_icon_tag|safe}}
-                                            {{page_download.title}}
-                                        </h6>
-                                    </a>
-
+                                                    <span class="mx-2" v-html="document.get_link"></span>
+                                                    {% if perms.core.change_document %}
+                                                    <span class="mr-4 text-right">
+                                                        <a class="text-secondary" :href="document.get_edit_url">ویرایش</a>
                                                     </span>
-                                                    
+                                                    {% endif %}
                                                 </div>
- 
-{% endfor %}
-                                             
+
+                                            </template>
+                                            {% if add_document_form %}
+                                            <form id="add-document-form" @submit.prevent="add_document"
+                                                enctype="multipart/form-data">
+                                                <div>
+                                                    <input placeholder="عنوان فایل دانلود" type="text" name="title"
+                                                        class="form-control" v-model="document_title">
+
+                                                    <div>
+                                                        <span class="btn btn-raised btn-round btn-default btn-file">
+                                                            <span class="fileinput-new">انتخاب فایل</span>
+                                                            <input type="hidden" value="" name="..."><input type="file"
+                                                                v-on:change="document_file=true" name="">
+                                                            <div class="ripple-container"></div>
+                                                        </span>
+
+                                                        <button v-if="(document_file && document_title) || false"
+                                                            class="btn btn-info btn-round" type="submit">آپلود</button>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </form>
+                                            {% endif %}
 
                                         </div>
                                         <!-- <div class="card-footer">
@@ -277,38 +313,52 @@
 
 
 
-                                    {% include "attachments/includes/page-like-app/template.html" %}
+                                    <button class="btn btn-round btn-danger" v-if="is_like" @click="toggle_like">
+                                        <i class="material-icons">favorite</i>
+                                        <span v-text="likes_count"></span>
+                                    </button>
+                                    <button class="btn btn-round btn-secondary" v-if="!is_like" @click="toggle_like">
+                                        <i class="material-icons">favorite</i>
+                                        <span v-text="likes_count"></span>
+                                    </button>
 
-                                    {% post_to_whatsapp page.get_whatsapp_url 'واتسپ' %}
+                                    {% post_to_whatsapp page.get_whatsapp_url 'shareeeee' %}
                                     {% post_to_telegram obj_or_url=page.get_absolute_url title=page.title %}
 
 
-                                    
+                                    <a href="{{page.get_excel_url}}" class="btn btn-info btn-round">
+
+
+                                        <i class="material-icons" aria-hidden="true">get_app</i>
+
+
+                                        دانلود فایل اکسل Excel</a>
+
 
                                 </div>
                             </div>
                             <hr>
-                            {% if page.person %}
+                            {% if page.profile %}
 
-                            <div class="card card-person card-plain">
+                            <div class="card card-profile card-plain">
                                 <div class="row rtl">
                                     <div class="col-md-2">
                                         <div class="card-avatar">
-                                            <a href="{{page.person.get_absolute_url}}">
-                                                <img class="img" src="{{page.person.image}}">
+                                            <a href="{{page.profile.get_absolute_url}}">
+                                                <img class="img" src="{{page.profile.image}}">
                                             </a>
                                             <div class="ripple-container"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <a href="{{page.person.get_absolute_url}}">
+                                        <a href="{{page.profile.get_absolute_url}}">
 
 
-                                            <h4 class="card-title farsi">{{page.person.name}}</h4>
+                                            <h4 class="card-title farsi">{{page.profile.name}}</h4>
                                         </a>
-                                        {% if page.person.bio %}
+                                        {% if page.profile.bio %}
                                         <p class="description text-center">
-                                            {{page.person.bio}}
+                                            {{page.profile.bio}}
                                         </p>
                                         {% endif %}
 
@@ -338,12 +388,12 @@
                             </template>
 
                         </div>
-                        {% if person.name %}
+                        {% if profile.name %}
                         <h3 class="title text-center farsi">دیدگاه خود را وارد کنید</h3>
                         <div class="media media-post rtl">
-                            <a class="author float-left" href="{{person.get_absolute_url}}">
+                            <a class="author float-left" href="{{profile.get_absolute_url}}">
                                 <div class="avatar">
-                                    <img class="media-object" alt="64x64" src="{{person.image}}">
+                                    <img class="media-object" alt="64x64" src="{{profile.image}}">
                                 </div>
                             </a>
                             <div class="media-body">
@@ -433,8 +483,34 @@
 
 
 <script>
-   
- 
+    let page = JSON.parse(`{{page_s|escapejs}}`)
+    let comments = JSON.parse(`{{comments_s|escapejs}}`)
+    let page_id = parseInt("{{page.id}}")
+
+    var comment_template = `{% include 'blog/includes/comment.html' %}`
+    let likes_count = parseInt("{{likes_count}}")
+    var tags = JSON.parse(`{{tags_s|escapejs}}`)
+    var links = JSON.parse(`{{links_s|escapejs}}`)
+    var documents = JSON.parse(`{{documents_s|escapejs}}`)
+    var images = JSON.parse(`{{images_s|escapejs}}`)
+    let url_add_tag = "{% url 'attachments:add_tag' %}"
+    let url_edit_page_description = "{% url 'core:edit_page_description' %}"
+    let url_delete_comment = "{% url 'core:delete_comment' %}"
+    let url_add_comment = "{% url 'core:add_comment' %}"
+    let url_remove_tag = "{% url 'core:remove_tag' %}"
+    let url_toggle_like = "{% url 'core:toggle_like' %}"
+    let url_add_image = "{% url 'core:add_image' %}"
+    let url_add_link = "{% url 'core:add_link' %}"
+    let url_add_document = "{% url 'core:add_document' %}"
+
+
+
+    let can_add_tag = "{% if add_tag_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_link = "{% if add_link_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_document = "{% if add_document_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_image = "{% if add_image_form %}true{% else %}false{% endif %}" === 'true'
+    let can_add_comment = "{% if add_comment_form %}true{% else %}false{% endif %}" === 'true'
+
 </script>
 
 {% if DEBUG %}
@@ -442,9 +518,8 @@
 {% else %}
 <script src="{% static 'vendor/js/vue.min.js' %}"></script>
 {% endif %}
-
+<script src="{% static 'dashboard/leo/comment-app.js' %}"></script>
 <script src="{% static 'core/js/page.js' %}"></script>
-{% include "core/includes/page-app/script.html" %}
 
 
 {% endblock %}

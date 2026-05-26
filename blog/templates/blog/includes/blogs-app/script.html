@@ -1,28 +1,24 @@
 <script>
-    let blogs = []
-    let blogs_app = new Vue({
-        el: "#blogs-app",
-        data: {
-            blogs: blogs,
-            title: "",
-            waiting: false,
-        },
-        methods: {
-            add_blog: function () {
-                blogs_app.waiting = true
-                let url = "{% url 'blog:add_blog' %}"
-                let payload = {
-                    csrfmiddlewaretoken: csrfmiddlewaretoken,
-                    title: this.title,
-                    for_home: true,
-                }
-                let posting = $.post(url, payload)
-                posting.done((data) => {
-                    blogs_app.waiting = false
-                    if (data.result === 'SUCCEED') {
+    const all_blogs = JSON.parse(`{{blogs_s|escapejs}}`)
 
+    let blogs_app=new Vue({
+        el:"#blogs-app",
+        data:{
+            new_blog_title:"",
+            blogs:all_blogs,
+        },
+        methods:{
+            add_blog:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    title:blogs_app.new_blog_title,
+                }
+                let url="{% url 'blog:add_blog' %}"
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
                         blogs_app.blogs.push(data.blog)
-                        blogs_app.title = ""
+                        blogs_app.title=""
                     }
                 })
             }
