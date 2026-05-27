@@ -1,105 +1,298 @@
-{% extends "projectmanager/layout.html" %} {% block content %}
-    {% if project.parent %} 
-    <div class="rtl my-2">{{project.get_breadcrumb|safe}}</div>
-    {% endif %} 
-<div class="row rtl">
-  <div class="col-md-3"> 
-    {% include "projectmanager/includes/project-app/card.html" %} 
-  </div>
-  <div class="col-md-9">
-    <div class="row rtl">
-      <div class="col-md-6">
-        {% include "projectmanager/includes/sub-projects-app/template.html" %}
-      </div>
-       <div class="col-md-6">
-          {% include "core/includes/page-thumbnail-header-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "attachments/includes/comments-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "attachments/includes/images-app/template.html" %}
-      </div>
-      <div class="col-md-4">
-        {% include "attachments/includes/links-app/template.html" %}
-      </div>
-      <div class="col-md-4">
-        {% include "attachments/includes/downloads-app/template.html" %}
-      </div>
-      <div class="col-md-4">
-        {% include "attachments/includes/tags-app/template.html" %}
-      </div>
-     
-      <div class="col-md-12">
-          {% include "core/includes/page-description-app/short-description.html" %}
-          {% include "core/includes/page-description-app/description.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "attachments/includes/locations-app/template.html" %}
-      </div>
-      
-      {% if add_invoice_form %}
-      <div class="col-md-12">
-        {% include "projectmanager/includes/add-invoice-app/template.html" %}
-      </div>
-      {% endif %}
-      <div class="col-md-12">
-        {% include "accounting/includes/invoices-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "accounting/includes/invoice-lines-app/template.html" %}
-      </div>
-      {% if add_ticket_form %}
-      <div class="col-md-12">
-          {% include "projectmanager/includes/add-ticket-app/template.html" %}
-      </div>
-      {% endif %}
-      <div class="col-md-12">
-          {% include "projectmanager/includes/tickets-app/template.html" %}
-      </div>
-      {% if add_event_to_project_form %}
-        
-      <div class="col-md-12">
-        {% include "projectmanager/includes/add-event-to-project-app/template.html" %}
-      </div>
-      {% endif %}
-      <div class="col-md-12">
-        {% include "core/includes/events-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "projectmanager/includes/project-edit-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "projectmanager/includes/remote-clients-app/template.html" %}
-      </div>
-      <div class="col-md-12">
-        {% include "core/includes/page-related-app/template.html" %}
-      </div>
-      {% if add_invoice_to_project_form %}
-      <div class="col-md-12">
-          {% include "projectmanager/includes/add-invoice-to-project-app/template.html" %}
+{% extends "blog/layout.html" %} 
+{% load social_share %} 
+{% block head %}
+<style>
+  .front-background:after {
+    background-color: rgba(0, 0, 0, 0) !important;
+  }
 
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  div {
+    text-align: right;
+  }
+</style>
+{% endblock %} {% load static %} 
+{% block content %}
+<div class="">
+  <div
+    class="page-header header-filter"
+    data-parallax="true"
+    style='background-image: url("{{page.header}}"); transform: translate3d(0px, 0px, 0px);'
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 ml-auto mr-auto text-center">
+          <h1 class="title farsi text-center">{{page.title}}</h1>
+          <h4 class="farsi text-center">
+            {% if page.short_description %} {{page.short_description|safe }} {% endif %}
+          </h4>
+          <br />
+          {% if perms.dashboard.change_page %}
+          <a
+            href="{% url 'projectmanager:project_edit' pk=page.pk %}"
+            class="btn btn-info btn-round btn-lg"
+          >
+            <i class="material-icons" aria-hidden="true">rate_review</i> ویرایش
+          </a>
+          {% endif %}
+          <!-- <a href="{{page.get_absolute_url}}" class="btn btn-rose btn-round btn-lg">
+                    <i class="material-icons"   aria-hidden="true" >format_align_left</i> توضیحات بیشتر
+                </a> -->
+        </div>
       </div>
-      {% endif %}
+    </div>
+  </div>
+
+  <div class="main main-raised">
+    <div class="container">
+      <div>
+        <div class="section section-text" id="page-app2">
+          {% if page.description %} {{page.description|safe }} {% endif %}
+        </div>
+        <div class="section section-text" id="page-app">
+          <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+              {% if page.image %}
+              <img :src="page.image" class="w-100" alt="" />
+              {% endif %}
+
+              <div>
+                <h3 class="title farsi text-right" v-text="page.title"></h3>
+
+                <div class="rtl" v-html="page.description"></div>
+              </div>
+            </div>
+
+            {% if images %}
+
+            <div class="section col-md-10 ml-auto mr-auto">
+              <div class="row rtl">
+                {% for image in images %}
+                <div class="col-md-4">
+                  <div
+                    class="rotating-card-container"
+                    style="margin-bottom: 30px"
+                  >
+                    <div class="card card-rotate card-background">
+                      <div
+                        class="front front-background"
+                        style='background-image: url("{{image.thumbnail}}"); width: 350px;'
+                      >
+                        <div class="card-body"></div>
+                      </div>
+                      <div
+                        class="back back-background"
+                        style='background-image: url("{{image.thumbnail}}"); width: 350px;'
+                      >
+                        <div class="card-body">
+                          <h5 class="card-title farsi text-center">
+                            {{image.image_title}}
+                          </h5>
+                          <p class="card-description farsi text-center">
+                            {% if image.image_description %}
+                            {{image.image_description}} {% endif %}
+                          </p>
+                          <div class="footer text-center">
+                            <a
+                              title="نمایش"
+                              target="_blank"
+                              href="{{image.get_absolute_url}}"
+                              class="btn btn-info btn-just-icon btn-fill btn-round google-drive-opener"
+                            >
+                              <i class="material-icons" aria-hidden="true"
+                                >subject</i
+                              >
+                            </a>
+                            <a
+                              title="ویرایش"
+                              href="{{image.get_edit_url}}"
+                              target="_blank"
+                              class="btn btn-success btn-just-icon btn-fill btn-round btn-wd google-drive-opener"
+                            >
+                              <i class="material-icons" aria-hidden="true"
+                                >mode_edit</i
+                              >
+                            </a>
+                            <a
+                              title="حذف"
+                              href="{{image.get_delete_url}}"
+                              target="_blank"
+                              class="btn btn-danger btn-just-icon btn-fill btn-round google-drive-opener"
+                            >
+                              <i class="material-icons" aria-hidden="true"
+                                >delete</i
+                              >
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="section section-blog-info">
+          <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+              <div class="row rtl">
+                <div class="col-md-12" id="page-tags-app">
+                  <div class="blog-tags text-right mx-3 my-3">
+                    برچسب ها:
+
+                    <div class="bootstrap-tagsinput danger-badge">
+                      {% for tag in tags %}
+
+                      <span class="h5 mb-3 mx-2" v-for="tag in tags">
+                        <span>
+                          <a
+                            class="mr-2"
+                            target="_blank"
+                            href="{{tag.get_absolute_url}}"
+                          >
+                            {{tag.title}}
+                          </a>
+                          ،
+                        </span>
+                      </span>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- links -->
+                <div class="col-md-6">
+                  {% include "blog/includes/page-links-app/template.html" %}
+                </div>
+                <!-- downloads -->
+                <div class="col-md-6">
+                  {% include "blog/includes/page-downloads-app/template.html" %}
+                </div>
+
+                <div class="col-md-12 rtl">
+                  {% include "attachments/includes/page-like-app/template.html" %} 
+                  {% post_to_whatsapp page.get_whatsapp_url 'واتسپ' %} 
+                  {% post_to_telegram obj_or_url=page.get_absolute_url title=page.title %}
+                </div>
+              </div>
+              <hr />
+              {% if page.person %}
+
+              <div class="card card-person card-plain">
+                <div class="row rtl">
+                  <div class="col-md-2">
+                    <div class="card-avatar">
+                      <a href="{{page.person.get_absolute_url}}">
+                        <img class="img" src="{{page.person.image}}" />
+                      </a>
+                      <div class="ripple-container"></div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <a href="{{page.person.get_absolute_url}}">
+                      <h4 class="card-title farsi">{{page.person.name}}</h4>
+                    </a>
+                    {% if page.person.bio %}
+                    <p class="description text-center">{{page.person.bio}}</p>
+                    {% endif %}
+                  </div>
+                  <div class="col-md-12">
+                    <button
+                      type="button"
+                      class="btn btn-default pull-right btn-round"
+                    >
+                      دنبال کنید
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section section-comments">
+        {% include "blog/includes/comments-app/template.html" %}
+      </div>
     </div>
   </div>
 </div>
+{% if page.related_pages.all %}
 
-{% endblock content %} {% block script %}
-<script>
-  let project_id = parseInt("{{project.id}} ");
-  let project = JSON.parse("{{project_s|escapejs}} ");
-</script>
-{% if add_invoice_to_project_form %}
-{% include "projectmanager/includes/add-invoice-to-project-app/script.html" %}
+<div class="section">
+  <div class="container">
+    <div class="row rtl">
+      <div class="col-md-12">
+        <h2 class="title text-center farsi">صفحه های مرتبط</h2>
+        <br />
+        <div class="row">
+          {% for related_page in page.related_pages.all %}
+          <div class="col-md-4">
+            <div class="card card-blog">
+              {% if related_page.thumbnail %}
+              <div class="card-header card-header-image">
+                <a href="{{related_page.get_absolute_url}}">
+                  <img
+                    class="img img-raised"
+                    src="{{related_page.thumbnail}}"
+                  />
+                </a>
+                <div
+                  class="colored-shadow"
+                  style='background-image: url("{{related_page.thumbnail}}"); opacity: 1;'
+                ></div>
+              </div>
+              {% endif %}
+              <div class="card-body">
+                <h6 class="category farsi text-info">
+                  {{related_page.category}}
+                </h6>
+                <h4 class="card-title text-right farsi">
+                  <a href="{{related_page.get_absolute_url}}"
+                    >{{related_page.title}}</a
+                  >
+                </h4>
+                <div class="card-description">
+                  {{related_page.short_description|safe}}
+
+                  <a
+                    class="badge badge-secondary"
+                    href="{{related_page.get_absolute_url}}"
+                    >ادامه مطلب</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endif %}
-{% include "projectmanager/includes/project-app/script.html" %}
-{% if add_ticket_form %}
-{% include "projectmanager/includes/add-ticket-app/script.html" %}
+{% endblock %}
+
+
+{% block script %}  
+
+<script></script>
+
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
 {% endif %}
-{% include "projectmanager/includes/tickets-app/script.html" %}
-{% include "core/includes/events-app/script.html" %}
-{% if add_event_to_project_form %}
-{% include "projectmanager/includes/add-event-to-project-app/script.html" %}
-{% endif %}
-{% endblock script %}
+
+<script src="{% static 'core/js/page.js' %}"></script>
+{% include "core/includes/page-app/script.html" %}
+{% endblock %}

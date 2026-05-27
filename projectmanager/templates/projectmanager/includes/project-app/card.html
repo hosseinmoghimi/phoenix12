@@ -12,7 +12,9 @@
 </div>
     <h5 class="text-center">{{project.title}}</h5>
     <div class="text-center">
-  <img src="{{project.get_qrcode_url}}" width="128" alt="">
+  <a href="{{page.get_absolute_url}}">
+    <img src="{{project.get_qrcode_url}}" width="128" alt="">
+  </a>
 </div>
 
 <div class="text-center">
