@@ -1,5 +1,9 @@
 <div id="blogs-app      ">
   <div class="row rtl">
+    <div class="col-md-12">
+      
+{% include "blog/includes/blogs-app/form.html" %}
+    </div>
     <table class="table table-striped rtl text-right">
       <thead>
         <th>بلاگ</th>
@@ -31,7 +35,7 @@
               :href="blog.get_edit_url"
               title="ویرایش"
               target="_blank"
-              class="text-warning"
+              class="text-warning mx-2"
             >
               <i class="fa fa-edit"></i>
             </a>
@@ -40,7 +44,7 @@
               :href="blog.get_delete_url"
               title="حذف"
               target="_blank"
-              class="text-danger"
+              class="text-danger mx-2"
             >
               <i class="fa fa-trash"></i>
             </a>
@@ -52,4 +56,3 @@
   </div>
 </div>
 
-{% include "blog/includes/blogs-app/form.html" %}

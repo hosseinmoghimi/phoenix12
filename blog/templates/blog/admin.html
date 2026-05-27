@@ -31,13 +31,6 @@
 {% block script %}
 
 
-{% if DEBUG %}
-<script src="{% static 'vendor/js/vue.js' %}"></script>
-{% else %}
-<script src="{% static 'vendor/js/vue.min.js' %}"></script>
-{% endif %}
-
-
 
 {% include "blog/includes/blogs-app/script.html" %} 
 

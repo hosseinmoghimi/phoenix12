@@ -1,4 +1,7 @@
-let TASVIEH = 'تسویه'
+if(typeof TASVIEH === "undefined"){
+
+    let TASVIEH = 'تسویه'
+}
 let BEDEHKAR = 'بدهکار'
 let BESTANKAR = 'بستانکار'
 let TUMAN = 'تومان'

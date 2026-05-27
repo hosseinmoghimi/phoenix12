@@ -2,4 +2,8 @@
     <form @submit.prevent="add_blog()">
         <input placeholder="عنوان بلاگ جدید" type="text" v-model="new_blog_title" class="form-control">
     </form>
+    <div class="mx-2 my-2">
+
+        {% include "utility/includes/message-app/alert.html" %}
+    </div>
 </div>

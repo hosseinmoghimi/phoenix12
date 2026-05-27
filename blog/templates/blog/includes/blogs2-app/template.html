@@ -26,6 +26,9 @@
       data-parent="#accordion-blogs"
     >
       <div class="card-body">
+        {% if add_blog_form %}
+          {% include "blog/includes/blogs-app/form.html" %}
+        {% endif %}
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
