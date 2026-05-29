@@ -98,4 +98,33 @@ class BlogView(View):
 
 
 
+from utility.repo import PictureRepo,ParameterRepo
   
+ 
+class AboutUsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        blog=BlogRepo(request=request).blog(*args, **kwargs)
+        context.update(PageContext(request=request,page=blog))
+        context["blog"]=blog
+        blog_s=json.dumps(BlogSerializer(blog,many=False).data)
+        context["blog_s"]=blog_s
+        about_header=PictureRepo(request=request,app_name=APP_NAME).picture(name="سربرگ درباره ما")
+        context['about_header']=about_header
+        return render(request,TEMPLATE_ROOT+"about-us.html",context)
+# Create your views here. 
+
+ 
+class ContactUsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        blog=BlogRepo(request=request).blog(*args, **kwargs)
+        context.update(PageContext(request=request,page=blog))
+        context["blog"]=blog
+        blog_s=json.dumps(BlogSerializer(blog,many=False).data)
+        context["blog_s"]=blog_s
+
+        return render(request,TEMPLATE_ROOT+"contact-us.html",context)
+# Create your views here. 
