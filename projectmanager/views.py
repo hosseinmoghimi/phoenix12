@@ -190,7 +190,7 @@ class ProjectView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         project=ProjectRepo(request=request).project(*args, **kwargs)
-        # project.normalize()
+        project.normalize()
         if project is None:
             title='پروژه وجود ندارد'
             body='پروژه وجود ندارد'
