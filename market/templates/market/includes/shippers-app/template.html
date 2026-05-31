@@ -31,26 +31,48 @@
           <table class="table table-striped rtl">
             <thead>
               <th>حمل کننده</th>
-              <th>سطح</th>
+              <th>منطقه</th>
               <th>مانده</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="shipper in shippers">
                 <td>
-                  <a :href="shipper.get_absolute_url">
-                    <span
-                      v-text="shipper.person_account.person.full_name"
-                    ></span>
+                  <div class="media">
+                    <a :href="shipper.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="shipper.person_account.person.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="shipper.get_absolute_url">
+                        <h6
+                          v-text="shipper.person_account.person.full_name"
+                        ></h6>
+                      </a>
+                      <small class="text-muted" v-text="shipper.level"></small>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <a :href="shipper.region.get_absolute_url">
+                    <h5 v-text="shipper.region.city.name"></h5>
+                    <small
+                      class="text-muted"
+                      v-text="shipper.region.name"
+                    ></small>
                   </a>
                 </td>
 
                 <td>
-                  <span v-text="shipper.level"></span>
-                </td>
-
-                <td>
-                  <span v-text="to_price(shipper.person_account.balance)"></span> {{CURRENCY    }}
+                  <span
+                    v-text="to_price(shipper.person_account.balance)"
+                  ></span>
+                  {{CURRENCY }}
                 </td>
                 <td>
                   {% if perms.market.change_shipper %}
@@ -62,11 +84,7 @@
                     <i class="fa fa-edit text-warning"></i>
                   </a>
                   {% endif %} {% if perms.market.delete_shipper %}
-                  <a
-                    target="_blank"
-                    :href="shipper.get_delete_url"
-                    title="حذف"
-                  >
+                  <a target="_blank" :href="shipper.get_delete_url" title="حذف">
                     <i class="fa fa-trash text-danger"></i>
                   </a>
                   {% endif %}

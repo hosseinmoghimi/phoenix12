@@ -7,6 +7,7 @@ from .enums import *
 
 
 class MarketPerson(models.Model,LinkHelper):
+    region=models.ForeignKey("utility.region", verbose_name=_("region"), on_delete=models.CASCADE)
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
     level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
 

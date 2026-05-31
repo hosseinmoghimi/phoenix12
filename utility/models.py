@@ -27,7 +27,7 @@ class DateHelper():
     def persian_production_date(self):
         return PersianCalendar().from_gregorian(self.production_date)
  
- 
+
 class DateTimeHelper(DateHelper):
     def persian_enter_datetime(self):
         return PersianCalendar().from_gregorian(self.enter_datetime)
@@ -243,3 +243,47 @@ class Parameter(models.Model):
             </a>
         """
  
+
+class State(models.Model,LinkHelper):
+    name=models.CharField(_("name"), max_length=50)
+    priority=models.IntegerField(_("priority"),default=1000)
+
+    app_name=APP_NAME
+    class_name="state"
+
+    class Meta:
+        verbose_name = _("State")
+        verbose_name_plural = _("States")
+
+    def __str__(self):
+        return self.name 
+    
+    
+class City(models.Model,LinkHelper):
+    state=models.ForeignKey("state", verbose_name=_("state"), on_delete=models.CASCADE)
+    name=models.CharField(_("name"), max_length=50)
+    priority=models.IntegerField(_("priority"),default=1000)
+
+    app_name=APP_NAME
+    class_name="city"
+
+    class Meta:
+        verbose_name = _("City")
+        verbose_name_plural = _("Citys")
+
+    def __str__(self):
+        return self.name 
+    
+    
+class Region(models.Model,LinkHelper):
+    city=models.ForeignKey("city", verbose_name=_("city"), on_delete=models.CASCADE)
+    name=models.CharField(_("name"), max_length=50)
+    priority=models.IntegerField(_("priority"),default=1000)
+    app_name=APP_NAME
+    class_name="region"
+    class Meta:
+        verbose_name = _("Region")
+        verbose_name_plural = _("Regions")
+
+    def __str__(self):
+        return self.name 

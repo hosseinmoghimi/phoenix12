@@ -31,7 +31,7 @@
           <table class="table table-striped rtl">
             <thead>
               <th>فروشنده</th>
-                
+              <th>منطقه</th>
               <th>مانده</th>
               <th></th>
             </thead>
@@ -39,27 +39,40 @@
               <tr v-for="supplier in suppliers">
                 <td>
                   <div class="media">
-                     <a :href="supplier.get_absolute_url">
-                       <img width="48" class="rounded" :src="supplier.person_account.person.image" alt="">
-                    
-                  </a>
+                    <a :href="supplier.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="supplier.person_account.person.image"
+                        alt=""
+                      />
+                    </a>
                     <div class="media-body mr-2">
-                       <a :href="supplier.get_absolute_url">
-                    <h6
-                      v-text="supplier.person_account.person.full_name"
-                    ></h6>
-                  </a>
-                  <small class="text-muted" v-text="supplier.level"></small>
-
+                      <a :href="supplier.get_absolute_url">
+                        <h6
+                          v-text="supplier.person_account.person.full_name"
+                        ></h6>
+                      </a>
+                      <small class="text-muted" v-text="supplier.level"></small>
                     </div>
                   </div>
-                   
                 </td>
 
-              
+                <td>
+                  <a :href="supplier.region.get_absolute_url">
+                    <h5 v-text="supplier.region.city.name"></h5>
+                    <small
+                      class="text-muted"
+                      v-text="supplier.region.name"
+                    ></small>
+                  </a>
+                </td>
 
                 <td>
-                  <span v-text="to_price(supplier.person_account.balance)"></span> {{CURRENCY    }}
+                  <span
+                    v-text="to_price(supplier.person_account.balance)"
+                  ></span>
+                  {{CURRENCY }}
                 </td>
                 <td>
                   {% if perms.market.change_supplier %}

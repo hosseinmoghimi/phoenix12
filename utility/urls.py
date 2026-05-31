@@ -7,6 +7,9 @@ urlpatterns = [
     
     path('',login_required(views.IndexView.as_view()),name="index"),  
     path('search/',login_required(views.SearchView.as_view()),name="search"),  
+    path('state/<int:pk>/',login_required(views.SearchView.as_view()),name="state"),  
+    path('city/<int:pk>/',login_required(views.SearchView.as_view()),name="city"),  
+    path('region/<int:pk>/',login_required(views.SearchView.as_view()),name="region"),  
     path('settings/',login_required(views.SettingsView.as_view()),name="settings"),  
     path('pictures/',login_required(views.PicturesView.as_view()),name="pictures"), 
     path('parameters/',login_required(views.ParametersView.as_view()),name="parameters"), 
