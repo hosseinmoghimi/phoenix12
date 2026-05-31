@@ -14,13 +14,38 @@
         <div v-if="cart_items.length==0">
           <h5>سبد خرید شما خالی می باشد.</h5>
         </div>
-        <table   class="table">
+        <div class="table-responsive">
+
+        <table   class="table rtl">
+          <thead>
+            <th> 
+                ردیف    
+
+            </th>
+            
+            <th>
+              
+              شرح کالا
+            </th>
+
+            <th>
+              تعداد
+            </th> 
+            
+            <th>
+              جمع
+            </th>
+            <th>
+              
+            </th>
+          </thead>
             <tbody>
                 <template v-for="cart_item in cart_items" >
                     <cart-item-component :cart_item="cart_item"> </cart-item-component>
                 </template>
             </tbody>
         </table>
+        </div>
       
       </div>
     </div>

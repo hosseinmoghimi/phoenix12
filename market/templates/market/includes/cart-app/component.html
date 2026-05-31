@@ -1,5 +1,8 @@
 <tr>
   <td>
+    <span v-text=""></span>
+  </td>
+  <td>
     <div class="media">
       <a :href="cart_item.shop.product.get_market_absolute_url">
         <img
@@ -57,7 +60,9 @@
     *
     <span v-text="to_price(cart_item.shop.unit_price)"> </span> {{CURRENCY}}
   </td>
-
+<td>
+  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity)"></span>
+</td>
   <td>
     <div>
       <small v-text="cart_item.persian_date_added"> </small>
