@@ -186,7 +186,7 @@ class ProjectTreeChartView(View):
         return render(request,TEMPLATE_ROOT+"tree-chart.html",context) 
 
 
-class ProjectView(View):
+class ProjectShowView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         project=ProjectRepo(request=request).project(*args, **kwargs)
@@ -255,10 +255,10 @@ class ProjectView(View):
             from accounting.repo import BrandRepo
             context['brands']=BrandRepo(request=request).list()
             context['add_remote_client_form'] = AddRemoteClientForm()
-        return render(request,TEMPLATE_ROOT+"project.html",context)
+        return render(request,TEMPLATE_ROOT+"project-show.html",context)
 
 
-class ProjectEditView(View):
+class ProjectView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         project=ProjectRepo(request=request).project(*args, **kwargs)
@@ -327,7 +327,7 @@ class ProjectEditView(View):
             from accounting.repo import BrandRepo
             context['brands']=BrandRepo(request=request).list()
             context['add_remote_client_form'] = AddRemoteClientForm()
-        return render(request,TEMPLATE_ROOT+"project-edit.html",context)
+        return render(request,TEMPLATE_ROOT+"project.html",context)
 
 
 class ProjectsView(View):

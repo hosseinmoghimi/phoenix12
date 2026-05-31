@@ -8,7 +8,7 @@
     
     {% if category.parent %}
     
-    {{category.parent.get_breadcrumb_link|safe}}
+    {{category.get_breadcrumb_link|safe}}
     {% else %}
     <a href="{% url 'accounting:category' pk=0 %}">خانه</a>
     {% endif %}

@@ -53,9 +53,24 @@
               <tr v-for="shop in shops">
                 {% if not product %}
                 <td>
-                  <a :href="shop.product.get_market_absolute_url"
-                    ><span v-text="shop.product.title"></span
-                  ></a>
+
+                  <div class="media">
+                     <a :href="shop.product.get_market_absolute_url">
+                       <img width="48" class="rounded" :src="shop.product.thumbnail" alt="">
+                    
+                  </a>
+                    <div class="media-body mr-2">
+                       <a :href="shop.product.get_market_absolute_url">
+                    <h6
+                      v-text="shop.product.title"
+                    ></h6>
+                  </a>
+                   
+                    </div>
+                  </div>
+
+
+                  
                 </td>
                 {% endif %} {% if not supplier %}
 

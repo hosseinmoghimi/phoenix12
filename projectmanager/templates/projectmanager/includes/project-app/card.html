@@ -125,6 +125,16 @@
     </div>
 
     <div>
+      <a
+        href="{% url 'projectmanager:project_show' pk=project.pk %}"
+        class="my-2 text-success mx-2"
+        title="نمایش"
+        target="_blank"
+      >
+        <i class="fa fa-eye text-success"></i>
+        نمایش
+      </a>
+
       {% if perms.core.change_page %}
       <a
         href="{{page.get_edit_url}}"
