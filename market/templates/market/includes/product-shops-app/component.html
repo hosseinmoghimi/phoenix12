@@ -13,11 +13,25 @@
                   </a>
                     <div class="media-body mr-2">
                        <a :href="shop.supplier.get_absolute_url">
-                    <h6
+                    <h6 style="margin-bottom: 0 !important;"
                       v-text="shop.supplier.person_account.person.full_name"
                     ></h6>
                   </a>
-                  <small class="text-muted" v-text="shop.supplier.level"></small>
+                  <div>
+                    <a :href="shop.supplier.region.city.get_absolute_url">
+
+                      <small class="text-muted" v-text="shop.supplier.region.city.name"></small> 
+                    </a>
+                    |
+                    <a :href="shop.supplier.region.get_absolute_url">
+
+                      <small class="text-muted" v-text="shop.supplier.region.name"></small>
+                    </a>
+                  </div>
+                  <div>
+
+                    <small class="text-muted" v-text="shop.supplier.level"></small>
+                  </div>
 
                     </div>
           </div>

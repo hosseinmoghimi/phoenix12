@@ -59,13 +59,19 @@
                 </td>
 
                 <td>
-                  <a :href="supplier.region.get_absolute_url">
-                    <h5 v-text="supplier.region.city.name"></h5>
-                    <small
-                      class="text-muted"
-                      v-text="supplier.region.name"
-                    ></small>
-                  </a>
+                  <div>
+                    <a :href="supplier.region.city.get_absolute_url">
+                      <span v-text="supplier.region.city.name"></span>
+                    </a>
+                  </div>
+                  <div>
+                    <a :href="supplier.region.get_absolute_url">
+                      <small
+                        class="text-muted"
+                        v-text="supplier.region.name"
+                      ></small>
+                    </a>
+                  </div>
                 </td>
 
                 <td>

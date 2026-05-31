@@ -1,4 +1,4 @@
-from .models import Parameter,Picture
+from .models import Parameter,Picture,Region,City,State
 from utility.constants import *
 from django.db.models import Q
 from core.repo import Repo 
@@ -165,3 +165,28 @@ class ParameterRepo(Repo):
             objects=objects.filter(app_name=self.app_name)
         return objects.all()
 
+class RegionRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.objects=Region.objects
+    def list(self):
+        objects=self.objects
+        return objects.all()
+    
+    
+class CityRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.objects=City.objects
+    def list(self):
+        objects=self.objects
+        return objects.all()
+    
+    
+class StateRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.objects=State.objects
+    def list(self):
+        objects=self.objects
+        return objects.all()

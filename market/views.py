@@ -15,7 +15,7 @@ from .enums import *
 from django.views import View
 from core.views import CoreContext,leolog
 from authentication.views import PersonRepo,PersonSerializer,AddPersonContext
-from utility.enums import PersonPrefixEnum
+from utility.views import RegionRepo
 from .serializers import CustomerSerializer
 from utility.views import MessageView
 LAYOUT_PARENT='phoenix/layout.html'
@@ -57,14 +57,18 @@ def CartItemContext(request,customer,*args, **kwargs):
     return context
 
 def AddMarketPersonContext(request):
-    context={}
     context=AddPersonAccountContext(request=request)
+    regions=RegionRepo(request=request).list()
+    context['regions']=regions
     person_accounts=PersonAccountRepo(request=request).list()
     person_accounts_s=json.dumps(PersonAccountSerializer(person_accounts,many=True).data)
     context['person_accounts']=person_accounts
     context['person_accounts_s']=person_accounts_s
 
     context['levels']=(i[0] for i in ShopLevelEnum.choices)
+
+
+
     return context
 
 def AddSupplierContext(request,*args, **kwargs):
@@ -361,7 +365,18 @@ class CartView(View):
  
 
         context['checkout_cart_form']=CheckoutCartForm()
- 
+        cart_items=[]
+        if request.user.has_perm(APP_NAME+".view_cartitem"):
+            cart_items=CartItemRepo(request=request).list(customer_id=customer.id)
+        else:
+            me_customer=CustomerRepo(request=request).me
+            if me_customer is not None and customer.id==me_customer.id:
+                cart_items=CartItemRepo(request=request).list(customer_id=customer.id)
+
+        cart_items_s=json.dumps(CartItemSerializer(cart_items,many=True).data)
+        context['cart_items']=cart_items
+        context['cart_items_s']=cart_items_s
+        context['cart_items_navbar_s']=cart_items_s
  
         return render(request,TEMPLATE_ROOT+"cart.html",context) 
        

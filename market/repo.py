@@ -101,7 +101,7 @@ class ShopRepo():
         if request.user.has_perm(APP_NAME+".view_shop"):
             self.objects=Shop.objects 
         elif me_customer is not None:
-            self.objects=Shop.objects.filter(level=me_customer.level)
+            self.objects=Shop.objects.filter(level=me_customer.level).filter(supplier__region_id=me_customer.region.id)
         elif me_supplier is not None:
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
     def primary_shop(self,product,*args, **kwargs):
@@ -252,6 +252,8 @@ class CustomerRepo():
         if 'level' in kwargs:
             customer.level=kwargs["level"]
  
+        if 'region_id' in kwargs:
+            customer.region_id=kwargs["region_id"]
         (result,message,customer)=customer.save() 
 
         return result,message,customer
@@ -317,6 +319,8 @@ class ShipperRepo():
                 return result,message,None
         if 'level' in kwargs:
             shipper.level=kwargs["level"]
+        if 'region_id' in kwargs:
+            shipper.region_id=kwargs["region_id"]
  
         (result,message,shipper)=shipper.save() 
 
@@ -598,6 +602,8 @@ class SupplierRepo():
         if 'level' in kwargs:
             supplier.level=kwargs["level"]
  
+        if 'region_id' in kwargs:
+            supplier.region_id=kwargs["region_id"]
         (result,message,supplier)=supplier.save() 
 
         return result,message,supplier

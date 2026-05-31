@@ -59,13 +59,21 @@
                 </td>
 
                 <td>
-                  <a :href="customer.region.get_absolute_url">
-                    <h5 v-text="customer.region.city.name"></h5>
-                    <small
-                      class="text-muted"
-                      v-text="customer.region.name"
-                    ></small>
-                  </a>
+                
+                  <div>
+                    <a :href="customer.region.city.get_absolute_url">
+                      <span v-text="customer.region.city.name"></span>
+                    </a>
+                  </div>
+                  <div>
+                    <a :href="customer.region.get_absolute_url">
+                      <small
+                        class="text-muted"
+                        v-text="customer.region.name"
+                      ></small>
+                    </a>
+                  </div>
+
                 </td>
 
                 <td>

@@ -38,6 +38,7 @@ class ChangeCartItemForm(forms.Form):
 class AddMarketPersonForm(forms.Form):
     level=forms.CharField(max_length=100, required=False)
     person_account_id=forms.IntegerField(required=True)
+    region_id=forms.IntegerField(required=True)
    
 class AddCartLineForm(forms.Form):
     shop_id=forms.IntegerField(required=True)

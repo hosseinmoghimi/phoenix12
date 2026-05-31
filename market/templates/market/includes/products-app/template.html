@@ -21,7 +21,7 @@
                     </a> 
                       <span  v-if="product.available" class=" text-success text-center">
                         هر
-                        <span v-text="product.default_unit_name"> </span>
+                        <span v-text="product.unit_name"> </span>
                        {% if SHOW_TUMAN %}
                           <span v-text="to_price_tuman(product.unit_price)" :title="to_price(product.unit_price)+`{{CURRENCY}}`"></span>
                         {{CURRENCY_TUMAN}}

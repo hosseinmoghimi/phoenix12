@@ -59,13 +59,19 @@
                 </td>
 
                 <td>
-                  <a :href="shipper.region.get_absolute_url">
-                    <h5 v-text="shipper.region.city.name"></h5>
-                    <small
-                      class="text-muted"
-                      v-text="shipper.region.name"
-                    ></small>
-                  </a>
+                   <div>
+                    <a :href="shipper.region.city.get_absolute_url">
+                      <span v-text="shipper.region.city.name"></span>
+                    </a>
+                  </div>
+                  <div>
+                    <a :href="shipper.region.get_absolute_url">
+                      <small
+                        class="text-muted"
+                        v-text="shipper.region.name"
+                      ></small>
+                    </a>
+                  </div>
                 </td>
 
                 <td>
