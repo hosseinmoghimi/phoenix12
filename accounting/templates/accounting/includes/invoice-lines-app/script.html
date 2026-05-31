@@ -34,7 +34,7 @@
   };
   invoice_lines_app_methods = {
     to_price: function (vall) {
-      return to_price(vall * currency_coef, "");
+      return to_price(parseInt(vall * currency_coef), "");
     },
     lines_total: function () {
       let sum = 0;

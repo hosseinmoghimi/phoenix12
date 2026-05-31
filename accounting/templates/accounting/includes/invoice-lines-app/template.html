@@ -100,11 +100,11 @@
 
                   <td class="bordered farsi text-right">
                     <div v-if="invoice_line.discount_percentage>0" class="text-success">
-                      <span v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"></span>
                       <div>
                         <span v-text="to_price(invoice_line.discount_percentage)"></span>
                         %
                       </div>
+                      <span v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"></span>
                     </div>
                     <div v-if="invoice_line.discount_percentage==0"></div>
                   </td>
