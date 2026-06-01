@@ -327,6 +327,7 @@ class ImportFromExcelApi(APIView):
         message_products=''
         message_services=''
         message_accounts=''
+        message_categories=''
         log=111
         context['result']=FAILED
         if request.method=='POST':
@@ -338,9 +339,12 @@ class ImportFromExcelApi(APIView):
                 excel_file = request.FILES['file1']
                 cd=import_from_excel_form.cleaned_data
                 cd['excel_file']=excel_file
+                result,message_categories,categories=CategoryRepo(request=request).import_categories_from_excel(**cd)
                 result,message_products,products=ProductRepo(request=request).import_products_from_excel(**cd)
                 result,message_services,services=ServiceRepo(request=request).import_services_from_excel(**cd)
                 result,message_accounts,accounts=AccountRepo(request=request).import_accounts_from_excel(**cd)
+                if categories is not None:
+                    context['categories']=CategorySerializer(categories,many=True).data
                 if products is not None:
                     context['products']=ProductSerializer(products,many=True).data
                 if services is not None:
@@ -350,6 +354,7 @@ class ImportFromExcelApi(APIView):
         context['message_products']=message_products
         context['message_services']=message_services
         context['message_accounts']=message_accounts
+        context['message_categories']=message_categories
         context['result']=result
         context['log']=log
         return JsonResponse(context)
@@ -372,9 +377,85 @@ class ImportProductsFromExcelApi(APIView):
                 excel_file = request.FILES['file1']
                 cd=ImportProductsFromExcelForm_.cleaned_data
                 cd['excel_file']=excel_file
-                result,message,products=ProductRepo(request=request).import_products_from_excel(**cd)
+                result,message2,categories=CategoryRepo(request=request).import_categories_from_excel(**cd)
+                result,message1,products=ProductRepo(request=request).import_products_from_excel(**cd)
                 if products is not None:
                     context['products']=ProductSerializer(products,many=True).data
+                if categories is not None:
+                    context['categories']=CategorySerializer(categories,many=True).data
+        context['message']=message1+"<br>"+message2
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+class DeleteAllProductsApi(APIView):
+    def post(self,request,*args, **kwargs):
+        
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            DeleteAllProductsForm_=DeleteAllProductsForm(request.POST)
+            if DeleteAllProductsForm_.is_valid():
+                log=333
+                
+                cd=DeleteAllProductsForm_.cleaned_data
+                result,message=ProductRepo(request=request).delete_all()
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+
+
+class DeleteAllCategoriesApi(APIView):
+    def post(self,request,*args, **kwargs):
+        
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            DeleteAllCategoriesForm_=DeleteAllCategoriesForm(request.POST)
+            if DeleteAllCategoriesForm_.is_valid():
+                log=333
+                cd=DeleteAllCategoriesForm_.cleaned_data
+                result,message=CategoryRepo(request=request).delete_all()
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+class ImportCategoriesFromExcelApi(APIView):
+    def post(self,request,*args, **kwargs):
+        
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            ImportCategoriesFromExcelForm_=ImportCategoriesFromExcelForm(request.POST,request.FILES)
+            if ImportCategoriesFromExcelForm_.is_valid():
+                log=333
+                
+                excel_file = request.FILES['file1']
+                cd=ImportCategoriesFromExcelForm_.cleaned_data
+                cd['excel_file']=excel_file
+                result,message,categories=CategoryRepo(request=request).import_categories_from_excel(**cd) 
+                if categories is not None:
+                    context['categories']=CategorySerializer(categories,many=True).data
         context['message']=message
         context['result']=result
         context['log']=log

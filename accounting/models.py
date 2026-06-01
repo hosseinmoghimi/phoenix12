@@ -751,6 +751,7 @@ class InvoiceLineItemUnit(models.Model,LinkHelper,DateTimeHelper):
                 pass
         super(InvoiceLineItemUnit,self).delete()
 
+
 class Category(models.Model,LinkHelper,ImageHelper):
     class_name="category"
     app_name=APP_NAME
@@ -847,7 +848,6 @@ class Product(InvoiceLineItem):
         message="کالای جدید افزوده شد."
         return result,message,product
 
-
     class Meta:
         verbose_name = _("کالا")
         verbose_name_plural = _("کالا ها")
@@ -855,7 +855,6 @@ class Product(InvoiceLineItem):
     def get_market_absolute_url(self):
         return reverse("market:product",kwargs={'pk':self.pk})
     
-  
     def get_market_qrcode_url(self):
      
         if self.pk is None:
@@ -869,6 +868,10 @@ class Product(InvoiceLineItem):
             generate_qrcode(content=content,file_name=file_name,file_address=file_address,file_path=file_path,)
         return f"{QRCODE_URL}{file_name}"
   
+    @property
+    def category(self):
+        return self.category_set.first()
+
 
 class ProductSpecification(models.Model,LinkHelper):
     product=models.ForeignKey("product", verbose_name=_("product"), on_delete=models.CASCADE)

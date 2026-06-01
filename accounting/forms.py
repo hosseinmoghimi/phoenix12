@@ -243,6 +243,13 @@ class AddTaxAccountForm(AddAccountForm):
     pass
 
 
+class DeleteAllCategoriesForm(AddAccountForm):
+    pass
+
+class DeleteAllProductsForm(AddAccountForm):
+    pass
+
+
 class AddBankForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
 

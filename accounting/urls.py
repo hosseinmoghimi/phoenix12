@@ -81,9 +81,13 @@ urlpatterns = [
 
     path('export-to-excel/',login_required(views.ExportToExcelView.as_view()),name="export_to_excel"),
     path("import-from-excel/",login_required(apis.ImportFromExcelApi.as_view()),name="import_from_excel"),
-    
+    path('export-categories-to-excel/',login_required(views.ExportCategoriesToExcelView.as_view()),name="export_categories_to_excel"),
     path('export-products-to-excel/',login_required(views.ExportProductsToExcelView.as_view()),name="export_products_to_excel"),
     path("import-products-from-excel/",login_required(apis.ImportProductsFromExcelApi.as_view()),name="import_products_from_excel"),
+    path("import-categories-from-excel/",login_required(apis.ImportCategoriesFromExcelApi.as_view()),name="import_categories_from_excel"),
+    
+    path("delete-all-products/",login_required(apis.DeleteAllProductsApi.as_view()),name="delete_all_products"),
+    path("delete-all-categories/",login_required(apis.DeleteAllCategoriesApi.as_view()),name="delete_all_categories"),
     
     path('export-services-to-excel/',login_required(views.ExportServicesToExcelView.as_view()),name="export_services_to_excel"),
     path("import-services-from-excel/",login_required(apis.ImportServicesFromExcelApi.as_view()),name="import_services_from_excel"),

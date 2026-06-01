@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from utility.log import leolog
-from .constants import EXCEL_PRODUCTS_DATA_START_ROW,EXCEL_SERVICES_DATA_START_ROW
+from .constants import EXCEL_PRODUCTS_DATA_START_ROW,EXCEL_SERVICES_DATA_START_ROW,EXCEL_CATEGORIES_DATA_START_ROW,EXCEL_ACCOUNTS_DATA_START_ROW
 from django.http import Http404,HttpResponse
 from django.views import View
 from .enums import *
@@ -98,6 +98,7 @@ def AddProductContext(request,*args, **kwargs):
     categories_s=json.dumps(CategorySerializer(categories,many=True).data)
     context['categories_for_add_product_app_s']=categories_s
     context['import_products_from_excel_form']=ImportProductsFromExcelForm()
+    context['import_categories_from_excel_form']=ImportCategoriesFromExcelForm()
     context['add_product_form']=AddProductForm()
     return context
 
@@ -1259,14 +1260,33 @@ class ServicesView(View):
 class ExportProductsToExcelView(View):
     def get(self,request,*args, **kwargs):
         
+        EXPORT_CATEGORIES=True
         EXPORT_PRODUCTS=True
         EXPORT_SERVICES=False
         EXPORT_ACCOUNTS=False
         return ExportToExcelView().get(request=request,
+                                       EXPORT_CATEGORIES=EXPORT_CATEGORIES,
                                        EXPORT_PRODUCTS=EXPORT_PRODUCTS,
                                        EXPORT_SERVICES=EXPORT_SERVICES,
                                        EXPORT_ACCOUNTS=EXPORT_ACCOUNTS)
          
+
+
+
+class ExportCategoriesToExcelView(View):
+    def get(self,request,*args, **kwargs):
+        
+        EXPORT_CATEGORIES=True
+        EXPORT_PRODUCTS=False
+        EXPORT_SERVICES=False
+        EXPORT_ACCOUNTS=False
+        return ExportToExcelView().get(request=request,
+                                       EXPORT_CATEGORIES=EXPORT_CATEGORIES,
+                                       EXPORT_PRODUCTS=EXPORT_PRODUCTS,
+                                       EXPORT_SERVICES=EXPORT_SERVICES,
+                                       EXPORT_ACCOUNTS=EXPORT_ACCOUNTS)
+         
+
 
 class ExportToExcelView(View):
     def get(self,request,*args, **kwargs):
@@ -1276,10 +1296,13 @@ class ExportToExcelView(View):
         
         report_work_book=ReportWorkBook(origin_file_name=f'accounting.xlsx')
         style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
-        
+        EXPORT_CATEGORIES=True
         EXPORT_PRODUCTS=True
         EXPORT_SERVICES=True
         EXPORT_ACCOUNTS=True
+
+        if 'EXPORT_CATEGORIES' in kwargs:
+            EXPORT_CATEGORIES=kwargs['EXPORT_CATEGORIES']
 
         if 'EXPORT_PRODUCTS' in kwargs:
             EXPORT_PRODUCTS=kwargs['EXPORT_PRODUCTS']
@@ -1290,6 +1313,44 @@ class ExportToExcelView(View):
         if 'EXPORT_ACCOUNTS' in kwargs:
             EXPORT_ACCOUNTS=kwargs['EXPORT_ACCOUNTS']
 
+        if EXPORT_CATEGORIES:
+            
+            
+            categories=CategoryRepo(request=request).list()
+            
+                
+            lines=[]
+            for i,category in enumerate(categories,start=1):
+                line={
+                    'row':i,
+                    'id':category.id,
+                    'title':category.title,
+                    'parent_id':category.parent_id if category.parent is not None else "",      
+                    'thumbnail_origin':str(category.thumbnail_origin),       
+                }
+                lines.append(line)
+            headers=['ردیف',
+                    'شناسه',
+                    'عنوان',
+                    'کد والد', 
+                    'تصویر',
+            ]
+          
+            
+            start_row=EXCEL_CATEGORIES_DATA_START_ROW
+            if start_row>2:
+                start_row-=1
+            report_work_book.add_sheet(
+                data=lines,
+                start_row=start_row,
+                table_has_header=False,
+                table_headers=headers,
+                style=style,
+                sheet_name='categories',
+                title='categories',
+            )
+
+           
         if EXPORT_PRODUCTS:
             
             
@@ -1298,6 +1359,10 @@ class ExportToExcelView(View):
                 
             lines=[]
             for i,product in enumerate(products,start=1):
+                category_id=0
+                category=product.category
+                if category is not None:
+                    category_id=category.id
                 line={
                     'row':i,
                     'id':product.id,
@@ -1306,6 +1371,7 @@ class ExportToExcelView(View):
                     'unit_name':product.unit_name,      
                     'unit_price':product.unit_price,       
                     'thumbnail_origin':str(product.thumbnail_origin),       
+                    'category_id':category_id,
                 }
                 lines.append(line)
             headers=['ردیف',
@@ -1315,6 +1381,7 @@ class ExportToExcelView(View):
                     'واحد',
                     'فی',
                     'تصویر',
+                    'شناسه دسته بندی',
             ]
           
             
@@ -1369,7 +1436,6 @@ class ExportToExcelView(View):
                 sheet_name='services',
                 title='services',
             )
-
         
      
         if EXPORT_ACCOUNTS:

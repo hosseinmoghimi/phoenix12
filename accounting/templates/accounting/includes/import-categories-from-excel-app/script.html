@@ -1,0 +1,53 @@
+<script>
+    let url_import_categories_from_excel = "{% url 'accounting:import_categories_from_excel' %}"
+    let import_categories_from_excel_app = new Vue({
+        el: "#import-categories-from-excel-app",
+        data: {
+            waiting: false,
+            new_download_file: '',
+            count:1000,
+            is_open: false,
+            message:{show:false},
+        },
+        methods: {
+            import_categories_from_excel: function () {
+                import_categories_from_excel_app.waiting = true
+                let title = this.new_download_title
+                let formData = new FormData();
+                let file1 = $('#import-categories-from-excel-form')[0].elements[0].files[0]
+                formData.append("file1", file1);
+                formData.append("is_open", import_categories_from_excel_app.is_open);
+                formData.append("count", import_categories_from_excel_app.count);
+                formData.append("csrfmiddlewaretoken", csrfmiddlewaretoken);
+                $.ajax({
+                    url: url_import_categories_from_excel,
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        import_categories_from_excel_app.waiting = false
+
+                        if (data != 0) {
+                            console.log(data)
+                            if (data.result === 'SUCCEED') { 
+                                show_message(import_categories_from_excel_app,"موفقیت آمیز",data.message,"success",10000)   
+                                if(typeof categories_app != "undefined"){
+                                        categories_app.categories=(data.categories)
+                                }
+                            }
+                            if (data.result != 'SUCCEED') { 
+                                show_message(import_categories_from_excel_app,"خطا",data.message,"danger",10000)   
+
+                            }
+                        }
+                        else {
+                        }
+                    },
+                });
+
+            },
+
+        }
+    })
+</script>
