@@ -34,11 +34,24 @@
               <input v-model="table_no" type="number" class="form-control" />
             </div>
           </div>
-   <div class="col-md-4">
+          <div class="col-md-4">
               <div class="form-group">
-                <label for="exampleInputDate">فروشنده</label>
+                <label for="exampleInputDate">
+                  فروشنده
+
+<span class="mx-2">
+
+  <a target="_blank" href="{% url 'market:suppliers' %}">
+    <small>
+      
+      همه فروشنده ها
+    </small>
+    
+  </a>
+</span>
+                </label>
                  
-                <select
+                <select size="1"
                   type="text"
                   required
                   class="form-control"
@@ -48,7 +61,11 @@
                   <option value="{{supplier.id}}">{{supplier.person_account.person.full_name}}</option>
                 {% endfor %}
                 </select>
+
+
               </div>
+              
+
             </div>
 
           <div class="col-md-4">

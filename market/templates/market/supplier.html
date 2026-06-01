@@ -9,6 +9,16 @@
         <h6>{{supplier.person.full_name}}</h6>
       </div>
       <div class="card-body">
+        <h5>
+         {{supplier.person_account.name}}
+        </h5>
+        <h6 >
+        <a href="{{supplier.region.get_absolute_url}}">
+
+          {{supplier.region.name}}|
+          {{supplier.region.city.name}}
+        </a>
+        </h6>
         {% if supplier.person_account %}
         <h6>
           <small class="text-muted">
