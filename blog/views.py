@@ -104,15 +104,24 @@ from utility.repo import PictureRepo,ParameterRepo
 class AboutUsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        context['name3']="name 3333"
-        blog=BlogRepo(request=request).blog(*args, **kwargs)
-        context.update(PageContext(request=request,page=blog))
-        context["blog"]=blog
-        blog_s=json.dumps(BlogSerializer(blog,many=False).data)
-        context["blog_s"]=blog_s
+        from utility.repo import PictureRepo
         about_header=PictureRepo(request=request,app_name=APP_NAME).picture(name="سربرگ درباره ما")
-        context['about_header']=about_header
-        return render(request,TEMPLATE_ROOT+"about-us.html",context)
+        context['about_header'] =about_header 
+
+        
+        # from utility.repo import ParameterRepo
+        # about_us_full=ParameterRepo(request=request,app_name=APP_NAME).parameter(name="متن کامل درباره ما",default="متن کامل درباره ما")
+        
+        from .repo import AboutUsRepo
+        about_us=AboutUsRepo(request=request).get()
+        context['about_us'] =about_us   
+
+        about_us_full=about_us.about
+        context['about_us_full'] =about_us_full   
+        # about_us_short=about_us.short
+        # context['about_us_short'] =about_us_short   
+
+        return render(request,TEMPLATE_ROOT+"about.html",context)
 # Create your views here. 
 
  

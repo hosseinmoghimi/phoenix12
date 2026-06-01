@@ -30,6 +30,7 @@ class Blog(Page):
          message='بلاگ با موفقیت ذخیره شد.'
          return  (result,message,blog)
  
+
 class HomeSlider(models.Model,ImageHelper,LinkHelper):
     image_origin = models.ImageField(_("تصویر اسلایدر  1333*2000 "), upload_to=IMAGE_FOLDER +
                                      'Banner/', height_field=None, width_field=None, max_length=None)
@@ -51,6 +52,7 @@ class HomeSlider(models.Model,ImageHelper,LinkHelper):
     def __str__(self):
         return str(self.priority)
  
+
 class ContactUs(models.Model):
     tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
     mobile=models.CharField(_("mobile"),null=True,blank=True, max_length=50)
@@ -74,9 +76,11 @@ class ContactUs(models.Model):
         super(ContactUs,self).save()
 
         
-class AboutUs(models.Model):
+class AboutUs(models.Model,LinkHelper):
+    title=models.CharField(_("title"),default="درباره ما", max_length=50)
     about=HTMLField(_("about"),null=True,blank=True, max_length=5000)
-
+    app_name=APP_NAME
+    class_name='aboutus'
 
     class Meta:
         verbose_name = _("AboutUs")
@@ -87,6 +91,6 @@ class AboutUs(models.Model):
     def get_absolute_url(self):
         return reverse("blog:about_us")
     def save(self):
-        self.id=0
-        AboutUs.objects.all().delete()
+        self.id=1
+        # AboutUs.objects.all().delete()
         super(AboutUs,self).save()

@@ -1,4 +1,4 @@
-from .models import Blog,HomeSlider
+from .models import Blog,HomeSlider,AboutUs,ContactUs
 from .apps import APP_NAME
 from .enums import *
 from log.repo import LogRepo
@@ -11,6 +11,24 @@ from utility.calendar import PersianCalendar
 from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from .enums import *
+
+class AboutUsRepo(Repo):
+
+    def __init__(self,request,*args, **kwargs):
+        super(AboutUsRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
+        self.objects=AboutUs.objects
+    def get(self):
+        return AboutUs.objects.filter(pk=1).first()
+    
+    def set(self,new_value):
+        if self.request.user.has_perm(APP_NAME+".change_aboutus"):
+            aa=AboutUs.objects.first()
+            if aa is None:
+                aa=AboutUs()
+            aa.id=1
+            aa.about=new_value
+            aa.save()
+
 
 
 class BlogRepo(Repo):

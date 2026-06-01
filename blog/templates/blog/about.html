@@ -22,7 +22,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto text-center">
-                <h1 class="title farsi">درباره ما</h1>
+                <h1 class="title farsi">
+                    {{about_us.title}}
+                    
+
+                </h1>
                 <div>
 
                     {% if perms.app.change_mainpic %}
@@ -53,10 +57,13 @@
 
 
                     <h5 class="farsi description">
-                        {{AboutUsFull.value}}
+                        {{about_us_full|safe}}
                     </h5>
                     {% if perms.app.change_parameter %}
-                    {{AboutUsFull.get_edit_btn|safe}}
+                    <a href="{{about_us.get_edit_url}}" target="_blank">
+                        ویرایش
+                    </a>
+                    
                     {% endif %}
 
                 </div>
