@@ -251,6 +251,10 @@ class ImportProductsFromExcelForm(forms.Form):
     is_open=forms.BooleanField(required=False)
     count=forms.IntegerField(required=True)
 
+class ImportCategoriesFromExcelForm(forms.Form):
+    is_open=forms.BooleanField(required=False)
+    count=forms.IntegerField(required=True)
+
 
 class ImportFromExcelForm(forms.Form):
     is_open=forms.BooleanField(required=False)
