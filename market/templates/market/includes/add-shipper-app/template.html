@@ -30,7 +30,7 @@
                     <option
                       v-for="person_account in person_accounts"
                       :value="person_account.id"
-                      v-text="person_account.person.full_name+' => '+person_account.full_name"
+                      v-text="person_account.title"
                     ></option>
                   </select>
                   <a href="{% url 'accounting:person_accounts'  %}" target="_blank">همه حساب های اشخاص</a>

@@ -10,19 +10,20 @@ class MarketPerson(models.Model,LinkHelper):
     region=models.ForeignKey("utility.region", verbose_name=_("region"), on_delete=models.CASCADE)
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
     level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
-
     app_name=APP_NAME
     class Meta:
         verbose_name = _("MarketPerson")
         verbose_name_plural = _("MarketPersons")
 
     def __str__(self):
-        return f'{self.person_account.person.full_name}'
+        return f'{self.person_account.title}'
     
     def full_name(self):
-        return self.person_account.person.full_name
+        return self.person_account.title
 
-
+    @property
+    def title(self):
+        return f'{self.person_account.title}'
 class Customer(MarketPerson):
 
 

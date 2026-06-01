@@ -35,7 +35,7 @@ def organizational_unit_employees_link(organizational_unit):
     result=''
     for employee in organizational_unit.employee_set.all():
         result+=f"""
-        <a title="{employee.person_account.person.full_name}" href="{employee.get_absolute_url()}">
+        <a title="{employee.person_account.title}" href="{employee.get_absolute_url()}">
         <div class='text-center'>
         <img class="rounded-circle" width="64" src="{employee.person_account.person.image()}">
         </div>

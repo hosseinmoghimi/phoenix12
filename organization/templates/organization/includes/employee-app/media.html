@@ -5,7 +5,7 @@
     <div class="media-body mr-2">
                 <a :href="employee.get_absolute_url">
                     <h5>
-                        <span v-text="employee.person_account.person.full_name"></span>
+                        <span v-text="employee.person_account.title"></span>
                     </h5>
                 </a>
 
@@ -24,7 +24,7 @@
                              <small class="text-muted">
                             شخص
                         </small>
-                        <span v-text="employee.person_account.person.full_name"></span>
+                        <span v-text="employee.person_account.title"></span>
 
                     </h6>
                 </a>

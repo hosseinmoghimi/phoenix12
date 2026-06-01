@@ -338,8 +338,8 @@ class PersonAccount(Account,LinkHelper):
             self.parent=person_category.account
         if self.code is None or self.code==0 or self.code=='':
             self.code=self.generate_code()
-        
-        self.title=f'{self.person} # {self.category}'
+        if self.title is None or self.title=="":
+            self.title=f'{self.person} # {self.category}'
         
         if self.app_name is None or self.app_name=='':
             self.app_name=APP_NAME
