@@ -14,7 +14,7 @@
     },
     methods: {
       copy_balance_to_clipboard: function (balance) {
-        copy_to_clipboard(balance);
+        navigator.clipboard.writeText(balance);
         bank_account_app.show_balance_copied = true;
         setTimeout(() => {
           bank_account_app.show_balance_copied = false;
@@ -28,30 +28,32 @@
         }, 2000);
       },
 
-      copy_card_no_to_clipboard: function (code) {
-        copy_to_clipboard(code);
+      copy_card_no_to_clipboard: async function (code) {
+        await navigator.clipboard.writeText(code);
         bank_account_app.show_code_copied = true;
         setTimeout(() => {
           bank_account_app.show_code_copied = false;
         }, 2000);
       },
 
-      copy_shaba_no_to_clipboard: function (shaba_no) {
-        copy_to_clipboard(shaba_no);
+      copy_shaba_no_to_clipboard: async function (shaba_no) {
+        await navigator.clipboard.writeText(account_no)
         bank_account_app.show_shaba_no_copied = true;
         setTimeout(() => {
           bank_account_app.show_shaba_no_copied = false;
         }, 2000);
       },
-      copy_account_no_to_clipboard: function (account_no) {
-        copy_to_clipboard(account_no);
+      copy_account_no_to_clipboard: async function (account_no) {
+        await navigator.clipboard.writeText(account_no)
+        
+        navigator.clipboard.writeText(account_no);
         bank_account_app.show_account_no_copied = true;
         setTimeout(() => {
           bank_account_app.show_account_no_copied = false;
         }, 2000);
       },
 
-      copy_all_to_clipboard: function () {
+      copy_all_to_clipboard: async function () {
         
         let account_no = `{% if bank_account.account_no %}{{bank_account.account_no}}{% else %}{% endif %}`;
         let card_no = `{% if bank_account.card_no %}{{bank_account.card_no}}{% else %}{% endif %}`;
@@ -71,7 +73,9 @@
         if (card_no.length > 0)
           text = text + `شماره کارت :  ` + card_no + `\n\n`;
         if (shaba_no.length > 0) text = text + `شماره شبا :   ` + shaba_no;
-        copy_to_clipboard(text);
+        
+        
+        await navigator.clipboard.writeText(text)
         bank_account_app.show_all_copied = true;
         setTimeout(() => {
           bank_account_app.show_all_copied = false;

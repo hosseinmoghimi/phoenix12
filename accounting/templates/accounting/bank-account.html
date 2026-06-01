@@ -11,7 +11,8 @@
         {% include "accounting/includes/account-app/card-full.html" %}
     </div>
 
-  <div class="col-md-4">
+ 
+    <div class="col-md-4">
         {% include "accounting/includes/set-account-parent-app/template.html" %}
     </div>
     <div class="col-md-4">
@@ -31,9 +32,6 @@
     </div>
     <div class="col-md-12">
         {% include "accounting/includes/add-account-app/template.html" %}
-    </div>
-    <div class="col-md-12">
-        {% include "accounting/includes/set-account-parent-app/template.html" %}
     </div>
     {% if add_financial_document_line_form %}
      
@@ -60,7 +58,6 @@
 {% include "accounting/includes/bank-account-app/script.html" %}
 
 {% include "accounting/includes/account-app/script.html" %}
-        {% include "accounting/includes/set-account-parent-app/script.html" %}
  
 {% if add_person_account_form %}
 {% include "accounting/includes/add-person-account-app/script.html" %}
