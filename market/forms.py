@@ -24,6 +24,7 @@ class CheckoutCartForm(forms.Form):
     address=forms.CharField(max_length=100, required=True)
     postal_code=forms.CharField(max_length=100, required=True)
     cart_items=forms.CharField(max_length=1000, required=True)
+    customer_id=forms.IntegerField(required=True)
     
 class AddCartItemForm(forms.Form):
     unit_name=forms.CharField(max_length=100, required=False)

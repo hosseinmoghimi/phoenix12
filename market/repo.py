@@ -425,19 +425,30 @@ class CartItemRepo():
         return result,message,cart_item,cart_items
  
  
-    def checkout(self,*args,**kwargs):
+    def checkout(self,customer_id,*args,**kwargs):
         result,message,invoices=FAILED,"",[]
-        me_customer=CustomerRepo(request=self.request).me
-        if  me_customer is None and not self.request.user.has_perm(APP_NAME+".add_cartitem") :
-            message="دسترسی غیر مجاز"
-            return result,message,invoices
+         
         # if len(Product.objects.filter(product_id=kwargs["product_id"]).filter(unit_name=kwargs["unit_name"]).filter(level=kwargs["level"]).filter(customer_id=kwargs["customer_id"]))>0:
         #     message="نام تکراری برای کالای جدید"
         #     return result,message,cart_item
-        if me_customer is None:
-            message=" 22دسترسی غیر مجاز"
-            return result,message,invoices
-        customer_id=me_customer.id
+        # if me_customer is None:
+        #     message=" 22دسترسی غیر مجاز"
+        #     return result,message,invoices
+
+        if self.request.user.has_perm(APP_NAME+".add_cartitem"):
+                pass
+                
+        else :
+            me_customer=CustomerRepo(request=self.request).me
+            if me_customer is None:
+                
+                message="دسترسی غیر مجاز"
+                return result,message,invoices
+            elif customer_id==me_customer.id:
+                pass
+            else:
+                message="دسترسی غیر مجاز"
+                return result,message,invoices
         invoices=[]
         cart_items=kwargs['cart_items']
         suppliers_ids=[]

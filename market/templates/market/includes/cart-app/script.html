@@ -78,6 +78,7 @@
         });
         cart_items=JSON.stringify(cart_items)
         let payload = {
+          customer_id: parseInt("{{customer.id}}"),
           address: this.address,
           postal_code: this.postal_code,
           cart_items: (cart_items),
