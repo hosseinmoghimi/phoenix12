@@ -24,6 +24,8 @@ class MarketPerson(models.Model,LinkHelper):
     @property
     def title(self):
         return f'{self.person_account.title}'
+
+
 class Customer(MarketPerson):
 
 

@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <span v-text=""></span>
+    <span v-text="cart_item.row"></span>
   </td>
   <td>
     <div class="media">
@@ -57,11 +57,18 @@
       +
     </button>
 
-    *
-    <span v-text="to_price(cart_item.shop.unit_price)"> </span> {{CURRENCY}}
+     
   </td>
 <td>
-  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity)"></span>
+    <span v-text="to_price(cart_item.shop.unit_price)"> </span> 
+  
+</td>
+<td>
+  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity)"></span> 
+  <small class="text-muted">
+    {{CURRENCY}}
+
+  </small>
 </td>
   <td>
     <div>

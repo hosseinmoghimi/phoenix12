@@ -52,6 +52,8 @@ class MergeAccountForm(forms.Form):
     updating_account_id=forms.IntegerField(required=True)
 
 class EditFinancialEventForm(forms.Form):
+    address=forms.CharField(required=False,max_length=200)
+    postal_code=forms.CharField(required=False,max_length=50)
     title=forms.CharField(required=True,max_length=100)
     financial_event_id=forms.IntegerField(required=True)
     discount=forms.IntegerField(required=False)

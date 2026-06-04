@@ -610,7 +610,8 @@ class FinancialEvent(CoreEvent,DateTimeHelper):
     discount=models.IntegerField(_("تخفیف"),default=0)
     shipping_fee=models.IntegerField(_("هزینه حمل"),default=0)
     valid=models.BooleanField(_("valid"),default=True)
-
+    address=models.CharField(_("address"),null=True,blank=True, max_length=200)
+    postal_code=models.CharField(_("postal_code"),null=True,blank=True, max_length=50)
     class Meta:
         verbose_name = _("رویداد مالی")
         verbose_name_plural = _("Financial Events")

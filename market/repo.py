@@ -471,8 +471,13 @@ class CartItemRepo():
             invoice_data['bestankar_id']=supplier.person_account.id
             invoice_data['title']="فاکتور جدید"
             invoice_data['amount']=0
+            if 'address' in kwargs:
+                invoice_data['address']=kwargs['address']
+            if 'postal_code' in kwargs:
+                invoice_data['postal_code']=kwargs['postal_code']
             invoice_data['event_datetime']=timezone.now()
             # invoice=Invoice(invoice_data)
+            leolog(invoice_data=invoice_data)
             invoice=Invoice(**invoice_data)
             invoice.save()
 

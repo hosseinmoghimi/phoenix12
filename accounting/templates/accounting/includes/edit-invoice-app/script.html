@@ -32,6 +32,8 @@
     el: "#edit_invoice-app",
     data: {
       title: "{{invoice.title}}",
+      address: "{{invoice.address}}",
+      postal_code: "{{invoice.postal_code}}",
       status: "{{invoice.status}}",
       
       bedehkar: edit_invoice_app_bedehkar ,
@@ -155,6 +157,8 @@
           invoice_id: parseInt("{{invoice.id}}"),
           financial_event_id:parseInt("{{invoice.id}}"),
           title: edit_invoice_app.title,
+          address: edit_invoice_app.address,
+          postal_code: edit_invoice_app.postal_code,
           discount: parseInt(
             edit_invoice_app.discount
           ),
