@@ -476,10 +476,18 @@ class CartItemRepo():
             if 'postal_code' in kwargs:
                 invoice_data['postal_code']=kwargs['postal_code']
             invoice_data['event_datetime']=timezone.now()
-            # invoice=Invoice(invoice_data)
-            leolog(invoice_data=invoice_data)
+
             invoice=Invoice(**invoice_data)
             invoice.save()
+
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=invoice.get_absolute_url()
+            log_data['title']="ذخیره فاکتور جدید"
+            log_data['description']="فاکتور جدید"
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
 
             # invoice.save()
             invoices.append(invoice)
