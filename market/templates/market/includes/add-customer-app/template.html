@@ -43,7 +43,7 @@
                   <label for="">منطقه</label>
                   <select class="form-control" v-model="region_id">
                     {% for region in regions %}
-                    <option value="{{region.id}}">{{region.city.name}} {{region.name}}</option>
+                    <option value="{{region.id}}"> {{region.full_name}}</option>
                     {% endfor %}
                   </select>
                 </div>

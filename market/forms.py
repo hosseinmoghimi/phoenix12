@@ -11,6 +11,8 @@ class AddShopForm(forms.Form):
     unit_name=forms.CharField(max_length=100, required=True)
     unit_price=forms.IntegerField(required=True)
     available=forms.IntegerField(required=True)
+    group_id=forms.IntegerField(required=True)
+    region_id=forms.IntegerField(required=True)
     product_id=forms.IntegerField(required=True)
     supplier_id=forms.IntegerField(required=False)
     coef=forms.IntegerField(required=False)

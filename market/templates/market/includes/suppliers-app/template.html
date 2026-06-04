@@ -49,27 +49,16 @@
                     </a>
                     <div class="media-body mr-2">
                       <a :href="supplier.get_absolute_url">
-                        <h6
-                          v-text="supplier.person_account.title"
-                        ></h6>
+                        <h6 v-text="supplier.person_account.title"></h6>
                       </a>
                       <small class="text-muted" v-text="supplier.level"></small>
                     </div>
                   </div>
                 </td>
-
                 <td>
-                  <div>
-                    <a :href="supplier.region.city.get_absolute_url">
-                      <span v-text="supplier.region.city.name"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <a :href="supplier.region.get_absolute_url">
-                      <small
-                        class="text-muted"
-                        v-text="supplier.region.name"
-                      ></small>
+                  <div v-for="region in supplier.regions">
+                    <a :href="region.get_absolute_url">
+                      <span v-text="region.full_name"></span>
                     </a>
                   </div>
                 </td>

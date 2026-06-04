@@ -59,17 +59,9 @@
                 </td>
 
                 <td>
-                   <div>
-                    <a :href="shipper.region.city.get_absolute_url">
-                      <span v-text="shipper.region.city.name"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <a :href="shipper.region.get_absolute_url">
-                      <small
-                        class="text-muted"
-                        v-text="shipper.region.name"
-                      ></small>
+                     <div v-for="region in shipper.regions">
+                    <a :href="region.get_absolute_url">
+                      <span v-text="region.full_name"></span>
                     </a>
                   </div>
                 </td>

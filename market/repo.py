@@ -1,4 +1,4 @@
-from .models import Shop,ShopPackage,Supplier,Customer,CartItem,Shipper
+from .models import Shop,ShopPackage,Supplier,Customer,CartItem,Shipper,CustomerGroup
 
 from .apps import APP_NAME
 from .enums import *
@@ -101,8 +101,19 @@ class ShopRepo():
         if request.user.has_perm(APP_NAME+".view_shop"):
             self.objects=Shop.objects 
         elif me_customer is not None:
-            self.objects=Shop.objects.filter(level=me_customer.level).filter(supplier__region_id=me_customer.region.id)
+            regions_ids=[]
+            for region in me_customer.all_regions():
+                regions_ids.append(region.id)
+            groups_ids=[]
+            for group in me_customer.groups.all():
+                groups_ids.append(group.id)
+            self.objects=Shop.objects.filter(level=me_customer.level).filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
         elif me_supplier is not None:
+            # regions_ids=[]
+            # for region in me_supplier.all_regions():
+            #     regions_ids.append(region.id)   
+            # self.objects=Shop.objects.filter(level=me_supplier.level).filter(region_id__in=regions_ids)
+
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
     def primary_shop(self,product,*args, **kwargs):
         if product is None :
@@ -169,6 +180,11 @@ class ShopRepo():
         if 'available' in kwargs:
             shop.available=kwargs["available"]
             shop.quantity=kwargs["available"]
+         
+        if 'region_id' in kwargs:
+            shop.region_id=kwargs["region_id"]
+        if 'group_id' in kwargs:
+            shop.group_id=kwargs["group_id"]
         if 'product_id' in kwargs:
             shop.product_id=kwargs["product_id"]
         if 'start_date' in kwargs:
@@ -252,10 +268,10 @@ class CustomerRepo():
         if 'level' in kwargs:
             customer.level=kwargs["level"]
  
-        if 'region_id' in kwargs:
-            customer.region_id=kwargs["region_id"]
         (result,message,customer)=customer.save() 
-
+        if 'region_id' in kwargs:
+            customer.regions.add(kwargs["region_id"])
+ 
         return result,message,customer
 
 
@@ -319,11 +335,12 @@ class ShipperRepo():
                 return result,message,None
         if 'level' in kwargs:
             shipper.level=kwargs["level"]
-        if 'region_id' in kwargs:
-            shipper.region_id=kwargs["region_id"]
- 
+         
         (result,message,shipper)=shipper.save() 
 
+
+        if 'region_id' in kwargs:
+            shipper.regions.add(kwargs["region_id"])
         return result,message,shipper
 
 
@@ -626,9 +643,67 @@ class SupplierRepo():
         if 'level' in kwargs:
             supplier.level=kwargs["level"]
  
-        if 'region_id' in kwargs:
-            supplier.region_id=kwargs["region_id"]
         (result,message,supplier)=supplier.save() 
 
+        if 'region_id' in kwargs:
+            supplier.regions.add(kwargs["region_id"])
         return result,message,supplier
+ 
+
+class CustomerGroupRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.request=request
+        self.me=None
+        self.objects=CustomerGroup.objects
+ 
+
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        pure_code="876454453342236"
+        try:
+            pure_code=int(kwargs["search_for"]) 
+        except:
+            pass
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=pure_code ) )
+        return objects.all()
+    
+
+    def customer_group(self,*args, **kwargs):
+        if "customer_group_id" in kwargs and kwargs["customer_group_id"] is not None:
+            return self.objects.filter(pk=kwargs['customer_group_id']).first() 
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        if "code" in kwargs and kwargs["code"] is not None:
+            return self.objects.filter(code=kwargs['code']).first()
+             
+        if "barcode" in kwargs and kwargs["barcode"] is not None:
+            a= self.objects.filter(barcode=kwargs['barcode']).first() 
+            return a 
+           
+
+
+ 
+    def add_customer_group(self,*args,**kwargs):
+        result,message,customer_group=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_customer_group") :
+            message="دسترسی غیر مجاز"
+            return result,message,customer_group
+        
+
+        customer_group=CustomerGroup() 
+        if 'name' in kwargs:
+            customer_group.name=kwargs["name"]
+            if len(CustomerGroup.objects.filter(name=kwargs["name"]))>0:
+                message='این گروه قبلا ایجاد شده است.'
+                return result,message,None
+ 
+        
+        (result,message,customer_group)=customer_group.save() 
+
+        return result,message,customer_group
  

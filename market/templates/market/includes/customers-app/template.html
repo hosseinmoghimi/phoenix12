@@ -60,17 +60,9 @@
 
                 <td>
                 
-                  <div>
-                    <a :href="customer.region.city.get_absolute_url">
-                      <span v-text="customer.region.city.name"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <a :href="customer.region.get_absolute_url">
-                      <small
-                        class="text-muted"
-                        v-text="customer.region.name"
-                      ></small>
+                  <div v-for="region in customer.regions">
+                    <a :href="region.get_absolute_url">
+                      <span v-text="region.full_name"></span>
                     </a>
                   </div>
 

@@ -2,19 +2,25 @@ from django.db import models
 from utility.models import _,LinkHelper,DateTimeHelper
 from accounting.models import UnitNameEnum,CorePage,FAILED,SUCCEED
 from .apps import APP_NAME
+from utility.enums import ColorEnum
+
 from .enums import *
 
 
 
 class MarketPerson(models.Model,LinkHelper):
-    region=models.ForeignKey("utility.region", verbose_name=_("region"), on_delete=models.CASCADE)
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
     level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
+    regions=models.ManyToManyField("utility.region", verbose_name=_("regions"))
+
     app_name=APP_NAME
     class Meta:
         verbose_name = _("MarketPerson")
         verbose_name_plural = _("MarketPersons")
 
+    def all_regions(self):
+        return self.regions.all()
+    
     def __str__(self):
         return f'{self.person_account.title}'
     
@@ -27,8 +33,7 @@ class MarketPerson(models.Model,LinkHelper):
 
 
 class Customer(MarketPerson):
-
-
+    groups=models.ManyToManyField("customergroup",blank=True, verbose_name=_("customer groups"))
     class_name="customer"
     class Meta:
         verbose_name = _("Customer")
@@ -118,6 +123,8 @@ class ShopPackage(models.Model,LinkHelper,DateTimeHelper):
 
 
 class Shop(models.Model,LinkHelper,DateTimeHelper):
+    group=models.ForeignKey("customergroup", verbose_name=_("group"), on_delete=models.CASCADE)
+    region=models.ForeignKey("utility.region", verbose_name=_("region"), on_delete=models.CASCADE)
     supplier=models.ForeignKey("supplier", verbose_name=_("supplier"), on_delete=models.CASCADE)
     product=models.ForeignKey("accounting.product", verbose_name=_("product"), on_delete=models.CASCADE)
     level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
@@ -179,6 +186,25 @@ class CartItem(models.Model,DateTimeHelper):
         return sum
 
 
+class CustomerGroup(models.Model,LinkHelper):
+    name=models.CharField(_("name"), max_length=50)
+    color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
+    
+    class_name="customergroup"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("CustomerGroup")
+        verbose_name_plural = _("CustomerGroups")
+
+    def __str__(self):
+        return self.name 
 
 
-
+    def save(self):
+        (result,message,customer_group)=FAILED,'',self
+         
+        super(CustomerGroup,self).save()
+        result=SUCCEED
+        message="گروه جدید با موفقیت اضافه شد."
+        return (result,message,customer_group)

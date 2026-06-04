@@ -5,8 +5,8 @@ from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSeriali
 from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo
 from .forms import *
 from .apps import APP_NAME
-from .serializers import ShipperSerializer,ProductWithPriceSerializer
-from .repo import ShipperRepo
+from .serializers import ShipperSerializer,ProductWithPriceSerializer,CustomerGroupSerializer
+from .repo import ShipperRepo,CustomerGroupRepo
 from phoenix.server_apps import phoenix_apps
 from utility.calendar import PersianCalendar
 from accounting.views import CategoryRepo
@@ -103,6 +103,8 @@ def AddShopContext(request,*args, **kwargs):
     context['unit_names_for_add_shop_app']=(i[0] for i in UnitNameEnum.choices)
     context['unit_names_for_add_shop_app']=(i[0] for i in UnitNameEnum.choices)
     context['levels_for_add_shop_app']=(i[0] for i in ShopLevelEnum .choices)
+    context['regions_for_add_shop_app']=RegionRepo(request=request).list()
+    context['groups_for_add_shop_app']=CustomerGroupRepo(request=request).list()
     return context
 
 
@@ -332,7 +334,31 @@ class CustomerView(View):
  
  
         return render(request,TEMPLATE_ROOT+"customer.html",context) 
-       
+     
+
+class CustomerGroupView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        customer_group =CustomerGroupRepo(request=request).customer_group(*args, **kwargs)
+        context['customer_group']=customer_group
+        if customer_group is None:
+            msg={}
+            msg['title']='خطا'
+            msg['body']='گروهی پیدا نشد.'
+            mv=MessageView(**msg)
+            return mv.get(request=request)   
+        customer_group_s=json.dumps(CustomerGroupSerializer(customer_group,many=False).data)
+        context['customer_group_s']=customer_group_s     
+         
+        customers=customer_group.customer_set.all()
+        
+        context['customers']=customers
+        
+        customers_s=json.dumps(CustomerSerializer(customers,many=True).data)
+        context['customers_s']=customers_s
+        
+        return render(request,TEMPLATE_ROOT+"customer-group.html",context) 
+  
     
 class CustomersView(View):
     def get(self,request,*args, **kwargs):

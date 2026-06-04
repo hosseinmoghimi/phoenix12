@@ -39,6 +39,8 @@
               <th>موجود</th>
               <th>واحد فروش</th>
 
+              <th>گروه فروش</th>
+              <th>منطقه فروش</th>
               <th>سطح فروش</th>
               <th>تخفیف</th>
               <th>فی</th>
@@ -89,6 +91,15 @@
                 </td>
 
                 <td>
+                  <span v-text="shop.group.name"></span>
+                </td>
+                <td>
+                  <a :href="shop.region.get_absolute_url">
+
+                    <span v-text="shop.region.full_name"></span>
+                  </a>
+                </td>
+                 <td>
                   <span v-text="shop.level"></span>
                 </td>
                 <td>

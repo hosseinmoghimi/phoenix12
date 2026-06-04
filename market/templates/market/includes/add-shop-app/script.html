@@ -4,6 +4,8 @@
         data: {
             unit_name: "عدد",
             unit_price: 0,
+            region_id:0,
+            group_id:0,
             level: "",
             message: { show: false },
             waiting: false,
@@ -55,6 +57,8 @@
                     coef: parseInt(this.coef), 
                     level: this.level,
                     available: this.available,
+                    region_id: parseInt(add_shop_app.region_id),
+                    group_id: parseInt(add_shop_app.group_id),
                     unit_price: this.unit_price,
                     unit_name: this.unit_name,
                     start_date: this.start_date,
