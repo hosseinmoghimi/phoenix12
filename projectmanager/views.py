@@ -186,6 +186,78 @@ class ProjectTreeChartView(View):
         return render(request,TEMPLATE_ROOT+"tree-chart.html",context) 
 
 
+class ProjectShowView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        project=ProjectRepo(request=request).project(*args, **kwargs)
+        project.normalize()
+        if project is None:
+            title='پروژه وجود ندارد'
+            body='پروژه وجود ندارد'
+            mv=MessageView(title=title,body=body)
+            return mv.get(request=request)
+        
+        context.update(ProjectContext(request=request,project=project))
+
+        all_sub_ids=project.all_sub_ids(same_class=True,my_id=True)
+
+
+        
+        invoices=project.invoices.order_by('-event_datetime')
+        invoices=project.all_invocie().order_by('-event_datetime')
+        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['invoices_s']=invoices_s
+
+
+
+
+        
+        invoice_lines=project.all_invocie_lines().order_by('row').order_by('invoice_id')
+        invoice_lines_s=json.dumps(InvoiceLineWithInvoiceSerializer(invoice_lines,many=True).data)
+        context['invoice_lines']=invoice_lines
+        context['invoice_lines_s']=invoice_lines_s
+
+
+
+        events=project.events.order_by('-event_datetime')
+        events_s=json.dumps(EventSerializer(events,many=True).data)
+        context['events']=events
+        context['events_s']=events_s
+        if request.user.has_perm('core.add_event'):
+            context['add_event_to_project_form']=AddEventToProjectForm()
+
+
+        context['WIDE_LAYOUT']=True
+        if request.user.has_perm(APP_NAME+".add_invoice"):
+            context.update(AddInvoiceContext(request=request))
+
+
+            
+
+        context['WIDE_LAYOUT']=True
+        if request.user.has_perm(APP_NAME+".change_project"):
+            context['add_invoice_to_project_form']=AddInvoiceToProjectForm()
+
+        tickets=TicketRepo(request=request).list(project_id__in=all_sub_ids)
+        context['tickets']=tickets
+        tickets_s=json.dumps(TicketSerializer(tickets,many=True).data)
+        context['tickets_s']=tickets_s
+        if request.user.has_perm(APP_NAME+".add_ticket"):
+            context.update(AddTicketContext(request=request,project=project))
+   
+        remote_clients = project.all_remote_clients.all()
+        context['remote_clients'] = remote_clients
+        remote_clients_s = json.dumps(RemoteClientSerializer(remote_clients, many=True).data)
+        context['remote_clients_s'] = remote_clients_s
+        if request.user.has_perm(APP_NAME+".add_remoteclient"):
+            context['operating_systems']=(i[0] for i in OperatingSystemNameEnum.choices)
+            from accounting.repo import BrandRepo
+            context['brands']=BrandRepo(request=request).list()
+            context['add_remote_client_form'] = AddRemoteClientForm()
+        return render(request,TEMPLATE_ROOT+"project-show.html",context)
+
+
 class ProjectView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

@@ -16,7 +16,7 @@ from utility.constants import FAILED,SUCCEED
 from .constants import EXCEL_PRODUCTS_DATA_START_ROW,EXCEL_SERVICES_DATA_START_ROW,EXCEL_ACCOUNTS_DATA_START_ROW
 from .defaults import default_accounts,default_persons,default_banks
 from .enums import AccountTypeEnum,AccountNatureEnum
-from .settings_on_server import ACCOUNT_LEVEL_NAMES
+from .server_settings import ACCOUNT_LEVEL_NAMES
 from authentication.models import Person
 
 from utility.repo import leolog,Repo
@@ -192,7 +192,9 @@ class AccountRepo(Repo):
         self.request=request
         self.objects=Account.objects.filter(id=0)
         me_person=self.person
-        self.my_accounts=PersonAccount.objects.filter(person_id=me_person.id)
+        self.my_accounts=PersonAccount.objects.filter(pk=0)
+        if self.person is not None:
+            self.my_accounts=PersonAccount.objects.filter(person_id=me_person.id)
         if me_person is not None:
             self.my_accounts=PersonAccount.objects.filter(person_id=me_person.id)
         if request.user.has_perm(APP_NAME+".view_account"):
@@ -494,6 +496,18 @@ class AccountRepo(Repo):
                     <br>
                     {modified} حساب ویرایش شد. """
         accounts=self.list()
+
+
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:accounts")
+            log_data['title']="بازیابی حساب ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+        
         return result,message,accounts
 
 
@@ -592,6 +606,7 @@ class AccountRepo(Repo):
         new_log['title']="افزودن حساب های پیش فرض"
         new_log['app_name']=APP_NAME
         new_log['person']=me_person
+        new_log['url']=reverse("accounting:accounts")
         new_log['description']="حساب های پیش فرض اضافه شدند."
         LogRepo(request=self.request).add_log(**new_log)
         return result,message
@@ -1120,6 +1135,12 @@ class ProductRepo():
             objects=objects.filter(Q(title__contains=title) | Q(barcode=title)|Q(model__contains=title))
         return objects.all()
     
+    def delete_all(self):
+        if self.request.user.has_perm(APP_NAME+".delete_product"):
+            Product.objects.all().delete()
+            result=SUCCEED
+            message="همه کالاها با موفقیت حذف شدند."
+        return result,message
     def add_product_to_category(self,*args, **kwargs):
         
         result,message,category,product_categories=FAILED,"",None,[]
@@ -1273,6 +1294,9 @@ class ProductRepo():
         if 'title' in kwargs:
             product.title=kwargs["title"]
 
+        if 'id' in kwargs:
+            product.id=kwargs["id"]
+
             
         if 'brand_id' in kwargs:
             brand_id=kwargs['brand_id']
@@ -1369,17 +1393,22 @@ class ProductRepo():
                 unit_name=(ws['E'+i].value)
                 unit_price=int(ws['F'+i].value)
                 thumbnail_origin=(ws['G'+i].value)
+                category_id=(ws['H'+i].value)
                 product['id']=id
                 product['title']=title
                 product['barcode']=barcode
                 product['unit_name']=unit_name
                 product['unit_price']=unit_price
                 product['thumbnail_origin']=thumbnail_origin
+                product['category_id']=category_id
                 # product['thumbnail_origin']=ws['F'+str(i)].value
                 if product['title'] is not None and not product['title']=="":
                     products_to_import.append(product) 
         modified=added=0
         for product in products_to_import:
+            category=None
+            if product['category_id'] is not None:
+                category=Category.objects.filter(pk=product['category_id']).first()
             old_product=Product.objects.filter(title=product["title"]).filter(barcode=product["barcode"]).first()
             if old_product is not None:
                 old_product.title=product["title"]
@@ -1388,11 +1417,19 @@ class ProductRepo():
                 # old_product.unit_price=product["unit_price"] 
                 # old_product.thumbnail_origin=product["thumbnail_origin"] 
                 old_product.save()
+                
+                if category is not None:
+                    category.products.add(old_product.id)
+
                 modified+=1
             else:
                 try:
                     result,message,new_product=self.add_product(title=product["title"],barcode=product["barcode"],unit_name=product["unit_name"],unit_price=product["unit_price"],thumbnail_origin=product["thumbnail_origin"] ,coef=1)
                     products.append(new_product)
+                    
+                    if category is not None:
+                        category.products.add(new_product.id)
+
                 except:
                     pass
                 # new_product.title=product["title"]
@@ -1407,6 +1444,19 @@ class ProductRepo():
                     <br>
                     {modified} محصول ویرایش شد. """
         products=self.list()
+
+        
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:products")
+            log_data['title']="بازیابی کالا ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
         return result,message,products
 
 
@@ -1981,6 +2031,18 @@ class ServiceRepo():
                     <br>
                     {modified} سرویس ویرایش شد. """
         services=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:services")
+            log_data['title']="بازیابی سرویس ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
         return result,message,services
 
 
@@ -2875,7 +2937,16 @@ class CategoryRepo():
         person=PersonRepo(request=request).me
          
         self.objects=Category.objects 
-                
+
+    def delete_all(self):
+        
+        if self.request.user.has_perm(APP_NAME+".delete_category"):
+            Category.objects.all().delete()
+            result=SUCCEED
+            message="همه دسته بندی های کالاها با موفقیت حذف شدند."
+        return result,message
+
+
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -3000,16 +3071,20 @@ class CategoryRepo():
         category=Category()
         if 'title' in kwargs:
             category.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
+        if 'parent_id' in kwargs :
+            if kwargs["parent_id"] is not None and kwargs["parent_id"]>0:
                 category.parent_id=kwargs["parent_id"]
         if 'color' in kwargs:
             category.color=kwargs["color"]
+        if 'id' in kwargs:
+            category.id=kwargs["id"]
         if 'priority' in kwargs and kwargs['priority'] is not None:
             category.priority=kwargs["priority"]
         
         (result,message,category)=category.save()
+
         return result,message,category
+    
     def add_product_to_category(self,*args, **kwargs):
         result,message,product_categories,product,category=FAILED,'',[],None,None
             
@@ -3042,6 +3117,95 @@ class CategoryRepo():
         product_categories=product.category_set.all()
         return result,message,product_categories,product,category
     
+    def import_categories_from_excel(self,*args,**kwargs):
+        result,message,categories=FAILED,"",[]
+        imported_ids=[]
+        modified=added=0 
+        
+        excel_file=None
+        if 'excel_file' in kwargs:
+            excel_file=kwargs['excel_file']
+        parent_id=0
+        if 'parent_id' in kwargs:
+            parent_id=kwargs['parent_id']
+        categories_to_import=None
+        if 'categories_to_import' in kwargs:
+            categories_to_import=kwargs['categories_to_import']
+        # import pandas
+        
+        # df = pandas.read_excel(excel_file)
+        # categories=[]
+        # for row in df.columns[0]:
+        #     print (df.columns)
+        import openpyxl 
+        if excel_file is not None:
+            wb = openpyxl.load_workbook(excel_file)
+            try:
+                ws = wb['categories']
+            except:
+                message='فایل شما برگه دسته بندی ها ندارد.'
+                return result,message,None
+            count=kwargs['count']
+            try:
+                count=int(ws.cell(row=1, column=2).value)
+            except:
+                message='فایل برگه دسته بندی ها ، تعداد ندارد.'
+                return result,message,None 
+
+            categories_to_import=[]
+            START_ROW=EXCEL_PRODUCTS_DATA_START_ROW
+
+            for i in range(START_ROW,count+START_ROW):
+                category={}
+                i=str(i) 
+                iiiddd=ws['B'+i].value
+                if iiiddd is not None:
+                    category['id']=int(ws['B'+i].value)
+                    category['new_id']=None
+                    category['title']=(ws['C'+i].value)
+                    category['parent_id']=(ws['D'+i].value)
+                    category['new_parent_id']=None
+                    category['thumbnail_origin']=(ws['E'+i].value)
+                    # category['id']=0
+                    if category['title'] is not None and not category['title']=="":
+                        categories_to_import.append(category) 
+        # self.import_categories(categories_to_import=categories_to_import,parent_id=0) 
+        counter=0
+        length=len(categories_to_import)
+        imported_ids=[]
+        while counter<length:
+            for cat in categories_to_import:
+                if cat['id'] not in imported_ids:
+                    parent_id=cat['parent_id']
+                    if parent_id==0:
+                        parent_id=None
+
+                    # parent_id=None
+                    if parent_id is not None and Category.objects.filter(pk=cat['parent_id']).first() is None:
+                        continue
+                    result,message,new_category=self.add_category(id=cat['id'],title=cat['title'],parent_id=parent_id,thumbnail_origin=cat['thumbnail_origin'])
+                    if result==SUCCEED:
+                        counter+=1
+                        imported_ids.append(cat['id'])
+                    
+        result=SUCCEED
+        message=f"""{added} دسته بندی اضافه شد.
+                    <br>
+                    {modified} دسته بندی ویرایش شد. """
+        categories=self.list()
+
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:categories")
+            log_data['title']="بازیابی دسته بندی ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+
+        return result,message,categories
 
 
 class ChequeRepo():

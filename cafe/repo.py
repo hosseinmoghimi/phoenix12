@@ -99,7 +99,9 @@ class TableRepo():
         if "table_id" in kwargs and kwargs["table_id"] is not None:
             return self.objects.filter(pk=kwargs['table_id']).first()  
         if "pk" in kwargs and kwargs["pk"] is not None:
-            return self.objects.filter(pk=kwargs['pk']).first() 
+            return self.objects.filter(pk=kwargs['pk']).first()  
+        if "code" in kwargs and kwargs["code"] is not None:
+            return self.objects.filter(code=kwargs['code']).first() 
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         
@@ -115,6 +117,8 @@ class TableRepo():
             table.title=kwargs["title"]
         if 'supplier_id' in kwargs:
             table.supplier_id=kwargs["supplier_id"]
+        if 'code' in kwargs:
+            table.code=kwargs["code"]
         if 'parent_id' in kwargs:
             if kwargs["parent_id"]>0:
                 table.parent_id=kwargs["parent_id"]

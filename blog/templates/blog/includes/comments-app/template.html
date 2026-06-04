@@ -1,0 +1,53 @@
+<div id="comments-app">
+  <div class="row">
+    <div class="col-md-8 ml-auto mr-auto">
+      <div class="media-area rtl">
+        <h3
+          class="title text-center rtl farsi text-right"
+          v-text="comments.length+' نظر'"
+        ></h3>
+        <template v-for="comment in comments">
+          <comment-component :comment="comment"> </comment-component>
+        </template>
+      </div>
+      {% if me_person.full_name %}
+      <h3 class="title text-center farsi">دیدگاه خود را وارد کنید</h3>
+      <div class="media media-post rtl">
+        <a class="author float-left" href="{{me_person.get_absolute_url}}">
+          <div class="avatar">
+            <img class="media-object" alt="64x64" src="{{me_person.image}}" />
+          </div>
+        </a>
+        <div class="media-body">
+          <form @submit.prevent="add_comment()">
+            <div class="form-group label-floating bmd-form-group">
+              <label
+                class="form-control-label bmd-label-floating"
+                for="exampleBlogPost"
+              >
+                نظر شما
+              </label>
+              <textarea
+                id="comment_inputed"
+                v-model="comment"
+                class="form-control farsi"
+                rows="5"
+                id="exampleBlogPost"
+              ></textarea>
+            </div>
+            <div class="media-footer">
+              <button
+                type="submit"
+                class="btn btn-primary btn-round btn-wd float-right"
+              >
+                ارسال نظر
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- end media-post -->
+      {% endif %}
+    </div>
+  </div>
+</div>

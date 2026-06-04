@@ -253,7 +253,6 @@ class SearchView(View):
         context['WAS_FOUND']=WAS_FOUND
         return render(request, "utility/search.html",context)
 
-
 class PageView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -280,7 +279,6 @@ class EventView(View):
         context.update(PageContext(request=request,page=event))
         return render(request,TEMPLATE_ROOT+"event.html",context)
  
-
 class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

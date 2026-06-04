@@ -96,6 +96,30 @@
               چهار ساعت معتبر می باشد. {% if invoice.description %}
               {{invoice.description|safe}} {% endif %}
             </div>
+{% if invoice.address %}
+  
+<div class="description">
+  <p>
+
+    <strong>
+
+      آدرس تحویل:
+    </strong>
+      {{invoice.address}}
+    
+    {% if invoice.postal_code %}
+    <br>
+    <strong>    
+
+      کد پستی :
+    </strong>
+    {{invoice.postal_code}}
+    
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+
           </div>
         </div>
       </div>

@@ -47,7 +47,6 @@ class AddTableApi(APIView):
         if add_table_form.is_valid():
             log=333
             cd=add_table_form.cleaned_data
-            leolog(cd=cd)
             result,message,table=TableRepo(request=request).add_table(**cd)
             if table is not None:
                 context['table']=TableSerializer(table).data

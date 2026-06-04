@@ -1,21 +1,52 @@
 {% extends "blog/layout.html" %}
 {% load static %}
 
+
+{% block head %}
+
+{% endblock  %}
+
+
+{% block ofbar %}
+
+{% endblock  %}
+
+
 {% block content %}
-<div class="container mt-5">
 
-  {% include "blog/includes/index-blogs-app/template.html" %}
-</div>
- 
- 
+{% include 'blog/includes/home/slider.html' %}
+{% include 'blog/includes/home/features.html' %}
+{% include 'blog/includes/home/ourworks.html' %}
+{% include 'blog/includes/home/blogs.html' %}
+{% include 'blog/includes/home/team.html' %}
+{% include 'blog/includes/home/awards.html' %}
 
-    
-</div>
-{% endblock content %}
+
+
+{% endblock  %}
+
+
+
+{% block modal %}
+
+{% endblock  %}
+
+
+
 {% block script %}
 <script>
-  console.log("name1: {{name1}}");
-  console.log("name2: {{name2}}");
-  console.log("name3: {{name3}}");
+    $("#carousel-item0").addClass("active")
+    $("#carousel-indicator0").addClass("active")
 </script>
-{% endblock script %}
+{% if app %}
+<script>
+    let url_save_location="{1% url 'authentication:save_location' %}"
+</script>
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+<script src="{% static 'web/leo/js/android.js' %}"></script>
+{% endif %}
+{% endblock  %}

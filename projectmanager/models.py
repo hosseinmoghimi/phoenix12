@@ -35,14 +35,14 @@ class Project(Event,LinkHelper,DateHelper):
         for child in self.children.all():
             # child.normalize()
             sum+=child.amount
-        for inv in self.invoices.all():
-            if inv.valid:
-                sum+=inv.amount
-        self.amount=sum
-        from utility.log import leolog
-        super(Project,self).save()
-        if self.parent_project is not None:
-            self.parent_project.normalize()
+        for inv in self.invoices.filter(valid=True):
+            sum+=inv.amount
+            
+        if not self.amount==sum:
+            self.amount=sum
+            super(Project,self).save()
+            if self.parent_project is not None:
+                self.parent_project.normalize()
 
     def save(self):
         (result,message,project)=FAILED,'',self
@@ -104,17 +104,7 @@ class Project(Event,LinkHelper,DateHelper):
         aaa= RemoteClient.objects.filter(pk__in=ids)
         return aaa
     
-    def normalize(self):
-        
-        for child in self.children.all():
-            child.normalize()
-
-        all_invocie_lines=self.all_invocie_lines()
-        self.amount=0
-        for invocie_line in all_invocie_lines:
-            self.amount+=invocie_line.line_total
-        self.save() 
-        return self
+     
 
 class Ticket(models.Model,DateTimeHelper,LinkHelper):
     parent=models.ForeignKey("ticket",null=True,blank=True, verbose_name=_("parent"), on_delete=models.CASCADE)

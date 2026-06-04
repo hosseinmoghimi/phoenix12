@@ -98,8 +98,7 @@
                     return
                 }
                 let posting = $.post(url_add_comment, payload)
-                posting.done((data) => {
-                    console.log(data)
+                posting.done((data) => { 
                     if (data.result === 'SUCCEED') {
 
                         comments_app.root_comments.push(data.comment)

@@ -26,6 +26,9 @@
       data-parent="#accordion-blogs"
     >
       <div class="card-body">
+        {% if add_blog_form %}
+          {% include "blog/includes/blogs-app/form.html" %}
+        {% endif %}
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
@@ -37,9 +40,21 @@
             <tbody>
               <tr v-for="blog in blogs">
                 <td>
-                  <a :href="blog.get_absolute_url">
-                    <span v-text="blog.title"></span>
-                  </a>
+                 <div class="media">
+                <a :href="blog.get_absolute_url">
+                    
+                    <img :src="blog.thumbnail" width="32" class="rounded" alt="">
+                </a>
+                <div class="media-body mr-2">
+
+                    <a :href="blog.get_absolute_url">
+                        <h6>
+
+                            <span v-text="blog.title"></span>
+                        </h6>
+                    </a>
+                </div>
+            </div>
                 </td>
                 <td>
                   <a

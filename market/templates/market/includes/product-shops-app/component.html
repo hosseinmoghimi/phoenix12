@@ -1,9 +1,51 @@
 <div class="row rtl">
-  <div class="col-3">
+  <div class="col-12">
+    <hr />
+  </div>
+  <div class="col-md-3">
     <div>
-      <a :href="shop.supplier.get_absolute_url"
-        ><span v-text="shop.supplier.person_account.person.full_name"></span
-      ></a>
+      <div class="media">
+        <a :href="shop.supplier.get_absolute_url">
+          <img
+            width="48"
+            class="rounded"
+            :src="shop.supplier.person_account.person.image"
+            alt=""
+          />
+        </a>
+        <div class="media-body mr-2">
+          <a :href="shop.supplier.get_absolute_url">
+            <h6
+              style="margin-bottom: 0 !important"
+              v-text="shop.supplier.person_account.title"
+            ></h6>
+          </a>
+          <div>
+             <small class="text-muted">
+              منطقه
+            </small>
+
+            <a :href="shop.region.get_absolute_url">
+              <small class="text-muted" v-text="shop.region.full_name"></small>
+            </a>
+          </div>
+          <div>
+            <small class="text-muted">
+              گروه
+            </small>
+            <a :href="shop.group.get_absolute_url" :class="'badge badge-'+shop.group.color">
+              <small class=" " v-text="shop.group.name"></small>
+            </a>
+          </div>
+          <div>
+             <small class="text-muted">
+              سطح
+            </small>
+
+            <small class="text-muted" v-text="shop.supplier.level"></small>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <small>
@@ -12,7 +54,7 @@
       </small>
     </div>
   </div>
-  <div class="col-5">
+  <div class="col-md-5">
     <h6 v-if="shop.discount_percentage>0">
       با
       <span v-text="shop.discount_percentage"></span>
@@ -40,7 +82,7 @@
       موجود است
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-md-4">
     <h6>
       هر
       <span v-text="shop.unit_name"></span>
@@ -57,38 +99,14 @@
       <h5 class="text-center">خرید اینترنتی</h5>
     </button>
 
-    <div class="btn-group" role="group" aria-label="Basic example">
-          <button
-            type="button"
-            class="btn btn-success btn-first"
-            @click="add_to_cart(1)"
-          >
-            افزودن به سبد خرید
-          </button>
-          <button v-show="in_cart>0" type="button" class="btn btn-light">
-              <span class="my-2">
-                <span v-text="in_cart" class="text-success"></span>
-                <span
-                  v-text="shop.unit_name"
-                  class="text-success"
-                ></span>
-              </span>
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger btn-last"
-            @click="add_to_cart( -1)"
-          >
-            -
-          </button>
-        </div>
     {% endif %}
     <div>
       {% if perms.market.change_shop %}
       <a target="_blank" :href="shop.get_edit_url" title="ویرایش">
         <i class="fa fa-edit text-warning"></i>
       </a>
-      {% endif %} {% if perms.market.delete_shop %}
+      {% endif %} 
+      {% if perms.market.delete_shop %}
       <a target="_blank" :href="shop.get_delete_url" title="حذف">
         <i class="fa fa-trash text-danger"></i>
       </a>
@@ -100,6 +118,5 @@
     <div v-if="message.show" :class="'alert alert-'+message.color">
       <span v-text="message.body"></span>
     </div>
-    <hr />
   </div>
 </div>

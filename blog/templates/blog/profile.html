@@ -1,0 +1,573 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+
+
+{% block head %}
+<style>
+    .profile-page .profile img {
+        max-width: 160px;
+        width: 100%;
+        margin: 0 auto;
+        transform: translate3d(0, -50%, 0);
+    }
+</style>
+{% endblock %}
+
+
+{% block ofbar %}
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header header-filter" data-parallax="true"
+    style="background-image: url('{{selected_profile.header_image}}'); transform: translate3d(0px, 0px, 0px);">
+</div>
+
+
+<div class="main main-raised mb-5" id="app">
+    <div class="profile-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                    <div class="profile">
+                        <div class="avatar">
+                            <img src="{{selected_profile.image}}" alt="Circle Image"
+                                class="img-raised rounded-circle img-fluid">
+                        </div>
+                        <div class="name">
+                            <h6>{{selected_profile.slogan}}</h6>
+                            <h3 class="title farsi mt-0">{{selected_profile.name}}</h3>
+                            {% for social_link in selected_profile.sociallink_set.all %}
+                            {{social_link.get_link|safe}}
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div class="follow">
+                        {% if change_profile_form %}
+                        <a href="{% url 'dashboard:selected_dashboard' profile_id=selected_profile.id %}">
+                            <button class="btn btn-fab btn-primary btn-round" rel="tooltip" title=""
+                                data-original-title="دشبورد">
+                                <i class="material-icons" aria-hidden="true">dashboard</i>
+                            </button>
+                        </a>
+
+                        <a href="{{selected_profile.get_edit_url}}">
+                            <button class="btn btn-fab btn-danger btn-round" rel="tooltip" title=""
+                                data-original-title="ویرایش پروفایل">
+                                <i class="material-icons" aria-hidden="true">construction</i>
+                            </button>
+                        </a>
+                        {% endif %}
+
+
+
+                        <!-- <a href="{{selected_profile.get_resume_url}}">
+                            <button class="btn btn-fab btn-success btn-round" rel="tooltip" title=""
+                                data-original-title="رزومه">
+                                <i class="fa fa-id-badge" aria-hidden="true"></i>
+
+                            </button>
+                        </a> -->
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="description text-center">
+                {% if selected_profile.bio %}
+                <p class="text-center">
+                    {{selected_profile.bio}}
+                </p>
+                {% endif %}
+
+
+            </div>
+            <div>
+                {% block content_employee %}
+
+                {% endblock %}
+            </div>
+            <div v-if="resumecategories.length>0 || add_resume_category_form">
+                <h5 class="text-center">
+                    رزومه ها
+                </h5>
+            </div>
+            {% if add_resume_category_form %}
+            <form @submit.prevent="add_category">
+
+                <div class="row rtl">
+                    <div class="col-3"></div>
+                    <div class="col-3">
+
+                        <input type="text" placeholder="نام دسته بندی جدید" v-model="new_resumecategory_title"
+                            class="form-control">
+                    </div>
+                    <div class="col-3">
+                        <button class="btn btn-info" type="submit">
+                            افزودن دسته بندی
+                        </button>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </form>
+            {% endif %}
+
+
+            <div class="row rtl">
+                <div class="col-12">
+                    <div class="profile-tabs">
+                        <ul class="nav nav-pills nav-pills-icons justify-content-center nav-pills-success"
+                            role="tablist">
+                            <!--
+                                                        color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
+                                                -->
+
+                            <!-- {% if forloop.first %}active show{% endif %} -->
+
+                            <li class="nav-item " v-for="resumecategory in resumecategories"
+                                :id="'resumecategory_'+resumecategory.id">
+                                <a class="nav-link" :href="'#resumecategory'+resumecategory.id" role="tab"
+                                    data-toggle="tab" aria-selected="true">
+
+                                    <div v-html="resumecategory.get_icon_tag"></div>
+                                    {% verbatim %}
+                                    {{resumecategory.title}}
+
+                                    {% endverbatim %}
+                                </a>
+                            </li>
+
+
+
+
+
+
+                            <!-- <li class="nav-item">
+                                <a class="nav-link " href="#connections" role="tab" data-toggle="tab"
+                                    aria-selected="false">
+                                    <i class="material-icons"   aria-hidden="true" >people</i>
+                                    همکاران
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#media" role="tab" data-toggle="tab" aria-selected="false">
+                                    <i class="material-icons"   aria-hidden="true" >camera</i>
+                                    اسناد
+                                </a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content tab-space">
+
+
+                <!-- {% if forloop.first %}active show{% endif %} -->
+                <div v-for="resumecategory in resumecategories" class="tab-pane work "
+                    :id="'resumecategory'+resumecategory.id">
+                    <div class="row rtl">
+                         <div class="col-md-2 mr-auto ml-auto stats">
+                            <h4 class="title text-center">
+                                {% verbatim %}
+                                {{resumecategory.title}}
+                                {% endverbatim %}
+                            </h4>
+                            <a class="btn btn-info" :href="resumecategory.get_edit_url">
+                                اصلاح {{resumecategory.title}}
+                            </a>
+                            <!-- <ul class="list-unstyled">
+                                <li><b>60</b> Products</li>
+                                <li><b>4</b> Collections</li>
+                                <li><b>331</b> Influencers</li>
+                                <li><b>1.2K</b> Likes</li>
+                            </ul> -->
+       
+                        </div>
+                        <div class="col-md-7 ml-auto mr-auto ">
+                            <!-- <h4 class="title farsi text-right">رزومه</h4> -->
+
+
+
+
+                            <div class="row collections rtl">
+
+
+
+
+
+                                <div v-for="resume in resumecategory.resumes" class="col-md-6">
+                                    <div class="card card-profile">
+                                        <div class="card-header card-header-image">
+                                            <a href="#pablo">
+                                                <img class="img" :src="resume.thumbnail">
+
+                                            </a>
+                                            <div class="colored-shadow"
+                                                :style="'background-image: url(&quot;'+resume.thumbnail+'&quot;); opacity: 1;'">
+                                            </div>
+                                        </div>
+                                        <div class="card-body ">
+                                            <h4 class="card-title farsi" v-text="resume.title"></h4>
+                                            <p class="card-category text-center text-gray"
+                                                v-text="resume.short_description">
+
+                                            </p>
+                                        </div>
+                                        <div class="card-footer justify-content-center">
+                                            <a :href="resume.get_absolute_url" title="جزییات . . ."
+                                                class="btn btn-info btn-just-icon btn-fill btn-round">
+                                                <i class="material-icons" aria-hidden="true">subject</i>
+                                                <div class="ripple-container"></div>
+                                            </a>
+
+
+                                            <a :href="resume.get_edit_url"
+                                                class="btn btn-success btn-just-icon btn-fill btn-round btn-wd">
+                                                <i class="material-icons" aria-hidden="true">mode_edit</i>
+                                                <div class="ripple-container"></div>
+                                            </a>
+
+
+                                            <a href="#pablo" class="btn btn-danger btn-just-icon btn-fill btn-round">
+                                                <i class="material-icons" aria-hidden="true">delete</i>
+                                                <div class="ripple-container"></div>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+                            <form @submit.prevent="add_resume(resumecategory.id)">
+
+                                <div class="row rtl">
+                                    <div class="col-3"></div>
+                                    <div class="col-3">
+
+                                        <input type="text" placeholder="نام رزومه جدید" v-model="new_resume_title"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-info" type="submit">
+                                            افزودن رزومه
+                                        </button>
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+
+                            </form>
+                            <!-- <p class="text-center">
+
+                               
+                            </p> -->
+                        </div>
+                       
+                    </div>
+                </div>
+
+
+
+
+
+
+                <!-- <div class="tab-pane connections show" id="connections">
+                    <div class="row">
+                        <div class="col-md-5 ml-auto mr-auto">
+                            <div class="card card-profile card-plain">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="card-header card-header-image">
+                                            <a href="#pablo">
+                                                <img class="img" src="{% static 'web/img/avatar.jpg' %}">
+                                            </a>
+                                            <div class="colored-shadow"
+                                                style="background-image: url(&quot;{% static 'web/img/avatar.jpg' %}&quot;); opacity: 1;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Gigi Hadid</h4>
+                                            <h6 class="card-category text-muted">Model</h6>
+                                            <p class="card-description">
+                                                Don't be scared of the truth because we need to restart the human
+                                                foundation in truth...
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mr-auto ml-auto">
+                            <div class="card card-profile card-plain">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="card-header card-header-image">
+                                            <a href="#pablo">
+                                                <img class="img" src="{% static 'web/img/marc.jpg' %}">
+                                            </a>
+                                            <div class="colored-shadow"
+                                                style="background-image: url(&quot;{% static 'web/img/marc.jpg' %}&quot;); opacity: 1;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Marc Jacobs</h4>
+                                            <h6 class="card-category text-muted">Designer</h6>
+                                            <p class="card-description">
+                                                Don't be scared of the truth because we need to restart the human
+                                                foundation in truth...
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 ml-auto mr-auto">
+                            <div class="card card-profile card-plain">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="card-header card-header-image">
+                                            <a href="#pablo">
+                                                <img class="img" src="{% static 'web/img/kendall.jpg' %}">
+                                            </a>
+                                            <div class="colored-shadow"
+                                                style="background-image: url(&quot;{% static 'web/img/kendall.jpg' %}&quot;); opacity: 1;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Kendall Jenner</h4>
+                                            <h6 class="card-category text-muted">Model</h6>
+                                            <p class="card-description">
+                                                I love you like Kanye loves Kanye. Don't be scared of the truth.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 ml-auto mr-auto">
+                            <div class="card card-profile card-plain">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="card-header card-header-image">
+                                            <a href="#pablo">
+                                                <img class="img"
+                                                    src="{% static 'web/img/card-profile2-square.jpg' %}">
+                                            </a>
+                                            <div class="colored-shadow"
+                                                style="background-image: url(&quot;{% static 'web/img/card-profile2-square.jpg' %}&quot;); opacity: 1;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+                                            <h4 class="card-title">George West</h4>
+                                            <h6 class="card-category text-muted">Model/DJ</h6>
+                                            <p class="card-description">
+                                                I love you like Kanye loves Kanye.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane text-center gallery" id="media">
+                    <div class="row">
+                        <div class="col-md-3 ml-auto">
+                            <img src="{% static 'web/img/mariya-georgieva.jpg' %}" class="rounded">
+                            <img src="{% static 'web/img/clem-onojegaw.jpg' %}" class="rounded">
+                        </div>
+                        <div class="col-md-3 mr-auto">
+                            <img src="{% static 'web/img/clem-onojeghuo.jpg' %}" class="rounded">
+                            <img src="{% static 'web/img/olu-eletu.jpg' %}" class="rounded">
+                            <img src="{% static 'web/img/cynthia-del-rio.jpg' %}" class="rounded">
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block modal %}
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<nav id="cd-vertical-nav">
+    <ul>
+        <li>
+            <a href="#buttons" data-number="1">
+                <span class="cd-dot"></span>
+                <span class="cd-label">{{selected_profile.name}}</span>
+            </a>
+        </li>
+        <li>
+            <a href="#navigation" data-number="2">
+                <span class="cd-dot"></span>
+                <span class="cd-label">موقعیت ها</span>
+            </a>
+        </li>
+        <li>
+            <a href="#notifications" data-number="3">
+                <span class="cd-dot"></span>
+                <span class="cd-label">پروژه ها</span>
+            </a>
+        </li>
+        <li>
+            <a href="#footers" data-number="4">
+                <span class="cd-dot"></span>
+                <span class="cd-label">وضعیت مالی</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="#cards" data-number="5">
+                <span class="cd-dot"></span>
+                <span class="cd-label">Cards</span>
+            </a>
+        </li>
+        <li>
+            <a href="#morphingCards" data-number="8">
+                <span class="cd-dot"></span>
+                <span class="cd-label">Morphing Cards</span>
+            </a>
+        </li>
+        <li>
+            <a href="#javascriptComponents" data-number="9">
+                <span class="cd-dot"></span>
+                <span class="cd-label">Javascript</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+<script>
+    let categories = JSON.parse(`{{resumecategories_s|escapejs}}`)
+
+</script>
+
+
+
+
+
+
+{% if add_resume_category_form %}
+<script>
+    let add_resume_category_form = true
+
+</script>
+{% else %}
+<script>
+    let add_resume_category_form = false
+
+</script>
+{% endif %}
+
+
+
+<script>
+    let resumecategories = JSON.parse(`{{resumecategories_s|escapejs}}`)
+    profile_id = parseInt("{{selected_profile.id}}")
+    let url_add_resume_category = "{% url 'web:add_resume_category' %}"
+    let url_add_resume = "{% url 'web:add_resume' %}"
+
+    let app = new Vue({
+        el: "#app",
+        data: {
+            new_resumecategory_title: '',
+            resumecategories: resumecategories,
+            new_resume_title: '',
+            add_resume_category_form: add_resume_category_form
+        },
+        methods: {
+            add_category: function () {
+                let title = this.new_resumecategory_title
+                var posting = $.post(url_add_resume_category,
+                    {
+                        profile_id: profile_id,
+                        title: title,
+                        csrfmiddlewaretoken: csrfmiddlewaretoken
+                    }
+                );
+
+                // Put the results in a div
+                posting.done(function (data) {
+                    console.log(data)
+
+                    if (data.result === 'SUCCEED') {
+                        app.resumecategories.push(data.resume_category)
+                        app.new_resumecategory_title = ''
+                    }
+                })
+            },
+            add_resume: function (category_id) {
+                let title = this.new_resume_title
+                payload = {
+                    category_id: category_id,
+                    title: title,
+                    app_name: 'app',
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                }
+                console.log(payload)
+                var posting = $.post(url_add_resume, payload);
+
+                // Put the results in a div
+                posting.done(function (data) {
+                    console.log(data)
+
+                    if (data.result === 'SUCCEED') {
+
+                        app.resumecategories.forEach(element => {
+                            if (element.id == category_id) {
+                                element.resumes.push(data.resume)
+                            }
+                        })
+
+
+                        app.new_resume_title = ''
+                    }
+                })
+
+            }
+        }
+    })
+</script>
+
+{% for resumecategory in selected_profile.resumecategory_set.all %}
+
+<script>
+    $("#resumecategory{{resumecategory.pk}}").addClass("active")
+    $("#resumecategory{{resumecategory.pk}}").addClass("show")
+    $("#resumecategory{{resumecategory.pk}}").removeClass("active")
+    $("#resumecategory{{resumecategory.pk}}").removeClass("show")
+
+</script>
+{% endfor %}
+{% endblock %}

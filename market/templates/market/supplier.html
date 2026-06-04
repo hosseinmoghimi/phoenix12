@@ -9,6 +9,24 @@
         <h6>{{supplier.person.full_name}}</h6>
       </div>
       <div class="card-body">
+        <h5>
+         {{supplier.person_account.name}}
+        </h5>
+        {% for region in supplier.regions.all %}
+          <h6>
+            {{region.get_breadcrumb|safe}}
+          </h6>
+        <h6 >
+          
+          <a href="{{region.city.get_absolute_url}}">
+            {{region.city.name}}
+          </a>
+          |
+          <a href="{{region.get_absolute_url}}">
+            {{region.name}}
+          </a>
+        </h6>
+        {% endfor %}
         {% if supplier.person_account %}
         <h6>
           <small class="text-muted">
@@ -36,7 +54,7 @@
                     </small>
                     <a href="{{supplier.person_account.person.get_absolute_url}}">
 
-                      {{supplier.person_account.person.full_name}}
+                      {{supplier.person_account.title}}
                     </a>
 
                 </h6>

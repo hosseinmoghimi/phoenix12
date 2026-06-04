@@ -1,0 +1,98 @@
+{% extends "market/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-4">
+    {% include "authentication/includes/person-app/card.html" %}
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h6>{{shipper.person.full_name}}</h6>
+      </div>
+      <div class="card-body">
+        <h5>
+         {{shipper.person_account.name}}
+        </h5>
+        {% for region in shipper.regions.all %}
+          <h6>
+            {{region.get_breadcrumb|safe}}
+          </h6>
+        <h6 >
+          
+          <a href="{{region.city.get_absolute_url}}">
+            {{region.city.name}}
+          </a>
+          |
+          <a href="{{region.get_absolute_url}}">
+            {{region.name}}
+          </a>
+        </h6>
+        {% endfor %}
+        {% if shipper.person_account %}
+        <h6>
+          <small class="text-muted">
+            حساب
+            :
+          </small>
+          <a href="{{shipper.person_account.get_absolute_url}}">
+            {{shipper.person_account.name}}
+          </a>
+        </h6>
+        {% endif %}
+           <h6>
+                    <small class="text-muted">
+                    سطح :
+
+                    </small>
+                    {{shipper.level}}
+
+                </h6>
+
+                 <h6>
+                    <small class="text-muted">
+                    شخص :
+
+                    </small>
+                    <a href="{{shipper.person_account.person.get_absolute_url}}">
+
+                      {{shipper.person_account.title}}
+                    </a>
+
+                </h6>
+
+        {% if perms.market.change_shipper %}
+        <a
+          href="{{shipper.get_edit_url}}"
+          class="my-2 text-warning mx-2"
+          title="ویرایش"
+          target="_blank"
+        >
+          <i class="fa fa-edit text-warning"></i> ویرایش
+        </a>
+        {% endif %}
+        
+        {% if perms.market.delete_shipper %}
+          {% if perms.market.change_shipper %}
+         <a href="{% url 'authentication:login_as' pk=person.id %}" title="ورود"
+       class="mx-2 text-info"><i class="fa fa-key text-success" aria-hidden="true"></i>ورود</a>
+        {% endif %}
+
+        <a
+          href="{{shipper.get_delete_url}}"
+          class="my-2 text-danger mx-2"
+          title="ویرایش"
+          target="_blank"
+        >
+          <i class="fa fa-trash text-danger"></i> حذف
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+   
+  
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+ 
+
+{% endblock script %}

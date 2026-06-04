@@ -1,7 +1,13 @@
 from rest_framework import serializers
-from .models import  Parameter,Picture 
+from .models import  Parameter,Picture,Region
 
 
+ 
+
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Region
+        fields=['id','name','full_name','get_absolute_url','get_breadcrumb']
 
 class PictureSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,0 +1,314 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+
+
+{% block head %}
+<link href="{% static 'web/css/material-dashboard.css' %}" rel="stylesheet" />
+<style>
+    .footer ul li a{
+        color:#fff !important;
+    }
+</style>
+{% endblock  %}
+
+
+{% block ofbar %}
+
+{% endblock  %}
+
+
+{% block content %}
+<!-- 
+<div id="contactUsMa1p" class="big-map" style="position: relative; overflow: hidden;background-image: url('{% if contact_header.image %}{{contact_header.image}}{% else %}{% static 'dashboard/img/pages/contact.jpg' %}{% endif %}');">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto text-center">
+                <h1 class="title farsi">ارتباط با ما</h1>
+                <div>
+
+                    {{contact_header.get_edit_btn|safe}}
+                </div>
+                <h4 class="farsi">
+                    {{contact_text.value}}
+                </h4>
+                {{contact_text.get_edit_btn|safe}}
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+<div class="page-header header-filter header-small" data-parallax="true"
+    style="background-image: url('{% if contact_header.image %}{{contact_header.image}}{% else %}{% static 'dashboard/img/pages/contact.jpg' %}{% endif %}');">
+    <div class="container" style="margin-top: 200px;">
+        <div class="row">
+            <div class="col-md-8 ml-auto mr-auto mt-3 text-center">
+                <h1 class="title farsi">ارتباط با ما</h1>
+                <div>
+                    {% if perms.app.change_mainpic %}
+                    {{contact_header.get_edit_btn|safe}}
+
+                    {% endif %}
+                </div>
+                <h4 class="farsi">
+                    {{contact_text.value}}
+                </h4>
+
+                {% if perms.app.change_parameter %}
+
+                {{contact_text.get_edit_btn|safe}}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="main main-raised mb-5">
+    <div class="contact-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6" id="app">
+            <h2 class="title farsi text-center">برای ما پیام بفرستید</h2>
+
+                    <p class="description">
+                        شما می توانید با پر کردن فرم زیر پیام خود را برای ما بفرستید.
+                        <br><br>
+                    </p>
+                    {% if add_contact_message_form %}
+                    <form role="form" id="contact-form" method="post" @submit.prevent="add_contact_message">
+                        <div class="form-group bmd-form-group">
+                            <label for="name" class="bmd-label-floating">نام شما</label>
+                            <input v-model="full_name" type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label for="exampleInputEmails" class="bmd-label-floating">ایمیل شما</label>
+                            <input v-model="email" type="email" class="form-control ltr text-left"
+                                id="exampleInputEmails">
+                            <span class="bmd-help rtl text-right">اطلاعات شما محفوظ خواهد ماند.</span>
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label for="phone" class="bmd-label-floating">تلفن تماس</label>
+                            <input v-model="mobile" type="tel" class="form-control" id="phone">
+                        </div>
+                        <div class="form-group bmd-form-group">
+                            <label for="phone" class="bmd-label-floating">عنوان پیام</label>
+                            <input required v-model="subject" type="text" class="form-control" id="subject">
+                        </div>
+
+                        <div class="form-group label-floating bmd-form-group">
+                            <label class="form-control-label bmd-label-floating" for="message">متن پیام</label>
+                            <textarea required v-model="message" class="form-control text-right" rows="6"
+                                id="message"></textarea>
+                        </div>
+                        <div class="submit text-center">
+                            <input type="submit" class="btn btn-primary btn-raised btn-round farsi" value="ارسال پیام">
+                        </div>
+                    </form>
+                    {% endif %}
+
+                </div>
+                <div class="col-md-4 ml-auto">
+            <h2 class="title farsi text-center">راه های ارتباطی</h2>
+
+                    <div class="info info-horizontal">
+                        
+                        <div class="description">
+                            <h4 class="info-title farsi text-right">
+                                <i class="material-icons text-primary"   aria-hidden="true" >phone</i>
+                                
+                                تلفن تماس
+                                         {% if perms.app.change_parameter %}
+
+                            {{app.tel.get_edit_btn|safe}}
+                            {% endif %}
+                            </h4>
+               
+
+                            <p>
+                                {{app.tel.value}}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="info info-horizontal">
+                        
+                        <div class="description">
+                            <h4 class="info-title farsi text-right">
+                                <i class="material-icons text-primary" 
+                                  aria-hidden="true" >phone</i>
+                                
+                        موبایل
+                                         {% if perms.app.change_parameter %}
+
+                            {{app.mobile.get_edit_btn|safe}}
+                            {% endif %}
+                            </h4>
+               
+
+                            <p>
+                                {{app.mobile.value}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="info info-horizontal">
+                        
+                        <div class="description">
+                            <h4 class="info-title farsi text-right">
+                               
+                                    <i class="material-icons text-primary"   aria-hidden="true" >pin_drop</i>
+
+                                آدرس
+                                {% if perms.app.change_parameter %}
+                                {{app.address.get_edit_btn|safe}}
+                                
+                                {% endif %}
+                            </h4>
+
+                            <p>
+                                {{app.address.value}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="info info-horizontal">
+                        
+                        <div class="description">
+                            <h4 class="info-title farsi text-right">
+                            <i class="material-icons text-primary"   aria-hidden="true" >business_center</i>
+                                
+                                پست الکترونیک
+                            
+                                {% if perms.app.change_parameter %}
+                                
+                                {{app.email.get_edit_btn|safe}}
+                                {% endif %}
+                            </h4>
+                            <p>
+                                {{app.email.value}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-2">
+            <h2 class=" title farsi text-center">موقعیت ما در نقشه گوگل</h2>
+            <div class="text-center">
+                {% if perms.app.change_parameter %}
+
+                {{location.get_edit_btn|safe}}
+                {% endif %}
+            </div>
+            <div class="">
+                {{location.value|safe}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}
+
+
+
+{% block modal %}
+
+{% endblock  %}
+
+
+
+{% block script %}
+<!--  Google Maps Plugin    -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKt2FrCPXV7AnSUnVWXcbOGmWZAWVyRq0"></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key={{app.GOOGLE_API_KEY.value}}"></script>
+<!--  Plugin for Sweet Alert -->
+<script src="{% static 'vendor/js/sweetalert2.js' %}"></script>
+<!-- Forms Validations Plugin -->
+<script src="{% static 'vendor/js/jquery.validate.min.js' %}"></script>
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+<script>
+    let app = new Vue({
+        el: "#app",
+        data: {
+            full_name: '',
+            mobile: '',
+            email: '',
+            subject: '',
+            message: '',
+        },
+        methods: {
+            add_contact_message: function () {
+
+                let url = "{% url 'web:add_contact_message' %}"
+
+                var posting = $.post(url,
+                    {
+                        full_name: app.full_name,
+                        mobile: app.mobile,
+                        subject: app.subject,
+                        message: app.message,
+                        email: app.email,
+                        csrfmiddlewaretoken: csrfmiddlewaretoken
+                    }
+                );
+
+                // Put the results in a div
+                posting.done(function (data) {
+                    console.log(data)
+
+                    if (data.result === 'SUCCEED') {
+                        swal({
+                            title: "ارسال پیام",
+                            text: "پیام شما با موفقیت ارسال شد.",
+                            buttonsStyling: false,
+                            confirmButtonClass: "btn btn-success",
+                            type: "success"
+                        }).catch(swal.noop)
+
+                        app.subject = ''
+                        app.message = ''
+                    }
+                })
+
+
+
+
+
+            },
+        },
+    })
+</script>
+
+
+<script>
+    let GOOGLE_GPS_X = parseFloat("{{GOOGLE_GPS_X}}")
+    let GOOGLE_GPS_Y = parseFloat("{{GOOGLE_GPS_Y}}")
+    $().ready(function () {
+        initContactUsMap();
+    });
+
+    var initContactUsMap = function () {
+
+
+        // var myLatlng = new google.maps.LatLng(34.5758112, 60.1437692);
+        var myLatlng = new google.maps.LatLng(GOOGLE_GPS_X, GOOGLE_GPS_Y);
+        var mapOptions = {
+            zoom: 14,
+            center: myLatlng,
+            styles:
+                [{ "featureType": "water", "stylers": [{ "saturation": 43 }, { "lightness": -11 }, { "hue": "#0088ff" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": 99 }] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }, { "lightness": 54 }] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [{ "color": "#ece2d9" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ccdca1" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#767676" }] }, { "featureType": "road", "elementType": "labels.text.stroke", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "poi", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#b8cb93" }] }, { "featureType": "poi.park", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.sports_complex", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.medical", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.business", "stylers": [{ "visibility": "simplified" }] }],
+            scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
+        };
+        var map = new google.maps.Map(document.getElementById("contactUsMap"), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: "Hello World!"
+        });
+        marker.setMap(map);
+    }
+</script>
+{% endblock  %}

@@ -1,5 +1,8 @@
 <tr>
   <td>
+    <span v-text="cart_item.row"></span>
+  </td>
+  <td>
     <div class="media">
       <a :href="cart_item.shop.product.get_market_absolute_url">
         <img
@@ -20,7 +23,7 @@
           <small>
             <a :href="cart_item.shop.supplier.get_absolute_url">
               <span
-                v-text="cart_item.shop.supplier.person_account.person.full_name"
+                v-text="cart_item.shop.supplier.person_account.title"
               >
               </span>
             </a>
@@ -54,10 +57,19 @@
       +
     </button>
 
-    *
-    <span v-text="to_price(cart_item.shop.unit_price)"> </span> {{CURRENCY}}
+     
   </td>
+<td>
+    <span v-text="to_price(cart_item.shop.unit_price)"> </span> 
+  
+</td>
+<td>
+  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity)"></span> 
+  <small class="text-muted">
+    {{CURRENCY}}
 
+  </small>
+</td>
   <td>
     <div>
       <small v-text="cart_item.persian_date_added"> </small>

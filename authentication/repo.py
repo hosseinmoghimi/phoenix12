@@ -63,12 +63,10 @@ class PersonRepo():
                     pass
     def change_password(self,request,*args, **kwargs):
         result,message=FAILED,'خطا'
-        leolog(kwargs=kwargs)
         if self.request.user.has_perm(APP_NAME+".change_person"):
             user=User.objects.filter(username=kwargs['username']).first()
         else:
             user=authenticate(request=request,username=kwargs['username'],password=kwargs['old_password'])
-            leolog(user=user)
             if user is None:
                 message='نام کاربری و کلمه عبور صحیح نمی باشد.'
                 return (request,user,result,message)
@@ -288,6 +286,13 @@ class PersonRepo():
             if user is not None:
                 login(request,user)
                 if user.is_authenticated:
+                    person=Person.objects.filter(user=user).first()
+                    description='لاگین با موفقیت انجام شد.'
+                    title='لاگین'
+                    url=person.get_absolute_url()
+                    LogRepo(request=self.request).add_log(title=title,url=url,person=person,app_name=APP_NAME,description=description)
+                   
+
                     return (request,user)
         if 'username' in kwargs and 'password' in kwargs:
             user=authenticate(request=request,username=kwargs['username'],password=kwargs['password'])
@@ -297,9 +302,10 @@ class PersonRepo():
                     person=Person.objects.filter(user=user).first()
                     description='لاگین با موفقیت انجام شد.'
                     title='لاگین'
-                    LogRepo(request=self.request).add_log(title=title,person=person,app_name=APP_NAME,description=description)
+                    url=person.get_absolute_url()
+                    LogRepo(request=self.request).add_log(title=title,url=url,person=person,app_name=APP_NAME,description=description)
                     return (request,user)
-        LogRepo(request=self.request).add_log(title="try to login",app_name=APP_NAME,description="try to login username:"+kwargs['username']+" , password : "+kwargs['password'])
+        LogRepo(request=self.request).add_log(title="try to login",url=url,app_name=APP_NAME,description="try to login username:"+kwargs['username']+" , password : "+kwargs['password'])
     
  
 class ClipBoardItemRepo():

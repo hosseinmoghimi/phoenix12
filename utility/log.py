@@ -1,5 +1,7 @@
 from phoenix.server_settings import DEBUG
 def leolog(*args, **kwargs):
+    for arg in args:
+        print(arg)
     if not DEBUG:
         return
     print("")

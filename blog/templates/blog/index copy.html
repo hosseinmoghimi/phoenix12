@@ -1,0 +1,52 @@
+{% extends "blog/layout.html" %}
+{% load static %}
+
+
+{% block head %}
+
+{% endblock  %}
+
+
+{% block ofbar %}
+
+{% endblock  %}
+
+
+{% block content %}
+
+{% include 'web/includes/home/slider.html' %}
+{% include 'web/includes/home/features.html' %}
+{% include 'web/includes/home/ourworks.html' %}
+{% include 'web/includes/home/blogs.html' %}
+{% include 'web/includes/home/team.html' %}
+{% include 'web/includes/home/awards.html' %}
+
+
+
+{% endblock  %}
+
+
+
+{% block modal %}
+
+{% endblock  %}
+
+
+
+{% block script %}
+<script>
+    $("#carousel-item0").addClass("active")
+    $("#carousel-indicator0").addClass("active")
+</script>
+{% if app %}
+<script>
+    let url_save_location="{1% url 'authentication:save_location' %}"
+</script>
+{% if DEBUG %}
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+{% else %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+{% endif %}
+<script src="{% static 'web/leo/js/android.js' %}"></script>
+{% endif %}
+{% endblock  %}

@@ -45,9 +45,9 @@
         </div>
       </div>
       <div class="text-right">
-        <div v-if="menu_item.in_cart>0">
+        <div v-if="menu_item.quantity>0">
           <span class="my-2">
-            <span v-text="menu_item.in_cart" class="text-success"></span>
+            <span v-text="menu_item.quantity" class="text-success"></span>
             <span v-text="menu_item.shop.unit_name" class="text-success"></span>
           </span>
           در سبد خرید

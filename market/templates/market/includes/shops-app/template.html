@@ -39,6 +39,8 @@
               <th>موجود</th>
               <th>واحد فروش</th>
 
+              <th>گروه فروش</th>
+              <th>منطقه فروش</th>
               <th>سطح فروش</th>
               <th>تخفیف</th>
               <th>فی</th>
@@ -53,9 +55,24 @@
               <tr v-for="shop in shops">
                 {% if not product %}
                 <td>
-                  <a :href="shop.product.get_market_absolute_url"
-                    ><span v-text="shop.product.title"></span
-                  ></a>
+
+                  <div class="media">
+                     <a :href="shop.product.get_market_absolute_url">
+                       <img width="48" class="rounded" :src="shop.product.thumbnail" alt="">
+                    
+                  </a>
+                    <div class="media-body mr-2">
+                       <a :href="shop.product.get_market_absolute_url">
+                    <h6
+                      v-text="shop.product.title"
+                    ></h6>
+                  </a>
+                   
+                    </div>
+                  </div>
+
+
+                  
                 </td>
                 {% endif %} {% if not supplier %}
 
@@ -74,6 +91,15 @@
                 </td>
 
                 <td>
+                  <span v-text="shop.group.name"></span>
+                </td>
+                <td>
+                  <a :href="shop.region.get_absolute_url">
+
+                    <span v-text="shop.region.full_name"></span>
+                  </a>
+                </td>
+                 <td>
                   <span v-text="shop.level"></span>
                 </td>
                 <td>

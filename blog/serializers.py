@@ -6,5 +6,5 @@ from authentication.serializers import PersonSerializer
 class BlogSerializer(serializers.ModelSerializer):
        class Meta:
         model = Blog
-        fields = ['id','title','get_absolute_url','get_edit_url','get_delete_url']
+        fields = ['id','title','thumbnail','get_absolute_url','get_edit_url','get_delete_url']
   

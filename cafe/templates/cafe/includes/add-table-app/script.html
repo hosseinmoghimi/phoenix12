@@ -5,6 +5,7 @@
     data: {
     title: "",
     table_no:0,
+    code:"",
     supplier_id: 0,
     event_date: current_date,
     event_time: "00:00:00",
@@ -49,6 +50,7 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
+          code: this.code,
           supplier_id: parseInt(add_table_app.supplier_id),
           table_no: this.table_no,
         };

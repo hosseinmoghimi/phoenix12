@@ -1,28 +1,27 @@
+SECRET_KEY = 'Sth here'
+DB_PREFIX_NAME='db_phoenix12_v_0_0_3'
+
+
 from pathlib import Path
 import os
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'Sth here'
+BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['dikoo24.ir']
  
-DB_PREFIX_NAME='db_dikoo24ir_phoenix11_v_1_2_0'
 ONLY_HTTPS=False
 CURRENCY='ریال'
+CURRENCY_TUMAN='تومان'
 DEBUG = False
 DEBUG = True
-DATABASE_NAME='20260521_11_41_10'
+DATABASE_NAME='20260521_17_20_10'
 SITE_URL="/"
-PUBLIC_ROOT="d:\\public_html\\phoenix12\\"
-PRIVATE_ROOT="d:\\private_html\\phoenix12\\" 
+PUBLIC_ROOT="/home/dikooir/public_html/phoenix12/"
+PRIVATE_ROOT="/home/dikooir/private_html/phoenix12/"
 
-FULL_SITE_URL='http://127.0.0.1:8000/'
+FULL_SITE_URL='http://dikoo24.ir/'
   
-DB_FILE_NAME=DB_PREFIX_NAME+'__'+DATABASE_NAME 
-# DB_FILE_NAME='db_dikoo24ir_phoenix11_v1___1404_12_10_11_59_52' 
-# DB_FILE_NAME='db_dikoo24ir_phoenix11_v1___1405_02_18_03_54_42' 
-# DB_FILE_NAME='db_dikoo24ir_phoenix11_v1___1405_02_22_10_51_23' 
-DB_FILE_NAME='db_dikoo24ir_phoenix11_v1___1405_02_31_02_57_00' 
+DB_FILE_NAME=DB_PREFIX_NAME+'__'+DATABASE_NAME   
 
 DB_FILE_PATH=os.path.join(BASE_DIR,DB_FILE_NAME+'.sqlite3')
  
@@ -31,10 +30,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': DB_FILE_PATH ,
     }
-}
-# Application definition
- 
- 
+} 
 
 
 
@@ -75,13 +71,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',
-    'authentication',
-    'blog',
-    'authentication'
-    
-    'core',
     'utility',
+    'authentication',
+    'core',
+    'log',
+    'attachments',
+    'blog',
+    'messenger',
+    'accounting',
+    'organization',
     'projectmanager',
+    'warehouse',
+    'market',
+    'cafe',
+    
+    'django_social_share',
+
+
+    'allauth',   # <--
+    'allauth.account',   # <--
+    'allauth.socialaccount',   # <--
+    'allauth.socialaccount.providers.google',   # <--
+
+
 
 ]
 

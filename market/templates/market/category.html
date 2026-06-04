@@ -8,7 +8,7 @@
   
   {% if category.parent %}
   
-  {{category.parent.get_market_breadcrumb_link|safe}}
+  {{category.get_market_breadcrumb_link|safe}}
   {% else %}
   <a href="{% url 'market:category' pk=0 %}">خانه</a>
   {% endif %}

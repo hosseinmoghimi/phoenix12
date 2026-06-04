@@ -1,4 +1,7 @@
-let TASVIEH = 'تسویه'
+if(typeof TASVIEH === "undefined"){
+
+    let TASVIEH = 'تسویه'
+}
 let BEDEHKAR = 'بدهکار'
 let BESTANKAR = 'بستانکار'
 let TUMAN = 'تومان'
@@ -17,7 +20,6 @@ let copy_to_clipboard=function(vall,name){
     console.log(vall +' copied to clipboard')
     console.log('name='+name)
     console.log('vall='+vall)
-    navigator.clipboard.writeText(vall);
     if(typeof name !='undefined'){
         let payload={
             csrfmiddlewaretoken:csrfmiddlewaretoken,
@@ -32,6 +34,8 @@ let copy_to_clipboard=function(vall,name){
                     clipboard_items_app.clipboard_items.push({name:name,text:vall})
             }
         })
+        clipboard.writeText(vall);
+
         console.log('saved')
     }
      

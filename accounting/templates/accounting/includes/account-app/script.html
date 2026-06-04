@@ -14,7 +14,7 @@
         },
         methods:{
             copy_balance_to_clipboard:function(balance){
-                copy_to_clipboard(balance,'مانده {{account.title}}')
+                navigator.clipboard.writeText(balance)
                 account_app.show_balance_copied = true
                 setTimeout(() => {
                     account_app.show_balance_copied = false
@@ -30,13 +30,7 @@
 
             },
 
-            copy_balance:function(){
-                navigator.clipboard.writeText("{{account.balance}}");
-                this.show_balance_copied = true
-                setTimeout(() => {
-                    account_app.show_balance_copied = false
-                }, 2000);
-            },
+             
 
 
             

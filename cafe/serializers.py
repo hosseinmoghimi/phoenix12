@@ -31,5 +31,5 @@ class MenuItemSerializer(serializers.ModelSerializer):
     shop=ShopSerializer()
     class Meta:
         model=MenuItem
-        fields=['id','shop','in_cart']
+        fields=['id','shop','quantity']
 

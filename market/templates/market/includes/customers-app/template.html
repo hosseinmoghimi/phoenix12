@@ -11,7 +11,6 @@
         >
           مشتریان
 
-          
           <span v-if="customers.length>0">
             <small class="text-danger mx-2">
               <span v-text="customers.length"></span>
@@ -32,26 +31,48 @@
           <table class="table table-striped rtl">
             <thead>
               <th>مشتری</th>
-              <th>سطح</th>
+              <th>منطقه</th>
               <th>مانده</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="customer in customers">
                 <td>
-                  <a :href="customer.get_absolute_url">
-                    <span
-                      v-text="customer.person_account.person.full_name"
-                    ></span>
-                  </a>
+                  <div class="media">
+                    <a :href="customer.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="customer.person_account.person.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="customer.get_absolute_url">
+                        <h6
+                          v-text="customer.person_account.title"
+                        ></h6>
+                      </a>
+                      <small class="text-muted" v-text="customer.level"></small>
+                    </div>
+                  </div>
                 </td>
 
                 <td>
-                  <span v-text="customer.level"></span>
+                
+                  <div v-for="region in customer.regions">
+                    <a :href="region.get_absolute_url">
+                      <span v-text="region.full_name"></span>
+                    </a>
+                  </div>
+
                 </td>
 
                 <td>
-                  <span v-text="to_price(customer.person_account.balance)"></span> {{CURRENCY    }}
+                  <span
+                    v-text="to_price(customer.person_account.balance)"
+                  ></span>
+                  {{CURRENCY }}
                 </td>
                 <td>
                   {% if perms.market.change_customer %}

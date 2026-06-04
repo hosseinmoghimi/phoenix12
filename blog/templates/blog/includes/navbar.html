@@ -1,0 +1,145 @@
+<nav class="navbar navbar-color-on-scroll navbar-transparent fixed-top  navbar-expand-lg " color-on-scroll="100"
+    id="sectionsNav">
+    <div class="container">
+
+        <div class="collapse navbar-collapse">
+            <ul class=" navbar-nav mr-auto rtl">
+                {% for navbar_item in app.navbar_links%}
+                {% if not navbar_item.is_authenticated or user.is_authenticated %}
+                {% if not navbar_item.is_button %}
+                <li class="dropdown nav-item">
+
+                    {% if navbar_item.childs.all %}
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        {{navbar_item.get_icon_tag_pure|safe}}
+                        {{navbar_item.title}}
+                    </a>
+                    <div class="dropdown-menu dropdown-with-icons">
+                        {% for navbar_item1 in navbar_item.childs.all %}
+                        {% if not navbar_item1.is_authenticated or user.is_authenticated %}
+                        <a href="{{navbar_item1.url}}" {% if navbar_item1.new_tab %} target="_blank" {% endif %}
+                            class="dropdown-item">
+                            {{navbar_item1.get_icon_tag_pure|safe}}
+                            {{navbar_item1.title}}
+                        </a>
+                        {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+                    {% else %}
+                    <a href="{{navbar_item.url}}" class=" nav-link">
+                        {{navbar_item.get_icon_tag_pure|safe}}
+                        {{navbar_item.title}}
+                    </a>
+                    {% endif %}
+                </li>
+
+                {% endif %}
+
+                {% endif %}
+                {% endfor %}
+
+
+                {% if me_person %}
+                <li class="dropdown nav-item">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <i class="material-icons" aria-hidden="true">assignment_ind</i> {{me_person.full_name}}
+                    </a>
+                    <div class="dropdown-menu dropdown-with-icons">
+                        <div class="text-center my-3">
+                        <!-- <div>
+                            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="64" class="rounded-circle" />
+
+                        </div> -->
+                            <div>
+                                <a href="{{me_person.get_absolute_url}}">
+                                    <img src="{{ me_person.image }}" width="64" class="rounded-circle" />
+
+                                </a>
+
+                            </div>
+                        </div>
+
+
+                        <a href="{{me_person.get_absolute_url}}" class="dropdown-item">
+                            <i class="material-icons" aria-hidden="true">person</i> نمایش پروفایل
+                        </a>
+                        <a href="{{me_person.get_dashboard_url}}" class="dropdown-item">
+                            <i class="material-icons" aria-hidden="true">person</i> دشبورد
+                        </a>
+
+                       
+
+                        {% if active_customer %}
+                        <a href="{{active_customer.get_cart_url}}" class="dropdown-item">
+                            <i class="material-icons" aria-hidden="true">art_track</i> سبد خرید
+                        </a>
+
+                        <a href="{{active_customer.get_orders_url}}" class="dropdown-item">
+                            <i class="material-icons" aria-hidden="true">art_track</i> سفارشات من
+                        </a>
+                        {% endif %}
+
+                        <a href="{{person.get_manage_url}}" class="dropdown-item">
+                            <i class="material-icons" aria-hidden="true">how_to_reg</i> ویرایش پروفایل
+                        </a>
+                        <a href="{% url 'authentication:logout' %}" class="dropdown-item text-danger">
+                            <i class="material-icons" aria-hidden="true">exit_to_app</i> خروج
+                        </a>
+
+
+                    </div>
+                </li>
+
+
+
+                {% elif not is_login_page %}
+                <li class="button-container nav-item iframe-extern">
+                    <a href="{% url 'authentication:login' %}" target="_blank"
+                        class="btn  btn-rose   btn-round btn-block">
+                        <i class="material-icons mx-2">vpn_key</i> ورود
+                    </a>
+
+                </li>
+                {% endif %}
+
+
+                {% for navbar_button in app.navbar_buttons %}
+                <li class="button-container nav-item iframe-extern">
+                    <a href="{{navbar_button.url}}" {% if navbar_button.new_tab %} target="_blank" {% endif %} class="btn btn-rose btn-round btn-block">
+                        {{navbar_button.get_icon_tag_pure|safe}}
+                        {{navbar_button.title}}
+                    </a>
+                </li>
+
+                {% endfor %}
+               
+            </ul>
+        </div>
+
+        <div class="navbar-translate">
+
+            <div class="rtl navbar-brand">
+
+                <a href="{{app.url.value}}" style="color:inherit" class="">
+
+                    {{app.title.value}}
+                </a>
+               
+                {% include "blog/includes/search-form.html" %}
+
+            </div>
+
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+    </div>
+</nav>

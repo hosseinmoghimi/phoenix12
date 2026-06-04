@@ -17,13 +17,13 @@ from django.shortcuts import reverse
 from django.core.files.storage import FileSystemStorage
 from core.models import Event as CoreEvent,Page as CorePage
 from phoenix.server_settings import UPLOAD_ROOT,QRCODE_ROOT,QRCODE_URL,STATIC_URL,MEDIA_URL,ADMIN_URL,FULL_SITE_URL
-from .settings_on_server import  NO_DUPLICATED_ACCOUNT_NAME,NO_DUPLICATED_ACCOUNT_CODE
+from .server_settings import  NO_DUPLICATED_ACCOUNT_NAME,NO_DUPLICATED_ACCOUNT_CODE
 from django.utils import timezone
 from utility.log import leolog
 upload_storage = FileSystemStorage(location=UPLOAD_ROOT, base_url='/uploads')
 IMAGE_FOLDER = APP_NAME+"/images/"
 try:
-    from accounting.settings_on_server import DELETE_OLD_ITEM_UNIT
+    from accounting.server_settings import DELETE_OLD_ITEM_UNIT
 except:
     DELETE_OLD_ITEM_UNIT=True
 
@@ -174,7 +174,7 @@ class Account(CorePage,LinkHelper,PersonAccountHelper):
         message="خطا"
         
         global ACCOUNT_LEVEL_NAMES
-        from .settings_on_server import ACCOUNT_LEVEL_NAMES 
+        from .server_settings import ACCOUNT_LEVEL_NAMES 
         self.type=AccountTypeEnum.GROUP
         self.type=ACCOUNT_LEVEL_NAMES[self.level]
         result=FAILED
@@ -338,8 +338,8 @@ class PersonAccount(Account,LinkHelper):
             self.parent=person_category.account
         if self.code is None or self.code==0 or self.code=='':
             self.code=self.generate_code()
-        
-        self.title=f'{self.person} # {self.category}'
+        if self.title is None or self.title=="":
+            self.title=f'{self.person} # {self.category}'
         
         if self.app_name is None or self.app_name=='':
             self.app_name=APP_NAME
@@ -610,7 +610,8 @@ class FinancialEvent(CoreEvent,DateTimeHelper):
     discount=models.IntegerField(_("تخفیف"),default=0)
     shipping_fee=models.IntegerField(_("هزینه حمل"),default=0)
     valid=models.BooleanField(_("valid"),default=True)
-
+    address=models.CharField(_("address"),null=True,blank=True, max_length=200)
+    postal_code=models.CharField(_("postal_code"),null=True,blank=True, max_length=50)
     class Meta:
         verbose_name = _("رویداد مالی")
         verbose_name_plural = _("Financial Events")
@@ -751,6 +752,7 @@ class InvoiceLineItemUnit(models.Model,LinkHelper,DateTimeHelper):
                 pass
         super(InvoiceLineItemUnit,self).delete()
 
+
 class Category(models.Model,LinkHelper,ImageHelper):
     class_name="category"
     app_name=APP_NAME
@@ -847,7 +849,6 @@ class Product(InvoiceLineItem):
         message="کالای جدید افزوده شد."
         return result,message,product
 
-
     class Meta:
         verbose_name = _("کالا")
         verbose_name_plural = _("کالا ها")
@@ -855,7 +856,6 @@ class Product(InvoiceLineItem):
     def get_market_absolute_url(self):
         return reverse("market:product",kwargs={'pk':self.pk})
     
-  
     def get_market_qrcode_url(self):
      
         if self.pk is None:
@@ -869,6 +869,10 @@ class Product(InvoiceLineItem):
             generate_qrcode(content=content,file_name=file_name,file_address=file_address,file_path=file_path,)
         return f"{QRCODE_URL}{file_name}"
   
+    @property
+    def category(self):
+        return self.category_set.first()
+
 
 class ProductSpecification(models.Model,LinkHelper):
     product=models.ForeignKey("product", verbose_name=_("product"), on_delete=models.CASCADE)

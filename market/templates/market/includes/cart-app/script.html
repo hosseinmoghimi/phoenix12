@@ -57,8 +57,8 @@
   let checkout_cart_app = new Vue({
     el: "#checkout-cart-app",
     data: {
-      address: `{{customer.person_account.peron.address}}`,
-      postal_code: `{{customer.person_account.peron.postal_code}}`,
+      address: `{{customer.person_account.person.address}}`,
+      postal_code: `{{customer.person_account.person.postal_code}}`,
       message: { show: false },
       waiting: false,
       cart_items: cart_items,
@@ -78,6 +78,7 @@
         });
         cart_items=JSON.stringify(cart_items)
         let payload = {
+          customer_id: parseInt("{{customer.id}}"),
           address: this.address,
           postal_code: this.postal_code,
           cart_items: (cart_items),

@@ -4,7 +4,7 @@
     <div class="media-body mr-2">
         <h5 :class="'text-'+person_account.color">
             <a :href="person_account.get_absolute_url">
-                <span :class="'text-'+person_account.color" v-text="person_account.person.full_name"></span>
+                <span :class="'text-'+person_account.color" v-text="person_account.title"></span>
                 <span :class="'badge badge-'+person_account.color" v-text="person_account.type"></span>
             </a>
         </h5>

@@ -52,6 +52,8 @@ class MergeAccountForm(forms.Form):
     updating_account_id=forms.IntegerField(required=True)
 
 class EditFinancialEventForm(forms.Form):
+    address=forms.CharField(required=False,max_length=200)
+    postal_code=forms.CharField(required=False,max_length=50)
     title=forms.CharField(required=True,max_length=100)
     financial_event_id=forms.IntegerField(required=True)
     discount=forms.IntegerField(required=False)
@@ -243,11 +245,22 @@ class AddTaxAccountForm(AddAccountForm):
     pass
 
 
+class DeleteAllCategoriesForm(AddAccountForm):
+    pass
+
+class DeleteAllProductsForm(AddAccountForm):
+    pass
+
+
 class AddBankForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
 
 
 class ImportProductsFromExcelForm(forms.Form):
+    is_open=forms.BooleanField(required=False)
+    count=forms.IntegerField(required=True)
+
+class ImportCategoriesFromExcelForm(forms.Form):
     is_open=forms.BooleanField(required=False)
     count=forms.IntegerField(required=True)
 

@@ -35,8 +35,15 @@
                 </button>
 
                 
-                <button class="my-2 btn btn-warning farsi" @click="normalize_all_financial_documents()">
+                <button class="my-2 btn btn-warning farsi" @click="normalize_all_financial_documents()()">
                     نرمال سازی همه سند ها
+                </button>
+                <button class="my-2 btn btn-warning farsi" @click="delete_all_categories()">
+                    پاک کردن همه دسته بندی کالاها
+                </button>
+
+                 <button class="my-2 btn btn-warning farsi" @click="delete_all_products()">
+                    پاک کردن همه کالاها
                 </button>
 
                 <a target="_blank" class="my-2 btn btn-primary farsi" href="{% url 'accounting:tree_chart' pk=0 %}"
@@ -74,6 +81,52 @@
             show_delete: false,
         },
         methods: {
+            delete_all_categories:function(){
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:delete_all_categories' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        let title = "موفق" 
+                        show_message(settings_app, title, data.message , "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+
+            
+            delete_all_products:function(){
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'accounting:delete_all_products' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        let title = "موفق" 
+                        show_message(settings_app, title, data.message , "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
             normalize_all_accounts: function () {
                 settings_app.message.show = false
                 settings_app.waiting = true

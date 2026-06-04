@@ -8,13 +8,14 @@ urlpatterns = [
     
     path('',login_required(views.IndexView.as_view()),name="index"),  
 
+    path('admin/',login_required(views.AdminView.as_view()),name="admin"),  
     path('blogs/',login_required(views.BlogsView.as_view()),name="blogs"),  
     path('add-blog/',login_required(apis.AddBlogApi.as_view()),name="add_blog"),
     path('blog/<int:pk>/',login_required(views.BlogView.as_view()),name="blog"), 
 
 
-    path('about/',login_required(views.BlogsView.as_view()),name="about"),  
-    path('contact/',login_required(views.BlogsView.as_view()),name="contact"),  
+    path('about-us/',login_required(views.AboutUsView.as_view()),name="about_us"),  
+    path('contact-us/',login_required(views.ContactUsView.as_view()),name="contact_us"),  
     path('ourworks/',login_required(views.BlogsView.as_view()),name="ourworks"),  
      
 ]

@@ -13,19 +13,19 @@
     methods: {
       to_price: (vv) => to_price(vv),
       add_to_cart: function (shop, quantity) {
-        this.menu_item.in_cart += quantity;
-        if (this.menu_item.in_cart < 0) {
-          this.menu_item.in_cart = 0;
+        this.menu_item.quantity += quantity;
+        if (this.menu_item.quantity < 0) {
+          this.menu_item.quantity = 0;
         }
 
-        if (this.menu_item.in_cart > this.menu_item.shop.available) {
-          this.menu_item.in_cart = this.menu_item.shop.available;
+        if (this.menu_item.quantity > this.menu_item.shop.available) {
+          this.menu_item.quantity = this.menu_item.shop.available;
         }
 
         let payload={
             csrfmiddlewaretoken:csrfmiddlewaretoken,
             shop_id:this.menu_item.shop.id,
-            quantity:this.menu_item.in_cart,
+            quantity:this.menu_item.quantity,
         }
         console.log(payload)
         let url="{% url 'market:add_cart_item' %}"

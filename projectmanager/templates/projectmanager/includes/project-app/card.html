@@ -1,31 +1,27 @@
-{% load to_price %}
-{% load to_persian_date %}
-{% load static %}
+{% load to_price %} {% load to_persian_date %} {% load static %}
 
 <div class="card">
   <div class="card-header">
-    <h6>پروژه</h6> 
+    <h6>پروژه</h6>
   </div>
   <div class="card-body">
-<div class="text-center">
-  <img src="{{project.thumbnail}}" width="128" alt="">
-</div>
+    <div class="text-center">
+      <img src="{{project.thumbnail}}" width="128" alt="" />
+    </div>
     <h5 class="text-center">{{project.title}}</h5>
     <div class="text-center">
-  <img src="{{project.get_qrcode_url}}" width="128" alt="">
-</div>
+      <a href="{{page.get_absolute_url}}">
+        <img src="{{project.get_qrcode_url}}" width="128" alt="" />
+      </a>
+    </div>
 
-<div class="text-center">
+    <div class="text-center">
+      <div class="btn btn-primary my-2">
+        <h5>برآورد : {{project.amount|to_price}} {{CURRENCY}}</h5>
+      </div>
+    </div>
 
-  <div class="btn btn-primary my-2">
-    
-    <h5>برآورد : {{project.amount|to_price}} {{CURRENCY}}</h5>
-  </div>
-</div>
-  
-     
-        
-<hr>
+    <hr />
     <div class="my-2">
       <small class="text-muted"> کارفرما : </small>
       <div class="media">
@@ -42,19 +38,20 @@
             <h6>{{project.contractor.title}}</h6>
 
             <h6>
-                <small>
-
-                    <a href="{{project.contractor.person_account.get_absolute_url}}">
-                        {{project.contractor.person_account.name}}
-                    </a>
-                </small>
+              <small>
+                <a
+                  href="{{project.contractor.person_account.get_absolute_url}}"
+                >
+                  {{project.contractor.person_account.name}}
+                </a>
+              </small>
             </h6>
           </a>
         </div>
       </div>
     </div>
 
-    <hr>
+    <hr />
     <div class="my-2">
       <small class="text-muted"> پیمانکار : </small>
       <div class="media">
@@ -71,18 +68,17 @@
             <h6>{{project.employer.title}}</h6>
 
             <h6>
-                <small>
-
-                    <a href="{{project.employer.person_account.get_absolute_url}}">
-                        {{project.employer.person_account.name}}
-                    </a>
-                </small>
+              <small>
+                <a href="{{project.employer.person_account.get_absolute_url}}">
+                  {{project.employer.person_account.name}}
+                </a>
+              </small>
             </h6>
           </a>
         </div>
       </div>
     </div>
-<hr>
+    <hr />
     <div class="my-2">
       <a href="{% url 'projectmanager:tree_chart' pk=project.pk %}"
         >نمودار درختی</a
@@ -95,58 +91,75 @@
       >
     </div>
 
-    
-<div>
-  <h6>
-  <small class="text-muted">
-    تاریخ ایجاد
-  </small>
-  
+    <div>
+      <h6>
+        <small class="text-muted"> تاریخ ایجاد </small>
 
-  {{page.date_added|to_persian_datetime|safe}}
-</h6>
-</div>
+        {{page.date_added|to_persian_datetime|safe}}
+      </h6>
+    </div>
 
+    <div>
+      <h6>
+        <small class="text-muted"> تاریخ ویرایش </small>
 
-<div>
-  <h6>
-  <small class="text-muted">
-    تاریخ ویرایش
-  </small>
-  
+        {{page.date_updated|to_persian_datetime|safe}}
+      </h6>
+    </div>
 
-  {{page.date_updated|to_persian_datetime|safe}}
-</h6>
-</div>
+    <div>{% include "attachments/includes/page-like-app/template.html" %}</div>
+    <div class="my-3">
+      <form
+        action="https://www.google.com/search"
+        method="get"
+        target="_blank"
+        id="search-form"
+      >
+        <input name="q" type="hidden" value="{{page.title}}" />
+        <button type="submit" class="btn btn-link p-0">
+          <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
 
-<div>{% include "attachments/includes/page-like-app/template.html" %}</div>
-<div class="my-3">
-  <form action="https://www.google.com/search" method="get" target="_blank" id="search-form">
-    <input name="q" type="hidden" value="{{page.title}}" />
-    <button type="submit" class="btn btn-link p-0">
-      <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
+          جستجوی گوگل
+        </button>
+      </form>
+    </div>
 
-      جستجوی گوگل
-    </button>
-  </form>
-</div>
+    <div>
+      <a
+        href="{% url 'projectmanager:project_show' pk=project.pk %}"
+        class="my-2 text-success mx-2"
+        title="نمایش"
+        target="_blank"
+      >
+        <i class="fa fa-eye text-success"></i>
+        نمایش
+      </a>
 
-<div>
-  {% if perms.core.change_page %}
-  <a href="{{page.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
-    <i class="fa fa-edit text-warning"></i>
-    ویرایش
-  </a>
-  {% endif %} {% if perms.core.delete_page %}
+      {% if perms.core.change_page %}
+      <a
+        href="{{page.get_edit_url}}"
+        class="my-2 text-warning mx-2"
+        title="ویرایش"
+        target="_blank"
+      >
+        <i class="fa fa-edit text-warning"></i>
+        ویرایش
+      </a>
+      {% endif %} {% if perms.core.delete_page %}
 
-  <a href="{{page.get_delete_url}}" class="my-2 text-danger mx-2" title="حذف" target="_blank">
-    <i class="fa fa-trash text-danger"></i>
-    حذف
-  </a>
-  {% endif %}
-</div>
-<div class="my-2">
-  {% include 'core/includes/page-priority-app/template.html' %}
-</div>
+      <a
+        href="{{page.get_delete_url}}"
+        class="my-2 text-danger mx-2"
+        title="حذف"
+        target="_blank"
+      >
+        <i class="fa fa-trash text-danger"></i>
+        حذف
+      </a>
+      {% endif %}
+    </div>
+    <div class="my-2">
+      {% include 'core/includes/page-priority-app/template.html' %}
+    </div>
   </div>
 </div>

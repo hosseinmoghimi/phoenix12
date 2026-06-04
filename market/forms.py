@@ -11,6 +11,8 @@ class AddShopForm(forms.Form):
     unit_name=forms.CharField(max_length=100, required=True)
     unit_price=forms.IntegerField(required=True)
     available=forms.IntegerField(required=True)
+    group_id=forms.IntegerField(required=True)
+    region_id=forms.IntegerField(required=True)
     product_id=forms.IntegerField(required=True)
     supplier_id=forms.IntegerField(required=False)
     coef=forms.IntegerField(required=False)
@@ -24,6 +26,9 @@ class CheckoutCartForm(forms.Form):
     address=forms.CharField(max_length=100, required=True)
     postal_code=forms.CharField(max_length=100, required=True)
     cart_items=forms.CharField(max_length=1000, required=True)
+    address=forms.CharField(max_length=200, required=False)
+    postal_code=forms.CharField(max_length=50, required=False)
+    customer_id=forms.IntegerField(required=True)
     
 class AddCartItemForm(forms.Form):
     unit_name=forms.CharField(max_length=100, required=False)
@@ -38,6 +43,7 @@ class ChangeCartItemForm(forms.Form):
 class AddMarketPersonForm(forms.Form):
     level=forms.CharField(max_length=100, required=False)
     person_account_id=forms.IntegerField(required=True)
+    region_id=forms.IntegerField(required=True)
    
 class AddCartLineForm(forms.Form):
     shop_id=forms.IntegerField(required=True)

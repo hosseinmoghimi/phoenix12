@@ -27,6 +27,7 @@ class DateHelper():
     def persian_production_date(self):
         return PersianCalendar().from_gregorian(self.production_date)
  
+
 class DateTimeHelper(DateHelper):
     def persian_enter_datetime(self):
         return PersianCalendar().from_gregorian(self.enter_datetime)
@@ -70,6 +71,7 @@ class DateTimeHelper(DateHelper):
 
     def end_datetime2(self):
         return self.end_datetime.strftime("%Y-%m-%d %H:%M")
+
 
 class ImageHelper:
     @property
@@ -130,8 +132,6 @@ class ImageHelper:
             header= f"{MEDIA_URL}{self.header_origin}"
 
         return header
-
- 
 
 
 class LinkHelper():
@@ -242,4 +242,47 @@ class Parameter(models.Model):
                 <i class="fa fa-edit text-info mx-2"></i>
             </a>
         """
- 
+  
+    
+class Region(models.Model,LinkHelper):
+    # city=models.ForeignKey("city", verbose_name=_("city"), on_delete=models.CASCADE)
+    parent=models.ForeignKey("region", verbose_name=_("region") ,null=True,blank=True, on_delete=models.CASCADE)
+    name=models.CharField(_("name"), max_length=50)
+    priority=models.IntegerField(_("priority"),default=1000)
+    app_name=APP_NAME
+    class_name="region"
+    class Meta:
+        verbose_name = _("Region")
+        verbose_name_plural = _("Regions")
+
+    def __str__(self):
+        return self.full_name 
+    def get_breadcrumb_link(self):
+        aaa=f"""
+                    <li class="breadcrumb-item"><a href="{self.get_absolute_url()}">
+                    <span class="farsi mx-2">
+                   
+                    {self.name}
+                    </span>
+                    </a></li> 
+                    
+                    
+                    """
+        if self.parent is None:
+            return aaa
+        return self.parent.get_breadcrumb_link()+aaa
+    
+    def get_breadcrumb(self):
+        return f"""
+        
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {self.get_breadcrumb_link()}
+                </ol>
+                </nav>
+        """
+    @property
+    def full_name(self):
+        if self.parent is None:
+            return self.name
+        return self.parent.full_name+" | " +self.name   

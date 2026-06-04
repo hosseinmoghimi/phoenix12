@@ -18,6 +18,7 @@ urlpatterns = [
     path('project/add/',login_required(apis.AddProjectApi.as_view()),name="add_project"),  
     path('projects/',login_required(views.ProjectsView.as_view()),name="projects"),  
     path('project/<int:pk>/',login_required(views.ProjectView.as_view()),name="project"),  
+    path('project/show/<int:pk>/',login_required(views.ProjectShowView.as_view()),name="project_show"),  
     path("project_guantt/<int:pk>/",login_required(views.ProjectGuanttView.as_view()),name="project_guantt"),
     path('project/',login_required(views.ProjectView.as_view()),name="project_null"),  
     path('all-projects/',login_required(views.AllProjectsView.as_view()),name="all_projects"),

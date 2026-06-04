@@ -1,6 +1,5 @@
 <script>
     let person_accounts_s = JSON.parse("{{person_accounts_s|escapejs}}")
- 
 </script>
 
 <script>
@@ -9,6 +8,7 @@
         data: {
             level: "", 
             person_account_id:0,
+            region_id:0,
             person_accounts: person_accounts_s,
             waiting: false,
             message: { show: false },
@@ -26,6 +26,7 @@
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     person_account_id: this.person_account_id,
                     level: this.level,
+                    region_id: parseInt(this.region_id),
                 }
  
 

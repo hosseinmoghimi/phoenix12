@@ -31,26 +31,43 @@
           <table class="table table-striped rtl">
             <thead>
               <th>فروشنده</th>
-              <th>سطح</th>
+              <th>منطقه</th>
               <th>مانده</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="supplier in suppliers">
                 <td>
-                  <a :href="supplier.get_absolute_url">
-                    <span
-                      v-text="supplier.person_account.person.full_name"
-                    ></span>
-                  </a>
+                  <div class="media">
+                    <a :href="supplier.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="supplier.person_account.person.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="supplier.get_absolute_url">
+                        <h6 v-text="supplier.person_account.title"></h6>
+                      </a>
+                      <small class="text-muted" v-text="supplier.level"></small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div v-for="region in supplier.regions">
+                    <a :href="region.get_absolute_url">
+                      <span v-text="region.full_name"></span>
+                    </a>
+                  </div>
                 </td>
 
                 <td>
-                  <span v-text="supplier.level"></span>
-                </td>
-
-                <td>
-                  <span v-text="to_price(supplier.person_account.balance)"></span> {{CURRENCY    }}
+                  <span
+                    v-text="to_price(supplier.person_account.balance)"
+                  ></span>
+                  {{CURRENCY }}
                 </td>
                 <td>
                   {% if perms.market.change_supplier %}

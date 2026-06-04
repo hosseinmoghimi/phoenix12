@@ -22,12 +22,15 @@
         {% include "accounting/includes/add-product-app/template.html" %}
     </div>
     {% endif %}
+    
+    
     {% if import_products_from_excel_form %}
 
     <div class="col-md-4">
         {% include "accounting/includes/import-products-from-excel-app/template.html" %}
     </div>
     {% endif %}
+
     <div class="col-md-12 ">
         {% include "accounting/includes/products-app/list-template.html" %}
     </div>
@@ -59,6 +62,8 @@
 {% if import_products_from_excel_form %}
     {% include "accounting/includes/import-products-from-excel-app/script.html" %}
 {% endif %}
+ 
+
 
  <script>
       let search_app=new Vue({
@@ -74,6 +79,6 @@
           },
         }
       })
-    </script>
+</script>
 
 {% endblock script %}

@@ -49,6 +49,31 @@
 
             <div class="col-md-3">
                 <div class="form-group">
+                    <label for="asdsadfw34eqe2343">منطقه فروش</label>
+                    <select v-model="region_id" id="asdsadfw34edaqrweee2343" class="farsi form-control">
+                        {% for region in regions_for_add_shop_app %}
+                        <option value="{{region.id}}"> {{region.full_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="asdsadfw34eqe2343">گروه فروش</label>
+                    <select v-model="group_id" id="asdsadfwfgweee2343" class="farsi form-control">
+                        {% for group in groups_for_add_shop_app %}
+                        <option value="{{group.id}}">  {{group.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-3">
+                <div class="form-group">
                     <label for="dsrse6544">قیمت واحد
                         <small class="text-muted" v-text="to_price(unit_price)"></small>
                         <small class="text-muted" v-text="'{{CURRENCY}}'"></small>

@@ -12,7 +12,7 @@ import json
 from utility.enums import UnitNameEnum
 from utility.log import leolog
 
-TEMPLATE_ROOT='blog2/'
+TEMPLATE_ROOT='blog/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
@@ -49,6 +49,27 @@ class IndexView(View):
 
  
  
+class AdminView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        blogs=BlogRepo(request=request).list()
+        
+        if request.user.has_perm(APP_NAME,'.add_blog'):
+            context['blogs']=blogs
+            blogs_s=json.dumps(BlogSerializer(blogs,many=True).data)
+            context['blogs_s']=blogs_s
+            context['add_blog_form']=AddBlogForm()
+        if request.user.has_perm(APP_NAME,'.add_homeslider'):
+            homesliders=HomeSliderRepo(request=request).list(for_home=True)
+            context['homesliders']=homesliders
+
+
+ 
+        return render(request,TEMPLATE_ROOT+"admin.html",context)
+# Create your views here. 
+
+ 
+ 
 class BlogsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -77,4 +98,42 @@ class BlogView(View):
 
 
 
+from utility.repo import PictureRepo,ParameterRepo
   
+ 
+class AboutUsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        from utility.repo import PictureRepo
+        about_header=PictureRepo(request=request,app_name=APP_NAME).picture(name="سربرگ درباره ما")
+        context['about_header'] =about_header 
+
+        
+        # from utility.repo import ParameterRepo
+        # about_us_full=ParameterRepo(request=request,app_name=APP_NAME).parameter(name="متن کامل درباره ما",default="متن کامل درباره ما")
+        
+        from .repo import AboutUsRepo
+        about_us=AboutUsRepo(request=request).get()
+        context['about_us'] =about_us   
+
+        about_us_full=about_us.about
+        context['about_us_full'] =about_us_full   
+        # about_us_short=about_us.short
+        # context['about_us_short'] =about_us_short   
+
+        return render(request,TEMPLATE_ROOT+"about.html",context)
+# Create your views here. 
+
+ 
+class ContactUsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        blog=BlogRepo(request=request).blog(*args, **kwargs)
+        context.update(PageContext(request=request,page=blog))
+        context["blog"]=blog
+        blog_s=json.dumps(BlogSerializer(blog,many=False).data)
+        context["blog_s"]=blog_s
+
+        return render(request,TEMPLATE_ROOT+"contact-us.html",context)
+# Create your views here. 
