@@ -22,9 +22,7 @@ class Table(models.Model,LinkHelper):
     def __str__(self):
         return self.title
    
-    class Meta:
-        verbose_name = _("MealItem")
-        verbose_name_plural = _("MealItems")
+    
  
     def save(self):
         (result,message,table)=FAILED,'',self
@@ -67,6 +65,7 @@ class TableCustomer(Customer):
 
 
 class MenuItem(models.Model):
+    menu=models.ForeignKey("menu", verbose_name=_("menu"), on_delete=models.CASCADE)
     shop=models.ForeignKey("market.shop", verbose_name=_("shop"), on_delete=models.CASCADE)
     in_cart=models.IntegerField(_("in_cart"),default=0)
 

@@ -496,6 +496,18 @@ class AccountRepo(Repo):
                     <br>
                     {modified} حساب ویرایش شد. """
         accounts=self.list()
+
+
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:accounts")
+            log_data['title']="بازیابی حساب ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+        
         return result,message,accounts
 
 
@@ -594,6 +606,7 @@ class AccountRepo(Repo):
         new_log['title']="افزودن حساب های پیش فرض"
         new_log['app_name']=APP_NAME
         new_log['person']=me_person
+        new_log['url']=reverse("accounting:accounts")
         new_log['description']="حساب های پیش فرض اضافه شدند."
         LogRepo(request=self.request).add_log(**new_log)
         return result,message
@@ -1431,6 +1444,19 @@ class ProductRepo():
                     <br>
                     {modified} محصول ویرایش شد. """
         products=self.list()
+
+        
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:products")
+            log_data['title']="بازیابی کالا ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
         return result,message,products
 
 
@@ -2005,6 +2031,18 @@ class ServiceRepo():
                     <br>
                     {modified} سرویس ویرایش شد. """
         services=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:services")
+            log_data['title']="بازیابی سرویس ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
         return result,message,services
 
 
@@ -3155,6 +3193,18 @@ class CategoryRepo():
                     <br>
                     {modified} دسته بندی ویرایش شد. """
         categories=self.list()
+
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:categories")
+            log_data['title']="بازیابی دسته بندی ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+
         return result,message,categories
 
 
