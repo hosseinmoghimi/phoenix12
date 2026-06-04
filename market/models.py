@@ -156,7 +156,7 @@ class CartItem(models.Model,DateTimeHelper):
     row=models.IntegerField(_("ردیف"),default=1,blank=True)
     customer=models.ForeignKey("customer", verbose_name=_("مشتری"), on_delete=models.CASCADE)
     shop=models.ForeignKey("shop", verbose_name=_("فروش"), on_delete=models.CASCADE)
-    quantity=models.IntegerField(_("تعداد"),default=1)
+    quantity=models.IntegerField(_("تعداد"),default=0)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     description=models.CharField(_("توضیحات"),null=True,blank=True, max_length=50)
 

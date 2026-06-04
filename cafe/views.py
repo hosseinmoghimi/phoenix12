@@ -7,6 +7,8 @@ from .forms import *
 from .apps import APP_NAME
 from core.views import CoreContext
 from phoenix.server_apps import phoenix_apps
+from market.serializers import ShopSerializer
+
 from utility.calendar import PersianCalendar
 import json
 
@@ -82,11 +84,48 @@ class TableView(View):
         table_s=json.dumps(TableSerializer(table,many=False).data)
         context["table_s"]=table_s
         context["table"]=table
-        leolog(table=table,id=table.id,pk=table.pk)
         return render(request,TEMPLATE_ROOT+"table.html",context)
 # Create your views here. 
  
 
+
+class TableLoginView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        table=TableRepo(request=request).table(*args, **kwargs)
+        table_s=json.dumps(TableSerializer(table,many=False).data)
+        context["table_s"]=table_s
+        context["table"]=table
+
+        
+        menu =MenuRepo(request=request).menu(*args, **kwargs)
+        context['table']=table
+        context['menu']=menu
+        
+        
+        table_customer=TableCustomerRepo(request=request).table_customer(table_id=table.id)
+        context['table_customer']=table_customer
+
+        table_customer_s=json.dumps(TableCustomerSerializer(table_customer,many=False).data)
+        menu_s=json.dumps(MenuSerializer(menu,many=False).data)
+        context['table_customer_s']=table_customer_s
+        context['menu_s']=menu_s
+
+
+
+        shops=menu.shops.all()
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        
+        
+        context['shops_s']=shops_s
+ 
+        context['NOT_NAVBAR']=True
+        context['NOT_FOOTER']=True
+
+        return render(request,TEMPLATE_ROOT+"table-menu.html",context)
+# Create your views here. 
+ 
    
     
 class TableView(View):

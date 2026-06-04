@@ -23,7 +23,7 @@ class ShopPackageRepo():
         self.objects=ShopPackage.objects.filter(id=0)
         profile=PersonRepo(request=request).me
         if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_desk"):
+            if request.user.has_perm(APP_NAME+".view_shoppackage"):
                 self.objects=ShopPackage.objects
                 self.my_accounts=self.objects 
      

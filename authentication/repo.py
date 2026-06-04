@@ -63,12 +63,10 @@ class PersonRepo():
                     pass
     def change_password(self,request,*args, **kwargs):
         result,message=FAILED,'خطا'
-        leolog(kwargs=kwargs)
         if self.request.user.has_perm(APP_NAME+".change_person"):
             user=User.objects.filter(username=kwargs['username']).first()
         else:
             user=authenticate(request=request,username=kwargs['username'],password=kwargs['old_password'])
-            leolog(user=user)
             if user is None:
                 message='نام کاربری و کلمه عبور صحیح نمی باشد.'
                 return (request,user,result,message)

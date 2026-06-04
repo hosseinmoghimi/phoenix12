@@ -8,13 +8,13 @@
    
   </div>
   <div class="col-md-12">
-    {% include "cafe/includes/desk-menu-app/template.html" %}
+    {% include "cafe/includes/table-menu-app/template.html" %}
    
   </div>
 </div>
 {% endblock content %} {% block script %}
 <script>
-  let desk_customer = JSON.parse("{{desk_customer_s|escapejs}}");
+  let table_customer = JSON.parse("{{table_customer_s|escapejs}}");
   let menu = JSON.parse("{{menu_s|escapejs}}");
 </script>
-{% include "cafe/includes/desk-menu-app/script.html" %} {% endblock script %}
+{% include "cafe/includes/table-menu-app/script.html" %} {% endblock script %}

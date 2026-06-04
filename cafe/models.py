@@ -6,6 +6,7 @@ from accounting.models import Product,InvoiceLine,Invoice
 from market.models import Customer
 from core.models import Page as CorePage
 from market.models import Supplier
+from market.models import CartItem
  
 class Table(models.Model,LinkHelper):
     class_name="table"
@@ -13,7 +14,7 @@ class Table(models.Model,LinkHelper):
     title=models.CharField(_("عنوان"), max_length=50)
     table_no=models.IntegerField(_("شماره میز"), default=0)
     supplier=models.ForeignKey("market.supplier", verbose_name=_("supplier"), on_delete=models.CASCADE)
-    
+    code=models.CharField(_("code"), max_length=500)
 
     class Meta:
         verbose_name = _("Table")
@@ -63,12 +64,8 @@ class TableCustomer(Customer):
         verbose_name = _("TableCustomer")
         verbose_name_plural = _("TableCustomers")  
 
-
-class MenuItem(models.Model):
-    menu=models.ForeignKey("menu", verbose_name=_("menu"), on_delete=models.CASCADE)
-    shop=models.ForeignKey("market.shop", verbose_name=_("shop"), on_delete=models.CASCADE)
-    in_cart=models.IntegerField(_("in_cart"),default=0)
-
+class MenuItem(CartItem):
+    table=models.ForeignKey("table", verbose_name=_("table"), on_delete=models.CASCADE)
      
     class Meta:
         verbose_name = _("MenuItem")
