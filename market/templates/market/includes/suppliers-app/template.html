@@ -31,8 +31,7 @@
           <table class="table table-striped rtl">
             <thead>
               <th>فروشنده</th>
-              <th>منطقه</th>
-              <th>مانده</th>
+              <th>منطقه</th> 
               <th></th>
             </thead>
             <tbody>
@@ -51,7 +50,6 @@
                       <a :href="supplier.get_absolute_url">
                         <h6 v-text="supplier.person_account.title"></h6>
                       </a>
-                      <small class="text-muted" v-text="supplier.level"></small>
                     </div>
                   </div>
                 </td>
@@ -63,12 +61,7 @@
                   </div>
                 </td>
 
-                <td>
-                  <span
-                    v-text="to_price(supplier.person_account.balance)"
-                  ></span>
-                  {{CURRENCY }}
-                </td>
+                
                 <td>
                   {% if perms.market.change_supplier %}
                   <a

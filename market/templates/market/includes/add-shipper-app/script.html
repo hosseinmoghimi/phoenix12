@@ -7,7 +7,7 @@
     let add_shipper_app = new Vue({
         el: "#add-shipper-app",
         data: {
-            level: "", 
+            groups_ids: [], 
             person_account_id:0,
             person_accounts: person_accounts_s,
             waiting: false,
@@ -23,11 +23,11 @@
             
           
             add_shipper: function () {
-
+                let groups_ids_=JSON.stringify(add_shipper_app.groups_ids)
                 let payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     person_account_id: this.person_account_id,
-                    level: this.level,
+                    groups_ids: groups_ids_,
                     region_id: parseInt(this.region_id),
                 }
  

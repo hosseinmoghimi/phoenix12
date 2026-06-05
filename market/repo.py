@@ -41,17 +41,7 @@ class ShopPackageRepo():
         if "product_id" in kwargs:
             product_id=kwargs["product_id"]
             objects=objects.filter(product_id=product_id)
-        if "level" in kwargs:
-            level=kwargs["level"]
-            objects=objects.filter(level=level)
-        if "customer_id" in kwargs:
-            from .enums import Cus  
-            level=ShopLevelEnum.GUEST
-            customer_id=kwargs["customer_id"]
-            customer=CustomerRepo(request=self.request).customer(customer_id=customer_id)
-            if customer is not None:
-                level=customer.level
-            objects=objects.filter(level=level)
+          
         return objects.all()
         
     def shop_package(self,*args, **kwargs):
@@ -107,18 +97,14 @@ class ShopRepo():
             groups_ids=[]
             for group in me_customer.groups.all():
                 groups_ids.append(group.id)
-            self.objects=Shop.objects.filter(level=me_customer.level).filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
-        elif me_supplier is not None:
-            # regions_ids=[]
-            # for region in me_supplier.all_regions():
-            #     regions_ids.append(region.id)   
-            # self.objects=Shop.objects.filter(level=me_supplier.level).filter(region_id__in=regions_ids)
+            self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
+        elif me_supplier is not None: 
 
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
     def primary_shop(self,product,*args, **kwargs):
         if product is None :
             return None
-        shops=Shop.objects.filter(product_id=product.id) 
+        shops=self.objects.filter(product_id=product.id) 
         if len(shops)>0:
             return shops.order_by('unit_price').first()
         # return Shop(unit_name=UnitNameEnum.ADAD,unit_price=0)
@@ -138,17 +124,7 @@ class ShopRepo():
         if "product_id" in kwargs:
             product_id=kwargs["product_id"]
             objects=objects.filter(product_id=product_id)
-        if "level" in kwargs:
-            level=kwargs["level"]
-            objects=objects.filter(level=level)
-        if "customer_id" in kwargs:
-            from .enums import Cus  
-            level=ShopLevelEnum.GUEST
-            customer_id=kwargs["customer_id"]
-            customer=CustomerRepo(request=self.request).customer(customer_id=customer_id)
-            if customer is not None:
-                level=customer.level
-            objects=objects.filter(level=level)
+          
         return objects.all()
         
     def shop(self,*args, **kwargs):
@@ -169,8 +145,7 @@ class ShopRepo():
                 return result,message,shop
 
         shop=Shop(supplier_id=me_supplier.id)
-        if 'level' in kwargs:
-            shop.level=kwargs["level"]
+         
         if 'unit_price' in kwargs:
             if kwargs["unit_price"]>0:
                 shop.unit_price=kwargs["unit_price"]
@@ -265,12 +240,18 @@ class CustomerRepo():
             if len(Customer.objects.filter(person_account_id=person_account_id))>0:
                 message='برای این حساب قبلا مشتری ایجاد شده است.'
                 return result,message,None
-        if 'level' in kwargs:
-            customer.level=kwargs["level"]
+         
  
         (result,message,customer)=customer.save() 
         if 'region_id' in kwargs:
             customer.regions.add(kwargs["region_id"])
+        if 'groups_ids' in kwargs:
+            groups_ids=(kwargs["groups_ids"])
+            leolog(groups_ids=groups_ids)
+            for group_id in groups_ids:
+                group_id=int(group_id)
+                leolog(group_id=group_id)
+                customer.groups.add(group_id)
  
         return result,message,customer
 
@@ -333,8 +314,6 @@ class ShipperRepo():
             if len(Shipper.objects.filter(person_account_id=person_account_id))>0:
                 message='برای این حساب قبلا فروشنده ایجاد شده است.'
                 return result,message,None
-        if 'level' in kwargs:
-            shipper.level=kwargs["level"]
          
         (result,message,shipper)=shipper.save() 
 
@@ -384,9 +363,7 @@ class CartItemRepo():
         if  me_customer is None and not self.request.user.has_perm(APP_NAME+".add_cartitem") :
             message="دسترسی غیر مجاز"
             return result,message,cart_item,cart_items
-        # if len(Product.objects.filter(product_id=kwargs["product_id"]).filter(unit_name=kwargs["unit_name"]).filter(level=kwargs["level"]).filter(customer_id=kwargs["customer_id"]))>0:
-        #     message="نام تکراری برای کالای جدید"
-        #     return result,message,cart_item
+         
         if me_customer is None:
             message=" 22دسترسی غیر مجاز"
             return result,message,cart_item,cart_items
@@ -419,9 +396,7 @@ class CartItemRepo():
         if  me_customer is None and not self.request.user.has_perm(APP_NAME+".change_cartitem") :
             message="دسترسی غیر مجاز"
             return result,message,cart_item,cart_items
-        # if len(Product.objects.filter(product_id=kwargs["product_id"]).filter(unit_name=kwargs["unit_name"]).filter(level=kwargs["level"]).filter(customer_id=kwargs["customer_id"]))>0:
-        #     message="نام تکراری برای کالای جدید"
-        #     return result,message,cart_item
+         
         if me_customer is None:
             message=" 22دسترسی غیر مجاز"
             return result,message,cart_item,cart_items
@@ -445,12 +420,6 @@ class CartItemRepo():
     def checkout(self,customer_id,*args,**kwargs):
         result,message,invoices=FAILED,"",[]
          
-        # if len(Product.objects.filter(product_id=kwargs["product_id"]).filter(unit_name=kwargs["unit_name"]).filter(level=kwargs["level"]).filter(customer_id=kwargs["customer_id"]))>0:
-        #     message="نام تکراری برای کالای جدید"
-        #     return result,message,cart_item
-        # if me_customer is None:
-        #     message=" 22دسترسی غیر مجاز"
-        #     return result,message,invoices
 
         if self.request.user.has_perm(APP_NAME+".add_cartitem"):
                 pass
@@ -533,9 +502,7 @@ class CartItemRepo():
         if  me_customer is None and not self.request.user.has_perm(APP_NAME+".add_cartitem") :
             message="دسترسی غیر مجاز"
             return result,message,invoices
-        # if len(Product.objects.filter(product_id=kwargs["product_id"]).filter(unit_name=kwargs["unit_name"]).filter(level=kwargs["level"]).filter(customer_id=kwargs["customer_id"]))>0:
-        #     message="نام تکراری برای کالای جدید"
-        #     return result,message,cart_item
+         
         if me_customer is None:
             message=" 22دسترسی غیر مجاز"
             return result,message,invoices
@@ -589,19 +556,20 @@ class SupplierRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
         self.me=None
-        self.objects=Supplier.objects
-
-        person=PersonRepo(request=request).me
-        if person is not None:
-            self.me=self.objects.filter(person_account__person_id=person.id).first()
+        self.objects=Supplier.objects.filter(pk=0)
+        me_person=PersonRepo(request=request).me
+        me_shipper=ShipperRepo(request=request).me
+        me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
+        if me_shipper is not None:
+            self.objects=me_shipper.suppliers.all()
+        if me_supplier is not None:
+            self.objects=Supplier.objects.filter(id=me_supplier.id) 
+        if request.user.has_perm(APP_NAME+".view_supplier"):
+            self.objects=Supplier.objects.all()
 
     def list(self,*args, **kwargs):
         objects=self.objects
-        pure_code="876454453342236"
-        try:
-            pure_code=int(kwargs["search_for"]) 
-        except:
-            pass
+         
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
 
@@ -640,9 +608,7 @@ class SupplierRepo():
             if len(Supplier.objects.filter(person_account_id=person_account_id))>0:
                 message='برای این حساب قبلا فروشنده ایجاد شده است.'
                 return result,message,None
-        if 'level' in kwargs:
-            supplier.level=kwargs["level"]
- 
+         
         (result,message,supplier)=supplier.save() 
 
         if 'region_id' in kwargs:

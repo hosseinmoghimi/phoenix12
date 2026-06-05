@@ -10,7 +10,6 @@ from .enums import *
 
 class MarketPerson(models.Model,LinkHelper):
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
-    level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
     regions=models.ManyToManyField("utility.region", verbose_name=_("regions"))
 
     app_name=APP_NAME
@@ -76,8 +75,9 @@ class Supplier(MarketPerson):
 
 
 class Shipper(MarketPerson):
+    suppliers=models.ManyToManyField("supplier", verbose_name=_("suppliers"))
+    
     class_name="shipper"
-
     class Meta:
         verbose_name = _("Shipper")
         verbose_name_plural = _("Shippers")
@@ -95,7 +95,6 @@ class ShopPackage(models.Model,LinkHelper,DateTimeHelper):
     supplier=models.ForeignKey("supplier", verbose_name=_("supplier"), on_delete=models.CASCADE)
     title=models.CharField(_("title"), max_length=50)    
     shops=models.ManyToManyField("shop", verbose_name=_("shops"))
-    level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
     start_date=models.DateTimeField(_("تاریخ شروع "), auto_now=False, auto_now_add=False)
     end_date=models.DateTimeField(_("تاریخ پایان "), auto_now=False, auto_now_add=False)
     quantity=models.IntegerField(_("تعداد کل"))
@@ -127,7 +126,6 @@ class Shop(models.Model,LinkHelper,DateTimeHelper):
     region=models.ForeignKey("utility.region", verbose_name=_("region"), on_delete=models.CASCADE)
     supplier=models.ForeignKey("supplier", verbose_name=_("supplier"), on_delete=models.CASCADE)
     product=models.ForeignKey("accounting.product", verbose_name=_("product"), on_delete=models.CASCADE)
-    level=models.CharField(_("level"),choices=ShopLevelEnum.choices,default=ShopLevelEnum.END_USER, max_length=50)
     unit_name=models.CharField(_("unit_name"),choices=UnitNameEnum.choices, max_length=50)
     unit_price=models.IntegerField(_("قیمت واحد"))
     discount_percentage=models.IntegerField(_("درصد تخفیف"),default=0)

@@ -169,14 +169,16 @@
     </h5> 
     {% endif %}
    
-
-     <div>
-
-       
-       <a href="{% url 'authentication:login_as' pk=person.id %}" title="ورود"
-       class="mx-2 text-info"><i class="fa fa-key text-success" aria-hidden="true"></i>ورود</a>
-       
-      </div> 
+{% if person.user %}
+  
+<div>
+  
+  
+  <a href="{% url 'authentication:login_as' pk=person.id %}" title="ورود"
+  class="mx-2 text-info"><i class="fa fa-key text-success" aria-hidden="true"></i>ورود</a>
+  
+</div> 
+{% endif %}
     
 {% if perms.core.change_person %}
 <div>

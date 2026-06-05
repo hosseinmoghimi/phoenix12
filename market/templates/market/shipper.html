@@ -1,14 +1,13 @@
 {% extends "market/layout.html" %} {% block content %}
 <div class="row rtl farsi">
-  <div class="col-md-4">
-    {% include "authentication/includes/person-app/card.html" %}
-  </div>
-  <div class="col-md-4">
+   
+  <div class="col-md-5">
     <div class="card">
       <div class="card-header">
-        <h6>{{shipper.person.full_name}}</h6>
+        <h6>{{shipper.person_account.person.full_name}}</h6>
       </div>
       <div class="card-body">
+        <img src="{{shipper.person_account.person.image}}" width="64" class="mb-2" alt="">
         <h5>
          {{shipper.person_account.name}}
         </h5>
@@ -16,16 +15,7 @@
           <h6>
             {{region.get_breadcrumb|safe}}
           </h6>
-        <h6 >
           
-          <a href="{{region.city.get_absolute_url}}">
-            {{region.city.name}}
-          </a>
-          |
-          <a href="{{region.get_absolute_url}}">
-            {{region.name}}
-          </a>
-        </h6>
         {% endfor %}
         {% if shipper.person_account %}
         <h6>
@@ -38,14 +28,7 @@
           </a>
         </h6>
         {% endif %}
-           <h6>
-                    <small class="text-muted">
-                    سطح :
-
-                    </small>
-                    {{shipper.level}}
-
-                </h6>
+           
 
                  <h6>
                     <small class="text-muted">
@@ -71,10 +54,7 @@
         {% endif %}
         
         {% if perms.market.delete_shipper %}
-          {% if perms.market.change_shipper %}
-         <a href="{% url 'authentication:login_as' pk=person.id %}" title="ورود"
-       class="mx-2 text-info"><i class="fa fa-key text-success" aria-hidden="true"></i>ورود</a>
-        {% endif %}
+           
 
         <a
           href="{{shipper.get_delete_url}}"
@@ -88,7 +68,33 @@
       </div>
     </div>
   </div>
-   
+   <div class="col-md-7">
+<div class="card">
+  <div class="card-header">
+    <h6>
+      حمل کننده
+    </h6>
+  </div>
+  <div class="card-body">
+    <h6>
+
+      فروشگاه های طرف قرارداد این حمل کننده
+    </h6>
+    {% for supplier in shipper.suppliers.all %}
+    <div class="media mb-2">
+<img src="{{supplier.person_account.person.image}}" alt="" width="48">
+<div class="media-body">
+
+  <a href="{{supplier.get_absolute_url}}">
+    {{supplier.person_account.title}}
+  </a>
+</div>
+    </div>
+    <hr>
+    {% endfor %}
+  </div>
+</div>
+   </div>
   
 </div>
 {% endblock content %} {% block script %}

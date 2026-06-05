@@ -5,8 +5,7 @@
             unit_name: "عدد",
             unit_price: 0,
             region_id:0,
-            group_id:0,
-            level: "",
+            group_id:0, 
             message: { show: false },
             waiting: false,
             start_date: current_date,
@@ -42,10 +41,7 @@
                     return
                 }
                 
-                if (this.level=="") {
-                    show_message(add_shop_app, "خطا", "سطح فروش را وارد کنید.", "danger", 5000)
-                    return
-                }
+                 
                 if (this.unit_price < 1) {
                     show_message(add_shop_app, "خطا", "قیمت را وارد کنید.", "danger", 5000)
                     return
@@ -55,7 +51,6 @@
                     product_id: parseInt("{{product.id}}"),
                     discount_percentage: parseInt(this.discount_percentage),
                     coef: parseInt(this.coef), 
-                    level: this.level,
                     available: this.available,
                     region_id: parseInt(add_shop_app.region_id),
                     group_id: parseInt(add_shop_app.group_id),

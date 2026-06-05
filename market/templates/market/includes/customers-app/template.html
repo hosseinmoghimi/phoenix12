@@ -32,7 +32,7 @@
             <thead>
               <th>مشتری</th>
               <th>منطقه</th>
-              <th>مانده</th>
+              <th>گروه ها</th> 
               <th></th>
             </thead>
             <tbody>
@@ -52,8 +52,7 @@
                         <h6
                           v-text="customer.person_account.title"
                         ></h6>
-                      </a>
-                      <small class="text-muted" v-text="customer.level"></small>
+                      </a> 
                     </div>
                   </div>
                 </td>
@@ -68,12 +67,18 @@
 
                 </td>
 
-                <td>
-                  <span
-                    v-text="to_price(customer.person_account.balance)"
-                  ></span>
-                  {{CURRENCY }}
+                 <td>
+                
+                  <span class="ml-2" v-for="group in customer.groups">
+                    <span :class="'badge badge-'+group.color">
+                      <span v-text="group.name"></span>
+                    </span>
+                  </span>
+
                 </td>
+
+
+                
                 <td>
                   {% if perms.market.change_customer %}
                   <a

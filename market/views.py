@@ -60,12 +60,13 @@ def AddMarketPersonContext(request):
     context=AddPersonAccountContext(request=request)
     regions=RegionRepo(request=request).list()
     context['regions']=regions
+    customer_groups=CustomerGroupRepo(request=request).list()
+    context['customer_groups']=customer_groups
     person_accounts=PersonAccountRepo(request=request).list()
     person_accounts_s=json.dumps(PersonAccountSerializer(person_accounts,many=True).data)
     context['person_accounts']=person_accounts
     context['person_accounts_s']=person_accounts_s
-
-    context['levels']=(i[0] for i in ShopLevelEnum.choices)
+ 
 
 
 
@@ -101,8 +102,7 @@ def AddShopContext(request,*args, **kwargs):
     context={}
     context['add_shop_form']=AddShopForm()
     context['unit_names_for_add_shop_app']=(i[0] for i in UnitNameEnum.choices)
-    context['unit_names_for_add_shop_app']=(i[0] for i in UnitNameEnum.choices)
-    context['levels_for_add_shop_app']=(i[0] for i in ShopLevelEnum .choices)
+    context['unit_names_for_add_shop_app']=(i[0] for i in UnitNameEnum.choices) 
     context['regions_for_add_shop_app']=RegionRepo(request=request).list()
     context['groups_for_add_shop_app']=CustomerGroupRepo(request=request).list()
     return context
