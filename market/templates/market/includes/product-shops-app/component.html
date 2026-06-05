@@ -21,102 +21,92 @@
             ></h6>
           </a>
           <div>
-             <small class="text-muted">
-              منطقه
-            </small>
+            <small class="text-muted"> منطقه </small>
 
             <a :href="shop.region.get_absolute_url">
               <small class="text-muted" v-text="shop.region.full_name"></small>
             </a>
           </div>
-          <div>
-            <small class="text-muted">
-              گروه
-            </small>
-            <a :href="shop.group.get_absolute_url" :class="'badge badge-'+shop.group.color">
-              <small class=" " v-text="shop.group.name"></small>
-            </a>
-          </div>
-          <div>
-             <small class="text-muted">
-              سطح
-            </small>
-
-            <small class="text-muted" v-text="shop.supplier.level"></small>
-          </div>
+         
+           
         </div>
       </div>
     </div>
-    <div>
-      <small>
-        <small class="text-muted"> موجود برای </small>
-        <span v-text="shop.level"></span>
-      </small>
     </div>
-  </div>
-  <div class="col-md-5">
-    <h6 v-if="shop.discount_percentage>0">
-      با
-      <span v-text="shop.discount_percentage"></span>
-      % تخفیف
+    <div class="col-md-4">
+      <h6 v-if="shop.discount_percentage>0">
+        با
+        <span v-text="shop.discount_percentage"></span>
+        % تخفیف
 
-      <span
-        style="text-decoration: line-through"
-        v-text="to_price(shop.unit_price)"
-      ></span>
-      {{CURRENCY}}
-    </h6>
-    <h6>
-      از
-      <small class="text-muted">
-        <span v-text="shop.persian_start_date"></span>
-      </small>
-      تا
-      <small class="text-muted">
-        <span v-text="shop.persian_end_date"></span>
-      </small>
-    </h6>
-    <div class="badge badge-success">
-      <span v-text="shop.available"></span>
-      <span v-text="shop.unit_name"></span>
-      موجود است
+        <span
+          style="text-decoration: line-through"
+          v-text="to_price(shop.unit_price)"
+        ></span>
+        {{CURRENCY}}
+      </h6>
+      <h6>
+        از
+        <small class="text-muted">
+          <span v-text="shop.persian_start_date"></span>
+        </small>
+        تا
+        <small class="text-muted">
+          <span v-text="shop.persian_end_date"></span>
+        </small>
+      </h6>
+      <div class="badge badge-success">
+        <span v-text="shop.available"></span>
+        <span v-text="shop.unit_name"></span>
+        موجود است
+      </div>
     </div>
-  </div>
-  <div class="col-md-4">
-    <h6>
-      هر
-      <span v-text="shop.unit_name"></span>
-    </h6>
-    <h5 class="text-danger">
-      <span
-        v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
-      ></span>
-      {{CURRENCY}}
-    </h5>
-    {% if add_cart_line_form %}
+    <div class="col-md-2">
+ <div>
+            <small class="text-muted"> گروه </small>
+            <a
+              :href="shop.group.get_absolute_url"
+              :class="'badge badge-'+shop.group.color"
+            >
+              <small class=" " v-text="shop.group.name"></small>
+            </a>
+          </div>
+    </div>
+    <div class="col-md-3">
+      <h6>
+        هر
+        <span v-text="shop.unit_name"></span>
+      </h6>
+      <h5 class="text-danger">
+        <span
+          v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
+        ></span>
+        {{CURRENCY}}
+      </h5>
+      {% if add_cart_line_form %}
 
-    <button class="btn btn-danger" @click="add_to_cart(shop)">
-      <h5 class="text-center">خرید اینترنتی</h5>
-    </button>
+      <button class="btn btn-danger" @click="add_to_cart(shop)">
+        <h5 class="text-center">خرید اینترنتی</h5>
+      </button>
 
-    {% endif %}
-    <div>
-      {% if perms.market.change_shop %}
-      <a target="_blank" :href="shop.get_edit_url" title="ویرایش">
-        <i class="fa fa-edit text-warning"></i>
-      </a>
-      {% endif %} 
-      {% if perms.market.delete_shop %}
-      <a target="_blank" :href="shop.get_delete_url" title="حذف">
-        <i class="fa fa-trash text-danger"></i>
-      </a>
       {% endif %}
+      <div>
+        {% if perms.market.change_shop %}
+        <a target="_blank" :href="shop.get_edit_url" title="ویرایش" class="mx-2">
+          <i class="fa fa-edit text-warning"></i>
+        </a>
+        {% endif %} {% if perms.market.delete_shop %}
+        <a target="_blank" :href="shop.get_delete_url" title="حذف" class="mx-2">
+          <i class="fa fa-trash text-danger"></i>
+        </a>
+        {% endif %}
+      </div>
     </div>
-  </div>
 
-  <div class="col-md-12">
-    <div v-if="message.show" :class="'alert alert-'+message.color">
-      <span v-text="message.body"></span>
+    <div class="col-md-12">
+      <div v-if="message.show" :class="'alert alert-'+message.color">
+        <span v-text="message.body"></span>
+      </div>
     </div>
   </div>
 </div>

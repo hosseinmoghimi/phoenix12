@@ -28,7 +28,7 @@
         posting.done(function (data) {
           comment_component.waiting = false;
           if (data.result === "SUCCEED") {
-            show_message(product_shops_app,'موفق',data.message,'success',3000)
+            show_message(product_shops_app,'موفق',data.message+`<span class="mr-2"><a href="{% url 'market:cart' customer_id=me_customer.id %}">سبد خرید</a></span>`,'success',10000)
             if(typeof cart_items_navbar_app !='undefined'){
               cart_items_navbar_app.cart_items=(data.cart_items)
             }

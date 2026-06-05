@@ -32,6 +32,7 @@
             <thead>
               <th>مشتری</th>
               <th>منطقه</th>
+              <th>گروه ها</th>
               <th>مانده</th>
               <th></th>
             </thead>
@@ -52,8 +53,7 @@
                         <h6
                           v-text="customer.person_account.title"
                         ></h6>
-                      </a>
-                      <small class="text-muted" v-text="customer.level"></small>
+                      </a> 
                     </div>
                   </div>
                 </td>
@@ -67,6 +67,17 @@
                   </div>
 
                 </td>
+
+                 <td>
+                
+                  <span class="ml-2" v-for="group in customer.groups">
+                    <span :class="'badge badge-'+group.color">
+                      <span v-text="group.name"></span>
+                    </span>
+                  </span>
+
+                </td>
+
 
                 <td>
                   <span

@@ -6,8 +6,7 @@ class AddShopToMenuForm(forms.Form):
     supplier_id=forms.IntegerField(required=True)
 
     
-class AddShopForm(forms.Form):
-    level=forms.CharField(max_length=100, required=True)
+class AddShopForm(forms.Form): 
     unit_name=forms.CharField(max_length=100, required=True)
     unit_price=forms.IntegerField(required=True)
     available=forms.IntegerField(required=True)
@@ -40,8 +39,8 @@ class ChangeCartItemForm(forms.Form):
     shop_id=forms.IntegerField(required=True)
     quantity=forms.IntegerField(required=False)
 
-class AddMarketPersonForm(forms.Form):
-    level=forms.CharField(max_length=100, required=False)
+class AddMarketPersonForm(forms.Form): 
+    groups_ids=forms.CharField( max_length=100, required=False)
     person_account_id=forms.IntegerField(required=True)
     region_id=forms.IntegerField(required=True)
    
@@ -60,8 +59,7 @@ class AddShipperForm(AddMarketPersonForm):
 class AddSupplierForm(AddMarketPersonForm):
     person_account_categories=forms.CharField(max_length=200, required=False)
 
-class AddSupplierByPersonForm(forms.Form):
-    level=forms.CharField(max_length=100, required=False)
+class AddSupplierByPersonForm(forms.Form): 
     person_id=forms.IntegerField(required=True)  
      
 

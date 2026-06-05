@@ -6,7 +6,7 @@
     let add_customer_app = new Vue({
         el: "#add-customer-app",
         data: {
-            level: "", 
+            groups_ids: [], 
             person_account_id:0,
             region_id:0,
             person_accounts: person_accounts_s,
@@ -21,14 +21,14 @@
             
           
             add_customer: function () {
-
+                let groups_ids_=JSON.stringify(add_customer_app.groups_ids)
                 let payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     person_account_id: this.person_account_id,
-                    level: this.level,
+                    groups_ids: groups_ids_,
                     region_id: parseInt(this.region_id),
                 }
- 
+                leolog(payload)
 
                 let url = "{% url 'market:add_customer' %}"
                 $.post(url, payload).done(data => {

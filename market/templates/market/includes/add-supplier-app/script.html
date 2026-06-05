@@ -7,7 +7,6 @@
     let add_supplier_app = new Vue({
         el: "#add-supplier-app",
         data: {
-            level: "", 
             person_account_id:0,
             person_accounts: person_accounts_s,
             waiting: false,
@@ -27,7 +26,6 @@
                 let payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
                     person_account_id: this.person_account_id,
-                    level: this.level,
                     region_id: parseInt(this.region_id),
                 }
  

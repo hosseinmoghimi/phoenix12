@@ -39,8 +39,7 @@
 
               <th>موجود</th>
               <th>تعداد کل</th>
-
-              <th>سطح فروش</th>
+ 
               <th>تاریخ</th>
 
               {% if perms.market.change_shoppackage or perms.market.delete_shoppackage %}
@@ -73,9 +72,7 @@
                   <span v-text="shop_package.quantity"></span>
                 </td>
 
-                <td>
-                  <span v-text="shop_package.level"></span>
-                </td>
+               
 
                 <td>
                   <div>

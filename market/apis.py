@@ -146,6 +146,7 @@ class AddCustomerApi(APIView):
             if add_customer_form.is_valid():
                 log=333
                 cd=add_customer_form.cleaned_data
+                cd['groups_ids']=json.loads(cd['groups_ids'])
                 result,message,customer=CustomerRepo(request=request).add_customer(**cd)
                 if result==SUCCEED:
                     context['customer']=CustomerSerializer(customer).data

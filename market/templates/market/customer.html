@@ -1,138 +1,78 @@
-{% extends "market/layout.html" %}
-
-{% load to_price %}
-{% load static %}
-{% load to_persian_date %}
-
-{% block content %}
+{% extends "market/layout.html" %} {% load to_price %} {% load static %} {% load to_persian_date %} {% block content %}
 
 <div class="row rtl">
- 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header ">
-                <h6>
-                    <small class="text-muted">
-                    خریدار :
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h6>
+          <small class="text-muted"> خریدار : </small>
+          {{customer.person_account.title}}
+        </h6>
+      </div>
+      <div class="card-body">
+        <h6>
+          <small class="text-muted"> خریدار : </small>
+          {{customer.person_account.title}}
+        </h6>
 
-                    </small>
-                    {{customer.person_account.title}}
+        <hr />
+        <h6 class="text-muted">منطقه ها :</h6>
+        {% for region in customer.regions.all %}
+        <h6>{{region.get_breadcrumb|safe}}</h6>
 
-                </h6>
+        {% endfor %}
 
-               
-            </div>
-            <div class="card-body">
-                <h6>
-                    <small class="text-muted">
-                    خریدار :
+        <hr />
+        <h6 class="text-muted">گروه ها :</h6>
+        {% for group in customer.groups.all %}
+        <span class="badge badge-{{group.color}}"> {{group.name}} </span>
 
-                    </small>
-                    {{customer.person_account.title}}
+        {% endfor %}
 
-                </h6>
+        <hr />
+        <h6>
+          <a href="{% url 'market:cart' customer_id=customer.id %}">سبد خرید</a>
+        </h6>
 
-<hr>
-                <h6 class="text-muted">
-                منطقه ها :
-            </h6>
-                  {% for region in customer.regions.all %}
-           <h6>
-            {{region.get_breadcrumb|safe}}
-          </h6>
-                  <h6 >
-          
-          <a href="{{region.city.get_absolute_url}}">
-            {{region.city.name}}
-          </a>
-          |
-          <a href="{{region.get_absolute_url}}">
-            {{region.name}}
+        {% if customer.person_account %}
+        <h6>
+          <small class="text-muted"> حساب : </small>
+          <a href="{{customer.person_account.get_absolute_url}}">
+            {{customer.person_account.name}}
           </a>
         </h6>
-        
-        {% endfor %}
 
+        <h6>
+          <small class="text-muted"> شخص : </small>
+          <a href="{{customer.person_account.person.get_absolute_url}}">
+            {{customer.person_account.title}}
+          </a>
+        </h6>
 
-        
-
-<hr>
-                <h6 class="text-muted">
-                گروه ها :
-            </h6>
-                  {% for group in customer.groups.all %}
-           <span class="badge badge-{{group.color}}">
-            {{group.name}}
-          </span>
-                  
-        
-        {% endfor %}
-
-
-        <hr>
-
-
-                 <h6>
-                    <small class="text-muted">
-                    سطح :
-
-                    </small>
-                    {{customer.level}}
-
-                </h6>
-<hr>
-                  <h6> 
-                    <a href="{% url 'market:cart' customer_id=customer.id %}">سبد خرید</a>
-
-                </h6>
-
-                
-                {% if customer.person_account %}
-                <h6>
-                    <small class="text-muted">
-                    حساب :
-
-                    </small>
-                    <a href="{{customer.person_account.get_absolute_url}}">
-                        {{customer.person_account.name}}
-                    </a>
-                </h6>
-
-                 <h6>
-                    <small class="text-muted">
-                    شخص :
-
-                    </small>
-                    <a href="{{customer.person_account.person.get_absolute_url}}">
-                        {{customer.person_account.title}}
-                    </a>
-                </h6>
-
-                {% endif %}
-
-                {% if perms.market.change_customer %}
-                <a href="{{customer.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
-                    <i class="fa fa-edit text-warning"></i> ویرایش
-                </a>
-                {% endif %}
-
-
-                {% if perms.market.delete_customer %}
-                <a href="{{customer.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
-                    <i class="fa fa-trash text-danger"></i> حذف
-                </a>
-                {% endif %}
-            </div>
-        </div>
+        {% endif %} {% if perms.market.change_customer %}
+        <a
+          href="{{customer.get_edit_url}}"
+          class="my-2 text-warning mx-2"
+          title="ویرایش"
+          target="_blank"
+        >
+          <i class="fa fa-edit text-warning"></i> ویرایش
+        </a>
+        {% endif %} {% if perms.market.delete_customer %}
+        <a
+          href="{{customer.get_delete_url}}"
+          class="my-2 text-danger mx-2"
+          title="ویرایش"
+          target="_blank"
+        >
+          <i class="fa fa-trash text-danger"></i> حذف
+        </a>
+        {% endif %}
+      </div>
     </div>
-    <div class="col-md-12">
-        {% include "market/includes/cart-items-app/template.html" %}
-    </div>
+  </div>
+  <div class="col-md-12">
+    {% include "market/includes/cart-items-app/template.html" %}
+  </div>
 </div>
-{% endblock content %}
-
-
-{% block script %}
-{% include "market/includes/cart-items-app/script.html" %}
-
-{% endblock script %}
+{% endblock content %} {% block script %} {% include "market/includes/cart-items-app/script.html" %} {% endblock script %}
