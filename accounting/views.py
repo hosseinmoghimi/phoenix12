@@ -553,7 +553,8 @@ def SearchContext(request,search_for,*args, **kwargs):
         context['categories_s']=json.dumps(CategorySerializer(categories,many=True).data)
         WAS_FOUND=True
 
-    context['WAS_FOUND']=WAS_FOUND
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
     return context
 
 

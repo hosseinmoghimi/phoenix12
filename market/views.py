@@ -47,6 +47,24 @@ def getContext(request,*args, **kwargs):
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
 
+
+
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+
+
+    products=ProductRepo(request=request).list(search_for=search_for)
+    if len(products)>0:
+        context['products']=products
+        context['products_s']=json.dumps(ProductSerializer(products,many=True).data)
+        WAS_FOUND=True
+
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
+    return context
+  
+
 def CartItemContext(request,customer,*args, **kwargs):
     context={}
     cart_items=CartItemRepo(request=request).list(customer_id=customer.id)

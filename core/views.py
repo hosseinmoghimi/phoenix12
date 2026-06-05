@@ -169,7 +169,8 @@ def SearchContext(request,search_for,*args, **kwargs):
         context['pages_s']=json.dumps(PageBriefSerializer(pages,many=True).data)
         WAS_FOUND=True
 
-    context['WAS_FOUND']=WAS_FOUND
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
     return context
 
 class SearchView(View):
@@ -194,7 +195,7 @@ class SearchView(View):
             app_name=search_form.cleaned_data['app_name']
             result=SUCCEED
             WAS_FOUND=False
-            SEARCH_IN_ALL_APPS=True
+            SEARCH_IN_ALL_APPS=False
 
             if app_name=='accounting' or SEARCH_IN_ALL_APPS:
                 from accounting.views import SearchContext as accounting_SearchContext
@@ -237,6 +238,12 @@ class SearchView(View):
                 if context['WAS_FOUND']:
                     WAS_FOUND=True
             
+            if app_name=='market' or SEARCH_IN_ALL_APPS:
+                from market.views import SearchContext as market_SearchContext
+                context.update(market_SearchContext(request=request,search_for=search_for))
+                if context['WAS_FOUND']:
+                    WAS_FOUND=True
+            
             if app_name=='organization' or SEARCH_IN_ALL_APPS:
                 from organization.views import SearchContext as organization_SearchContext
                 context.update(organization_SearchContext(request=request,search_for=search_for))
@@ -250,7 +257,8 @@ class SearchView(View):
         context['search_for']=search_for
         context['log']=log
         context['result']=result
-        context['WAS_FOUND']=WAS_FOUND
+        if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
         return render(request, "utility/search.html",context)
 
 class PageView(View):
