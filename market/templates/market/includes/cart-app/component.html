@@ -46,6 +46,7 @@
         <div class="text-center">
       <span class="farsi" v-text="cart_item.quantity"> </span>
         <span v-text="cart_item.shop.unit_name"> </span>
+
       </div>
     </button>
     <button
@@ -60,6 +61,9 @@
      
   </td>
 <td>
+  <div class="badge badge-danger" v-if="cart_item.shop.available<cart_item.quantity">
+    ناموجود
+  </div>
   <div>
 
     <span v-text="to_price(cart_item.shop.unit_price*(100-cart_item.shop.discount_percentage)/100)"> </span> 

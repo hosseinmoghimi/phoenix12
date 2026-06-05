@@ -481,6 +481,9 @@ class CartItemRepo():
             for cart_item in cart_items:
                 shop=Shop.objects.filter(pk=cart_item['shop_id']).first()
                 if shop.supplier.id==supplier_id:
+                    if cart_item['quantity']>shop.available:
+                        message="تعداد درخواستی از موجودی بیشتر است."
+                        return FAILED,message,None
                     invoice_line=InvoiceLine()
                     invoice_line.discount_percentage=shop.discount_percentage
                     invoice_line.invoice_id=invoice.id
@@ -489,6 +492,8 @@ class CartItemRepo():
                     invoice_line.unit_price=shop.unit_price
                     invoice_line.unit_name=shop.unit_name
                     invoice_line.save() 
+                    shop.available-=cart_item['quantity']
+                    shop.save()
                     CartItem.objects.filter(shop_id=shop.id).filter(customer_id=customer.id).delete()
         result=SUCCEED
         links=''
