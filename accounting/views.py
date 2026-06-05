@@ -917,8 +917,8 @@ class AccountsView(View):
         accounts_s=json.dumps(AccountSerializer(accounts,many=True).data)
         context['accounts_s']=accounts_s
         context.update(AddAccountContext(request=request))
-
-        context['merge_account_form']=MergeAccountForm()
+        if request.user.has_perm(APP_NAME+".delete_account"):
+            context['merge_account_form']=MergeAccountForm()
         return render(request,TEMPLATE_ROOT+"accounts.html",context)
 
 
@@ -982,7 +982,11 @@ class AccountView(View):
 
 
         if account is None:
-            raise Http404
+            title='خطا'
+            body='حساب پیدا نشد.'
+
+            mv=MessageView(title=title,body=body)
+            return mv.get(request=request)
         context.update(AccountContext(request=request,account=account))
          
 
@@ -1774,19 +1778,7 @@ class PersonAccountsView(View):
             
         return render(request,TEMPLATE_ROOT+"person-accounts.html",context)
 
-
-class PersonAccountView(View):
-    def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        person_account=PersonAccountRepo(request=request).person_account(*args, **kwargs)
-        context['person_account']=person_account
-
-        if person_account is None:
-            raise Http404
-        context.update(AccountContext(request=request,account=person_account))
-         
-        return render(request,TEMPLATE_ROOT+"person-account.html",context)
-
+ 
 
 class BankAccountsView(View):
     def get(self,request,*args, **kwargs):
@@ -1846,8 +1838,8 @@ class BankView(View):
             title='خطا'
             body='بانک مورد نظر پیدا نشد.'
             mv=MessageView(title=title,body=body)
-
             return mv.get(request=request)
+        
         context.update(BankContext(request=request,bank=bank))
         bank_accounts=BankAccountRepo(request=request).list(bank_id=bank.id)
         context['bank_accounts']=bank_accounts
@@ -1863,9 +1855,13 @@ class PersonAccountView(View):
         context=getContext(request=request)
         person_account=PersonAccountRepo(request=request).person_account(*args, **kwargs)
         context['person_account']=person_account
-
+ 
         if person_account is None:
-            raise Http404
+            title='خطا'
+            body='حساب شخص پیدا نشد.'
+            mv=MessageView(title=title,body=body)
+            return mv.get(request=request)
+        
         context.update(PersonAccountContext(request=request,person_account=person_account))
          
 

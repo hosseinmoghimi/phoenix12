@@ -980,7 +980,16 @@ class Invoice(FinancialEvent):
             super(Invoice,self).save()
         return result,message,invoice
 
-
+    def get_print_qrcode_url(self):  
+        import os
+        file_path = QRCODE_ROOT
+        file_name=self.class_name+"-print"+str(self.pk)+".svg"
+        file_address=os.path.join(QRCODE_ROOT,file_name)
+        if not os.path.exists(file_address):
+            content=FULL_SITE_URL[0:-1]+self.get_print_url()
+            generate_qrcode(content=content,file_name=file_name,file_address=file_address,file_path=file_path,)
+        return f"{QRCODE_URL}{file_name}"
+    
     def normalize(self): 
         self.tax_amount=self.lines_total*self.tax_percentage/100
         self.amount=self.lines_total+self.tax_amount+self.shipping_fee-self.discount
