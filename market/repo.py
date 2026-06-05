@@ -450,7 +450,7 @@ class CartItemRepo():
             return FAILED,"مشتری نادرست انتخاب شده است",[]
         for supplier_id in suppliers_ids:
 
-            supplier=SupplierRepo(request=self.request).supplier(pk=supplier_id)    
+            supplier=Supplier.objects.filter(pk=supplier_id).first()
             from accounting.repo import InvoiceRepo,Invoice,InvoiceLine
             from django.utils import timezone
             invoice_data={}
