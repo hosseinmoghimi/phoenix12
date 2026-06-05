@@ -93,8 +93,12 @@
               "موفق",
               data.message,
               "success",
-              10000
+              2000
             );
+            if(data.invoices.length==1){
+
+              location.href = "/accounting/invoice-print/"+data.invoices[0].id+"/"
+            }
           } else {
             show_message(
               checkout_cart_app,
