@@ -188,6 +188,8 @@ class SearchView(View):
         message=''
         log=1
         context=getContext(request=request) 
+        context['WAS_FOUND']=False
+
         search_form=SearchForm(request.POST)
         if search_form.is_valid():
             log=2
@@ -195,7 +197,7 @@ class SearchView(View):
             app_name=search_form.cleaned_data['app_name']
             result=SUCCEED
             WAS_FOUND=False
-            SEARCH_IN_ALL_APPS=False
+            SEARCH_IN_ALL_APPS=True
 
             if app_name=='accounting' or SEARCH_IN_ALL_APPS:
                 from accounting.views import SearchContext as accounting_SearchContext
@@ -235,20 +237,17 @@ class SearchView(View):
             if app_name=='attachments' or SEARCH_IN_ALL_APPS:
                 from attachments.views import SearchContext as attachments_SearchContext
                 context.update(attachments_SearchContext(request=request,search_for=search_for))
-                if context['WAS_FOUND']:
-                    WAS_FOUND=True
+                 
             
             if app_name=='market' or SEARCH_IN_ALL_APPS:
                 from market.views import SearchContext as market_SearchContext
                 context.update(market_SearchContext(request=request,search_for=search_for))
-                if context['WAS_FOUND']:
-                    WAS_FOUND=True
+                 
             
             if app_name=='organization' or SEARCH_IN_ALL_APPS:
                 from organization.views import SearchContext as organization_SearchContext
                 context.update(organization_SearchContext(request=request,search_for=search_for))
-                if context['WAS_FOUND']:
-                    WAS_FOUND=True
+                 
         
             
             

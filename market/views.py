@@ -60,8 +60,18 @@ def SearchContext(request,search_for,*args, **kwargs):
         context['products_s']=json.dumps(ProductSerializer(products,many=True).data)
         WAS_FOUND=True
 
+
+    categories=CategoryRepo(request=request).list(search_for=search_for)
+    print(categories)
+    if len(categories)>0:
+        context['categories']=categories
+        from .serializers import CategorySerializer
+        context['categories_s']=json.dumps(CategorySerializer(categories,many=True).data)
+        WAS_FOUND=True
+
+
     if WAS_FOUND:
-               context['WAS_FOUND']=WAS_FOUND
+        context['WAS_FOUND']=WAS_FOUND
     return context
   
 

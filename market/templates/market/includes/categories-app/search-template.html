@@ -1,0 +1,18 @@
+<div class="row rtl" id="categories-app">
+   
+
+    <div v-for="category in categories" class="col-lg-2 col-md-3 col-4 mb-2">
+        <div class="text-center">
+            <a :href="category.get_market_absolute_url">
+
+                <img :src="category.thumbnail" width="64" alt="">
+            </a>
+        </div>
+        <a :href="category.get_market_absolute_url">
+            <h6 v-text="category.title" class="text-center my-2">
+
+            </h6>
+        </a>
+    </div>
+ 
+</div>
