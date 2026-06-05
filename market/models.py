@@ -75,8 +75,9 @@ class Supplier(MarketPerson):
 
 
 class Shipper(MarketPerson):
+    suppliers=models.ManyToManyField("supplier", verbose_name=_("suppliers"))
+    
     class_name="shipper"
-
     class Meta:
         verbose_name = _("Shipper")
         verbose_name_plural = _("Shippers")

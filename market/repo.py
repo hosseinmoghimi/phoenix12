@@ -556,19 +556,20 @@ class SupplierRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
         self.me=None
-        self.objects=Supplier.objects
-
-        person=PersonRepo(request=request).me
-        if person is not None:
-            self.me=self.objects.filter(person_account__person_id=person.id).first()
+        self.objects=Supplier.objects.filter(pk=0)
+        me_person=PersonRepo(request=request).me
+        me_shipper=ShipperRepo(request=request).me
+        me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
+        if me_shipper is not None:
+            self.objects=me_shipper.suppliers.all()
+        if me_supplier is not None:
+            self.objects=Supplier.objects.filter(id=me_supplier.id) 
+        if request.user.has_perm(APP_NAME+".view_supplier"):
+            self.objects=Supplier.objects.all()
 
     def list(self,*args, **kwargs):
         objects=self.objects
-        pure_code="876454453342236"
-        try:
-            pure_code=int(kwargs["search_for"]) 
-        except:
-            pass
+         
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
 

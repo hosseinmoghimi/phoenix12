@@ -279,6 +279,7 @@ class PersonRepo():
             logout(request=self.request)
     def login(self,*args, **kwargs):
         request=self.request
+        url=None
         from log.repo import LogRepo
         logout(request=request)
         if 'user' in kwargs:
@@ -305,7 +306,8 @@ class PersonRepo():
                     url=person.get_absolute_url()
                     LogRepo(request=self.request).add_log(title=title,url=url,person=person,app_name=APP_NAME,description=description)
                     return (request,user)
-        LogRepo(request=self.request).add_log(title="try to login",url=url,app_name=APP_NAME,description="try to login username:"+kwargs['username']+" , password : "+kwargs['password'])
+        if url is not None:
+            LogRepo(request=self.request).add_log(title="try to login",url=url,app_name=APP_NAME,description="try to login username:"+kwargs['username']+" , password : "+kwargs['password'])
     
  
 class ClipBoardItemRepo():
