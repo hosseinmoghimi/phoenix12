@@ -482,6 +482,7 @@ class CartItemRepo():
                 shop=Shop.objects.filter(pk=cart_item['shop_id']).first()
                 if shop.supplier.id==supplier_id:
                     invoice_line=InvoiceLine()
+                    invoice_line.discount_percentage=shop.discount_percentage
                     invoice_line.invoice_id=invoice.id
                     invoice_line.invoice_line_item_id=shop.product_id
                     invoice_line.quantity=cart_item['quantity'] 
