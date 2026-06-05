@@ -32,8 +32,7 @@
             <thead>
               <th>مشتری</th>
               <th>منطقه</th>
-              <th>گروه ها</th>
-              <th>مانده</th>
+              <th>گروه ها</th> 
               <th></th>
             </thead>
             <tbody>
@@ -79,12 +78,7 @@
                 </td>
 
 
-                <td>
-                  <span
-                    v-text="to_price(customer.person_account.balance)"
-                  ></span>
-                  {{CURRENCY }}
-                </td>
+                
                 <td>
                   {% if perms.market.change_customer %}
                   <a

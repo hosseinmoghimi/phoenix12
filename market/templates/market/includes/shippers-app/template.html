@@ -32,7 +32,7 @@
             <thead>
               <th>حمل کننده</th>
               <th>منطقه</th>
-              <th>مانده</th>
+             
               <th></th>
             </thead>
             <tbody>
@@ -65,12 +65,7 @@
                   </div>
                 </td>
 
-                <td>
-                  <span
-                    v-text="to_price(shipper.person_account.balance)"
-                  ></span>
-                  {{CURRENCY }}
-                </td>
+               
                 <td>
                   {% if perms.market.change_shipper %}
                   <a
