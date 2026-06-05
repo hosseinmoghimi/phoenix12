@@ -184,22 +184,24 @@ class ProductView(View):
         context['primary_shop']=primary_shop
 
         
-        shops=ShopRepo(request=request).list(product_id=product.id)
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
-        context['shops']=shops
-        context['shops_s']=shops_s
 
 
         me_supplier=SupplierRepo(request=request).me
+        me_customer=CustomerRepo(request=request).me
+        leolog(me_customer=me_customer)
+        shops=ShopRepo(request=request).list(product_id=product.id)
+
         if me_supplier is not None:
             context.update(AddShopContext(request=request))
 
-            
-        me_customer=CustomerRepo(request=request).me
+
         if me_customer is not None:
             context['add_cart_line_form']=AddCartLineForm()
-            # context.update(AddShopContext(request=request))
-            pass
+ 
+
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['shops']=shops
+        context['shops_s']=shops_s
 
         return render(request,TEMPLATE_ROOT+"product.html",context) 
     

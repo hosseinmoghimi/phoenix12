@@ -4,7 +4,9 @@
 
     <h6 class="text-center">
       مشتری :
-      <a href="{{customer.get_absolute_url}}"> {{customer.person_account.title}} </a>
+      <a href="{{customer.get_absolute_url}}">
+        {{customer.person_account.title}}
+      </a>
     </h6>
   </div>
 
@@ -15,45 +17,45 @@
           <h5>سبد خرید شما خالی می باشد.</h5>
         </div>
         <div class="table-responsive">
+          <table class="table rtl">
+            <thead>
+              <th>ردیف</th>
 
-        <table   class="table rtl">
-          <thead>
-            <th> 
-                ردیف    
+              <th>شرح کالا</th>
 
-            </th>
-            
-            <th>
-              
-              شرح کالا
-            </th>
+              <th>تعداد</th>
+              <th>مبلغ جزء</th>
 
-            <th>
-              تعداد
-            </th> 
-            <th>
-              مبلغ جزء
-            </th>
-            
-            <th>
-              جمع
-            </th>
-            <th>
-              
-            </th>
-          </thead>
+              <th>جمع</th>
+              <th></th>
+            </thead>
             <tbody>
-                <template v-for="cart_item in cart_items" >
-                    <cart-item-component :cart_item="cart_item"> </cart-item-component>
-                </template>
+              <template v-for="cart_item in cart_items">
+                <cart-item-component :cart_item="cart_item">
+                </cart-item-component>
+              </template>
             </tbody>
-        </table>
+            <tfoot>
+              <th colspan="4">
+                <h6 class="text-left">
+                  <small class="text-muted">
+
+                    جمع کل :
+                  </small>
+                </h6>
+              </th>
+
+              <th>
+                <span v-text="cart_total()"></span>
+                <small class="text-muted"> {{CURRENCY}} </small>
+              </th>
+            </tfoot>
+          </table>
         </div>
-      
       </div>
     </div>
   </div>
-  <div class="col-md-12"  v-if="cart_items.length>0">
+  <div class="col-md-12" v-if="cart_items.length>0">
     <div class="card">
       <div class="card-body">
         <div class="row rtl">
