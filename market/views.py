@@ -62,7 +62,6 @@ def SearchContext(request,search_for,*args, **kwargs):
 
 
     categories=CategoryRepo(request=request).list(search_for=search_for)
-    print(categories)
     if len(categories)>0:
         context['categories']=categories
         from .serializers import CategorySerializer
@@ -190,9 +189,7 @@ class CategoryView(View):
                 product.available=True
                 product.unit_name=primary_shop.unit_name
                 product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
-            # print(product.available)
-            # print(product.default_unit_name)
-            # print(product.default_unit_price)
+           
         context['products']=products
         products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
         context['products_s']=products_s
@@ -216,7 +213,6 @@ class ProductView(View):
 
         me_supplier=SupplierRepo(request=request).me
         me_customer=CustomerRepo(request=request).me
-        leolog(me_customer=me_customer)
         shops=ShopRepo(request=request).list(product_id=product.id)
 
         if me_supplier is not None:
