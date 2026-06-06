@@ -4,9 +4,18 @@
         <h4>
             فروشنده ها
         </h4>
+        {% if me_customer %}
+          <div>
+            <a class="btn btn-info" href="{% url 'market:cart' customer_id=me_customer.id %}">
+                <i class="fa fa-shopping-basket ml-2"></i>
+                سبد خرید
+            </a>
+          </div>
+        {% endif %}
         <div>
             {% include "utility/includes/message-app/alert.html" %}
         </div>
+
         <product-shop-component v-for="shop in shops" :shop="shop">
         </product-shop-component>
     </div>
