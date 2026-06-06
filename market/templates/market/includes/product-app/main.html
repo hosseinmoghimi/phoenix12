@@ -1,41 +1,62 @@
 <div class="card">
-    <div class="card-body">
-
-        <div class="row rtl">
-            <div class="col-lg-4 col-md-6">
-                <a href="{{product.thumbnail}}">
-
-                    <img class="rounded" src="{{product.thumbnail}}" width="100%" alt="">
-                </a>
+    {% load static %}
+  <div class="card-body">
+    <div class="row rtl">
+      <div class="col-lg-4 col-md-6">
+        <a href="{{product.thumbnail}}">
+          <img
+            class="rounded"
+            src="{{product.thumbnail}}"
+            width="100%"
+            alt=""
+          />
+        </a>
+      </div>
+      <div class="col-lg-8 col-md-6">
+        <h2 class="text-right">{{product.title}}</h2>
+        <div class="media">
+          <a href="{{product.get_market_absolute_url}}">
+            <img src="{{product.get_market_qrcode_url}}" width="96" alt="" />
+          </a>
+          <div class="media-body mr-2">
+            <div class="text-right">
+              <div>
+                {% include "attachments/includes/page-like-app/template.html" %}
+              </div>
             </div>
-            <div class="col-lg-8 col-md-6">
-                <h2 class="text-right">
-                    {{product.title}}
-                </h2>
-<div class="media">
-    <a href="{{product.get_market_absolute_url}}">
 
-        <img src="{{product.get_market_qrcode_url}}" width="96"  alt="">
-    </a>
-    <div class="media-body mr-2">
-  <div class="text-right">
-                    <div>{% include "attachments/includes/page-like-app/template.html" %}</div>
-
-                </div>
-                
-                <div class="text-right">
-                    <div>{% include "market/includes/product-app/main-shop.html" %}</div>
-
-                </div>
-    </div>
-</div>
-              
-                {% if product.short_description %}
-                  <div class="rtl text-right">
-                    {{product.short_description|safe}}
-                  </div>
-                {% endif %}
+            <div class="text-right">
+              <div>
+                {% include "market/includes/product-app/main-shop.html" %}
+              </div>
             </div>
+
+            <div class="my-2">
+              <form
+                action="https://www.google.com/search"
+                method="get"
+                target="_blank"
+                id="search-form"
+              >
+                <input name="q" type="hidden" value="{{product.title}}" />
+                <button type="submit" class="btn btn-link p-0">
+                  <img
+                    src="{% static 'img/icons/google.png' %}"
+                    width="32"
+                    alt=""
+                  />
+
+                  جستجوی گوگل
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
+
+        {% if product.short_description %}
+        <div class="rtl text-right">{{product.short_description|safe}}</div>
+        {% endif %}
+      </div>
     </div>
+  </div>
 </div>
