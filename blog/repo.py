@@ -39,11 +39,7 @@ class BlogRepo(Repo):
         self.my_accounts=[]
         self.request=request
         self.objects=Blog.objects.filter(id=0)
-        profile=PersonRepo(request=request).me
-        if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_account"):
-                self.objects=Blog.objects
-                self.my_accounts=self.objects
+        self.objects=Blog.objects
                 
     def list(self,*args, **kwargs):
         objects=self.objects
