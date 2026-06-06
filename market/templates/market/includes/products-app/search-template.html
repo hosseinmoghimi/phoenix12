@@ -1,0 +1,67 @@
+<div id="products-app">
+
+
+    <div class="my-2 rtl text-right">
+        <input type="text" class="form-control text-info" placeholder="جستجو ..." v-model="search_for" @input="filter()">
+    </div> 
+    <div class="row rtl">
+
+        <div class="col-lg-3 col-md-4 col-6" v-for="product in products">
+            <div class="card mb-3">
+                <div class="card-body  text-center">
+
+                    <a :href="product.get_market_absolute_url" style="text-decoration: none;">
+                        <img :src="product.thumbnail" width="128" class="rounded" alt="">
+                        <div>
+                            <h5 class=" text-center" v-text="product.title"></h5>
+
+
+                        </div>
+
+                    </a> 
+                      <span  v-if="product.available" class=" text-success text-center">
+                        هر
+                        <span v-text="product.unit_name"> </span>
+                       {% if SHOW_TUMAN %}
+                          <span v-text="to_price_tuman(product.unit_price)" :title="to_price(product.unit_price)+`{{CURRENCY}}`"></span>
+                        {{CURRENCY_TUMAN}}
+                    </span> 
+                       {% else %}
+ <span v-text="to_price(product.unit_price)"  :title="to_price_tuman(product.unit_price)+`{{CURRENCY_TUMAN}}`"></span>
+                        {{CURRENCY}}
+                    </span> 
+                       {% endif %}
+                       
+                    <span  v-else class="text-danger text-center">
+                        ناموجود
+
+                    </span>
+                        
+                   
+                    
+                    <div class="text-center">
+
+                        {% if perms.accounting.change_product %}
+                        <a :href="product.get_edit_url" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+                            <i class="fa fa-edit text-warning"></i>
+                        </a>
+                        {% endif %}
+                        {% if perms.accounting.delete_product %}
+                        <a :href="product.get_delete_url" class="my-2 text-danger mx-2" title="حذف" target="_blank">
+                            <i class="fa fa-trash text-danger"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+
+
+    </div>
+</div>

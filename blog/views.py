@@ -25,6 +25,27 @@ def getContext(request,*args, **kwargs):
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
 
+
+
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+    
+
+    blogs=BlogRepo(request=request).list(search_for=search_for)
+    if len(blogs)>0:
+        context['blogs']=blogs
+        context['blogs_s']=json.dumps(BlogSerializer(blogs,many=True).data)
+        WAS_FOUND=True
+
+ 
+
+
+    context['WAS_FOUND']=WAS_FOUND
+    return context
+
+
+
  
  
 class IndexView(View):

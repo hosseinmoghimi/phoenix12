@@ -46,6 +46,7 @@
         <div class="text-center">
       <span class="farsi" v-text="cart_item.quantity"> </span>
         <span v-text="cart_item.shop.unit_name"> </span>
+
       </div>
     </button>
     <button
@@ -60,11 +61,26 @@
      
   </td>
 <td>
-    <span v-text="to_price(cart_item.shop.unit_price)"> </span> 
+  <div class="badge badge-danger" v-if="cart_item.shop.available<cart_item.quantity">
+    ناموجود
+  </div>
+  <div>
+
+    <span v-text="to_price(cart_item.shop.unit_price*(100-cart_item.shop.discount_percentage)/100)"> </span> 
+  </div>
+  <div v-if="cart_item.shop.discount_percentage>0">
+    
+        <span v-text="to_price(cart_item.shop.unit_price)" class="text-danger" style="text-decoration: line-through;"> </span> 
+ <span class="text-success mr-2" v-text="cart_item.shop.discount_percentage"></span> 
+ <span class="text-success">
+
+   %
+ </span>
+      </div>  
   
 </td>
 <td>
-  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity)"></span> 
+  <span v-text="to_price(cart_item.shop.unit_price*cart_item.quantity*(100-cart_item.shop.discount_percentage)/100)"></span> 
   <small class="text-muted">
     {{CURRENCY}}
 

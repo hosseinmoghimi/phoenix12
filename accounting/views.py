@@ -553,7 +553,8 @@ def SearchContext(request,search_for,*args, **kwargs):
         context['categories_s']=json.dumps(CategorySerializer(categories,many=True).data)
         WAS_FOUND=True
 
-    context['WAS_FOUND']=WAS_FOUND
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
     return context
 
 
@@ -1297,6 +1298,7 @@ class ExportToExcelView(View):
         now=PersianCalendar().date
         date=PersianCalendar().from_gregorian(now)
 
+        
         
         report_work_book=ReportWorkBook(origin_file_name=f'accounting.xlsx')
         style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')

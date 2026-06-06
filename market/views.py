@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from utility.constants import INDEX_FOR_ALL_CHOICES
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from accounting.views import ProductRepo,PersonAccountRepo,AddPersonAccountContext,PersonAccountSerializer
 from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSerializer,SupplierSerializer,ShopSerializer
@@ -46,6 +47,33 @@ def getContext(request,*args, **kwargs):
         context['SHOW_TUMAN']=True
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
+
+
+
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+
+
+    products=ProductRepo(request=request).list(search_for=search_for)
+    if len(products)>0:
+        context['products']=products
+        context['products_s']=json.dumps(ProductSerializer(products,many=True).data)
+        WAS_FOUND=True
+
+
+    categories=CategoryRepo(request=request).list(search_for=search_for)
+    if len(categories)>0:
+        context['categories']=categories
+        from .serializers import CategorySerializer
+        context['categories_s']=json.dumps(CategorySerializer(categories,many=True).data)
+        WAS_FOUND=True
+
+
+    if WAS_FOUND:
+        context['WAS_FOUND']=WAS_FOUND
+    return context
+  
 
 def CartItemContext(request,customer,*args, **kwargs):
     context={}
@@ -162,9 +190,7 @@ class CategoryView(View):
                 product.available=True
                 product.unit_name=primary_shop.unit_name
                 product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
-            # print(product.available)
-            # print(product.default_unit_name)
-            # print(product.default_unit_price)
+           
         context['products']=products
         products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
         context['products_s']=products_s
@@ -184,26 +210,152 @@ class ProductView(View):
         context['primary_shop']=primary_shop
 
         
+
+
+        me_supplier=SupplierRepo(request=request).me
+        me_customer=CustomerRepo(request=request).me
         shops=ShopRepo(request=request).list(product_id=product.id)
+
+        if me_supplier is not None:
+            context.update(AddShopContext(request=request))
+
+
+        if me_customer is not None:
+            context['add_cart_line_form']=AddCartLineForm()
+ 
+
         shops_s=json.dumps(ShopSerializer(shops,many=True).data)
         context['shops']=shops
         context['shops_s']=shops_s
 
-
-        me_supplier=SupplierRepo(request=request).me
-        if me_supplier is not None:
-            context.update(AddShopContext(request=request))
-
-            
-        me_customer=CustomerRepo(request=request).me
-        if me_customer is not None:
-            context['add_cart_line_form']=AddCartLineForm()
-            # context.update(AddShopContext(request=request))
-            pass
-
         return render(request,TEMPLATE_ROOT+"product.html",context) 
     
+class ShopsView(View):
+   def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        shops =ShopRepo(request=request).list(*args, **kwargs)
+        context['shops']=shops
+         
+
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['shops']=shops
+        context['shops_s']=shops_s
+
+        if request.user.has_perm(APP_NAME+".add_shop"):
+            context['add_shops_form']=AddShopsForm()
+            context['suppliers']=SupplierRepo(request=request).list()
+            context['groups']=CustomerGroupRepo(request=request).list()
+            context['regions']=RegionRepo(request=request).list()
+
+        return render(request,TEMPLATE_ROOT+"shops.html",context) 
+     
+
+class ExportShopsToExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        ExportShopsToExcelForm_=ExportShopsToExcelForm(request.POST)
+        if ExportShopsToExcelForm_.is_valid():
+            cd=ExportShopsToExcelForm_.cleaned_data
+            choices={}
+            if not cd['group_id']==INDEX_FOR_ALL_CHOICES:
+                choices['group_id']=cd['group_id']
+
+            if not cd['region_id']==INDEX_FOR_ALL_CHOICES:
+                choices['region_id']=cd['region_id'] 
+
+            if not cd['supplier_id']==INDEX_FOR_ALL_CHOICES:
+                choices['supplier_id']=cd['supplier_id']
+                
+            shops=ShopRepo(request=request).list(**choices)
+            return export_to_excel(request=request,shops=shops,EXPORT_SHOPS=True)
     
+
+def export_to_excel(request,*args, **kwargs):
+    now=PersianCalendar().date
+    date=PersianCalendar().from_gregorian(now)
+    EXPORT_SHOPS=False
+    if 'EXPORT_SHOPS' in kwargs:
+        EXPORT_SHOPS=kwargs['EXPORT_SHOPS']
+
+        
+    shops=[]
+    if 'shops' in kwargs:
+        shops=kwargs['shops']
+
+
+
+    if EXPORT_SHOPS:
+        lines=[]
+        for i,shop in enumerate(shops,start=1):
+            line={
+                'row':i,
+                'id':shop.id,
+                'supplier_id':shop.supplier.id,
+                'supplier':shop.supplier.person_account.title,
+                'product_id':shop.product.id,
+                'product_barcode':shop.product.barcode,
+                'product':shop.product.title,
+                'group_id':shop.group.id,
+                'group':shop.group.name,
+                'region_id':shop.region.id,
+                'region':shop.region.full_name,
+                'quantity':shop.quantity,
+                'unit_name':shop.unit_name,
+                'discount_percentage':shop.discount_percentage,
+                'unit_price':shop.unit_price,
+                'start_date':PersianCalendar().from_gregorian(shop.start_date),
+                'end_date':PersianCalendar().from_gregorian(shop.end_date),
+            }
+            lines.append(line)
+        headers=['ردیف',
+                'شناسه',
+                'کد فروشنده',
+                'فروشنده',
+                'کد کالا',
+                'بارکد کالا',
+                'کالا',
+                'کد گروه',
+                'گروه',
+                'کد منطقه',
+                'منطقه',
+                'تعداد',
+                'واحد',
+                'درصد تخفیف',
+                'قیمت جزء',
+                'تاریخ شروع',
+                'تاریخ پایان',
+        ]
+        
+        from .constants import EXCEL_SHOPS_DATA_START_ROW
+        start_row=EXCEL_SHOPS_DATA_START_ROW
+        if start_row>2:
+            start_row-=1
+        
+        
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'market.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='shops',
+            title='shops',
+        )
+        
+    file_name=f"""Phoenix market {date.replace('/','').replace(':','')}.xlsx"""
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+    response["Content-disposition"]=f"attachment; filename={file_name}"
+    report_work_book.work_book.save(response)
+    report_work_book.work_book.close()
+    return response
+    
+     
 class SuppliersView(View):
     def get(self,request,*args,**kwargs):
         context=getContext(request=request)

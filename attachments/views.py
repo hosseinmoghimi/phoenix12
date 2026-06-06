@@ -225,7 +225,8 @@ def SearchContext(request,search_for,*args, **kwargs):
 
           
 
-    context['WAS_FOUND']=WAS_FOUND
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
     return context
   
       

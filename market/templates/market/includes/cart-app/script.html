@@ -67,6 +67,23 @@
       cart_item_component,
     },
     methods: {
+      cart_total:function(){
+        let sum=0
+        this.cart_items.forEach(cart_item => {
+          sum+=cart_item.quantity*cart_item.shop.unit_price*(100-cart_item.shop.discount_percentage)/100
+          
+        });
+        return to_price(sum)
+      },
+
+      discount_total:function(){
+        let sum=0
+        this.cart_items.forEach(cart_item => {
+          sum+=cart_item.quantity*cart_item.shop.unit_price*(cart_item.shop.discount_percentage)/100
+          
+        });
+        return to_price(sum)
+      },
       to_price: (vv) => to_price(vv),
       checkout_cart: function () {
         let cart_items=[]

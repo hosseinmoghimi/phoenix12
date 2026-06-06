@@ -63,7 +63,7 @@
 
     {% if products %}
     <div class="col-md-12">
-        {% include "accounting/includes/products-app/list-template.html" %}
+        {% include "market/includes/products-app/search-template.html" %}
     </div>
     {% endif %}
 
@@ -80,7 +80,7 @@
     {% if categories %}
     <div class="col-md-12">
 
-        {% include "accounting/includes/categories-app/list-template.html" %}
+        {% include "market/includes/categories-app/search-template.html" %}
 
     </div>
     {% endif %}
@@ -141,6 +141,15 @@
     
         {% endif %}
 
+        
+  {% if blogs %}
+              <div class="col-md-12 ">
+        {% include "blog/includes/blogs-app/search-template.html" %}
+    </div>
+    
+        {% endif %}
+
+
 
         
   {% if images %}
@@ -182,12 +191,12 @@
         {% endif %}
 
 {% if products %}
-    {% include "accounting/includes/products-app/list-script.html" %}
+    {% include "market/includes/products-app/search-script.html" %}
 {% endif %}
 
 
 {% if categories %}
-    {% include "accounting/includes/categories-app/list-script.html" %}
+    {% include "market/includes/categories-app/search-script.html" %}
 {% endif %}
 
 {% if services %}
@@ -238,6 +247,10 @@
         
         {% endif %}
 
+  {% if blogs %}
+        {% include "blog/includes/blogs-app/search-script.html" %}
+    
+        {% endif %}
         
     {% if tags %}
         {% include "attachments/includes/tags-app/script.html" %}

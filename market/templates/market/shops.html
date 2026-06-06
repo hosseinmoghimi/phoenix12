@@ -2,6 +2,12 @@
 {% block content %}
 <div class="row rtl farsi">
      
+ {% if add_shops_form %}
+
+    <div class="col-md-12 ">
+        {% include "market/includes/add-shops-app/template.html" %}
+    </div>
+    {% endif %}
 
     <div class="col-md-12 ">
         {% include "market/includes/shops-app/template.html" %}
@@ -11,13 +17,11 @@
 {% endblock content %}
 
 {% block script %}
-<script>
-    
-   
-    
 
-</script> 
 
 {% include "market/includes/shops-app/script.html" %}
+ {% if add_shops_form %}
 
+        {% include "market/includes/add-shops-app/script.html" %}
+    {% endif %}
 {% endblock script %}

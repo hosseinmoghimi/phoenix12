@@ -13,6 +13,7 @@ from utility.calendar import PersianCalendar
 from utility.log import leolog
 from utility.views import MessageView
 from django.utils import timezone
+from utility.constants import INDEX_FOR_ALL_CHOICES
 import json
 from .repo import PageRepo,FAILED,SUCCEED
 from .serializers import PageSerializer,PageBriefSerializer,EventSerializer
@@ -25,6 +26,7 @@ NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
 def CoreContext(request,*args, **kwargs):
     context={}
+    context['INDEX_FOR_ALL_CHOICES']=INDEX_FOR_ALL_CHOICES
     app_name='core'
     if 'app_name' in kwargs:
         app_name=kwargs['app_name']
@@ -169,7 +171,8 @@ def SearchContext(request,search_for,*args, **kwargs):
         context['pages_s']=json.dumps(PageBriefSerializer(pages,many=True).data)
         WAS_FOUND=True
 
-    context['WAS_FOUND']=WAS_FOUND
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
     return context
 
 class SearchView(View):
@@ -187,6 +190,8 @@ class SearchView(View):
         message=''
         log=1
         context=getContext(request=request) 
+        context['WAS_FOUND']=False
+
         search_form=SearchForm(request.POST)
         if search_form.is_valid():
             log=2
@@ -234,14 +239,23 @@ class SearchView(View):
             if app_name=='attachments' or SEARCH_IN_ALL_APPS:
                 from attachments.views import SearchContext as attachments_SearchContext
                 context.update(attachments_SearchContext(request=request,search_for=search_for))
-                if context['WAS_FOUND']:
-                    WAS_FOUND=True
+                 
+            
+            if app_name=='market' or SEARCH_IN_ALL_APPS:
+                from market.views import SearchContext as market_SearchContext
+                context.update(market_SearchContext(request=request,search_for=search_for))
+                 
             
             if app_name=='organization' or SEARCH_IN_ALL_APPS:
                 from organization.views import SearchContext as organization_SearchContext
                 context.update(organization_SearchContext(request=request,search_for=search_for))
-                if context['WAS_FOUND']:
-                    WAS_FOUND=True
+                 
+        
+            
+            if app_name=='blog' or SEARCH_IN_ALL_APPS:
+                from blog.views import SearchContext as blog_SearchContext
+                context.update(blog_SearchContext(request=request,search_for=search_for))
+                 
         
             
             
@@ -250,7 +264,8 @@ class SearchView(View):
         context['search_for']=search_for
         context['log']=log
         context['result']=result
-        context['WAS_FOUND']=WAS_FOUND
+        if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
         return render(request, "utility/search.html",context)
 
 class PageView(View):

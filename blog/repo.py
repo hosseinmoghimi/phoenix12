@@ -38,18 +38,14 @@ class BlogRepo(Repo):
         self.me=None
         self.my_accounts=[]
         self.request=request
-        self.objects=Blog.objects.filter(id=0)
-        profile=PersonRepo(request=request).me
-        if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_account"):
-                self.objects=Blog.objects
-                self.my_accounts=self.objects
+        # self.objects=Blog.objects.filter(id=0)
+        self.objects=Blog.objects
                 
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(title__contains=search_for)   )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  

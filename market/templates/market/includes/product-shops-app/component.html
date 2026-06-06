@@ -33,17 +33,25 @@
       </div>
     </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 pt-2">
       <h6 v-if="shop.discount_percentage>0">
         با
         <span v-text="shop.discount_percentage"></span>
         % تخفیف
-
-        <span
+{% if SHOW_TUMAN %}
+    <span
+          style="text-decoration: line-through"
+          v-text="to_price_tuman(shop.unit_price)"
+        ></span>
+        {{CURRENCY_TUMAN}}
+{% else %}
+  <span
           style="text-decoration: line-through"
           v-text="to_price(shop.unit_price)"
         ></span>
         {{CURRENCY}}
+{% endif %}
+      
       </h6>
       <h6>
         از
@@ -55,11 +63,16 @@
           <span v-text="shop.persian_end_date"></span>
         </small>
       </h6>
-      <div class="badge badge-success">
+      <div v-if="shop.available>0" class="badge badge-success">
         <span v-text="shop.available"></span>
         <span v-text="shop.unit_name"></span>
         موجود است
       </div>
+
+      <div v-else class="badge badge-danger">
+        ناموجود  
+      </div>
+
     </div>
     <div class="col-md-2">
  <div>
@@ -73,15 +86,24 @@
           </div>
     </div>
     <div class="col-md-3">
-      <h6>
+      <div v-if="shop.available>0">
+ <h6>
         هر
         <span v-text="shop.unit_name"></span>
       </h6>
       <h5 class="text-danger">
-        <span
+        {% if SHOW_TUMAN %}
+           <span
+          v-text="to_price_tuman(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
+        ></span>
+        {{CURRENCY_TUMAN}}
+        {% else %}
+         <span
           v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
         ></span>
         {{CURRENCY}}
+        {% endif %}
+       
       </h5>
       {% if add_cart_line_form %}
 
@@ -90,6 +112,13 @@
       </button>
 
       {% endif %}
+      </div>
+      <div v-else>
+<button class="btn btn-danger" >
+        <h5 class="text-center">ناموجود</h5>
+      </button>
+      </div>
+     
       <div>
         {% if perms.market.change_shop %}
         <a target="_blank" :href="shop.get_edit_url" title="ویرایش" class="mx-2">

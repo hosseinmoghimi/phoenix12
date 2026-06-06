@@ -2,21 +2,37 @@
 <button class="btn btn-danger">
   هر {{primary_shop.unit_name}} {% if primary_shop.value %}
   <span style="text-decoration: line-through" class="mx-2">
-    {% if SHOW_TUMAN %} {{primary_shop.unit_price|to_price_tuman}} {% else %}
-    {{primary_shop.unit_price|to_price}} {% endif %}
+    {% if SHOW_TUMAN %}
+     {{primary_shop.unit_price|to_price_tuman}} 
+ 
+    {% else %}
+    {{primary_shop.unit_price|to_price}} 
+ 
+    {% endif %}
   </span>
   <span>
-    {% if SHOW_TUMAN %} {{primary_shop.value|to_price_tuman}} {% else %}
-    {{primary_shop.value|to_price}} {% endif %}
+    {% if SHOW_TUMAN %} {{primary_shop.value|to_price_tuman}} 
+    {{CURRENCY_TUMAN}}
+    
+    {% else %}
+    {{primary_shop.value|to_price}}
+    {{CURRENCY}}
+    
+    {% endif %}
   </span>
 
   {% else %}
   <span>
-    {% if SHOW_TUMAN %} {{primary_shop.unit_price|to_price_tuman}} {% else %}
-    {{primary_shop.unit_price|to_price}} {% endif %}
+    {% if SHOW_TUMAN %} 
+    {{primary_shop.unit_price|to_price_tuman}}
+    {{CURRENCY_TUMAN}}
+     {% else %}
+    {{primary_shop.unit_price|to_price}}
+    {{CURRENCY}}
+     {% endif %}
   </span>
 
-  {% endif %} {{CURRENCY}}
+  {% endif %}
 </button>
 {% else %}
 <div class="my-3 Showcase_no_seller__M8XOL">

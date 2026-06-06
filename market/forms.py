@@ -20,6 +20,24 @@ class AddShopForm(forms.Form):
     menu_title=forms.CharField(max_length=100, required=False)
     start_date=forms.CharField(max_length=100, required=False)
     end_date=forms.CharField(max_length=100, required=False)
+     
+class ImportShopFromExcelForm(forms.Form): 
+    count=forms.IntegerField(required=True)
+
+     
+class AddShopsForm(forms.Form): 
+    group_id=forms.IntegerField(required=True)
+    shops=forms.CharField(max_length=5000, required=True)
+    region_id=forms.IntegerField(required=True)
+    supplier_id=forms.IntegerField(required=False)
+    start_date=forms.CharField(max_length=100, required=False)
+    end_date=forms.CharField(max_length=100, required=False)
+    
+
+class ExportShopsToExcelForm(forms.Form): 
+    supplier_id=forms.IntegerField(required=True)
+    region_id=forms.IntegerField(required=True)
+    group_id=forms.IntegerField(required=True)
     
 class CheckoutCartForm(forms.Form):
     address=forms.CharField(max_length=100, required=True)
