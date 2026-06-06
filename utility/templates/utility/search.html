@@ -141,6 +141,15 @@
     
         {% endif %}
 
+        
+  {% if blogs %}
+              <div class="col-md-12 ">
+        {% include "blog/includes/blogs-app/search-template.html" %}
+    </div>
+    
+        {% endif %}
+
+
 
         
   {% if images %}
@@ -238,6 +247,10 @@
         
         {% endif %}
 
+  {% if blogs %}
+        {% include "blog/includes/blogs-app/search-script.html" %}
+    
+        {% endif %}
         
     {% if tags %}
         {% include "attachments/includes/tags-app/script.html" %}

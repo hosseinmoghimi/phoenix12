@@ -1,0 +1,12 @@
+<script>
+    const all_blogs = JSON.parse(`{{blogs_s|escapejs}}`)
+
+    let blogs_app=new Vue({
+        el:"#blogs-app",
+        data:{
+            blogs:all_blogs,
+        },
+        methods:{
+        }
+    })
+</script>

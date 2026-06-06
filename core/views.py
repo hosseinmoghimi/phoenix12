@@ -250,6 +250,12 @@ class SearchView(View):
                  
         
             
+            if app_name=='blog' or SEARCH_IN_ALL_APPS:
+                from blog.views import SearchContext as blog_SearchContext
+                context.update(blog_SearchContext(request=request,search_for=search_for))
+                 
+        
+            
             
              
         context['message']=message
