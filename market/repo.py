@@ -98,7 +98,6 @@ class ShopRepo():
             for group in me_customer.groups.all():
                 groups_ids.append(group.id)
             self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
-            leolog(objects=self.objects)
         elif me_supplier is not None: 
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
         
