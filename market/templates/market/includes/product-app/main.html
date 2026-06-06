@@ -31,6 +31,16 @@
               </div>
             </div>
 
+            {% if product.barcode %}
+              
+            <div class="text-right">
+                <div>
+                    بارکد :
+                    {{product.barcode}}
+                </div>
+            </div>
+            {% endif %}
+
             <div class="my-2">
               <form
                 action="https://www.google.com/search"

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from utility.constants import INDEX_FOR_ALL_CHOICES
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from accounting.views import ProductRepo,PersonAccountRepo,AddPersonAccountContext,PersonAccountSerializer
 from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSerializer,SupplierSerializer,ShopSerializer
@@ -240,20 +241,14 @@ class ShopsView(View):
         context['shops']=shops
         context['shops_s']=shops_s
 
-        return render(request,TEMPLATE_ROOT+"shops.html",context) 
-    
-       
-class AddShopsView(View):
-    def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-          
         if request.user.has_perm(APP_NAME+".add_shop"):
             context['add_shops_form']=AddShopsForm()
             context['suppliers']=SupplierRepo(request=request).list()
             context['groups']=CustomerGroupRepo(request=request).list()
             context['regions']=RegionRepo(request=request).list()
-        return render(request,TEMPLATE_ROOT+"add-shops.html",context) 
-    
+
+        return render(request,TEMPLATE_ROOT+"shops.html",context) 
+     
 
 class ExportShopsToExcelView(View):
     def post(self,request,*args, **kwargs):
@@ -261,10 +256,17 @@ class ExportShopsToExcelView(View):
         ExportShopsToExcelForm_=ExportShopsToExcelForm(request.POST)
         if ExportShopsToExcelForm_.is_valid():
             cd=ExportShopsToExcelForm_.cleaned_data
-            supplier_id=cd['supplier_id']
-            group_id=cd['group_id']
-            region_id=cd['region_id'] 
-            shops=ShopRepo(request=request).list(supplier_id=supplier_id,group_id=group_id,region_id=region_id)
+            choices={}
+            if not cd['group_id']==INDEX_FOR_ALL_CHOICES:
+                choices['group_id']=cd['group_id']
+
+            if not cd['region_id']==INDEX_FOR_ALL_CHOICES:
+                choices['region_id']=cd['region_id'] 
+
+            if not cd['supplier_id']==INDEX_FOR_ALL_CHOICES:
+                choices['supplier_id']=cd['supplier_id']
+                
+            shops=ShopRepo(request=request).list(**choices)
             return export_to_excel(request=request,shops=shops,EXPORT_SHOPS=True)
     
 

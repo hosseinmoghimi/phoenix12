@@ -7,3 +7,4 @@ MY_LINKS_LENGTH=10
 PRICE_GROUP_NAME='نمیش قیمت کالا ها'
 QUANTITY_GROUP_NAME='نمایش تعداد کالا ها'
 BALANCE_GROUP_NAME='نمایش مانده حساب ها'
+INDEX_FOR_ALL_CHOICES=-500

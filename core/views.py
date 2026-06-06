@@ -13,6 +13,7 @@ from utility.calendar import PersianCalendar
 from utility.log import leolog
 from utility.views import MessageView
 from django.utils import timezone
+from utility.constants import INDEX_FOR_ALL_CHOICES
 import json
 from .repo import PageRepo,FAILED,SUCCEED
 from .serializers import PageSerializer,PageBriefSerializer,EventSerializer
@@ -25,6 +26,7 @@ NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
 def CoreContext(request,*args, **kwargs):
     context={}
+    context['INDEX_FOR_ALL_CHOICES']=INDEX_FOR_ALL_CHOICES
     app_name='core'
     if 'app_name' in kwargs:
         app_name=kwargs['app_name']

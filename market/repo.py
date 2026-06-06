@@ -255,11 +255,11 @@ class ShopRepo():
         for shop in shops_to_import:
             from accounting.repo import ProductRepo
             from utility.repo import RegionRepo
-            product=ProductRepo(request=self.request).product(barcode=shop["product_barcode"])
+            product=ProductRepo(request=self.request).product(barcode=shop["product_barcode"],product_id=shop['product_id'])
             supplier=SupplierRepo(request=self.request).supplier(supplier_id=shop["supplier_id"])
             region=RegionRepo(request=self.request).region(region_id=shop["region_id"])
             group=CustomerGroupRepo(request=self.request).customer_group(customer_group_id=shop["group_id"])
-
+            Shop.objects.filter(supplier_id=supplier.id).filter(product_id=product.id).filter(region_id=region.id).filter(group_id=group.id).delete()
             result,message,new_shop=self.add_shop(
                 product_id=product.id,
                 supplier_id=supplier.id,

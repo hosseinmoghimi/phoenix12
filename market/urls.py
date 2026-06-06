@@ -8,7 +8,6 @@ urlpatterns = [
     path('settings/',login_required(views.IndexView.as_view()),name="settings"),
     path('shops/',login_required(views.ShopsView.as_view()),name="shops"),
     path('products/',login_required(views.ProductsView.as_view()),name="products"),
-    path('add-shops/',login_required(views.AddShopsView.as_view()),name="add_shops"),
     path('export-shops-to-excel/',login_required(views.ExportShopsToExcelView.as_view()),name="export_shops_to_excel"),
     path('import-shops-to-excel/',login_required(apis.ImportShopsFromExcelApi.as_view()),name="import_shops_from_excel"),
     path('cart/<int:customer_id>/',login_required(views.CartView.as_view()),name="cart"), 
