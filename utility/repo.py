@@ -175,3 +175,12 @@ class RegionRepo():
         objects=self.objects
         return objects.all()
      
+
+    def region(self,*args, **kwargs):
+        if 'region_id' in kwargs:
+            return Region.objects.filter(pk=kwargs['region_id']).first()
+        if 'id' in kwargs:
+            return Region.objects.filter(pk=kwargs['id']).first()
+        if 'pk' in kwargs:
+            return Region.objects.filter(pk=kwargs['pk']).first()
+     

@@ -13,7 +13,7 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from authentication.repo import PersonRepo
 from accounting.repo import PersonCategoryEnum
-
+from .constants import EXCEL_SHOPS_DATA_START_ROW
 
 class ShopPackageRepo():
     def __init__(self,request,*args, **kwargs):
@@ -124,6 +124,12 @@ class ShopRepo():
         if "product_id" in kwargs:
             product_id=kwargs["product_id"]
             objects=objects.filter(product_id=product_id)
+        if "region_id" in kwargs:
+            region_id=kwargs["region_id"]
+            objects=objects.filter(region_id=region_id)
+        if "group_id" in kwargs:
+            group_id=kwargs["group_id"]
+            objects=objects.filter(group_id=group_id)
           
         return objects.all()
         
@@ -139,12 +145,17 @@ class ShopRepo():
         result,message,shop=FAILED,"",None
         
         me_supplier=SupplierRepo(request=self.request).me
+
         if me_supplier is None:
-            if not self.request.user.has_perm(APP_NAME+".add_shop"):
+            if self.request.user.has_perm(APP_NAME+".add_shop"):
+                if 'supplier_id' in kwargs:
+                    supplier_id=kwargs["supplier_id"]
+            else:
                 message="دسترسی غیر مجاز"
                 return result,message,shop
-
-        shop=Shop(supplier_id=me_supplier.id)
+        else:
+            supplier_id=me_supplier.id
+        shop=Shop(supplier_id=supplier_id)
          
         if 'unit_price' in kwargs:
             if kwargs["unit_price"]>0:
@@ -170,7 +181,7 @@ class ShopRepo():
             shop.end_date=to_gregorian(end_date)
 
 
-       
+
         if 'discount_percentage' in kwargs:
             shop.discount_percentage=kwargs["discount_percentage"]
         
@@ -179,7 +190,118 @@ class ShopRepo():
         (result,message,shop)=shop.save()
         return result,message,shop
 
+    def import_shops_from_excel(self,*args,**kwargs):
+        result,message,shops=FAILED,"",[]
+        excel_file=kwargs['excel_file']
+        # import pandas
+        
+        # df = pandas.read_excel(excel_file)
+        # shops=[]
+        # for row in df.columns[0]:
+        #     print (df.columns)
+        import openpyxl 
 
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['shops']
+        
+        except:
+            message='فایل شما برگه آماده فروش ها ندارد.'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه حساب ها ، تعداد ندارد.'
+            return result,message,None  
+        shops_to_import=[]
+        START_ROW=EXCEL_SHOPS_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            shop={}
+            
+            
+            i=str(i) 
+            # product['id']=ws['A'+str(i)].value
+            iiiddd=ws['A'+i].value
+            if iiiddd is not None:
+                id=int(ws['B'+i].value) 
+                product_id=int(ws['E'+i].value)
+                product_barcode=(ws['F'+i].value)
+                supplier_id=int(ws['C'+i].value)
+                group_id=int(ws['H'+i].value)
+                region_id=int(ws['J'+i].value)
+                quantity=int(ws['L'+i].value)
+                unit_price=int(ws['O'+i].value)
+                unit_name=(ws['M'+i].value)
+                start_date=(ws['P'+i].value)
+                end_date=(ws['Q'+i].value)
+                discount_percentage=(ws['N'+i].value)
+
+                shop['id']=0
+                shop['product_id']=product_id
+                shop['product_barcode']=product_barcode
+                shop['supplier_id']=supplier_id
+                shop['quantity']=quantity
+                shop['group_id']=group_id
+                shop['region_id']=region_id
+                shop['unit_price']=unit_price
+                shop['unit_name']=unit_name
+                shop['start_date']=start_date
+                shop['end_date']=end_date
+                shop['discount_percentage']=discount_percentage
+                shops_to_import.append(shop) 
+        modified=added=0
+        for shop in shops_to_import:
+            from accounting.repo import ProductRepo
+            from utility.repo import RegionRepo
+            product=ProductRepo(request=self.request).product(barcode=shop["product_barcode"])
+            supplier=SupplierRepo(request=self.request).supplier(supplier_id=shop["supplier_id"])
+            region=RegionRepo(request=self.request).region(region_id=shop["region_id"])
+            group=CustomerGroupRepo(request=self.request).customer_group(customer_group_id=shop["group_id"])
+
+            result,message,new_shop=self.add_shop(
+                product_id=product.id,
+                supplier_id=supplier.id,
+                group_id=group.id,
+                region_id=region.id,
+                unit_price=shop['unit_price'],
+                unit_name=shop['unit_name'],
+                quantity=shop['quantity'],
+                available=shop['quantity'],
+                discount_percentage=shop['discount_percentage'],
+                start_date=PersianCalendar().to_gregorian(shop['start_date']),
+                end_date=PersianCalendar().to_gregorian(shop['end_date']),
+                                                        
+            )
+            shops.append(new_shop)
+               
+                # new_shop.title=shop["title"]
+                # new_shop.barcode=shop["barcode"]
+                # new_shop.unit_name=shop["unit_name"]
+                # new_shop.unit_price=shop["unit_price"] 
+                # new_shop.save()
+            if result==SUCCEED:
+                added+=1
+        result=SUCCEED
+        message=f"""{added} آماده فروش اضافه شد.
+                    <br>
+                    {modified} آماده فروش ویرایش شد. """
+        shops=self.list()
+
+
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("market:shops")
+            log_data['title']="بازیابی آماده فروش ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+        
+        return result,message,shops
+    
 class CustomerRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request

@@ -1262,10 +1262,11 @@ class ProductRepo():
         product=None
         if "product_id" in kwargs and kwargs["product_id"] is not None:
             product= self.objects.filter(pk=kwargs['product_id']).first()
-            return product 
+            if product is not None:
+                return product 
         if "barcode" in kwargs and kwargs["barcode"] is not None:
             a= self.objects.filter(barcode=kwargs['barcode']).first() 
-            if product is None:
+            if product is None and a is not None:
                 product= a 
                 return a
         

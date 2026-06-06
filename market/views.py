@@ -229,7 +229,131 @@ class ProductView(View):
 
         return render(request,TEMPLATE_ROOT+"product.html",context) 
     
+class ShopsView(View):
+   def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        shops =ShopRepo(request=request).list(*args, **kwargs)
+        context['shops']=shops
+         
+
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['shops']=shops
+        context['shops_s']=shops_s
+
+        return render(request,TEMPLATE_ROOT+"shops.html",context) 
     
+       
+class AddShopsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+          
+        if request.user.has_perm(APP_NAME+".add_shop"):
+            context['add_shops_form']=AddShopsForm()
+            context['suppliers']=SupplierRepo(request=request).list()
+            context['groups']=CustomerGroupRepo(request=request).list()
+            context['regions']=RegionRepo(request=request).list()
+        return render(request,TEMPLATE_ROOT+"add-shops.html",context) 
+    
+
+class ExportShopsToExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        ExportShopsToExcelForm_=ExportShopsToExcelForm(request.POST)
+        if ExportShopsToExcelForm_.is_valid():
+            cd=ExportShopsToExcelForm_.cleaned_data
+            supplier_id=cd['supplier_id']
+            group_id=cd['group_id']
+            region_id=cd['region_id'] 
+            shops=ShopRepo(request=request).list(supplier_id=supplier_id,group_id=group_id,region_id=region_id)
+            return export_to_excel(request=request,shops=shops,EXPORT_SHOPS=True)
+    
+
+def export_to_excel(request,*args, **kwargs):
+    now=PersianCalendar().date
+    date=PersianCalendar().from_gregorian(now)
+    EXPORT_SHOPS=False
+    if 'EXPORT_SHOPS' in kwargs:
+        EXPORT_SHOPS=kwargs['EXPORT_SHOPS']
+
+        
+    shops=[]
+    if 'shops' in kwargs:
+        shops=kwargs['shops']
+
+
+
+    if EXPORT_SHOPS:
+        lines=[]
+        for i,shop in enumerate(shops,start=1):
+            line={
+                'row':i,
+                'id':shop.id,
+                'supplier_id':shop.supplier.id,
+                'supplier':shop.supplier.person_account.title,
+                'product_id':shop.product.id,
+                'product_barcode':shop.product.barcode,
+                'product':shop.product.title,
+                'group_id':shop.group.id,
+                'group':shop.group.name,
+                'region_id':shop.region.id,
+                'region':shop.region.full_name,
+                'quantity':shop.quantity,
+                'unit_name':shop.unit_name,
+                'discount_percentage':shop.discount_percentage,
+                'unit_price':shop.unit_price,
+                'start_date':PersianCalendar().from_gregorian(shop.start_date),
+                'end_date':PersianCalendar().from_gregorian(shop.end_date),
+            }
+            lines.append(line)
+        headers=['ردیف',
+                'شناسه',
+                'کد فروشنده',
+                'فروشنده',
+                'کد کالا',
+                'بارکد کالا',
+                'کالا',
+                'کد گروه',
+                'گروه',
+                'کد منطقه',
+                'منطقه',
+                'تعداد',
+                'واحد',
+                'درصد تخفیف',
+                'قیمت جزء',
+                'تاریخ شروع',
+                'تاریخ پایان',
+        ]
+        
+        from .constants import EXCEL_SHOPS_DATA_START_ROW
+        start_row=EXCEL_SHOPS_DATA_START_ROW
+        if start_row>2:
+            start_row-=1
+        
+        
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'market.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='shops',
+            title='shops',
+        )
+        
+    file_name=f"""Phoenix market {date.replace('/','').replace(':','')}.xlsx"""
+    from django.http import HttpResponse
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+    response["Content-disposition"]=f"attachment; filename={file_name}"
+    report_work_book.work_book.save(response)
+    report_work_book.work_book.close()
+    return response
+    
+     
 class SuppliersView(View):
     def get(self,request,*args,**kwargs):
         context=getContext(request=request)

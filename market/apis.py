@@ -35,6 +35,36 @@ class AddShopPackageApi(APIView):
         context['log']=log
         return JsonResponse(context)
   
+ 
+
+class ImportShopsFromExcelApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        
+        message_shops=''
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            import_from_excel_form=ImportShopFromExcelForm(request.POST,request.FILES)
+            if import_from_excel_form.is_valid():
+                log=333
+                
+                excel_file = request.FILES['file1']
+                cd=import_from_excel_form.cleaned_data
+                cd['excel_file']=excel_file
+                result,message_shops,shops=ShopRepo(request=request).import_shops_from_excel(**cd)
+                if shops is not None:
+                    context['shops']=ShopSerializer(shops,many=True).data
+                 
+        context['message_shops']=message_shops
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 
   
 class AddCartItemApi(APIView):

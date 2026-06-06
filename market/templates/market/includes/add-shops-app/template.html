@@ -1,0 +1,140 @@
+<div id="accordion-add-shops">
+    {% load static %}
+  <div class="card" id="add-shops-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-shops"
+          aria-expanded="true"
+          aria-controls="collapse-add-shops"
+        >
+          افزودن دسته ای قیمت
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-add-shops"
+      class="collapse {% if expand_add_shops %} show{% endif %}"
+      aria-labelledby="heading-add-shops"
+      data-parent="#accordion-add-shops"
+    >
+      <div class="card-body">
+        <div class="text-right">
+          <div class="my-2">
+            <form
+              action="{% url 'market:export_shops_to_excel' %}"
+              method="POST"
+            >
+              {% csrf_token %}
+              <div class="row rtl">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">فروشنده</label>
+                    <select name="supplier_id" class="form-control" id="">
+                      {% for supplier in suppliers %}
+                      <option value="{{supplier.id}}">
+                        {{supplier.person_account.title}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">منطقه</label>
+                      <select name="region_id" class="form-control" id="">
+                      {% for region in regions %}
+                      <option value="{{region.id}}">
+                        {{region.full_name}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">گروه</label>
+                      <select name="group_id" class="form-control" id="">
+                      {% for group in groups %}
+                      <option value="{{group.id}}">
+                        {{group.name}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-info">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                دانلود فایل اکسل
+              </button>
+            </form>
+          </div>
+          <hr>
+          <h5 class="text-right">بازیابی از فایل اکسل</h5>
+           <form id="import-shops-from-excel-form" @submit.prevent="import_shops_from_excel()"
+                    enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+
+
+
+                            <span class="btn btn-raised btn-round btn-default btn-file">
+                                <span class="fileinput-new farsi">انتخاب فایل</span>
+
+                                <input type="file" name="">
+                                <div class="ripple-container"></div>
+                            </span>
+
+
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-check-label mr-4" for="flexCheckChecked">
+                                    تعداد
+
+                                </label>
+                                <input v-model="count" class="form-control" type="number">
+                            </div>
+
+
+                        </div>
+
+                        
+
+
+                        <div class="col-12">
+                            <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                            <button class="farsi btn btn-primary btn-block" v-if="!waiting" type="submit">
+                                <i class="fa fa-plus mx-1"></i>
+                                بازیابی</button>
+
+
+                        </div>
+
+                        <div class="col-md-12 my-2">
+                            <div :class="'alert alert-'+message.color" v-if="message.show">
+                                <div class="my-2">
+                                    <h4 v-html="message.title" class="my-2"></h4>
+                                    <div v-html="message.body" class="my-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </form>
+                
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

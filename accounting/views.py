@@ -1299,6 +1299,7 @@ class ExportToExcelView(View):
         date=PersianCalendar().from_gregorian(now)
 
         
+        
         report_work_book=ReportWorkBook(origin_file_name=f'accounting.xlsx')
         style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
         EXPORT_CATEGORIES=True
