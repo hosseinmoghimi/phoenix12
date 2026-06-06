@@ -169,6 +169,12 @@ class ShopRepo():
             end_date=kwargs["end_date"]
             shop.end_date=to_gregorian(end_date)
 
+
+       
+        if 'discount_percentage' in kwargs:
+            shop.discount_percentage=kwargs["discount_percentage"]
+        
+        
          
         (result,message,shop)=shop.save()
         return result,message,shop

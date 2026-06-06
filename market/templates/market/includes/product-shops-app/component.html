@@ -38,12 +38,20 @@
         با
         <span v-text="shop.discount_percentage"></span>
         % تخفیف
-
-        <span
+{% if SHOW_TUMAN %}
+    <span
+          style="text-decoration: line-through"
+          v-text="to_price_tuman(shop.unit_price)"
+        ></span>
+        {{CURRENCY_TUMAN}}
+{% else %}
+  <span
           style="text-decoration: line-through"
           v-text="to_price(shop.unit_price)"
         ></span>
         {{CURRENCY}}
+{% endif %}
+      
       </h6>
       <h6>
         از
@@ -84,10 +92,18 @@
         <span v-text="shop.unit_name"></span>
       </h6>
       <h5 class="text-danger">
-        <span
+        {% if SHOW_TUMAN %}
+           <span
+          v-text="to_price_tuman(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
+        ></span>
+        {{CURRENCY_TUMAN}}
+        {% else %}
+         <span
           v-text="to_price(shop.unit_price-(shop.discount_percentage*shop.unit_price/100))"
         ></span>
         {{CURRENCY}}
+        {% endif %}
+       
       </h5>
       {% if add_cart_line_form %}
 
