@@ -22,6 +22,14 @@ def getContext(request,*args, **kwargs):
 class HomeView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+
+
+        commands=CommandRepo(request=request).list(for_home=True)
+        context['commands']=commands
+        commands_s=json.dumps(CommandSerializer(commands,many=True).data)
+        context['commands_s']=commands_s
+        context['expands_commands']=True
+
         return render(request,TEMPLATE_ROOT+"index.html",context)
 
 class SettingsView(View):
