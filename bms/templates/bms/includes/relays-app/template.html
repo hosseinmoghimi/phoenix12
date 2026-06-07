@@ -1,0 +1,139 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-relays">
+
+
+    <div class="card" id="relays-app">
+        <div class="card-header" id="heading-relays">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-relays" aria-expanded="true"
+                    aria-controls="collapse-relays">
+                   رله ها
+
+                    <span v-if="relays.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="relays.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+            {% if page_pre_description %}
+
+            <h5 class="text-center">
+                {{page_pre_description}}
+            </h5>
+            {% endif %}
+            {% if page_description %}
+
+            <h4 class="text-center">
+                {{page_description}}
+            </h4>
+            {% endif %}
+        </div>
+        <div id="collapse-relays" class="collapse show" aria-labelledby="heading-relays" data-parent="#accordion-relays">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prevent="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped">
+                        <thead>
+                            <th>
+                                رله
+                            </th>
+                            {% if SERVER_SIDE_COMMANDS %}
+                            
+                            <th>
+                                سمت سرور
+                                
+                            </th>
+                            {% endif %}
+                            
+                            {% if CLIENT_SIDE_COMMANDS %}
+                            <th>
+                                 سمت کلاینت
+                            </th>
+                            {% endif %}
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="relay in relays">
+                                <td>
+                                    <a :href="relay.get_absolute_url">
+                                        <div class="media">
+                                            <img :src="relay.logo" class="rounded-circle" width="32" alt="">
+                                            <div class="media-body mr-3">
+                                                <div>
+
+                                                    <span v-text="relay.name"></span>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">
+                                                        <span v-text="relay.state"></span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+
+                                </td>
+
+                                {% if SERVER_SIDE_COMMANDS %}
+                                <td>
+                                      
+                                    <span v-for="command in relay.commands">
+
+                                        <button :class="'mx-2 my-2 btn btn-'+command.color" @click="execute_command(command)">
+                                            <span v-text="command.name"></span>
+                                        </button>
+                                    </span>
+
+                                    
+                                </td>
+                                
+                                {% endif %}
+                                {% if CLIENT_SIDE_COMMANDS %}
+                                 <td>
+                                      
+                                    <span v-for="command in relay.commands">
+                                        
+                                        <button :class="'mx-2 my-2 btn btn-'+command.color" @click="execute_command2(command)">
+                                            <span v-text="command.name"></span>
+                                        </button>
+                                    </span>
+                                    
+                                    
+                                </td>
+                                {% endif %}
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

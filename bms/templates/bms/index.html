@@ -1,0 +1,42 @@
+{% extends "bms/layout.html" %}
+
+{% block content %}
+
+<div class="row rtl">
+    {% if commands %}
+
+    <div class="col-md-6">
+        {% include "bms/includes/commands-app/template.html" %}
+    </div>
+    {% endif %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'bms:feeders' %}">
+                    <h4>
+                        فیدر ها
+                    </h4>
+                </a>
+            </div>
+        </div>
+    </div>
+
+     <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'bms:commands' %}">
+                    <h4>
+                        فرمان ها
+                    </h4>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}
+
+{% block script %}
+{% include "bms/includes/commands-app/script.html" %}
+{% endblock script %}

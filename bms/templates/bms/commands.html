@@ -1,0 +1,60 @@
+{% extends "bms/layout.html" %} {% block content %}
+
+<div class="row rtl">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h4>فرمان ها</h4>
+      </div>
+      <div class="card-body">
+        {% for command in commands %}
+        <div class="my-2">
+          <button
+            class="btn btn-success"
+            onClick="execute_command(`http://{{command.relay.feeder.ip}}:{{command.relay.feeder.port}}/execute_command/`,`{{command.relay.register}}`,`{{command.relay.pin}}`,`{{command.relay.pin}}`,`{{command.value}}`)"
+          >
+            {{command.name}}
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  function execute_command2(url, register, pin, key, command) {
+    let payload = {
+      register: register,
+      pin: pin,
+      key: key,
+      command: command,
+    };
+    console.log(url);
+    console.log(payload);
+    fetch(url, {
+      method: "POST",
+      body: payload,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
+  }
+  function execute_command(url, register, pin, key, command) {
+    let payload = {
+      register: register,
+      pin: pin,
+      key: key,
+      command: command,
+    };
+    console.log(url) 
+    console.log(payload) 
+    $.post(url,payload).done(data=>{
+        console.log(data)
+    })
+  }
+</script>
+
+{% endblock script %}

@@ -1,0 +1,31 @@
+<script>
+    let feeders = JSON.parse(`{{feeders_s|escapejs}}`)
+    let feeders_app = new Vue({
+        el:"#feeders-app",
+        data: {
+            feeders: feeders,
+            search_for:'',
+            waiting:false,
+        },
+        methods: {
+            filter:function(){
+                this.feeders = feeders.filter(feeder => feeder.name.indexOf(this.search_for) > -1)
+         
+            },
+            to_price: function (vall) {
+                let color='primary'
+                if (vall<0)
+                color='danger'
+                if (vall>0)
+                color='success'
+                vall=to_price(vall,"{{CURRENCY}}")
+                return `
+                    <span class="text-${color}">${vall}</span>
+                    `
+            },
+            
+           
+        }
+    })
+
+</script>

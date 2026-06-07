@@ -32,6 +32,7 @@ else:
         path('messenger/', include('messenger.urls')),
         path('accounting/', include('accounting.urls')),
         path('market/', include('market.urls')),
+        path('bms/', include('bms.urls')),
         
 
         re_path(r'^qrcode/(?P<path>.*)$', serve, {'document_root': QRCODE_ROOT}),
