@@ -33,6 +33,9 @@ class AddShopsForm(forms.Form):
     start_date=forms.CharField(max_length=100, required=False)
     end_date=forms.CharField(max_length=100, required=False)
     
+class SearchForm(forms.Form): 
+    search_for=forms.CharField(max_length=100, required=True)
+    
 
 class ExportShopsToExcelForm(forms.Form): 
     supplier_id=forms.IntegerField(required=True)

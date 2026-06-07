@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from utility.constants import INDEX_FOR_ALL_CHOICES
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from accounting.views import ProductRepo,PersonAccountRepo,AddPersonAccountContext,PersonAccountSerializer
@@ -19,7 +19,7 @@ from authentication.views import PersonRepo,PersonSerializer,AddPersonContext
 from utility.views import RegionRepo
 from .serializers import CustomerSerializer
 from utility.views import MessageView
-LAYOUT_PARENT='phoenix/layout.html'
+LAYOUT_PARENT='market/layout.html'
 TEMPLATE_ROOT='market/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
@@ -48,8 +48,6 @@ def getContext(request,*args, **kwargs):
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
 
-
-
 def SearchContext(request,search_for,*args, **kwargs):
     context={}
     WAS_FOUND=False
@@ -73,7 +71,6 @@ def SearchContext(request,search_for,*args, **kwargs):
     if WAS_FOUND:
         context['WAS_FOUND']=WAS_FOUND
     return context
-  
 
 def CartItemContext(request,customer,*args, **kwargs):
     context={}
@@ -138,11 +135,72 @@ def AddShopContext(request,*args, **kwargs):
 
 class IndexView(View):
     def get(self,request,*args, **kwargs):
-        context=getContext(request=request) 
-        return render(request,TEMPLATE_ROOT+"index.html",context)
-# Create your views here.
+        return (CategoryView().get(request=request,pk=0))
 
  
+class LinksView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        return render(request,TEMPLATE_ROOT+"links.html",context)
+
+
+class SearchView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        phoenix_apps=context["phoenix_apps"]
+        phoenix_apps=phoenix_apps 
+         
+        return render(request,TEMPLATE_ROOT+"search.html",context)
+
+    def post(self,request,*args, **kwargs):
+        from utility.constants import SUCCEED,FAILED
+        
+        result=FAILED
+        search_for=''
+        message=''
+        log=1
+        context=getContext(request=request) 
+        context['WAS_FOUND']=False
+
+        search_form=SearchForm(request.POST)
+        if search_form.is_valid():
+            log=2
+            search_for=search_form.cleaned_data['search_for'] 
+            result=SUCCEED
+            WAS_FOUND=False
+            SEARCH_IN_ALL_APPS=True
+  
+            
+            
+            products=ProductRepo(request=request).list(search_for=search_for)
+            if len(products)>0:
+                context['products']=products
+                context['products_s']=json.dumps(ProductSerializer(products,many=True).data)
+                WAS_FOUND=True
+
+
+            categories=CategoryRepo(request=request).list(search_for=search_for)
+            if len(categories)>0:
+                context['categories']=categories
+                from .serializers import CategorySerializer
+                context['categories_s']=json.dumps(CategorySerializer(categories,many=True).data)
+                WAS_FOUND=True
+
+
+            if WAS_FOUND:
+                context['WAS_FOUND']=WAS_FOUND
+                    
+                    
+             
+        context['message']=message
+        context['search_for']=search_for
+        context['log']=log
+        context['result']=result
+        if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
+        return render(request, TEMPLATE_ROOT+"search.html",context)
+
 class ProductsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -229,7 +287,8 @@ class ProductView(View):
         context['shops_s']=shops_s
 
         return render(request,TEMPLATE_ROOT+"product.html",context) 
-    
+
+
 class ShopsView(View):
    def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -524,9 +583,8 @@ class CustomersView(View):
             context.update(AddCustomerContext(request=request))
  
         return render(request,TEMPLATE_ROOT+"customers.html",context) 
-    
-   
-    
+
+
 class CartView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

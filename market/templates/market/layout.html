@@ -1,1 +1,71 @@
-{% extends LAYOUT_PARENT %}
+<!doctype html>
+<html lang="en">
+
+<head>
+<style>
+        .footer {
+        /* position: absolute; */
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        margin-top: 2em;
+        line-height: 60px;
+        background-color: #f5f5f5;
+        position: fixed;
+    } 
+  .btn-first{
+    border-radius: 0 5px 5px 0 !important;
+  }
+  .btn-last{
+    border-radius: 5px 0 0 5px !important;
+    
+  }
+</style>
+
+    {% include "phoenix/includes/head.html" %}
+    {% block head %}
+
+    {% endblock head %}
+
+
+    {% block style %}
+
+    {% endblock style %}
+</head>
+
+<body class="farsi" {% if app_background_image %}
+    style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('{{app_background_image.image}}');background-size:cover"
+    {% endif %}>
+    {% if not NOT_NAVBAR %}
+    {% include "phoenix/includes/navbar.html" %}
+    {% endif %}
+    <div class="my-3 {% if WIDE_LAYOUT %}mx-3{% else %}container{% endif %}" style="margin-bottom: 75px !important;">
+       <div class="rtl text-right">
+
+           <form action="{% url 'market:search' %}" method="POST">
+               {% csrf_token %}
+               <input placeholder="جستجو ...." type="text" name="search_for" value="{{search_for}}" class="form-control">
+            </form>
+        </div>
+        {% block content %}
+
+        {% endblock content %}
+    </div>
+     
+    
+    {% if not NOT_FOOTER %}
+    {% include "phoenix/includes/footer.html" %}
+    {% endif %}
+
+    {% csrf_token %}
+    {% include "phoenix/includes/common-script.html" %}
+    {% include "phoenix/includes/utility-script.html" %}
+    {% block script %}
+
+    {% endblock script %}
+    {% block base_script %}
+
+    {% endblock base_script %}
+</body>
+
+</html>
