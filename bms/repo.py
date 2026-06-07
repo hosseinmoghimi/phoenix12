@@ -46,7 +46,75 @@ class FeederRepo():
         feeder.feeder=feeder1 
         feeder.save() 
         return feeder
-     
+    def import_from_json(self,*args, **kwargs):
+        json_file=kwargs['json_file']
+        import json
+        json_data=json.load(json_file) 
+        
+        for json_feeder in json_data['feeders']:
+            feeder=json_to_feeder(json_feeder)
+            feeder.save()
+            for json_relay in json_feeder['relays']:
+                relay=json_to_relay(json_relay)
+                relay.feeder_id=feeder.id
+                relay.save()
+                for json_command in json_relay['commands']:
+                    command=json_to_command(json_command)
+                    command.relay_id=relay.id
+                    command.save()
+
+        return SUCCEED,'',[]
+    
+
+
+
+def json_to_feeder(json_data):
+    from .models import Feeder
+    new={}
+    new['id']=json_data['id']
+    new['name']=json_data['name']
+    new['ip']=json_data['ip']
+    new['port']=json_data['port']
+    new['serial_no']=json_data['serial_no']
+    new['pin']=json_data['pin']
+    new['color']=json_data['color']
+    new['thumbnail_origin']=json_data['thumbnail_origin']
+    feeder=Feeder(**new)
+    return feeder
+  
+ 
+
+def json_to_relay(json_data):
+    from .models import Relay
+    new={}
+    new['id']=json_data['id']
+    new['name']=json_data['name']
+    new['enabled']=json_data['enabled']
+    new['is_protected']=json_data['is_protected']
+    new['register']=json_data['register']
+    new['pin']=json_data['pin']
+    new['color']=json_data['color']
+    new['priority']=json_data['priority']
+    new['thumbnail_origin']=json_data['thumbnail_origin']
+    relay=Relay(**new)
+    return relay
+  
+ 
+def json_to_command(json_data):
+    from .models import Command
+    new={}
+    new['id']=json_data['id']
+    new['name']=json_data['name']
+    new['value']=json_data['value']
+    new['color']=json_data['color']
+    new['Iteration']=json_data['Iteration']
+    new['for_home']=json_data['for_home']
+    new['thumbnail_origin']=json_data['thumbnail_origin']
+    command=Command(**new)
+    return command
+  
+ 
+
 class LogRepo():
      
     def __init__(self,request, *args, **kwargs):

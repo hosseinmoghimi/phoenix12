@@ -22,3 +22,5 @@ class GetLogForm(forms.Form):
     page=forms.IntegerField(required=True)
     per_page=forms.IntegerField(required=False)
              
+class ImportFromJsonForm(forms.Form):
+    count=forms.IntegerField(required=True)

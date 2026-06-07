@@ -9,28 +9,31 @@
         {% include "bms/includes/commands-app/template.html" %}
     </div>
     {% endif %}
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
+    <div class="col-md-3">
                 <a href="{% url 'bms:feeders' %}">
                     <h4>
                         فیدر ها
                     </h4>
                 </a>
-            </div>
-        </div>
     </div>
 
-     <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
+     <div class="col-md-3">
+        
                 <a href="{% url 'bms:commands' %}">
                     <h4>
                         فرمان ها
                     </h4>
                 </a>
-            </div>
-        </div>
+            
+    </div>
+      <div class="col-md-3">
+        
+                <a href="{% url 'bms:settings' %}">
+                    <h4>
+                        تنظیمات
+                    </h4>
+                </a>
+            
     </div>
 
 

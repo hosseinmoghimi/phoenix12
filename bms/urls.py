@@ -6,6 +6,9 @@ from bms.apps import APP_NAME
 app_name=APP_NAME
 urlpatterns = [
     path('',login_required(views.HomeView.as_view()),name='home'),
+    path('settings/',login_required(views.SettingsView.as_view()),name='settings'),
+    path('get-json-backup/',login_required(views.GetJsonBackupView.as_view()),name='get_json_backup'),
+    path('import_from_json/',login_required(apis.ImportFromJsonApi.as_view()),name='import_from_json'),
     path('feeders/',login_required(views.FeedersView.as_view()),name='feeders'),
     path('log/<int:pk>/',login_required(views.LogView.as_view()),name='log'),
     path('logs/',login_required(views.LogsView.as_view()),name='logs'),

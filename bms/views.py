@@ -3,7 +3,7 @@ from django.shortcuts import render
 from bms.apps import APP_NAME
 from bms.repo import CommandRepo, FeederRepo,LogRepo
 from core.views import CoreContext,ParameterRepo
-from bms.serializers import CommandSerializer,RelayFullSerializer, FeederSerializer, RelaySerializer,LogSerializer
+from bms.serializers import CommandSerializer,RelayFullSerializer, FeederSerializer, RelaySerializer,LogSerializer 
 from django.views import View
 from utility.log import leolog
 TEMPLATE_ROOT="bms/"
@@ -23,6 +23,84 @@ class HomeView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         return render(request,TEMPLATE_ROOT+"index.html",context)
+
+class SettingsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        return render(request,TEMPLATE_ROOT+"setting.html",context)
+
+
+class GetJsonBackupView(View):
+    def get(self,request,*args, **kwargs):
+        from django.http import JsonResponse
+        origin_feeders=FeederRepo(request=request).list()
+        json_data={'feeders':[]}
+        for feeder in origin_feeders:
+            sss=feeder_to_json(feeder)
+            json_data['feeders'].append(sss)
+
+
+        return JsonResponse(json_data,safe=False)
+    
+def feeder_to_json(feeder):
+    data={}
+    data['relays']=[]
+    data['id']=feeder.id
+    data['name']=feeder.name
+    data['ip']=feeder.ip
+    data['port']=feeder.port
+    data['serial_no']=feeder.serial_no
+    data['color']=feeder.color
+    data['pin']=feeder.pin
+    data['is_protected']=feeder.is_protected
+    data['thumbnail_origin']=str(feeder.thumbnail_origin)
+     
+ 
+    for relay in feeder.relay_set.all():
+        data['relays'].append(relay_to_json(relay))
+
+    return data
+
+
+def relay_to_json(relay):
+    data={}
+    data['commands']=[]
+    data['id']=relay.id
+    data['name']=relay.name
+    data['enabled']=relay.enabled
+    data['is_protected']=relay.is_protected
+    data['register']=relay.register
+    data['pin']=relay.pin
+    data['color']=relay.color
+    data['priority']=relay.priority
+    data['thumbnail_origin']=str(relay.thumbnail_origin)
+
+ 
+    for command in relay.command_set.all():
+        data['commands'].append(command_to_json(command))
+
+    return data
+
+
+def command_to_json(command):
+    data={}
+    
+    data['id']=command.id
+    data['name']=command.name
+    data['value']=command.value
+    data['color']=command.color
+    data['Iteration']=command.Iteration
+    data['for_home']=command.for_home
+    data['persons']=[]
+    data['thumbnail_origin']=str(command.thumbnail_origin)
+
+ 
+    for person in command.persons.all():
+        data['persons'].append(person.id)
+
+
+    return data
+
 
 
 class FeedersView(View):

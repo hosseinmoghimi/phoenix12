@@ -7,6 +7,7 @@ class FeederSerializer(serializers.ModelSerializer):
         model=Feeder
         fields=['id','name','get_absolute_url','get_delete_url','get_edit_url']
         
+ 
 class RelaySerializer(serializers.ModelSerializer):
     class Meta:
         model=Relay
