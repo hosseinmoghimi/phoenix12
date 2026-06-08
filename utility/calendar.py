@@ -164,7 +164,7 @@ class PersianCalendar:
         else:
             HOURS_OFFSET_=0
         self.persian_date = JalaliDatetime(year_, month_, day_, hour_, min_, sec_, 0)
-        delta=datetime.timedelta(hours=-HOURS_OFFSET-HOURS_OFFSET_,minutes=-MINUTES_OFFSET)
+        delta=datetime.timedelta(days=1,hours=-HOURS_OFFSET-HOURS_OFFSET_,minutes=-MINUTES_OFFSET)
         self.date=self.persian_date.todatetime()+delta
         
         return self
