@@ -525,6 +525,11 @@ class SupplierView(View):
         context['shop_packages']=shop_packages
         context['shop_packages_s']=shop_packages_s
 
+        if request.user.has_perm(APP_NAME+".add_shop") or True:
+            context['add_shops_form']=AddShopsForm()
+            context['suppliers']=SupplierRepo(request=request).list()
+            context['groups']=CustomerGroupRepo(request=request).list()
+            context['regions']=RegionRepo(request=request).list()
 
         return render(request,TEMPLATE_ROOT+"supplier.html",context) 
 

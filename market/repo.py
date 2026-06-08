@@ -302,6 +302,7 @@ class ShopRepo():
         
         return result,message,shops
     
+
 class CustomerRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
@@ -616,12 +617,13 @@ class CartItemRepo():
                     invoice_line.invoice_id=invoice.id
                     invoice_line.invoice_line_item_id=shop.product_id
                     invoice_line.quantity=cart_item['quantity'] 
-                    invoice_line.unit_price=shop.unit_price
-                    invoice_line.unit_name=shop.unit_name
-                    invoice_line.save() 
-                    shop.available-=cart_item['quantity']
-                    shop.save()
-                    CartItem.objects.filter(shop_id=shop.id).filter(customer_id=customer.id).delete()
+                    if not invoice_line.quantity<shop.available:
+                        invoice_line.unit_price=shop.unit_price
+                        invoice_line.unit_name=shop.unit_name
+                        invoice_line.save() 
+                        shop.available-=cart_item['quantity']
+                        shop.save()
+                        CartItem.objects.filter(shop_id=shop.id).filter(customer_id=customer.id).delete()
         result=SUCCEED
         links=''
         for invoice in invoices:
@@ -630,61 +632,6 @@ class CartItemRepo():
         return result,message,invoices
  
 
-    def checkout_old_temp_must_be_deleted(self,*args,**kwargs):
-        result,message,invoices=FAILED,"",[]
-        me_customer=CustomerRepo(request=self.request).me
-        if  me_customer is None and not self.request.user.has_perm(APP_NAME+".add_cartitem") :
-            message="دسترسی غیر مجاز"
-            return result,message,invoices
-         
-        if me_customer is None:
-            message=" 22دسترسی غیر مجاز"
-            return result,message,invoices
-        customer_id=me_customer.id
-        invoices=[]
-        cart_items=CartItem.objects.filter(customer_id=customer_id)
-        suppliers_ids=[]
-        for cart_item in cart_items:
-            supplier_id=cart_item.shop.supplier.id
-            if supplier_id not in suppliers_ids:
-                suppliers_ids.append(supplier_id)
-        customer=CustomerRepo(request=self.request).customer(pk=customer_id)
-        if customer is None:
-            return FAILED,"مشتری نادرست انتخاب شده است",[]
-        for supplier_id in suppliers_ids:
-
-            supplier=SupplierRepo(request=self.request).supplier(pk=supplier_id)    
-            from accounting.repo import InvoiceRepo,Invoice,InvoiceLine
-            from django.utils import timezone
-            invoice_data={}
-            invoice_data['bedehkar_id']=customer.person_account.id
-            invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور جدید"
-            invoice_data['amount']=0
-            invoice_data['event_datetime']=timezone.now()
-            # invoice=Invoice(invoice_data)
-            invoice=Invoice(**invoice_data)
-            invoice.save()
-
-            # invoice.save()
-            invoices.append(invoice)
-            for cart_item in cart_items:
-                if cart_item.shop.supplier.id==supplier_id:
-                    invoice_line=InvoiceLine()
-                    invoice_line.invoice_id=invoice.id
-                    invoice_line.invoice_line_item_id=cart_item.shop.product_id
-                    invoice_line.quantity=cart_item.quantity
-                    invoice_line.unit_price=cart_item.shop.unit_price
-                    invoice_line.unit_name=cart_item.shop.unit_name
-                    invoice_line.save() 
-                    cart_item.delete()
-        result=SUCCEED
-        links=''
-        for invoice in invoices:
-            links+=f""" <br><a target="_blank" href="{invoice.get_print_url()}">{invoice.title}</a> """
-        message=f"""{len(invoices)} فاکتور برای شما با موفقیت ایجاد شد"""+links
-        return result,message,invoices
- 
 
 class SupplierRepo():
     def __init__(self,request,*args, **kwargs):

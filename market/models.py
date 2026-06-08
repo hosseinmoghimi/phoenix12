@@ -59,7 +59,7 @@ class Customer(MarketPerson):
 
 
 class Supplier(MarketPerson):
-
+    grade=models.CharField(_("grade"),choices=SupplierGradeEnum.choices,default=SupplierGradeEnum.NEW, max_length=50)
     class_name="supplier"
     class Meta:
         verbose_name = _("Supplier")

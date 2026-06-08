@@ -36,7 +36,7 @@ class SupplierSerializer(serializers.ModelSerializer):
     regions=RegionSerializer(many=True)
     class Meta:
         model=Supplier
-        fields=['id','regions','person_account','full_name',  'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','grade','regions','person_account','full_name',  'get_absolute_url', 'get_edit_url','get_delete_url']
  
  
 class ShopSerializer(serializers.ModelSerializer):
