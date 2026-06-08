@@ -76,14 +76,49 @@
       </div>
     </div>
   </div>
+    {% if invoice.address or invoice.postal_code %}
+  
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        
+        <div class="description">
+          
+          
+          <strong>
+            
+            آدرس تحویل:
+          </strong>
+          {{invoice.address}}
+          
+ 
+          {% if invoice.postal_code %}
+    <strong class="">    
+
+      کد پستی :
+    </strong>
+    {{invoice.postal_code}}
+    
+    {% endif %}
+   
+</div>
+</div>
+</div>
+</div>
+{% endif %}
   <div class="col-12">
     <div class="card">
       <div class="card-body">
         <div class="media">
           <img src="{{invoice.get_print_qrcode_url}}" width="128" alt="" />
           <div class="media-body mr-2">
+          
+
             <div class="description">
-              توضیحات:
+              <strong>
+
+                توضیحات:
+              </strong>
               <br />
               {{invoice.status}}&nbsp;/&nbsp;{{invoice.payment_method}}
               <br />
@@ -100,29 +135,7 @@
               </div>
                {% endif %}
             </div>
-{% if invoice.address %}
-  
-<div class="description">
-  <p>
 
-    <strong>
-
-      آدرس تحویل:
-    </strong>
-      {{invoice.address}}
-    
-    {% if invoice.postal_code %}
-    <br>
-    <strong>    
-
-      کد پستی :
-    </strong>
-    {{invoice.postal_code}}
-    
-    {% endif %}
-  </p>
-</div>
-{% endif %}
 
           </div>
         </div>
