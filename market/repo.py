@@ -617,7 +617,7 @@ class CartItemRepo():
                     invoice_line.invoice_id=invoice.id
                     invoice_line.invoice_line_item_id=shop.product_id
                     invoice_line.quantity=cart_item['quantity'] 
-                    if not invoice_line.quantity<shop.available:
+                    if not invoice_line.quantity>shop.available:
                         invoice_line.unit_price=shop.unit_price
                         invoice_line.unit_name=shop.unit_name
                         invoice_line.save() 
