@@ -59,6 +59,7 @@
     data: {
       address: `{{customer.person_account.person.address}}`,
       postal_code: `{{customer.person_account.person.postal_code}}`,
+      description:"",
       message: { show: false },
       waiting: false,
       cart_items: cart_items,
@@ -98,6 +99,7 @@
           customer_id: parseInt("{{customer.id}}"),
           address: this.address,
           postal_code: this.postal_code,
+          description: this.description,
           cart_items: (cart_items),
           csrfmiddlewaretoken: csrfmiddlewaretoken,
         };

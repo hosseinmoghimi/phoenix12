@@ -566,6 +566,7 @@ class CartItemRepo():
                 return result,message,invoices
         invoices=[]
         cart_items=kwargs['cart_items']
+        description=kwargs['description']
         suppliers_ids=[]
         for cart_item in cart_items:
             shop=Shop.objects.filter(pk=cart_item['shop_id']).first()
@@ -586,6 +587,7 @@ class CartItemRepo():
             invoice_data['bestankar_id']=supplier.person_account.id
             invoice_data['title']="فاکتور جدید"
             invoice_data['amount']=0
+            invoice_data['description']=description
             if 'address' in kwargs:
                 invoice_data['address']=kwargs['address']
             if 'postal_code' in kwargs:

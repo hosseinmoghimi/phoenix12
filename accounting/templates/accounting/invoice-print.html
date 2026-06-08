@@ -94,7 +94,11 @@
               <br />
               به علت نوسانات قیمت ، فاکتور فوق از لحاظ استعلام قیمت تا بیست و
               چهار ساعت معتبر می باشد. {% if invoice.description %}
-              {{invoice.description|safe}} {% endif %}
+              <div>
+
+                {{invoice.description|safe}}
+              </div>
+               {% endif %}
             </div>
 {% if invoice.address %}
   
