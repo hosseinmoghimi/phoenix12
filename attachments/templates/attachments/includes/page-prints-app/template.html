@@ -1,5 +1,16 @@
+  <div  id="page-prints-app">
+    <div class="text-right px-5 pt-3"  v-show="!printing" >
+
+      {% if add_page_print_form %}
+      
+      <button @click="print()" class="btn btn-info mb-2 px-5">
+        <i class="fa fa-print"></i>
+        <span class="mx-2"> چاپ </span>
+      </button>
+      {% endif %} 
+    </div>
 <div id="accordion-page-prints">
-  <div id="page-prints-app" >
+  <div >
     
     <div class="card" v-show="!printing" >
         <div class="card-header" id="heading-page-prints">
@@ -105,6 +116,9 @@
     </div>
 </div>
 
+  </div>
+
+    
   </div>
 
  

@@ -1663,11 +1663,11 @@ class InvoiceOfficialPrintView(View):
         context['NOT_REPONSIVE']=True
         context['NOT_NAVBAR']=True
         context['WIDE_LAYOUT']=False
-        context['title']=invoice.title
         context['NOT_FOOTER']=True
         invoice_s=json.dumps(InvoiceSerializer(invoice,many=False).data)
         context['invoice_s']=invoice_s
         context.update(InvoiceContext(request=request,invoice=invoice))
+        context['title']=invoice.title+f" # {invoice.id}"
         return render(request,TEMPLATE_ROOT+"invoice-official-print.html",context)
 
 
@@ -1689,10 +1689,10 @@ class InvoicePrintView(View):
         context['NOT_NAVBAR']=True
         context['NOT_FOOTER']=True
         context['WIDE_LAYOUT']=False
-        context['title']=invoice.title
         invoice_s=json.dumps(InvoiceSerializer(invoice,many=False).data)
         context['invoice_s']=invoice_s
         context.update(InvoiceContext(request=request,invoice=invoice))
+        context['title']=invoice.title+f" # {invoice.id}"
         return render(request,TEMPLATE_ROOT+"invoice-print.html",context)
 
 
@@ -1713,11 +1713,11 @@ class InvoiceEstelamView(View):
         context['NOT_REPONSIVE']=True
         context['NOT_NAVBAR']=True
         context['WIDE_LAYOUT']=False
-        context['title']=invoice.title
         context['NOT_FOOTER']=True
         invoice_s=json.dumps(InvoiceSerializer(invoice,many=False).data)
         context['invoice_s']=invoice_s
         context.update(InvoiceContext(request=request,invoice=invoice))
+        context['title']=invoice.title+f" # {invoice.id}"
         return render(request,TEMPLATE_ROOT+"invoice-estelam.html",context)
 
 
