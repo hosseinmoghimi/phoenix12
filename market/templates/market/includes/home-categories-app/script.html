@@ -1,0 +1,17 @@
+ 
+<script>
+
+    let categories_for_home_categories_app=JSON.parse('{{categories_s|escapejs}}')
+
+    
+    let categories_app = new Vue({
+        el: "#home-categories-app",
+        data: {
+            title: "",
+            categories:categories_for_home_categories_app,
+        },
+        methods: {
+              
+        },
+    })
+</script>

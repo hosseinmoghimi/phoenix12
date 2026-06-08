@@ -1129,6 +1129,11 @@ class ProductRepo():
             search_for=kwargs["search_for"]
 
             objects=objects.filter(Q(title__contains=search_for) | Q(barcode=search_for)|Q(model__contains=search_for))
+        if "for_home" in kwargs:
+            for_home=kwargs["for_home"]
+            if for_home:
+                objects=objects.filter(priority=0)
+                
         if "title" in kwargs:
             title=kwargs["title"]
 
@@ -2937,7 +2942,7 @@ class CategoryRepo():
         self.objects=Category.objects.filter(id=0)
         person=PersonRepo(request=request).me
          
-        self.objects=Category.objects 
+        self.objects=Category.objects.order_by('priority')
 
     def delete_all(self):
         
@@ -2956,6 +2961,11 @@ class CategoryRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+
+        if "for_home" in kwargs:
+            for_home=kwargs["for_home"]
+            if for_home:
+                objects=objects.filter(Q(parent_id=None) | Q(priority=0))
         return objects.all()
        
     def roots(self,*args, **kwargs):

@@ -761,8 +761,8 @@ class Category(models.Model,LinkHelper,ImageHelper):
     title=models.CharField(_("title"),max_length=100)
     priority=models.IntegerField(_("priority"),default=100)
     thumbnail_origin = models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'category/thumbnail/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
-    header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'category/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
     products=models.ManyToManyField("product",blank=True, verbose_name=_("products"))
+    header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'category/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
     def get_link(self):
             return f"""
                     <a href="{self.get_absolute_url()}" class="ml-2 "> {self.title} </a>

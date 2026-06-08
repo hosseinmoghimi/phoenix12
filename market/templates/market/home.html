@@ -1,0 +1,30 @@
+{% extends "accounting/layout.html" %}
+{% block content %}
+
+ 
+ 
+ 
+
+<div class="col-md-12">
+  {% include "market/includes/home-categories-app/template.html" %}
+</div>
+
+<div class="col-md-12">
+  {% include "market/includes/home-products-app/template.html" %}
+</div>
+
+
+{% endblock content %}
+
+
+
+
+{% block script %}
+
+ 
+
+{% include "market/includes/home-categories-app/script.html" %}
+
+
+{% include "market/includes/home-products-app/script.html" %}
+{% endblock script %}
