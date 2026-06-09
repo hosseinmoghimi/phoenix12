@@ -214,6 +214,19 @@ class SearchView(View):
             
             products=ProductRepo(request=request).list(search_for=search_for)
             if len(products)>0:
+                
+                for product in products:
+                    primary_shop=ShopRepo(request=request).primary_shop(product)
+                    if primary_shop is None:
+                        product.available=False
+                    else:
+                        pass
+                        product.available=True
+                        product.unit_name=primary_shop.unit_name
+                        product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
+            
+        
+
                 context['products']=products
                 context['products_s']=json.dumps(ProductSerializer(products,many=True).data)
                 WAS_FOUND=True
