@@ -822,9 +822,6 @@ class CustomerGroupRepo():
 
         return result,message,customer_group
  
-
-
-
  
 class ShipRepo(Repo):
     def __init__(self,request,*args, **kwargs):
