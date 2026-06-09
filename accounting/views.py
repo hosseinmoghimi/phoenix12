@@ -597,10 +597,11 @@ class InvoiceToExcelView(View):
         now=PersianCalendar().date
         invoice=InvoiceRepo(request=request).invoice(*args, **kwargs)
         if invoice is None:
-            mv=MessageView(request=request)
-            mv.title="فاکتور پیدا نشد."
-            mv.body="فاکتور پیدا نشد."
-            return mv.response()
+            mv=MessageView()
+            title="خطا"
+            color='danger'
+            body="فاکتور پیدا نشد."
+            return mv.get(request=request,color=color,body=body,title=title)
         date=PersianCalendar().from_gregorian(now)
         lines=[]
         from utility.templatetags.to_normal_number import to_normal_number
@@ -765,7 +766,7 @@ class FinancialDocumentView(View):
             title='سند پیدا نشد.'
             body='سند پیدا نشد.'
             mv.message={'title':title,'body':body}
-            return mv.get(request=request) 
+            return mv.get(request=request,title=title,body=body) 
         context['financial_document']=financial_document
         financial_document_s=json.dumps(FinancialDocumentSerializer(financial_document).data)
         context['financial_document_s']=financial_document_s
@@ -801,8 +802,8 @@ class FinancialDocumentsView(View):
         current_financial_year=FinancialYearRepo(request=request).current_financial_year()
         if current_financial_year is None:
             from attachments.models import Link,reverse
-            title='ابتدا سال مالی جاری را ایجاد کنید.'
-            
+            body='ابتدا سال مالی جاری را ایجاد کنید.'
+            title='خطا'
             color1='success'
             title1='سال های مالی'
             url1=reverse('accounting:financial_years')
@@ -815,8 +816,8 @@ class FinancialDocumentsView(View):
             # link2={'color':color2,'url':url2,'title':title2}
             link2=Link(title=title2,url=url2,color='danger')
             links=[link1,link2]
-            mv=MessageView(title=title,links=links)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,body=body,title=title,links=links)
         context.update(AddFinancialDocumentContext(request=request))
         return render(request,TEMPLATE_ROOT+"financial-documents.html",context)
 
@@ -851,8 +852,8 @@ class AddInvoiceView(View):
         else:
             title='شما مجوز افزودن فاکتور ندارید.'
             body='شما مجوز افزودن فاکتور ندارید.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         return render(request,TEMPLATE_ROOT+"add-invoice.html",context)
     def post(self,request,*args, **kwargs):
         from .apis import AddInvoiceApi
@@ -899,8 +900,8 @@ class FinancialDocumentLinesPrintView(View):
         else:
             title="داده های نا معتبر"
             body="داده های ورودی معتبر نمی باشند"
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)    
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)    
         context['NOT_REPONSIVE']=True
         context['NOT_NAVBAR']=True
         context['NOT_FOOTER']=True
@@ -934,8 +935,8 @@ class PersonView(View):
             title='خطا'
             body='شخص پیدا نشد.'
 
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         context.update(PersonContext(request=request,person=person))
                  
         person_accounts=PersonAccountRepo(request=request).list(person_id=person.id)
@@ -986,8 +987,8 @@ class AccountView(View):
             title='خطا'
             body='حساب پیدا نشد.'
 
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         context.update(AccountContext(request=request,account=account))
          
 
@@ -1064,8 +1065,8 @@ class ProductView(View):
         if product is None:
             title='کالای مورد نظر یافت نشد.'
             body='کالای مورد نظر یافت نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context["WIDE_LAYOUT"]=True
 
@@ -1105,8 +1106,10 @@ class InvoiceLineView(View):
         context=getContext(request=request)
         invoice_line=InvoiceLineRepo(request=request).invoice_line(*args, **kwargs)
         if invoice_line is None :
-            mv=MessageView(title='خطا',body='سطر فاکتور مورد نظر یافت نشد.')
-            return mv.get(request=request)
+            mv=MessageView()
+            title='خطا'
+            body='سطر فاکتور مورد نظر یافت نشد.'
+            return mv.get(request=request,title=title,body=body)
         
         context['invoice_line']=invoice_line
         context.update(InvoiceLineItemContext(request=request,invoice_line_item=invoice_line.invoice_line_item))
@@ -1191,8 +1194,8 @@ class ChangeChequeImageView(View):
                 return redirect(reverse(APP_NAME+":cheque",kwargs={'pk':cheque.id}))
         body='چک پیدا نشد'
         title='چک پیدا نشد'
-        mv=MessageView(title=title,body=body,)
-        return mv.get(request=request)
+        mv=MessageView()
+        return mv.get(request=request,title=title,body=body)
 
 
 class AssetView(View):
@@ -1553,8 +1556,8 @@ class MakeFinancialEventDraftView(View):
             if financial_event is None:
                 title='خطا'
                 body='رویداد مالی پیدا نشد.'
-                mv=MessageView(title=title,body=body)
-                return mv.get(request=request)
+                mv=MessageView()
+                return mv.get(request=request,title=title,body=body)
 
             stat=financial_event.status
             financial_event.status=FinancialEventStatusEnum.ROLL_BACKED
@@ -1574,8 +1577,8 @@ class MakeFinancialEventDraftView(View):
         else:
             title='خطا'
             body='پارامتر های ورودی صحیح نمی باشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
 
 class InvoicesView(View):
@@ -1608,10 +1611,11 @@ class InvoiceView(View):
         context['expand_invoice_lines']=True
         invoice=InvoiceRepo(request=request).invoice(*args, **kwargs)
         if invoice is None:
-            title='فاکتور پیدا نشد.'
-            message='فاکتور پیدا نشد.'
-            mv=MessageView(title=title,message=message)
-            return mv.get(request=request)
+            title='خطا'
+            color="danger"
+            body='فاکتور پیدا نشد.'
+            mv=MessageView()
+            return mv.get(request=request,color=color,title=title,body=body)
         context['invoice']=invoice
         invoice_s=json.dumps(InvoiceSerializer(invoice,many=False).data)
         context['invoice_s']=invoice_s
@@ -1650,9 +1654,9 @@ class InvoiceOfficialPrintView(View):
         invoice=InvoiceRepo(request=request).invoice(*args, **kwargs)
         if invoice is None:
             title='فاکتور پیدا نشد.'
-            message='فاکتور پیدا نشد.'
-            mv=MessageView(title=title,message=message)
-            return mv.get(request=request)
+            body='فاکتور پیدا نشد.'
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         from attachments.repo import PagePrintRepo,PagePrintTypeEnum
         PagePrintRepo(request=request).add_page_print(page_id=invoice.id,official=True,printed=False)
@@ -1677,9 +1681,9 @@ class InvoicePrintView(View):
         invoice=InvoiceRepo(request=request).invoice(*args, **kwargs)
         if invoice is None:
             title='فاکتور پیدا نشد.'
-            message='فاکتور پیدا نشد.'
-            mv=MessageView(title=title,message=message)
-            return mv.get(request=request)
+            body='فاکتور پیدا نشد.'
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         from attachments.repo import PagePrintRepo,PagePrintTypeEnum
         PagePrintRepo(request=request).add_page_print(page_id=invoice.id,draft=True,printed=False)
         context['add_page_print_form']=True
@@ -1702,9 +1706,9 @@ class InvoiceEstelamView(View):
         invoice=InvoiceRepo(request=request).invoice(*args, **kwargs)
         if invoice is None:
             title='فاکتور پیدا نشد.'
-            message='فاکتور پیدا نشد.'
-            mv=MessageView(title=title,message=message)
-            return mv.get(request=request)
+            body='فاکتور پیدا نشد.'
+            mv=MessageView()
+            return mv.get(request=request,body=body,title=title)
         from attachments.repo import PagePrintRepo,PagePrintTypeEnum
         PagePrintRepo(request=request).add_page_print(page_id=invoice.id,draft=True,printed=False)
         context['add_page_print_form']=True
@@ -1839,8 +1843,8 @@ class BankView(View):
         if bank is None:
             title='خطا'
             body='بانک مورد نظر پیدا نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context.update(BankContext(request=request,bank=bank))
         bank_accounts=BankAccountRepo(request=request).list(bank_id=bank.id)
@@ -1861,8 +1865,8 @@ class PersonAccountView(View):
         if person_account is None:
             title='خطا'
             body='حساب شخص پیدا نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context.update(PersonAccountContext(request=request,person_account=person_account))
          

@@ -172,7 +172,7 @@ class DownloadView(View):
         # from utility.views import MessageView
         from core.views import MessageView
         message_view = MessageView()
-        message_view.links = []
+        links = []
         message_view.message_color = 'warning'
         message_view.has_home_link = True
         message_view.header_color = "rose"
@@ -180,16 +180,16 @@ class DownloadView(View):
         message_view.header_icon = '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'
         body = ' شما مجوز دسترسی به این صفحه را ندارید.'
         title = 'دسترسی غیر مجاز'
-        message_view = MessageView(title=title,body=body)
+        message_view = MessageView()
         if download is None:
-            message_view.body = 'موقعیت مورد نظر شما پیدا نشد.'
-            message_view.title = 'موقعیت مورد نظر پیدا نشد.'
+            body = 'موقعیت مورد نظر شما پیدا نشد.'
+            title = 'موقعیت مورد نظر پیدا نشد.'
         else:
             from .models import Link
-            message_view.links.append(Link(title='تلاش مجدد', color="warning",
+            links.append(Link(title='تلاش مجدد', color="warning",
                                   icon_material="apartment", url=download.get_download_url))
 
-        return message_view.get(request=request)
+        return message_view.get(request=request,title=title,body=body,links=links)
       
 def SearchContext(request,search_for,*args, **kwargs):
     context={}
@@ -245,8 +245,8 @@ class TagView(View):
         if tag is None:
             title='تگ پیدا نشد.'
             body='تگ پیدا نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         context=getContext(request=request)
         context['tag']=tag
         page_tags=tag.pages.all()

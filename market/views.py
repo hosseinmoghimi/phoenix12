@@ -176,11 +176,17 @@ class LinksView(View):
         context=getContext(request=request) 
         if request.user.is_authenticated and request.user.has_perm(APP_NAME+".add_supplier"):
             return render(request,TEMPLATE_ROOT+"links.html",context)
-        else:
+        else: 
             mv=MessageView()
-            mv.title="خطا"
-            mv.body="خطا"
-            return mv.get(request=request)
+            context={}
+            back_url = request.META.get('HTTP_REFERER')
+            context['back_url'] = back_url
+            context["title"]="خطا"
+            context["color"]="danger"
+            context["body"]="شما مجوز دسترسی ندارید."
+            context["message"]={'title':'','body':''}
+            return mv.get(request=request,**context)
+
 
 
 class SearchView(View):

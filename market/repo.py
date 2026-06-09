@@ -157,7 +157,7 @@ class ShopRepo(Repo):
             groups_ids=[]
             for group in me_customer.groups.all():
                 groups_ids.append(group.id)
-            self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
+            self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids).filter(available__gt=0)
         elif me_supplier is not None: 
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
         
@@ -647,7 +647,7 @@ class CartItemRepo():
             invoice_data={}
             invoice_data['bedehkar_id']=customer.person_account.id
             invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور جدید"
+            invoice_data['title']="فاکتور خرید از فروشگاه"
             invoice_data['amount']=0
             invoice_data['description']=description
             if 'address' in kwargs:

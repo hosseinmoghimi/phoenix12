@@ -33,8 +33,8 @@ def SearchContext(request,app_name,search_for,*args, **kwargs):
 def NoPersmissionView(request,*args, **kwargs):
         body="اکانت شما مجوز دسترسی لازم را دارا نمی باشد."
         title="عدم دسترسی"
-        mv=MessageView(title=title,body=body)
-        return mv.get(request=request)
+        mv=MessageView()
+        return mv.get(request=request,title=title,body=body)
 
 class SearchView(View):
     def get(self,request,*args, **kwargs):
@@ -125,6 +125,7 @@ class MessageView(View):
         self.links =[]
         self.message ={}
         self.back_url =""
+
         if 'links' in kwargs:
             self.links=kwargs['links']
         if 'title' in kwargs:
@@ -141,19 +142,28 @@ class MessageView(View):
 
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        self.color="info"
+        self.fa_icon="edit"
         self.back_url = request.META.get('HTTP_REFERER') 
         if 'title' in kwargs:
-            self.message['title']=kwargs['title']
+            self.title  =kwargs['title']
         if 'body' in kwargs:
-            self.message['body']=kwargs['body']
-
-        if 'message' in kwargs:
-            self.message=kwargs['message']
+            self.body  =kwargs['body']
+ 
 
         if 'back_url' in kwargs:
             self.back_url=kwargs['back_url']
+        if 'color' in kwargs:
+            self.color=kwargs['color']
+        if 'fa_icon' in kwargs:
+            self.fa_icon=kwargs['fa_icon']
+        if 'links' in kwargs:
+            self.links=kwargs['links']
         
-        context['message']=self.message     
+        context['title']=self.title     
+        context['body']=self.body     
+        context['color']=self.color     
+        context['fa_icon']=self.fa_icon     
         context['back_url']=self.back_url     
         context['links']=self.links   
         return render(request,TEMPLATE_ROOT+"message.html",context)
@@ -190,9 +200,9 @@ class BackupDBView(View):
         from django.utils import timezone
         me = PersonRepo(request=request).me
         if not request.user.has_perm("core.change_download"):
-            mv=MessageView(request=request)
-            mv.title="عدم دسترسی مجاز"
-            return mv.response()
+            mv=MessageView()
+            title="عدم دسترسی مجاز"
+            return mv.get(request=request,title=title)
         
         file_path = str(DB_FILE_PATH)
         # return JsonResponse({'download:':str(file_path)})
@@ -219,9 +229,9 @@ class DownloadMediaView(View):
        
             
         if not request.user.has_perm(APP_NAME+".add_parameter"):
-            mv=MessageView(request=request)
-            mv.title="عدم دسترسی مجاز"
-            return mv.response()
+            mv=MessageView()
+            title="عدم دسترسی مجاز"
+            return mv.get(request=request,title=title)
 
         media_zip_file = Compress(folder=MEDIA_ROOT,output_folder=TEMPORARY_ROOT,output_file_name="media").get_output_archive
         # print(10*" media_zip_file")
@@ -243,7 +253,7 @@ class DownloadMediaView(View):
                         
         mv=MessageView(request=request)
         mv.title="عدم دسترسی مجاز"
-        return mv.response()
+        return mv.get(request=request,title=title)
     
 class DownloadPrivatesView(View):
     def get(self, request, *args, **kwargs):
@@ -274,7 +284,7 @@ class DownloadPrivatesView(View):
                     response['Content-Disposition'] = 'inline; filename=' + filename
                     return response
                 
-        mv=MessageView(request=request)
-        mv.title="عدم دسترسی مجاز"
-        return mv.response()
+        mv=MessageView()
+        title="عدم دسترسی مجاز"
+        return mv.response(request=request,title=title)
    

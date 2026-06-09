@@ -179,8 +179,8 @@ class PersonView(View):
         if person is None:
             title='شخص پیدا نشد.'
             body='شخص پیدا نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         context.update(PersonContext(request=request,person=person))
         context['person']=person
         person_s=json.dumps(PersonFullSerializer(person).data)
