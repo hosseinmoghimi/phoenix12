@@ -57,8 +57,8 @@
   let checkout_cart_app = new Vue({
     el: "#checkout-cart-app",
     data: {
-      address: `{{customer.person_account.person.address}}`,
-      postal_code: `{{customer.person_account.person.postal_code}}`,
+      address: `{% if customer.person_account.person.address %}{{customer.person_account.person.address}}{% endif %}`,
+      postal_code: `{% if customer.person_account.person.postal_code %}{{customer.person_account.person.postal_code}}{% endif %}`,
       description:"",
       message: { show: false },
       waiting: false,
