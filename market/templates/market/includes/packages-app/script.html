@@ -1,0 +1,14 @@
+ 
+<script>
+    let packages_for_packages_app = JSON.parse("{{packages_s|escapejs}}")
+   
+    let packages_app = new Vue({
+        el: "#packages-app",
+        data: {
+            packages: packages_for_packages_app,
+        },
+        methods: {
+            to_price: vall => to_price(vall),
+        },
+    })
+</script>

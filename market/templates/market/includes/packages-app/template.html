@@ -1,0 +1,102 @@
+<div id="accordion-packages" class="rtl text-right farsi">
+  <div id="packages-app" class="card">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-packages"
+          aria-expanded="true"
+          aria-controls="collapse-packages"
+        >
+          بسته ها
+          <span v-if="packages.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="packages.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-packages"
+      class="collapse {% if expand_packages %} show {% endif %}"
+      aria-labelledby="heading-packages"
+      data-parent="#accordion-packages"
+    >
+      <div class="card-body">
+        <div v-if="packages.length==0" class="table-responsive">
+          <h6>بسته ای وجود ندارد.</h6>
+        </div>
+        <div v-if="packages.length>0" class="table-responsive">
+          <table class="table">
+            <thead>
+              <th>عنوان</th>
+              <th>کد</th>
+              <th>رنگ</th>
+              <th>وزن</th>
+              <th>حجم</th>
+              <th>ابعاد</th>
+ 
+
+              {% if perms.market.change_package or perms.market.delete_package %}
+              <th>
+                
+              </th>
+
+              {% endif %}
+            </thead>
+            <tbody>
+              <tr v-for="package in packages">
+                <td>
+                  <a :href="package.get_absolute_url"
+                    ><span v-text="package.title"></span
+                  ></a>
+                </td>
+
+                
+                <td>
+                  <span v-text="package.code"></span>
+                </td>
+                <td>
+                  <span v-text="package.color"></span>
+                </td>
+                <td>
+                  <span v-text="package.weight"></span>
+                </td>
+                <td>
+                  <span v-text="package.volume"></span>
+                </td>
+                <td>
+                  <span v-text="package.dimensions"></span>
+                </td>
+                 
+                {% if perms.market.change_package or perms.market.delete_package %}
+                <td>
+                  {% if perms.market.change_package %}
+                  <a
+                    target="_blank"
+                    :href="package.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_package %}
+                  <a
+                    target="_blank"
+                    :href="package.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

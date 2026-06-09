@@ -2,17 +2,17 @@ from .models import Page,FAILED,SUCCEED,Event
 from django.db.models import Q
 from .apps import APP_NAME 
 from authentication.repo import PersonRepo
- 
+from core.apps import APP_NAME
 class Repo():
-    def __init__(self,request,*args, **kwargs):  
+    def __init__(self,request,app_name=APP_NAME,*args, **kwargs):  
         
         self.app_name=APP_NAME
-        self.request=None
-        if 'app_name' in kwargs:
-            self.app_name=kwargs['app_name']
-        self.person=None
         self.request=request
-        self.person=PersonRepo(request=self.request).me
+        self.app_name=app_name
+            
+        self.me_person=PersonRepo(request=self.request).me
+        self.me=self.me_person
+        self.person=self.me_person
     def log(self,*args, **kwargs): 
 
             # if 'title' in kwargs:            

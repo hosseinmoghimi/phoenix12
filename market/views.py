@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from utility.constants import INDEX_FOR_ALL_CHOICES
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from accounting.views import ProductRepo,PersonAccountRepo,AddPersonAccountContext,PersonAccountSerializer
-from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSerializer,SupplierSerializer,ShopSerializer,CategorySerializer
-from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo
+from accounting.views import ProductRepo,PersonAccountRepo,AddPersonAccountContext,PersonAccountSerializer,FinancialEventContext
+from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSerializer,SupplierSerializer,ShopSerializer,CategorySerializer,ShipSerializer,PackageSerializer
+from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo,ShipRepo,PackageRepo
 from .forms import *
 from .apps import APP_NAME
 from .serializers import ShipperSerializer,ProductWithPriceSerializer,CustomerGroupSerializer
@@ -654,3 +654,57 @@ class CartView(View):
  
         return render(request,TEMPLATE_ROOT+"cart.html",context) 
        
+
+       
+class ShipView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        ship =ShipRepo(request=request).ship(*args, **kwargs)
+        context[WIDE_LAYOUT]=False
+        context['ship']=ship
+        context.update(FinancialEventContext(request=request,financial_event=ship,*args, **kwargs))
+        packages =ship.packages.all()
+
+        context['packages']=packages
+        packages_s=json.dumps(PackageSerializer(packages,many=True).data)
+        context['packages_s']=packages_s
+ 
+
+        return render(request,TEMPLATE_ROOT+"ship.html",context) 
+
+ 
+
+class ShipsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        ships =ShipRepo(request=request).list(*args, **kwargs)
+        context[WIDE_LAYOUT]=False
+        context['ships']=ships
+        ships_s=json.dumps(ShipSerializer(ships,many=True).data)
+        context['ships_for_ships_app']=ships_s
+
+        return render(request,TEMPLATE_ROOT+"ships.html",context) 
+
+
+       
+class PackageView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        package =PackageRepo(request=request).package(*args, **kwargs)
+        context[WIDE_LAYOUT]=False
+        context['package']=package
+        from core.views import PageContext
+        context.update(PageContext(request=request,page=package,*args, **kwargs))
+        return render(request,TEMPLATE_ROOT+"package.html",context) 
+
+
+class PackagesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        packages =PackageRepo(request=request).list(*args, **kwargs)
+        context[WIDE_LAYOUT]=False
+        context['packages']=packages
+        packages_s=json.dumps(PackageSerializer(packages,many=True).data)
+        context['packages_s']=packages_s
+        return render(request,TEMPLATE_ROOT+"packages.html",context) 
+

@@ -191,12 +191,7 @@ class AccountRepo(Repo):
         super(AccountRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
         self.request=request
         self.objects=Account.objects.filter(id=0)
-        me_person=self.person
-        self.my_accounts=PersonAccount.objects.filter(pk=0)
-        if self.person is not None:
-            self.my_accounts=PersonAccount.objects.filter(person_id=me_person.id)
-        if me_person is not None:
-            self.my_accounts=PersonAccount.objects.filter(person_id=me_person.id)
+        me_person=self.person 
         if request.user.has_perm(APP_NAME+".view_account"):
             self.objects=Account.objects.all()
         elif me_person is not None:
@@ -214,7 +209,10 @@ class AccountRepo(Repo):
             level=kwargs["level"]
             objects=objects.filter(level=level)  
         return objects.all()
-       
+    @property
+    def my_accounts(self,*args, **kwargs):
+        return PersonAccount.objects.filter(person_id=self.me_person.id)
+
     def roots(self,*args, **kwargs):
         objects=self.objects.filter(parent_id=None)
         return objects.all()
@@ -680,10 +678,8 @@ class AccountRepo(Repo):
 class PersonAccountRepo(Repo):
     def __init__(self,request,*args, **kwargs):
         super(PersonAccountRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
-        self.me=None
-        self.request=request
         self.objects=PersonAccount.objects.filter(pk=0)
-        me_person=PersonRepo(request=request).me
+        me_person=self.me
         if request.user.has_perm(APP_NAME+'.view_personaccount'):
             self.objects=PersonAccount.objects.all().order_by('person__full_name')
         elif me_person is not None:
@@ -2054,8 +2050,7 @@ class ServiceRepo():
 
 class FinancialDocumentRepo(Repo):
     def __init__(self,request,*args, **kwargs):
-        super(FinancialDocumentRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
-        self.request=request
+        super(FinancialDocumentRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
         self.objects=FinancialDocument.objects
     
     def list(self,*args, **kwargs):
@@ -2169,10 +2164,12 @@ class FinancialDocumentRepo(Repo):
 class FinancialDocumentLineRepo(Repo):
     def __init__(self,request,*args, **kwargs):
         
-        self.request=request
         super(FinancialDocumentLineRepo,self).__init__(request=request,app_name=APP_NAME,*args,**kwargs)
-        self.objects=FinancialDocumentLine.objects
-        
+        if self.me is not None and request.user.has_perm(APP_NAME+".view_financialdocumentline"):
+            self.objects=FinancialDocumentLine.objects
+        else:
+            self.objects=FinancialDocumentLine.objects.filter(pk=0)
+
     def list(self,*args, **kwargs):
         objects=self.objects
         if "start_date" in kwargs :
@@ -2511,15 +2508,13 @@ class FinancialDocumentLineRepo(Repo):
 class FinancialEventRepo(Repo):
     def __init__(self,request,*args, **kwargs):
         super(FinancialEventRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
-        self.me=None
         self.my_financial_events=[]
-        self.request=request
         self.objects=FinancialEvent.objects.filter(id=0)
 
 
-        if request.user.has_perm(APP_NAME+".view_financialevent"):
+        if self.me_person is not None and request.user.has_perm(APP_NAME+".view_financialevent"):
             self.objects=FinancialEvent.objects 
-        elif self.person is not None:
+        elif self.me_person is not None:
             my_accounts=AccountRepo(request=request).my_accounts
             ids=[]
             for acc in my_accounts:

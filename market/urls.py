@@ -25,6 +25,10 @@ urlpatterns = [
     path("add-customer/",login_required(apis.AddCustomerApi.as_view()),name="add_customer"),
     path("add-shipper/",login_required(apis.AddShipperApi.as_view()),name="add_shipper"),
     path('shop/<int:pk>/',login_required(views.ProductView.as_view()),name="shop"),
+    
+    path('add-ship/',login_required(apis.AddShipApi.as_view()),name="add_ship"),
+    path('ship/<int:pk>/',login_required(views.ShipView.as_view()),name="ship"),
+    path('ships/',login_required(views.ShipsView.as_view()),name="ships"),
 
     path('category/<int:pk>/',login_required(views.CategoryView.as_view()),name="category"),
     
@@ -40,5 +44,9 @@ urlpatterns = [
     path("add-shop_package/",login_required(apis.AddShopPackageApi.as_view()),name="add_shop_package"),
     path("shop_packages/",login_required(views.ShopPackagesView.as_view()),name="shop_packages"),
     path("shop_package/<int:pk>/",(views.ShopPackageView.as_view()),name="shoppackage"),
+
+    path("add-package/",login_required(apis.AddPackageApi.as_view()),name="add_package"),
+    path("packages/",login_required(views.PackagesView.as_view()),name="packages"),
+    path("package/<int:pk>/",(views.PackageView.as_view()),name="package"),
 
 ]

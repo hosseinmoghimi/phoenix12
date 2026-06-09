@@ -1,9 +1,8 @@
 from django.db import models
 from utility.models import _,LinkHelper,DateTimeHelper
-from accounting.models import UnitNameEnum,CorePage,FAILED,SUCCEED
+from accounting.models import UnitNameEnum,CorePage,FAILED,SUCCEED,FinancialEvent
 from .apps import APP_NAME
 from utility.enums import ColorEnum
-
 from .enums import *
 
 
@@ -91,6 +90,33 @@ class Shipper(MarketPerson):
         return result,message,shipper
 
 
+
+class Ship(FinancialEvent,LinkHelper):
+    packages=models.ManyToManyField("package", verbose_name=_("packages"))
+
+    app_name=APP_NAME
+    class_name='ship'
+    shipper=models.ForeignKey("shipper", verbose_name=_("shipper"),blank=True,null=True, on_delete=models.SET_NULL)
+    recipient=models.ForeignKey("authentication.person",related_name="recipient_set", verbose_name=_("recipient"),blank=True,null=True, on_delete=models.SET_NULL)
+    deliverer=models.ForeignKey("authentication.person",related_name="deliverer_set", verbose_name=_("deliverer"),blank=True,null=True, on_delete=models.SET_NULL)
+    source=models.CharField(_("source"), max_length=200)
+    destination=models.CharField(_("destination"), max_length=200)
+
+    class Meta:
+        verbose_name = _("Ship")
+        verbose_name_plural = _("Ships")
+    def save(self,*args, **kwargs):
+        result,message,ship=FAILED,'',self
+        if self.class_name is None or self.class_name=="":
+            self.class_name="ship"
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        result=SUCCEED
+        message='ارسال با موفقیت ذخیره شد.'
+        super(Ship,self).save()
+        return result,message,ship
+ 
+
 class ShopPackage(models.Model,LinkHelper,DateTimeHelper):
     supplier=models.ForeignKey("supplier", verbose_name=_("supplier"), on_delete=models.CASCADE)
     title=models.CharField(_("title"), max_length=50)    
@@ -119,6 +145,30 @@ class ShopPackage(models.Model,LinkHelper,DateTimeHelper):
         result=SUCCEED
         message="پکیج با موفقیت اضافه شد."
         return (result,message,shop_package)
+
+
+class Package(CorePage,LinkHelper):
+    code=models.CharField(_("code"),blank=True,null=True, max_length=200)
+    colour=models.CharField(_("color"),blank=True,null=True, max_length=50)
+    weight=models.FloatField(_("weight"),blank=True,null=True,default=0)
+    volume=models.CharField(_("volume"),blank=True,null=True, max_length=50)
+    dimensions=models.CharField(_("dimensions"),blank=True,null=True, max_length=50)
+    
+ 
+    class Meta:
+        verbose_name = _("Package")
+        verbose_name_plural = _("Packages")
+
+    def save(self):
+        (result,message,package)=FAILED,'',self
+        if self.class_name is None or self.class_name=="":
+            self.class_name="package"
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        super(Package,self).save()   
+        result=SUCCEED
+        message="پکیج با موفقیت اضافه شد."
+        return (result,message,package)
 
 
 class Shop(models.Model,LinkHelper,DateTimeHelper):

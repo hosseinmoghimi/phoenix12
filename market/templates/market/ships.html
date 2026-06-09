@@ -1,0 +1,27 @@
+
+{% extends "market/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_ship_form %}
+      <div class="col-md-12">
+          {% include "market/includes/add-ship-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "market/includes/ships-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "market/includes/ships-app/script.html" %}
+{% if add_ship_form %}
+{% include "market/includes/add-ship-app/script.html" %}
+{% endif %}
+{% endblock script %}

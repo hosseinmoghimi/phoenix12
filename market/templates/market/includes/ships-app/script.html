@@ -1,0 +1,19 @@
+{% if ships_for_ships_app %}
+<script>
+    let ships_for_ships_app=JSON.parse(`{{ships_for_ships_app|escapejs}}`)
+</script>
+  
+{% endif %}
+<script>
+
+
+    let ships_app=new Vue({
+        el:"#ships-app",
+        data:{
+            ships:ships_for_ships_app,
+        },
+        methods:{
+            to_price:vall=>to_price(vall),
+        }
+    })
+</script>

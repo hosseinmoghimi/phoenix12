@@ -173,6 +173,7 @@ class EventCategory(models.Model,LinkHelper):
 class Event(Page,DateTimeHelper):
     status=models.CharField(_("وضعیت"),choices=EventStatusEnum.choices,default=EventStatusEnum.DRAFT, max_length=50)
     category=models.ForeignKey("eventcategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
+    
     event_datetime = models.DateTimeField(
         _("event_datetime"), auto_now=False, auto_now_add=False)
     start_datetime = models.DateTimeField(

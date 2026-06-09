@@ -242,7 +242,7 @@ def AddFinancialDocumentLineContext(request,*args, **kwargs):
     #     context['event']='event'
     return context
 
-def FinancialEventContext(request,financial_event):
+def FinancialEventContext(request,financial_event,*args, **kwargs):
     context={}
     context['financial_event']=financial_event 
     context.update(PageContext(request=request,page=financial_event))

@@ -1,7 +1,7 @@
 from core.serializers import serializers
 from utility.serializers import RegionSerializer
-from .models import ShopPackage,Shop,Supplier,Customer,CartItem,Shipper,CustomerGroup
-from accounting.serializers import Category,Product,AccountBriefSerializer,PersonSerializer,PersonAccountSerializer
+from .models import ShopPackage,Shop,Supplier,Customer,CartItem,Shipper,CustomerGroup,Ship,Package
+from accounting.serializers import Category,Product,AccountBriefSerializer,PersonSerializer,PersonAccountSerializer,AccountSerializer
 
 
 
@@ -80,4 +80,19 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model=CartItem
         fields=['id','row', 'shop','quantity','customer','persian_date_added']
- 
+
+class PackageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Package
+        fields = ['id','code','title','weight','colour','dimensions','volume','get_absolute_url','get_edit_url','get_delete_url']
+
+class ShipSerializer(serializers.ModelSerializer):
+    shipper=ShipperSerializer()
+    recipient=PersonSerializer()
+    deliverer=PersonSerializer()
+    bestankar=AccountSerializer()
+    bedehkar=AccountSerializer()
+    packages=PackageSerializer(many=True)
+    class Meta:
+        model = Ship
+        fields = ['id','shipper','packages','recipient','deliverer','title','source','destination','amount','balance','bedehkar','thumbnail' ,'bestankar','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
