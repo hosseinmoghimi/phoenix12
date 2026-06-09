@@ -366,13 +366,15 @@ class ShopRepo(Repo):
 class CustomerRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
+        self.me=None
         self.objects=Customer.objects.filter(pk=0)
         person=PersonRepo(request=request).me
-        self.me=Customer.objects.filter(person_account__person_id=person.id).first()
-        if request.user.has_perm(APP_NAME+'.view_customer'):
-            self.objects=Customer.objects
-        elif person is not None:
-            self.objects=Customer.objects.filter(person_account__person_id=person.id)
+        if person is not None:
+            if request.user.has_perm(APP_NAME+'.view_customer'):
+                self.objects=Customer.objects
+            elif person is not None:
+                self.me=Customer.objects.filter(person_account__person_id=person.id).first()
+                self.objects=Customer.objects.filter(person_account__person_id=person.id)
 
 
         
@@ -701,9 +703,12 @@ class SupplierRepo():
         self.me=None
         self.objects=Supplier.objects.filter(pk=0)
         me_person=PersonRepo(request=request).me
-        me_shipper=ShipperRepo(request=request).me
-        me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
-        self.me=me_supplier
+        me_shipper=None
+        me_supplier=None
+        if me_person is not None:
+            me_shipper=ShipperRepo(request=request).me
+            me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
+            self.me=me_supplier
         if me_shipper is not None:
             self.objects=me_shipper.suppliers.all()
         if me_supplier is not None:

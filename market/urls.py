@@ -15,7 +15,7 @@ urlpatterns = [
     path('import-shops-to-excel/',login_required(apis.ImportShopsFromExcelApi.as_view()),name="import_shops_from_excel"),
     path('cart/<int:customer_id>/',login_required(views.CartView.as_view()),name="cart"), 
     path('checkout_cart/',login_required(apis.CheckoutCartApi.as_view()),name="checkout_cart"), 
-    path('product/<int:pk>/',login_required(views.ProductView.as_view()),name="product"), 
+    path('product/<int:pk>/',(views.ProductView.as_view()),name="product"), 
     path('shipper/<int:pk>/',login_required(views.ShipperView.as_view()),name="shipper"),
     path('shippers/',login_required(views.ShippersView.as_view()),name="shippers"),
     path('customers/',login_required(views.CustomersView.as_view()),name="customers"),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('ship/<int:pk>/',login_required(views.ShipView.as_view()),name="ship"),
     path('ships/',login_required(views.ShipsView.as_view()),name="ships"),
 
-    path('category/<int:pk>/',login_required(views.CategoryView.as_view()),name="category"),
+    path('category/<int:pk>/',(views.CategoryView.as_view()),name="category"),
     
     path('add-cart-item/',login_required(apis.AddCartItemApi.as_view()),name="add_cart_item"),
 

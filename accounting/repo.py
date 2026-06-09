@@ -3086,6 +3086,8 @@ class CategoryRepo():
             category.id=kwargs["id"]
         if 'priority' in kwargs and kwargs['priority'] is not None:
             category.priority=kwargs["priority"]
+        if 'thumbnail_origin' in kwargs and kwargs['thumbnail_origin'] is not None:
+            category.thumbnail_origin=kwargs["thumbnail_origin"]
         
         (result,message,category)=category.save()
 
