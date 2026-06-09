@@ -37,11 +37,11 @@
     style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('{{app_background_image.image}}');background-size:cover"
     {% endif %}>
     {% if not NOT_NAVBAR %}
-    {% include "phoenix/includes/navbar.html" %}
+    {% include "market/includes/navbar-origin.html" %}
     {% endif %}
     <div class="my-3 {% if WIDE_LAYOUT %}mx-3{% else %}container{% endif %}" style="margin-bottom: 75px !important;">
        <div class="row rtl text-right">
-<div class="col-md-6">
+<div class="col-lg-3 col-md-4">
 
   <form action="{% url 'market:search' %}" method="POST" class="mb-2">
     {% csrf_token %}
