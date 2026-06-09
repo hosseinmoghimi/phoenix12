@@ -704,7 +704,11 @@ class TreeChartView(View):
         context=getContext(request=request)
         if 'pk' in kwargs and not int(kwargs["pk"])==0:
             account=AccountRepo(request=request).account(*args, **kwargs)
-
+            if account is None:
+                mv=MessageView()
+                title="حساب "
+                body="وجود ندارد"
+                return mv.get(request=request,title=title,body=body)
             accounts=account.all_childs()
             context['account']=account
         else:
@@ -829,7 +833,9 @@ class FinancialDocumentLineView(View):
         context['financial_document_line']=financial_document_line
         financial_document_line_s=json.dumps(FinancialDocumentLineSerializer(financial_document_line).data)
         context['financial_document_line_s']=financial_document_line_s
-        
+        if financial_document_line is None:
+            mv=MessageView()
+            return mv.get(request=request,title="خطا",body="سطر یافت نشد")
         logs=LogRepo(request=request).list(url=financial_document_line.get_absolute_url())
         context['logs']=logs
 
@@ -906,6 +912,7 @@ class FinancialDocumentLinesPrintView(View):
         context['NOT_NAVBAR']=True
         context['NOT_FOOTER']=True
         context['WIDE_LAYOUT']=False
+
         return render(request,TEMPLATE_ROOT+"financial-document-lines-print.html",context)
 
 

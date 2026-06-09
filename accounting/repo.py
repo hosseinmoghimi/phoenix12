@@ -2057,8 +2057,14 @@ class ServiceRepo():
 class FinancialDocumentRepo(Repo):
     def __init__(self,request,*args, **kwargs):
         super(FinancialDocumentRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
-        self.objects=FinancialDocument.objects
-    
+        self.objects=[]
+
+        if self.me is not None:
+            if request.user.has_perm('.view_financialdocument'):
+                self.objects=FinancialDocument.objects
+            else:
+                me_accounts=PersonAccount.objects.filter(person_id=self.me.id)
+                self.objects=FinancialDocument.objects.filter(pk=0)
     def list(self,*args, **kwargs):
         objects=self.objects
         if "financial_year_id" in kwargs:
@@ -2174,7 +2180,10 @@ class FinancialDocumentLineRepo(Repo):
         if self.me is not None and request.user.has_perm(APP_NAME+".view_financialdocumentline"):
             self.objects=FinancialDocumentLine.objects
         else:
-            self.objects=FinancialDocumentLine.objects.filter(pk=0)
+            my_accounts_ids=[]
+            for pa in PersonAccount.objects.filter(person_id=self.me.id):
+                my_accounts_ids.append(pa.id)
+            self.objects=FinancialDocumentLine.objects.filter(Q(account__in=my_accounts_ids))
 
     def list(self,*args, **kwargs):
         objects=self.objects
