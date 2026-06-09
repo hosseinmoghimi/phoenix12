@@ -1134,6 +1134,12 @@ class ProductRepo():
             title=kwargs["title"]
 
             objects=objects.filter(Q(title__contains=title) | Q(barcode=title)|Q(model__contains=title))
+            
+        if "id__in" in kwargs:
+            id__in=kwargs["id__in"]
+
+            objects=objects.filter(id__in=id__in) 
+
         return objects.all()
     
     def delete_all(self):

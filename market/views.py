@@ -310,7 +310,8 @@ class CategoryView(View):
 class ProductView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        product =ProductRepo(request=request).product(*args, **kwargs)
+        product_repo=ProductRepo(request=request)
+        product =product_repo.product(*args, **kwargs)
         context['product']=product
         from accounting.views import ProductContext
         context.update(ProductContext(request=request,product=product))
@@ -336,6 +337,14 @@ class ProductView(View):
         shops_s=json.dumps(ShopSerializer(shops,many=True).data)
         context['shops']=shops
         context['shops_s']=shops_s
+
+        related_products=product.related_pages.all()
+        ids=[]
+        for related_product in related_products:
+            ids.append(related_product.id)
+        related_products=product_repo.list(id__in=ids)
+
+        context['related_products']=related_products
 
         return render(request,TEMPLATE_ROOT+"product.html",context) 
 

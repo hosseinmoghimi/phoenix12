@@ -237,7 +237,6 @@ class CartItem(models.Model,DateTimeHelper):
 class CustomerGroup(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=50)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)
-    
     class_name="customergroup"
     app_name=APP_NAME
 
