@@ -174,7 +174,13 @@ class HomeView(View):
 class LinksView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
-        return render(request,TEMPLATE_ROOT+"links.html",context)
+        if request.user.is_authenticated and request.user.has_perm(APP_NAME+".add_supplier"):
+            return render(request,TEMPLATE_ROOT+"links.html",context)
+        else:
+            mv=MessageView()
+            mv.title="خطا"
+            mv.body="خطا"
+            return mv.get(request=request)
 
 
 class SearchView(View):
