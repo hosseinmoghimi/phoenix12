@@ -82,6 +82,7 @@ class Channel(models.Model):
     def __str__(self):
         return self.channel_name
 
+
 class Member(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.CASCADE)
     channel=models.ForeignKey("channel", verbose_name=_("channel"), on_delete=models.CASCADE)
