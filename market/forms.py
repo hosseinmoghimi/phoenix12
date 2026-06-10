@@ -33,6 +33,13 @@ class AddShopsForm(forms.Form):
     start_date=forms.CharField(max_length=100, required=False)
     end_date=forms.CharField(max_length=100, required=False)
     
+class SearchForm(forms.Form): 
+    search_for=forms.CharField(max_length=100, required=True)
+
+    
+class SelectCategoryForm(forms.Form): 
+    category_id=forms.IntegerField(required=True)
+    
 
 class ExportShopsToExcelForm(forms.Form): 
     supplier_id=forms.IntegerField(required=True)
@@ -46,6 +53,7 @@ class CheckoutCartForm(forms.Form):
     address=forms.CharField(max_length=200, required=False)
     postal_code=forms.CharField(max_length=50, required=False)
     customer_id=forms.IntegerField(required=True)
+    description=forms.CharField(max_length=500, required=False)
     
 class AddCartItemForm(forms.Form):
     unit_name=forms.CharField(max_length=100, required=False)

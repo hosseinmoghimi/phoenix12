@@ -20,6 +20,15 @@
               v-text="shop.supplier.person_account.title"
             ></h6>
           </a>
+
+          <div >
+            <small class="text-muted" >
+
+              گرید :
+            </small>
+                      <small v-text="shop.supplier.grade"></small>
+                  </div>
+
           <div>
             <small class="text-muted"> منطقه </small>
 
@@ -106,8 +115,8 @@
        
       </h5>
       {% if add_cart_line_form %}
-
-      <button class="btn btn-danger" @click="add_to_cart(shop)">
+      
+      <button  class="btn btn-danger" @click="add_to_cart(shop)">
         <h5 class="text-center">خرید اینترنتی</h5>
       </button>
 

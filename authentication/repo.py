@@ -5,13 +5,6 @@ from utility.log import leolog
 
  
 class PersonRepo():
-    def user(self,*args, **kwargs):
-        user_id=0
-        self.objects=Person.objects.filter(pk=0)
-        if 'user_id' in kwargs:
-            user_id=kwargs['user_id']
-            return User.objects.filter(pk=user_id).first()
-        return User.objects.filter(pk=0).first()
     def __init__(self,request,*args, **kwargs):
         self.me=None
         self.request=request
@@ -21,6 +14,13 @@ class PersonRepo():
                 self.objects=Person.objects.all()
             else:
                 self.objects=Person.objects.filter(user_id=request.user.id)  
+    def user(self,*args, **kwargs):
+        user_id=0
+        self.objects=Person.objects.filter(pk=0)
+        if 'user_id' in kwargs:
+            user_id=kwargs['user_id']
+            return User.objects.filter(pk=user_id).first()
+        return User.objects.filter(pk=0).first()
     def list(self,*args, **kwargs):
         objects=self.objects
         from django.db.models import Q
@@ -357,22 +357,21 @@ class ClipBoardItemRepo():
 
 
 
-class MyLinkRepo:
+class MyLinkRepo():
     
-    def __init__(self,*args, **kwargs):
+    def __init__(self,request,*args, **kwargs):
         self.app_name=""
-        self.request=None
+        self.request=request
         self.user=None
         if 'app_name' in kwargs:
             self.app_name=kwargs['app_name']
         else:
-            self.app_name=None
-        if 'request' in kwargs:
-            self.request=kwargs['request']
-            self.user=self.request.user 
-        self.me_person=PersonRepo(request=self.request).me
-        self.objects=MyLink.objects.filter(person=self.me_person).order_by('priority')
-
+            self.app_name=None 
+        self.me_person=PersonRepo(request=request).me
+        if self.me_person is not None:
+            self.objects=MyLink.objects.filter(person=self.me_person).order_by('priority')
+        else:
+            self.objects=[]
 
     def list(self,*args, **kwargs):
         return self.objects.all()
@@ -406,4 +405,4 @@ class MyLinkRepo:
         if len(my_link_list)>MY_LINKS_LENGTH :
             my_link_list.first().delete()
         result=SUCCEED
-        return result
+        return result,my_link_list

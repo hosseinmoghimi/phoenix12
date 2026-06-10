@@ -1,0 +1,151 @@
+<div id="accordion-ships">
+  <div class="card" id="ships-app">
+    <div class="card-header" id="heading-ships">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-ships"
+          aria-expanded="true"
+          aria-controls="collapse-ships"
+        >
+         ارسالی ها
+          <span v-if="ships.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="ships.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-ships"
+      class="collapse {% if expand_ships %} show{% endif %}"
+      aria-labelledby="heading-ships"
+      data-parent="#accordion-ships"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped rtl">
+            <thead>
+                <th>عنوان</th>
+                <th>ارسال کننده</th>
+                <th>تحویل گیرنده</th>
+                <th>حمل کننده</th>
+                <th>بسته ها</th>
+                <th>هزینه</th>
+                <th>
+                    تاریخ
+                </th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="ship in ships">
+                <td>
+                      <a :href="ship.get_absolute_url">
+
+                        <h6
+                        v-text="ship.title"
+                        ></h6>
+                    </a>
+                </td>
+                <td>
+                  <div class="media">
+                    <a :href="ship.deliverer.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="ship.deliverer.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="ship.deliverer.get_absolute_url">
+                        <h6
+                          v-text="ship.deliverer.full_name"
+                        ></h6>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="media">
+                    <a :href="ship.recipient.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="ship.recipient.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="ship.recipient.get_absolute_url">
+                        <h6
+                          v-text="ship.recipient.full_name"
+                        ></h6>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="media">
+                    <a :href="ship.shipper.get_absolute_url">
+                      <img
+                        width="48"
+                        class="rounded"
+                        :src="ship.shipper.image"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="ship.shipper.get_absolute_url">
+                        <h6
+                          v-text="ship.shipper.full_name"
+                        ></h6>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                     <div v-for="package in ship.packages">
+                    <a :href="package.get_absolute_url">
+                      <span v-text="package.full_name"></span>
+                    </a>
+                  </div>
+                </td>
+                                
+                <td>
+                      <span v-text="to_price(ship.amount)"></span> {{CURRENCY}}
+                </td>
+                <td>
+
+                </td>
+
+               
+                <td>
+                  {% if perms.market.change_ship %}
+                  <a
+                    target="_blank"
+                    :href="ship.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_ship %}
+                  <a target="_blank" :href="ship.get_delete_url" title="حذف">
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

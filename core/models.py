@@ -30,11 +30,11 @@ class Page(models.Model,LinkHelper,DateTimeHelper,ImageHelper):
     meta_data=models.CharField(_("متادیتا"),default="",null=True,blank=True, max_length=500)
     priority = models.IntegerField(_("ترتیب"), default=1000)
     thumbnail_origin = models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'page/thumbnail/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
-    header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'page/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY,max_length=50)
     creator=models.ForeignKey("authentication.person",null=True,blank=True, verbose_name=_("ثبت شده توسط"), on_delete=models.SET_NULL)
     related_pages=models.ManyToManyField("page",blank=True, verbose_name=_("related_pages"))
     locations=models.ManyToManyField("attachments.location", blank=True,verbose_name=_("locations"))
+    header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'page/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
      
     def get_status_color(self):
         return StatusColor(self)
@@ -173,6 +173,7 @@ class EventCategory(models.Model,LinkHelper):
 class Event(Page,DateTimeHelper):
     status=models.CharField(_("وضعیت"),choices=EventStatusEnum.choices,default=EventStatusEnum.DRAFT, max_length=50)
     category=models.ForeignKey("eventcategory",null=True,blank=True, verbose_name=_("دسته بندی"), on_delete=models.SET_NULL)
+    
     event_datetime = models.DateTimeField(
         _("event_datetime"), auto_now=False, auto_now_add=False)
     start_datetime = models.DateTimeField(

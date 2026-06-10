@@ -50,7 +50,13 @@
 
                         <span class="text-muted">در حال بار گذاری ... </span>
                     </h6>
-                    <table class="table table-striped rtl">
+                    <div   v-if="! product_specifications.length>0">
+                        <p>
+
+                            ویژگی ثبت نشده است.
+                        </p>
+                        </div>
+                    <table class="table table-striped rtl" v-if="product_specifications.length>0">
                         <thead>
                             {% if not product %}
 
@@ -150,8 +156,8 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button @click="show_form=true" v-if="!show_form" class="btn btn-info">افزودن ویژگی جدید</button>
                 {% if add_product_specification_form %}
+                <button @click="show_form=true" v-if="!show_form" class="btn btn-info">افزودن ویژگی جدید</button>
 
                 <div v-if="show_form">
                     <button @click="show_form=false" v-if="show_form" class="btn btn-secondary">انصراف </button>

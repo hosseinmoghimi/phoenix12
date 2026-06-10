@@ -145,7 +145,7 @@ class FinancialDocumentSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
        class Meta:
         model = Category
-        fields = ['id','title','thumbnail','full_title','priority', 'get_absolute_url','get_edit_url','get_delete_url']
+        fields = ['id','title','thumbnail','full_title','priority','get_absolute_url','get_edit_url','get_delete_url']
 
 
 class FinancialDocumentLineSerializer(serializers.ModelSerializer):

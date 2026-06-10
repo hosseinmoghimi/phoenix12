@@ -1,4 +1,4 @@
-from .models import Shop,ShopPackage,Supplier,Customer,CartItem,Shipper,CustomerGroup
+from .models import Shop,ShopPackage,Supplier,Customer,CartItem,Shipper,CustomerGroup,Ship,Package
 
 from .apps import APP_NAME
 from .enums import *
@@ -14,6 +14,7 @@ from utility.log import leolog
 from authentication.repo import PersonRepo
 from accounting.repo import PersonCategoryEnum
 from .constants import EXCEL_SHOPS_DATA_START_ROW
+from core.repo import Repo
 
 class ShopPackageRepo():
     def __init__(self,request,*args, **kwargs):
@@ -79,13 +80,72 @@ class ShopPackageRepo():
         return result,message,shop_package
 
 
-class ShopRepo():
+class PackageRepo(Repo):
     def __init__(self,request,*args, **kwargs):
-        self.me=None
-        self.my_accounts=[]
+        super(PackageRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
+        if self.me is not None:
+            if request.user.has_perm(APP_NAME+".view_shoppackage"):
+                self.objects=Package.objects
+        else:
+            self.objects=Package.objects.filter(id=0)
+     
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "supplier_id" in kwargs:
+            supplier_id=kwargs["supplier_id"]
+            objects=objects.filter(supplier_id=supplier_id)
+        if "product_id" in kwargs:
+            product_id=kwargs["product_id"]
+            objects=objects.filter(product_id=product_id)
+          
+        return objects.all()
+        
+    def package(self,*args, **kwargs):
+        if "package_id" in kwargs and kwargs["package_id"] is not None:
+            return self.objects.filter(pk=kwargs['package_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_package(self,*args,**kwargs):
+        result,message,package=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_package"):
+            message="دسترسی غیر مجاز"
+            return result,message,package
+
+        package=ShopPackage()
+        if 'title' in kwargs:
+            package.title=kwargs["title"]
+        if 'parent_id' in kwargs:
+            if kwargs["parent_id"]>0:
+                package.parent_id=kwargs["parent_id"]
+        if 'color' in kwargs:
+            package.color=kwargs["color"]
+        if 'supplier_id' in kwargs:
+            package.supplier_id=kwargs["supplier_id"]
+        if 'priority' in kwargs:
+            package.priority=kwargs["priority"]
+        if 'type' in kwargs:
+            package.type=kwargs["type"]
+
+         
+        (result,message,package)=package.save()
+        return result,message,package
+
+
+class ShopRepo(Repo):
+    def __init__(self,request,*args, **kwargs):
+        super(ShopRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
         self.request=request
         self.objects=Shop.objects.filter(id=0)
-        me_person=PersonRepo(request=request).me
         me_customer=CustomerRepo(request=request).me
         me_supplier=SupplierRepo(request=request).me
         if request.user.has_perm(APP_NAME+".view_shop"):
@@ -97,7 +157,7 @@ class ShopRepo():
             groups_ids=[]
             for group in me_customer.groups.all():
                 groups_ids.append(group.id)
-            self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids)
+            self.objects=Shop.objects.filter(group_id__in=groups_ids).filter(region_id__in=regions_ids).filter(available__gt=0)
         elif me_supplier is not None: 
             self.objects=Shop.objects.filter(supplier_id=me_supplier.id)
         
@@ -302,16 +362,19 @@ class ShopRepo():
         
         return result,message,shops
     
+
 class CustomerRepo():
     def __init__(self,request,*args, **kwargs):
         self.request=request
+        self.me=None
         self.objects=Customer.objects.filter(pk=0)
         person=PersonRepo(request=request).me
-        self.me=Customer.objects.filter(person_account__person_id=person.id).first()
-        if request.user.has_perm(APP_NAME+'.view_customer'):
-            self.objects=Customer.objects
-        elif person is not None:
-            self.objects=Customer.objects.filter(person_account__person_id=person.id)
+        if person is not None:
+            if request.user.has_perm(APP_NAME+'.view_customer'):
+                self.objects=Customer.objects
+            elif person is not None:
+                self.me=Customer.objects.filter(person_account__person_id=person.id).first()
+                self.objects=Customer.objects.filter(person_account__person_id=person.id)
 
 
         
@@ -565,6 +628,7 @@ class CartItemRepo():
                 return result,message,invoices
         invoices=[]
         cart_items=kwargs['cart_items']
+        description=kwargs['description']
         suppliers_ids=[]
         for cart_item in cart_items:
             shop=Shop.objects.filter(pk=cart_item['shop_id']).first()
@@ -583,8 +647,9 @@ class CartItemRepo():
             invoice_data={}
             invoice_data['bedehkar_id']=customer.person_account.id
             invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور جدید"
+            invoice_data['title']="فاکتور خرید از فروشگاه"
             invoice_data['amount']=0
+            invoice_data['description']=description
             if 'address' in kwargs:
                 invoice_data['address']=kwargs['address']
             if 'postal_code' in kwargs:
@@ -616,12 +681,13 @@ class CartItemRepo():
                     invoice_line.invoice_id=invoice.id
                     invoice_line.invoice_line_item_id=shop.product_id
                     invoice_line.quantity=cart_item['quantity'] 
-                    invoice_line.unit_price=shop.unit_price
-                    invoice_line.unit_name=shop.unit_name
-                    invoice_line.save() 
-                    shop.available-=cart_item['quantity']
-                    shop.save()
-                    CartItem.objects.filter(shop_id=shop.id).filter(customer_id=customer.id).delete()
+                    if not invoice_line.quantity>shop.available:
+                        invoice_line.unit_price=shop.unit_price
+                        invoice_line.unit_name=shop.unit_name
+                        invoice_line.save() 
+                        shop.available-=cart_item['quantity']
+                        shop.save()
+                        CartItem.objects.filter(shop_id=shop.id).filter(customer_id=customer.id).delete()
         result=SUCCEED
         links=''
         for invoice in invoices:
@@ -630,61 +696,6 @@ class CartItemRepo():
         return result,message,invoices
  
 
-    def checkout_old_temp_must_be_deleted(self,*args,**kwargs):
-        result,message,invoices=FAILED,"",[]
-        me_customer=CustomerRepo(request=self.request).me
-        if  me_customer is None and not self.request.user.has_perm(APP_NAME+".add_cartitem") :
-            message="دسترسی غیر مجاز"
-            return result,message,invoices
-         
-        if me_customer is None:
-            message=" 22دسترسی غیر مجاز"
-            return result,message,invoices
-        customer_id=me_customer.id
-        invoices=[]
-        cart_items=CartItem.objects.filter(customer_id=customer_id)
-        suppliers_ids=[]
-        for cart_item in cart_items:
-            supplier_id=cart_item.shop.supplier.id
-            if supplier_id not in suppliers_ids:
-                suppliers_ids.append(supplier_id)
-        customer=CustomerRepo(request=self.request).customer(pk=customer_id)
-        if customer is None:
-            return FAILED,"مشتری نادرست انتخاب شده است",[]
-        for supplier_id in suppliers_ids:
-
-            supplier=SupplierRepo(request=self.request).supplier(pk=supplier_id)    
-            from accounting.repo import InvoiceRepo,Invoice,InvoiceLine
-            from django.utils import timezone
-            invoice_data={}
-            invoice_data['bedehkar_id']=customer.person_account.id
-            invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور جدید"
-            invoice_data['amount']=0
-            invoice_data['event_datetime']=timezone.now()
-            # invoice=Invoice(invoice_data)
-            invoice=Invoice(**invoice_data)
-            invoice.save()
-
-            # invoice.save()
-            invoices.append(invoice)
-            for cart_item in cart_items:
-                if cart_item.shop.supplier.id==supplier_id:
-                    invoice_line=InvoiceLine()
-                    invoice_line.invoice_id=invoice.id
-                    invoice_line.invoice_line_item_id=cart_item.shop.product_id
-                    invoice_line.quantity=cart_item.quantity
-                    invoice_line.unit_price=cart_item.shop.unit_price
-                    invoice_line.unit_name=cart_item.shop.unit_name
-                    invoice_line.save() 
-                    cart_item.delete()
-        result=SUCCEED
-        links=''
-        for invoice in invoices:
-            links+=f""" <br><a target="_blank" href="{invoice.get_print_url()}">{invoice.title}</a> """
-        message=f"""{len(invoices)} فاکتور برای شما با موفقیت ایجاد شد"""+links
-        return result,message,invoices
- 
 
 class SupplierRepo():
     def __init__(self,request,*args, **kwargs):
@@ -692,9 +703,12 @@ class SupplierRepo():
         self.me=None
         self.objects=Supplier.objects.filter(pk=0)
         me_person=PersonRepo(request=request).me
-        me_shipper=ShipperRepo(request=request).me
-        me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
-        self.me=me_supplier
+        me_shipper=None
+        me_supplier=None
+        if me_person is not None:
+            me_shipper=ShipperRepo(request=request).me
+            me_supplier=Supplier.objects.filter(person_account__person_id=me_person.id).first()
+            self.me=me_supplier
         if me_shipper is not None:
             self.objects=me_shipper.suppliers.all()
         if me_supplier is not None:
@@ -808,3 +822,52 @@ class CustomerGroupRepo():
 
         return result,message,customer_group
  
+ 
+class ShipRepo(Repo):
+    def __init__(self,request,*args, **kwargs):
+        super(ShipRepo,self).__init__(request=request,app_name=APP_NAME,*args, **kwargs)
+        self.objects=Ship.objects.filter(id=0)
+        self.me_shipper=Shipper.objects.filter(person_account__person_id=self.me.id).first()
+        if self.me_person is not None:
+            if request.user.has_perm(APP_NAME+".view_ship"):
+                self.objects=Ship.objects
+            if self.me_shipper is not None:
+                self.objects=Ship.objects.filter(person_id=self.me.id)
+
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "shipper_id" in kwargs:
+            shipper_id=kwargs["shipper_id"]
+            objects=objects.filter(bestankar_id=shipper_id)  
+        return objects.all()
+        
+    def ship(self,*args, **kwargs):
+        if "ship_id" in kwargs and kwargs["ship_id"] is not None:
+            return self.objects.filter(pk=kwargs['ship_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_ship(self,*args,**kwargs):
+        result,message,ship=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_ship"):
+            message="دسترسی غیر مجاز"
+            return result,message,ship
+
+        ship=Ship()
+        if 'packages' in kwargs:
+            ship.packages=kwargs["packages"]
+            if len(Ship.objects.filter(packages=ship.packages))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            ship.owner_id=kwargs["owner_id"]
+          
+        (result,message,ship)=ship.save()
+        return result,message,ship
+

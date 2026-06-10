@@ -1,5 +1,4 @@
-{% extends "phoenix/print-layout.html" %} {% block content %}
-{% load to_persian_date %}
+{% extends "phoenix/print-layout.html" %} {% block content %} {% load to_persian_date %}
 <div class="row rtl farsi">
   <div class="col-md-12">
     <div class="card">
@@ -7,21 +6,15 @@
       <div class="card-body">
         <div class="text-center">
           {% if invoice.thumbnail_origin %}
-              <img
-            src="{{invoice.thumbnail}}"
-            class="mb-2"
-            width="96"
-            alt=""
-          />
+          <img src="{{invoice.thumbnail}}" class="mb-2" width="96" alt="" />
           {% else %}
-            <img
+          <img
             src="{{invoice.bestankar.thumbnail}}"
             class="mb-2"
             width="96"
             alt=""
           />
           {% endif %}
-         
         </div>
         <h5 class="text-center">{{invoice.bestankar.title}}</h5>
         <div class="text-center"></div>
@@ -32,13 +25,11 @@
             <div>خریدار : {{invoice.bedehkar.title}}</div>
           </div>
           <div class="col-4">
-            <div>تاریخ : {{invoice.event_datetime|to_persian_datetime|safe}}</div>
-
-            <div>شماره : 
-              {{invoice.id}}
-              / 
-              {{invoice.invoice_no}}
+            <div>
+              تاریخ : {{invoice.event_datetime|to_persian_datetime|safe}}
             </div>
+
+            <div>شماره : {{invoice.id}} / {{invoice.invoice_no}}</div>
           </div>
         </div>
       </div>
@@ -76,6 +67,28 @@
       </div>
     </div>
   </div>
+  {% if invoice.address or invoice.postal_code %}
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="description">
+          {% if invoice.address %}
+            
+          <strong> آدرس تحویل: </strong>
+          <span class="ml-3"> 
+            {{invoice.address}}
+            
+          </span>
+          {% endif %}
+          {% if invoice.postal_code %}
+          <strong class=""> کد پستی : </strong>
+          {{invoice.postal_code}} {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
   <div class="col-12">
     <div class="card">
       <div class="card-body">
@@ -83,7 +96,7 @@
           <img src="{{invoice.get_print_qrcode_url}}" width="128" alt="" />
           <div class="media-body mr-2">
             <div class="description">
-              توضیحات:
+              <strong> توضیحات: </strong>
               <br />
               {{invoice.status}}&nbsp;/&nbsp;{{invoice.payment_method}}
               <br />
@@ -94,55 +107,18 @@
               <br />
               به علت نوسانات قیمت ، فاکتور فوق از لحاظ استعلام قیمت تا بیست و
               چهار ساعت معتبر می باشد. {% if invoice.description %}
-              {{invoice.description|safe}} {% endif %}
+              <div>{{invoice.description|safe}}</div>
+              {% endif %}
             </div>
-{% if invoice.address %}
-  
-<div class="description">
-  <p>
-
-    <strong>
-
-      آدرس تحویل:
-    </strong>
-      {{invoice.address}}
-    
-    {% if invoice.postal_code %}
-    <br>
-    <strong>    
-
-      کد پستی :
-    </strong>
-    {{invoice.postal_code}}
-    
-    {% endif %}
-  </p>
-</div>
-{% endif %}
-
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-12 ">
-      {% include "attachments/includes/page-prints-app/template.html" %}
-
-
+  <div class="col-12">
+    {% include "attachments/includes/page-prints-app/template.html" %}
   </div>
 </div>
 {% endblock content %} {% block script %}
 <script></script>
-{% include "accounting/includes/invoice-app/print-script.html" %}
- 
-
-
-
-
-
-
- 
- 
- 
- 
- {% endblock script %}
+{% include "accounting/includes/invoice-app/print-script.html" %} {% endblock script %}

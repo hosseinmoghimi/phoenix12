@@ -45,7 +45,7 @@
                       )
                     </small>
                 </div>
-              </td>
+              </td> 
                
               <td class="bordered farsi text-right">
                 <span v-text="invoice_line.quantity"></span>
@@ -53,13 +53,15 @@
               </td>
               <td class="bordered farsi text-right">
                 <div v-if="invoice_line.discount_percentage>0">
+                    <div
+                    v-text="to_price(invoice_line.unit_price*(100-invoice_line.discount_percentage)/100)"
+                  ></div>
+
                   <div
                     style="text-decoration: line-through"
                     v-text="to_price(invoice_line.unit_price)"
                   ></div>
-                  <div
-                    v-text="to_price(invoice_line.unit_price*(100-invoice_line.discount_percentage)/100)"
-                  ></div>
+                
                 </div>
                 <div v-if="invoice_line.discount_percentage==0">
                   <span v-text="to_price(invoice_line.unit_price)"></span>
@@ -70,16 +72,16 @@
                 <div v-if="invoice_line.discount_percentage>0"> 
                   
                   <div class="text-success"
-                  >
+                  ><h6
+                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"
+                  ></h6>
                     <h6>
                     <span
                       v-text="to_price(invoice_line.discount_percentage)">
                   </span>
                     %
                   </h6>
-                  <h6
-                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity*(invoice_line.discount_percentage)/100)"
-                  ></h6>
+                  
                  
                   </div>
                 </div>
@@ -88,18 +90,19 @@
  
 
               <td class="bordered farsi text-right">
-                <div v-if="invoice_line.discount_percentage>0">
-                  <span
-                    style="text-decoration: line-through"
-                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity)"
-                  ></span>
-                </div>
+           
 
                 <div>
                   <span v-text="to_price(invoice_line.line_total)"></span>
 
                   
 
+                </div> 
+                <div v-if="invoice_line.discount_percentage>0">
+                  <span
+                    style="text-decoration: line-through"
+                    v-text="to_price(invoice_line.unit_price*invoice_line.quantity)"
+                  ></span>
                 </div>
               </td>
             </tr> 
@@ -120,13 +123,13 @@
                 </div>
               </td>
               <td class="bordered farsi text-right">
-                 <div v-if="sum_discounts()>0">
+                 
+                <span v-text="to_price(lines_total())"></span>
+                <div v-if="sum_discounts()>0">
   
                   <span style="text-decoration: line-through" v-text="to_price(sum_prices())"></span>
                   
                 </div> 
-                <span v-text="to_price(lines_total())"></span>
-
               </td>
             </tr>
            

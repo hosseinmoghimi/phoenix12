@@ -1,0 +1,51 @@
+<div id="accordion-relates-products">
+  <div class="card" id="related-products-app">
+    <div class="card-header" id="headingRelatedPages">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapseRelatedPages"
+          aria-expanded="true"
+          aria-controls="collapseRelatedPages"
+        >
+          محصولات مرتبط
+
+          
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapseRelatedPages"
+      class="collapse show"
+      aria-labelledby="headingRelatedPages"
+      data-parent="#accordion-relates-products"
+    >
+      <div class="card-body">
+        <div class="row">
+          {% for related_product in related_products %}
+
+          <div class="col-md-3 mb-3">
+            <a href="{{related_product.get_market_absolute_url}}">
+              <div class="text-center mb-3">
+                <img
+                  src="{{related_product.thumbnail}}"
+                  class="rounded"
+                  width="80%"
+                  alt=""
+                />
+              </div>
+            </a>
+
+            <a href="{{related_product.get_market_absolute_url}}" target="_blank">
+              <h6 class="text-center">{{related_product.title}}</h6>
+            </a>
+          </div>
+
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -145,8 +145,8 @@ class ProjectTreeChartView(View):
         if project is None:
             title='پروژه وجود ندارد'
             body='پروژه وجود ندارد'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context['project']=project  
 
@@ -195,8 +195,8 @@ class ProjectShowView(View):
         if project is None:
             title='پروژه وجود ندارد'
             body='پروژه وجود ندارد'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context.update(ProjectContext(request=request,project=project))
 
@@ -267,8 +267,8 @@ class ProjectView(View):
         if project is None:
             title='پروژه وجود ندارد'
             body='پروژه وجود ندارد'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context.update(ProjectContext(request=request,project=project))
 
@@ -398,8 +398,8 @@ class TicketView(View):
         if ticket is None:
             title='تیکت وجود ندارد'
             body='تیکت وجود ندارد'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context.update(TicketContext(request=request,ticket=ticket))
  

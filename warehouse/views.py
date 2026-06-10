@@ -260,8 +260,8 @@ class WareHouseSheetView(View):
         if warehouse_sheet is None:
             title='برگه انبار پیدا نشد.'
             body='برگه انبار پیدا نشد.'
-            mv=MessageView(title=title,body=body)
-            return mv.get(request=request)
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
         
         context["warehouse_sheet"]=warehouse_sheet
 

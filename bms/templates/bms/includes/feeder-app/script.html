@@ -1,0 +1,51 @@
+<script>
+    let feeder = JSON.parse(`{{feeder_s|escapejs}}`)
+    // let relays = JSON.parse(`{{relays_s|escapejs}}`)
+    let feeder_app = new Vue({
+        el:"#feeder-app",
+        data: {
+            feeder: feeder,
+            search_for:'',
+            waiting:false,
+        },
+        methods: {
+            filter:function(){
+                this.feeder = feeder.filter(feeder => feeder.name.indexOf(this.search_for) > -1)
+         
+            },
+            execute_command:function(command_id){
+                let url = "{% url 'bms:execute_command' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    command_id: command_id,
+                }
+
+                $.post(url, payload).done(data => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+                        feeder_app.feeder.relays.forEach(relay => {
+                        data.registers.forEach(register => {
+                                if(relay.register==register.register)
+                                relay.state=register.state
+                            });
+                        });
+                    }
+                })
+            },
+            to_price: function (vall) {
+                let color='primary'
+                if (vall<0)
+                color='danger'
+                if (vall>0)
+                color='success'
+                vall=to_price(vall,"{{CURRENCY}}")
+                return `
+                    <span class="text-${color}">${vall}</span>
+                    `
+            },
+            
+           
+        }
+    })
+
+</script>

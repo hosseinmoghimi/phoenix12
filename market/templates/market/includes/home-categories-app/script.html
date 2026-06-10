@@ -1,0 +1,31 @@
+ 
+<script>
+
+    let categories_for_home_categories_app=JSON.parse('{{categories_s|escapejs}}')
+
+    
+    let categories_app = new Vue({
+        el: "#home-categories-app",
+        data: {
+            title: "",
+            categories:categories_for_home_categories_app,
+        },
+        methods: {
+             filter: function(){
+                let search_for = (categories_app.search_for).toUpperCase()
+                console.log(search_for)
+                categories_app.categories = categories_for_categories_app.filter(function (category) {
+                    let title=(category.title).toUpperCase()
+                    
+                    if(title.indexOf(search_for) > -1){
+                        return true
+                    }
+                    return false
+                })
+
+            },
+            
+              
+        },
+    })
+</script>

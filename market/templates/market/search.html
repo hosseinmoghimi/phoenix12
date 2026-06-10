@@ -1,0 +1,41 @@
+{% extends "market/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl" id="selection-app">
+ 
+    {% if products %}
+    <div class="col-md-12">
+        {% include "market/includes/products-app/search-template.html" %}
+    </div>
+    {% endif %}
+
+    
+ 
+
+    {% if categories %}
+    <div class="col-md-12">
+
+        {% include "market/includes/categories-app/search-template.html" %}
+
+    </div>
+    {% endif %}
+ 
+
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+ 
+{% if products %}
+    {% include "market/includes/products-app/search-script.html" %}
+{% endif %}
+
+
+{% if categories %}
+    {% include "market/includes/categories-app/search-script.html" %}
+{% endif %}
+ 
+{% endblock script %}

@@ -57,8 +57,9 @@
   let checkout_cart_app = new Vue({
     el: "#checkout-cart-app",
     data: {
-      address: `{{customer.person_account.person.address}}`,
-      postal_code: `{{customer.person_account.person.postal_code}}`,
+      address: `{% if customer.person_account.person.address %}{{customer.person_account.person.address}}{% endif %}`,
+      postal_code: `{% if customer.person_account.person.postal_code %}{{customer.person_account.person.postal_code}}{% endif %}`,
+      description:"",
       message: { show: false },
       waiting: false,
       cart_items: cart_items,
@@ -98,6 +99,7 @@
           customer_id: parseInt("{{customer.id}}"),
           address: this.address,
           postal_code: this.postal_code,
+          description: this.description,
           cart_items: (cart_items),
           csrfmiddlewaretoken: csrfmiddlewaretoken,
         };
@@ -114,7 +116,7 @@
             );
             if(data.invoices.length==1){
 
-              location.href = "/accounting/invoice-print/"+data.invoices[0].id+"/"
+              location.href = "/accounting/invoice/print/"+data.invoices[0].id+"/"
             }
           } else {
             show_message(

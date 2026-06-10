@@ -23,15 +23,16 @@
     <div class="col-md-12">
         {% include 'market/includes/product-app/main.html' %}
     </div> 
+    {% if shops %}
+      
     <div class="col-lg-9">
         {% include 'market/includes/product-shops-app/template.html' %}
     </div> 
-    {% if related_pages %}
+    {% endif %}
+    {% if related_products %}
     <div class="col-md-12">
-        <h5 class="text-right mt-3">
-            محصولات مشابه
-        </h5>
-        {% include "market/includes/product-app/relateds.html" %}
+        
+        {% include "market/includes/related-products/template.html" %}
     </div>
     {% endif %}
     {% if add_shop_form %}
@@ -58,5 +59,19 @@
 {% include "market/includes/add-shop-app/script.html" %}
 {% endif %}
 {% include "accounting/includes/product-specifications-app/script.html" %}
-
+{% if related_products %}
+  
+{% endif %}
+{% include "market/includes/related-products/script.html" %}
+<script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/js/owlcarousel/owl.carousel.min.js' %}"></script>
 {% endblock script %}
+
+{% block head %}
+  
+    <link rel="stylesheet" href="{% static 'vendor/css/owlcarousel/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/css/owlcarousel/owl.theme.default.min.css' %}">
+    <script src="{% static 'vendor/js/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'vendor/js/owlcarousel/highlight.js' %}"></script>
+
+{% endblock head %}

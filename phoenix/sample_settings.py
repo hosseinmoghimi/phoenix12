@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'warehouse',
     'market',
     'cafe',
-    
+    'bms',
     'django_social_share',
 
 

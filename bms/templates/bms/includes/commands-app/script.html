@@ -1,0 +1,51 @@
+<script>
+    let commands = JSON.parse(`{{commands_s|escapejs}}`)
+    // let relays = JSON.parse(`{{relays_s|escapejs}}`)
+    let commands_app = new Vue({
+        el: "#commands-app",
+        data: {
+            commands: commands,
+            search_for: '',
+            waiting: false,
+        },
+        methods: {
+            filter: function () {
+                this.commands = commands.filter(command => command.name.indexOf(this.search_for) > -1)
+
+            },
+            execute_command: function (command_id) {
+                let url = "{% url 'bms:execute_command' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    command_id: command_id,
+                }
+                console.log(url)
+                console.log(payload)
+                let posting = $.post(url, payload)
+                console.log("##### posting")
+                posting.fail((data) => {
+                    console.log("##### fail")
+                    console.log(data)
+                })
+                posting.done(data => {
+                    console.log(data)
+                    if (data.result === 'SUCCEED') {
+                        if (typeof feeder_app!="undefined") {
+
+                            feeder_app.feeder.relays.forEach(relay => {
+                                data.registers.forEach(register => {
+                                    if (relay.register == register.register)
+                                        relay.state = register.state
+                                });
+                            });
+                        }
+                    }
+                })
+            },
+
+
+
+        }
+    })
+
+</script>

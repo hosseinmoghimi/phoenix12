@@ -1,0 +1,126 @@
+{% extends "market/layout.html" %}
+{% load to_price %}
+{% block content %}
+<div class="row rtl">
+
+  <div class="col-md-3">
+    {% include "accounting/includes/financial-event-app/card.html" %}
+  </div>
+  <div class="col-md-9">
+    <div class="row rtl farsi">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="media">
+              <a href="{{ship.deliverer.get_absolute_url}}">
+
+                <img src="{{ship.deliverer.image}}" width="64" class="rounded-circle" alt="">
+              </a>
+              <div class="media-body">
+                <h6>
+                <a href="{{ship.deliverer.get_absolute_url}}">
+                    {{ship.deliverer.full_name}}
+                </a>
+                </h6>
+                <h6>
+                  فرستنده :
+                  {{ship.source}}
+                </h6>
+              </div>
+            </div>
+            
+            <hr> 
+
+             <div class="media">
+              <a href="{{ship.recipient.get_absolute_url}}">
+
+                <img src="{{ship.recipient.image}}" width="64" class="rounded-circle" alt="">
+              </a>
+              <div class="media-body">
+                <h6>
+                <a href="{{ship.recipient.get_absolute_url}}">
+                    {{ship.recipient.full_name}}
+                </a>
+                </h6>
+                <h6>
+                  گیرنده :
+                   {{ship.destination}}
+                </h6>
+              </div>
+            </div>
+            <hr>
+            <div>
+               
+              <strong>هزینه : </strong>
+
+                {% if SHOW_TUMAN %}
+                {{ship.amount|to_price_tuman}}  
+                {{CURRENCY_TUMAN}}
+            
+                {% else %}
+                {{ship.amount|to_price}}  
+                {{CURRENCY}}
+            
+                {% endif %}
+
+            </div>
+           
+            
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        {% include "core/includes/page-description-app/short-description.html" %}
+        {% include "core/includes/page-description-app/description.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/downloads-app/template.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/links-app/template.html" %}
+      </div>
+      <div class="col-md-4">
+        {% include "attachments/includes/comments-app/template.html" %}
+      </div>
+      <div class="col-md-12">
+        {% include "attachments/includes/images-app/template.html" %}
+      </div>
+
+      {% if edit_financial_event_form %}
+      <div class="col-md-12">
+        {% include "accounting/includes/edit-financial-event-app/template.html" %}
+      </div>
+      {% endif %}
+      
+      <div class="col-md-12">
+        {% include "core/includes/page-thumbnail-header-app/template.html" %}
+      </div>
+      <div class="col-md-12">
+        {% include "accounting/includes/financial-document-lines-app/template.html" %}
+      </div>
+      {% if add_financial_document_line_form %}
+      <div class="col-md-12">
+        {% include "accounting/includes/add-financial-document-line-app/template.html" %}
+      </div>
+      {% endif %}
+
+      {% if logs %}
+      
+      <div class="col-md-12">
+            {% include 'log/includes/logs-app/template.html' %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock content %} 
+{% block script %}
+    {% include "accounting/includes/financial-event-app/script.html" %} 
+    
+      {% if logs %}
+      
+            {% include 'log/includes/logs-app/script.html' %}
+      {% endif %}
+
+{% endblock script %}

@@ -4,12 +4,40 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import ShopRepo,SupplierRepo,CustomerRepo,ShipperRepo,CartItemRepo
-from accounting.apis import InvoiceRepo,InvoiceSerializer
-from .serializers import ShopSerializer,CartItemSerializer,SupplierSerializer,CustomerSerializer,ShipperSerializer
+from .repo import ShopRepo,SupplierRepo,CustomerRepo,ShipperRepo,CartItemRepo,ShipRepo,PackageRepo
+from accounting.apis import InvoiceRepo,InvoiceSerializer,CategoryRepo
+from .serializers import ShopSerializer,CartItemSerializer,SupplierSerializer,CustomerSerializer,ShipperSerializer,ShipSerializer,PackageSerializer,ProductWithPriceSerializer,CategorySerializer
 from django.http import JsonResponse
 from .enums import *
 from .forms import *
+  
+class SelectCategoryApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_menu_form=SelectCategoryForm(request.POST)
+        if add_menu_form.is_valid():
+            log=333
+            cd=add_menu_form.cleaned_data
+            result,message,category,categories,products=CategoryRepo(request=request).select_category(**cd)
+            if category is not None:
+                context['category']=CategorySerializer(category).data
+            if products is not None:
+                context['products']=ProductWithPriceSerializer(products,many=True).data
+            if categories is not None:
+                context['categories']=CategorySerializer(categories,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+  
+ 
+
    
 
   
@@ -238,3 +266,50 @@ class AddShipperApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
+class AddShipApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            add_ship_form=AddShipForm(request.POST)            
+            if add_ship_form.is_valid():
+                log=333
+                cd=add_ship_form.cleaned_data
+                result,message,ship=ShipRepo(request=request).add_ship(**cd)
+                if result==SUCCEED:
+                    context['ship']=ShipSerializer(ship).data
+            
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+class AddPackageApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_package_form=AddPackageForm(request.POST)
+        if add_package_form.is_valid():
+            log=333
+            cd=add_package_form.cleaned_data
+            result,message,package=PackageRepo(request=request).add_package(**cd)
+            if package is not None:
+                context['package']=PackageSerializer(package).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+  
+ 

@@ -1,0 +1,66 @@
+
+  
+<script>
+
+    let categories_for_index_app=JSON.parse('{{categories_s|escapejs}}')
+    let products_for_index_app=JSON.parse('{{products_s|escapejs}}')
+
+    
+    let index_app = new Vue({
+        el: "#index-app",
+        data: {
+            path:[],
+            title: "",
+            search_for:"{{search_for}}",
+            parent:{},
+            categories:categories_for_index_app,
+            products:products_for_index_app,
+        },
+        methods: {
+            filter:function(){
+                index_app.products=products_for_index_app.filter(product=>product.title.indexOf(index_app.search_for)>-1  )
+                index_app.categories=categories_for_index_app.filter(category=>category.title.indexOf(index_app.search_for)>-1 )
+            },
+            select_category:function(category_id){
+                let url="{% url 'market:select_category' %}"
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    category_id:parseInt(category_id)
+                }
+                $.post(url,payload).done(data=>{
+                    index_app.categories=data.categories
+                    index_app.products=data.products
+                    index_app.parent=data.category 
+                    index_app.add_node(data.category) 
+                })
+
+            },
+
+            add_node:function(category){
+                let nodes=[]
+                let found= false
+                index_app.path.forEach(node => {
+                    if (node.id==category.id){
+                        found=true
+                    }
+                    else {
+                        if(!found)
+                            nodes.push(node)
+                    }
+                    
+                });
+                index_app.path=nodes
+                index_app.path.push(category)
+            },
+
+            to_price: (vall) => {
+                return to_price(vall)
+            },
+            to_price_tuman: (vall) => {
+                return to_price(vall/10)
+            }
+
+              
+        },
+    })
+</script>

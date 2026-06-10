@@ -22,11 +22,21 @@
                 <div class="my-3">
                     <h6>دسته بندی های این محصول</h6>
                     <div v-for="product_category in product_categories">
-                        <a :href="product_category.get_absolute_url">
-                            <span v-text="product_category.full_title"></span>
-                        </a>
-                        <button class="btn btn-link mx-2" title="حذف" @click="remove(product_category.id)"><i
+                        <div class="row rtl">
+                            <div class="col-12">
+                                
+                                        <a :href="product_category.get_absolute_url" class="ml-2">
+                                            
+                                            <img :src="product_category.thumbnail" width="32" alt="">
+                                       
+                                        
+                                        <span v-text="product_category.full_title"></span>
+                                    </a>
+                                     <button class="btn btn-link mx-2" title="حذف" @click="remove(product_category.id)"><i
                                 class="fa fa-minus text-danger"></i></button>
+                                </div>
+                                
+                            </div>
                     </div>
                 </div>
                 <form @submit.prevent="add_product_to_category()">

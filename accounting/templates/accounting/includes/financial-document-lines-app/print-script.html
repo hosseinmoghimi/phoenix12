@@ -23,9 +23,16 @@
                     bestankar += financial_document_line.bestankar
                 })
                 this.total = { bedehkar: bedehkar, bestankar: bestankar }
+                console.log(total)
             },
+            
 
         },
 
     })
 </script> 
+<script>
+    $("document").ready(()=>{
+        financial_document_lines_app.calc_total()
+    })
+</script>
