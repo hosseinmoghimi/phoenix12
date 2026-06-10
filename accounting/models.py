@@ -830,7 +830,7 @@ class Category(models.Model,LinkHelper,ImageHelper):
          
         thumbnail=""
         if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
-            if self.parent is not None and str(self.parent.thumbnail_origin):
+            if self.parent is not None:
                 return self.parent.thumbnail
             try:
                 thumbnail= f"{STATIC_URL}{self.app_name}/img/pages/thumbnail/{self.class_name}.png/"
