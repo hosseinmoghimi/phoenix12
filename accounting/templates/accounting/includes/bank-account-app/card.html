@@ -48,7 +48,7 @@
     {% endif %}
     <div class="mt-2" id="account-code-app">
       <h5 class="ltr" @click="copy_code()" style="cursor: pointer">
-        <span class="ltr"> {{account.code | account_code_seperator}} </span>
+        <span class="ltr"> {{account.code | account_code_seperator|safe}} </span>
       </h5>
     </div>
     <div>
