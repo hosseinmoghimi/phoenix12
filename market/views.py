@@ -6,6 +6,9 @@ from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSeriali
 from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo,ShipRepo,PackageRepo
 from .forms import *
 from .apps import APP_NAME
+
+from accounting.views import InvoiceLineItemContext,ProductSpecificationSerializer,PageContext
+
 from .serializers import ShipperSerializer,ProductWithPriceSerializer,CustomerGroupSerializer
 from .repo import ShipperRepo,CustomerGroupRepo
 from phoenix.server_apps import phoenix_apps
@@ -48,6 +51,27 @@ def getContext(request,*args, **kwargs):
         context['SHOW_TUMAN']=True
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
+
+
+def ProductContext(request,product,*args, **kwargs):
+    context=PageContext(request=request,page=product)
+     
+
+    product_specifications=product.productspecification_set.all()
+    product_specifications_s=json.dumps(ProductSpecificationSerializer(product_specifications,many=True).data)
+    context['product_specifications']=product_specifications
+    context['product_specifications_s']=product_specifications_s
+     
+    context['product']=product
+
+ 
+     
+    product_categories=product.category_set.all()
+    product_categories_s=json.dumps(CategorySerializer(product_categories,many=True).data)
+    context['product_categories_s']=product_categories_s
+
+    return context
+   
 
 def SearchContext(request,search_for,*args, **kwargs):
     context={}
@@ -342,11 +366,11 @@ class CategoryView(View):
     
 class ProductView(View):
     def get(self,request,*args, **kwargs):
+         
         context=getContext(request=request)
         product_repo=ProductRepo(request=request)
         product =product_repo.product(*args, **kwargs)
         context['product']=product
-        from accounting.views import ProductContext
         context.update(ProductContext(request=request,product=product))
         context[WIDE_LAYOUT]=True
         primary_shop=ShopRepo(request=request).primary_shop(product=product)
@@ -367,9 +391,10 @@ class ProductView(View):
             context['add_cart_line_form']=AddCartLineForm()
  
 
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
-        context['shops']=shops
-        context['shops_s']=shops_s
+        if len(shops)>0:
+            shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+            context['shops']=shops
+            context['shops_s']=shops_s
 
         related_products=product.related_pages.all()
         ids=[]
