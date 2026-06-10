@@ -87,9 +87,7 @@ class Project(Event,LinkHelper,DateHelper):
                 invoice_ids.append(inv.id)
         from accounting.models import InvoiceLine
         return InvoiceLine.objects.filter(invoice_id__in=invoice_ids)
-  
-    def get_status_color(self):
-        return StatusColor(self)
+   
     
     @property
     def all_remote_clients(self):

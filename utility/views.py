@@ -144,6 +144,7 @@ class MessageView(View):
         context=getContext(request=request)
         self.color="info"
         self.fa_icon="edit"
+        self.body=""
         self.back_url = request.META.get('HTTP_REFERER') 
         if 'title' in kwargs:
             self.title  =kwargs['title']

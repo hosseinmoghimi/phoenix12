@@ -1135,6 +1135,7 @@ class BankAccount(Account):
  
 
 class Asset(CorePage):
+    price=models.IntegerField(_("price"),default=0)
     owner=models.ForeignKey("accounting.personaccount", verbose_name=_("owner"), on_delete=models.PROTECT)
    
     class Meta:

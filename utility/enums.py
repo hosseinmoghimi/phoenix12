@@ -1,9 +1,15 @@
 from django.utils.translation import gettext as _
 from django.db.models import TextChoices
  
-def StatusColor(page): 
-    if page.status=='ss':
-        return 'success'
+def StatusColor(page=None,color="success"): 
+    if page is None:
+        return color
+    try:
+        if page.status=='ss':
+            return 'success'
+    except:
+        pass
+  
     return 'primary'
  
 class WeightUnitEnum(TextChoices):
