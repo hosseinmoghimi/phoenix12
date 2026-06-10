@@ -1,0 +1,32 @@
+<script>
+    let maintenances_for_maintenances_app = JSON.parse(`{{maintenances_s|escapejs}}`)
+    let maintenances_app = new Vue({
+        el: "#maintenances-app",
+        data: {
+            maintenances: maintenances_for_maintenances_app,
+            search_for: '',
+            waiting: false,
+
+        },
+        methods: {
+            separate:vall=>to_price(vall,""),
+            filter: function () {
+                this.maintenances = maintenances_for_maintenances_app.filter(function (maintenances) {
+
+                    if (maintenances.title.indexOf(this.search_for) > -1)
+                        return true
+                    if (maintenances.bedehkar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    if (maintenances.bestankar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    return false
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall, " ")
+            },
+
+        }
+    })
+</script>

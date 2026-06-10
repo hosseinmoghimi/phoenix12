@@ -1,0 +1,96 @@
+<div id="accordion-service-mans">
+  <div class="card" id="service-mans-app">
+    <div class="card-header" id="heading-service-mans">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-service-mans"
+          aria-expanded="true"
+          aria-controls="collapse-service-mans"
+        >
+          تعمیرکار ها
+
+          <span v-if="service_mans.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="service_mans.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-service-mans"
+      class="collapse {% if expand_service_mans %} show{% endif %}"
+      aria-labelledby="heading-service-mans"
+      data-parent="#accordion-service-mans"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped rtl">
+            <thead>
+              <th>سرویس کار</th>
+              <th>حساب</th>
+              <th>مانده</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="service_man in service_mans">
+                <td>
+                  <a :href="service_man.get_absolute_url">
+                    <span
+                      v-text="service_man.person_account.person.full_name"
+                    ></span>
+                  </a>
+                </td>
+
+                <td>
+
+                  <div class="media">
+                    <a :href="service_man.person_account.get_absolute_url">
+                      <img :src="service_man.person_account.thumbnail" width="48" class="rounded-circle" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="service_man.person_account.get_absolute_url">
+                        <h6 v-text="service_man.person_account.name"></h6>
+                        <h6 v-text="service_man.person_account.code"></h6>
+                      </a>
+                    </div>
+                  </div>
+
+                  
+                </td>
+
+                
+
+                <td>
+                  <span v-text="to_price(service_man.person_account.balance)"></span> {{CURRENCY    }}
+                </td>
+                <td>
+                  {% if perms.market.change_service_man %}
+                  <a
+                    target="_blank"
+                    :href="service_man.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_service_man %}
+                  <a
+                    target="_blank"
+                    :href="service_man.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

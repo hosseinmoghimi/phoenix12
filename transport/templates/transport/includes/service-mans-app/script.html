@@ -1,0 +1,14 @@
+<script>
+    let service_mans = JSON.parse("{{service_mans_s|escapejs}}")
+    // let links=JSON.parse(`{{links_s|escapejs}}`)
+    let service_mans_app = new Vue({
+        el: "#service-mans-app",
+        data: {
+            service_mans: service_mans,
+        },
+        methods: {
+            to_price:vall=>to_price(vall),
+              
+        }
+    })
+</script>

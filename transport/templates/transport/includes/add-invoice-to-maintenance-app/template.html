@@ -1,0 +1,63 @@
+<div id="accordion-add-invoice-to-maintenance" class="rtl text-right farsi">
+  <div class="card" id="add-invoice-to-maintenance-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-invoice-to-maintenance"
+          aria-expanded="true"
+          aria-controls="collapse-add-invoice-to-maintenance"
+        >
+          افزودن فاکتور به تعمیر و نگهداری
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-invoice-to-maintenance"
+      class="collapse"
+      aria-labelledby="heading-add-invoice-to-maintenance"
+      data-parent="#accordion-add-invoice-to-maintenance"
+    >
+      <div class="card-body">
+        <div class="row">
+
+<div class="col-md-12">
+  <a href="{% url 'accounting:invoices' %}" target="_blank">همه فاکتور ها</a>
+</div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">شماره فاکتور</label>
+              <input v-model="invoice_id" type="number" class="form-control" />
+            </div>
+          </div>
+
+
+          <div class="col-md-6">
+            
+          </div>
+
+          <div class="col-md-12">
+            <div v-if="message.show">
+              <div :class="'my-2 alert alert-'+message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click="add_invoice_to_maintenance()"
+              v-if="!waiting"
+              type="submit"
+            >
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

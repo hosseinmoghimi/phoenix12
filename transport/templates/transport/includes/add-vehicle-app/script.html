@@ -1,0 +1,55 @@
+ {% include "accounting/includes/person-account-app/select-script.html" %}
+<script>
+  let add_vehicle_app = new Vue({
+    el: "#add-vehicle-app",
+    data: {
+      title: "",
+      owner_code:"",
+      owner: { },
+      message:{show:false},
+      waiting:false,
+    },
+    methods: {
+      select_owner: function () {
+        select_person_account_by_code(add_vehicle_app.owner_code).done((data) => {
+          if (data.result === "SUCCEED") {
+            leolog(data.person_account);
+            add_vehicle_app.owner = data.person_account;
+          }
+
+          if (data.result === "FAILED") {
+            add_vehicle_app.owner={};
+          }
+        });
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_vehicle: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          owner_id: this.owner.id,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_vehicle' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof vehicles_app != "undefined") {
+              vehicles_app.vehicles.push(data.vehicle);
+            }
+            show_message(add_vehicle_app,'موفق',data.message,'success',3000)
+          }
+          else{
+            show_message(add_vehicle_app,'خطا',data.message,'danger',3000)
+          }
+        });
+      },
+    },
+  });
+</script>
