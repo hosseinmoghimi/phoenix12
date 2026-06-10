@@ -52,7 +52,6 @@ def getContext(request,*args, **kwargs):
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
 
-
 def ProductContext(request,product,*args, **kwargs):
     context=PageContext(request=request,page=product)
      
@@ -72,7 +71,6 @@ def ProductContext(request,product,*args, **kwargs):
 
     return context
    
-
 def SearchContext(request,search_for,*args, **kwargs):
     context={}
     WAS_FOUND=False
@@ -189,6 +187,7 @@ class IndexView(View):
 
         return render(request,TEMPLATE_ROOT+"index.html",context) 
  
+
 class HomeView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -221,7 +220,6 @@ class HomeView(View):
         return render(request,TEMPLATE_ROOT+"home.html",context) 
     
 
- 
 class LinksView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -237,7 +235,6 @@ class LinksView(View):
             context["body"]="شما مجوز دسترسی ندارید."
             context["message"]={'title':'','body':''}
             return mv.get(request=request,**context)
-
 
 
 class SearchView(View):
@@ -308,6 +305,7 @@ class SearchView(View):
         if WAS_FOUND:
                context['WAS_FOUND']=WAS_FOUND
         return render(request, TEMPLATE_ROOT+"search.html",context)
+
 
 class ProductsView(View):
     def get(self,request,*args, **kwargs):
@@ -739,7 +737,6 @@ class CartView(View):
  
         return render(request,TEMPLATE_ROOT+"cart.html",context) 
        
-
        
 class ShipView(View):
     def get(self,request,*args, **kwargs):
@@ -757,7 +754,6 @@ class ShipView(View):
 
         return render(request,TEMPLATE_ROOT+"ship.html",context) 
 
- 
 
 class ShipsView(View):
     def get(self,request,*args, **kwargs):
@@ -769,7 +765,6 @@ class ShipsView(View):
         context['ships_for_ships_app']=ships_s
 
         return render(request,TEMPLATE_ROOT+"ships.html",context) 
-
 
        
 class PackageView(View):
