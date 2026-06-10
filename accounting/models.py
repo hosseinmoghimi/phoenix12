@@ -824,8 +824,7 @@ class Category(models.Model,LinkHelper,ImageHelper):
         result=SUCCEED
         message='دسته بندی با موفقیت ذخیره شد.'
         return result,message,category
-
-
+ 
 class Product(InvoiceLineItem):
     brand=models.ForeignKey("brand",null=True,blank=True, verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"),null=True,blank=True, max_length=50)

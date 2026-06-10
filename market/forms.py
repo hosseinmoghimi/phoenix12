@@ -35,6 +35,10 @@ class AddShopsForm(forms.Form):
     
 class SearchForm(forms.Form): 
     search_for=forms.CharField(max_length=100, required=True)
+
+    
+class SelectCategoryForm(forms.Form): 
+    category_id=forms.IntegerField(required=True)
     
 
 class ExportShopsToExcelForm(forms.Form): 

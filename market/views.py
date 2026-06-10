@@ -28,6 +28,7 @@ NO_NAVBAR="NO_NAVBAR"
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
     context[WIDE_LAYOUT]=True 
+    context['NO_FILTER']=True
     me_supplier=SupplierRepo(request=request).me
     me_customer=CustomerRepo(request=request).me
     context['market_navbar']=False
@@ -135,8 +136,34 @@ def AddShopContext(request,*args, **kwargs):
 
 class IndexView(View):
     def get(self,request,*args, **kwargs):
-        return (CategoryView().get(request=request,pk=0))
+        context=getContext(request=request)
+        context[WIDE_LAYOUT]=True
+        
+        context['NO_FILTER']=True
+        
+        products=ProductRepo(request=request).list(for_home=True)
+        for product in products:
+            primary_shop=ShopRepo(request=request).primary_shop(product)
+            if primary_shop is None:
+                product.available=False
+            else:
+                pass
+                product.available=True
+                product.unit_name=primary_shop.unit_name
+                product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
+           
+        context['products']=products
+        products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
+        context['products_s']=products_s
 
+
+        categories=CategoryRepo(request=request).list(for_home=True)
+        context['categories']=categories
+        categories_s=json.dumps(CategorySerializer(categories,many=True).data)
+        context['categories_s']=categories_s
+
+
+        return render(request,TEMPLATE_ROOT+"index.html",context) 
  
 class HomeView(View):
     def get(self,request,*args, **kwargs):

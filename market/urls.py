@@ -25,6 +25,7 @@ urlpatterns = [
     path("add-customer/",login_required(apis.AddCustomerApi.as_view()),name="add_customer"),
     path("add-shipper/",login_required(apis.AddShipperApi.as_view()),name="add_shipper"),
     path('shop/<int:pk>/',login_required(views.ProductView.as_view()),name="shop"),
+    path('select-category/',login_required(apis.SelectCategoryApi.as_view()),name="select_category"),
     
     path('add-ship/',login_required(apis.AddShipApi.as_view()),name="add_ship"),
     path('ship/<int:pk>/',login_required(views.ShipView.as_view()),name="ship"),

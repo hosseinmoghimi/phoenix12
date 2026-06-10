@@ -16,19 +16,20 @@ class CustomerGroupSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
-        fields=['id', 'title','unit_name','unit_price','thumbnail','get_market_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id', 'title','unit_name','unit_price','thumbnail','barcode','get_market_absolute_url',  'get_edit_url','get_delete_url']
  
-
+ 
 class ProductWithPriceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
-        fields=['id', 'available','title','unit_name','unit_price','thumbnail','get_market_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id', 'available','title','unit_name','unit_price','barcode','thumbnail','get_market_absolute_url',  'get_edit_url','get_delete_url']
  
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model=Category
-        fields=['id', 'title','thumbnail','get_market_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id', 'title','thumbnail','get_market_absolute_url' , 'get_edit_url','get_delete_url']
+ 
+
  
 
 class SupplierSerializer(serializers.ModelSerializer):

@@ -43,11 +43,12 @@
     {% endif %}
     <div class="my-3 {% if WIDE_LAYOUT %}mx-3{% else %}container{% endif %}" style="margin-bottom: 75px !important;">
        <div class="row rtl text-right">
-<div class="col-lg-3 col-md-4">
+<div class="col-lg-2 col-md-3" id="search-app">
 
-  <form action="{% url 'market:search' %}" method="POST" class="mb-2">
+  <form action="{% url 'market:search' %}" method="POST" class="mb-2"  >
     {% csrf_token %}
-    <input placeholder="جستجو ...." type="text" name="search_for" value="{{search_for}}" class="form-control">
+    <input @input="filter()" v-model="search_for" placeholder="جستجو ...." type="text" name="search_for"  value="{{search_for}}" class="form-control"> 
+    
   </form>
 </div>
         </div>
@@ -67,6 +68,35 @@
     {% block script %}
 
     {% endblock script %}
+    <script>
+  let search_app=new Vue({
+    el:"#search-app",
+    data:{
+      search_for:"{{search_for}}",
+    },
+    methods:{
+      filter:function(){
+        console.log(search_app.search_for)
+        if(typeof categories_app != 'undefined'){
+          categories_app.search_for=search_app.search_for
+          categories_app.filter()
+        }
+
+         if(typeof products_app != 'undefined'){
+          products_app.search_for=search_app.search_for
+          products_app.filter()
+        }
+
+        
+         if(typeof index_app != 'undefined'){
+          index_app.search_for=search_app.search_for
+          index_app.filter()
+        }
+      }
+    }
+  })
+</script>
+
     {% block base_script %}
 
     {% endblock base_script %}

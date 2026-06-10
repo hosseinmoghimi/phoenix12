@@ -2962,7 +2962,15 @@ class CategoryRepo():
             message="همه دسته بندی های کالاها با موفقیت حذف شدند."
         return result,message
 
-
+    def select_category(self,category_id):
+        result,message,category,categories,products=FAILED,"",None,[],[]
+        category=Category.objects.filter(pk=category_id).first()
+        if category is not None:
+            categories=Category.objects.filter(parent_id=category_id)
+            products=category.products.all()
+            result=SUCCEED
+            message="با موفقیت انتخاب شد"
+        return result,message,category,categories,products
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
