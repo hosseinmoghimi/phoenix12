@@ -825,6 +825,22 @@ class Category(models.Model,LinkHelper,ImageHelper):
         message='دسته بندی با موفقیت ذخیره شد.'
         return result,message,category
  
+    @property
+    def thumbnail(self):
+         
+        thumbnail=""
+        if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
+            if self.parent is not None and str(self.parent.thumbnail_origin):
+                return self.parent.thumbnail
+            try:
+                thumbnail= f"{STATIC_URL}{self.app_name}/img/pages/thumbnail/{self.class_name}.png/"
+            except:
+                pass
+        else:
+            thumbnail= f"{MEDIA_URL}{self.thumbnail_origin}"
+
+        return thumbnail
+
 class Product(InvoiceLineItem):
     brand=models.ForeignKey("brand",null=True,blank=True, verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"),null=True,blank=True, max_length=50)
