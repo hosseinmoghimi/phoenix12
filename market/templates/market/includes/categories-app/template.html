@@ -1,6 +1,9 @@
 <div class="row rtl" id="categories-app">
-   
+   {% load static %}
+    <div class="text-right">
 
+        <img src="{% static 'leo/img/loading.gif' %}" width="64" v-if="false" alt="">
+    </div>
     <div v-for="category in categories" class="col-lg-2 col-md-3 col-4 mb-2"  v-cloak>
         <div class="text-center">
             <a :href="category.get_market_absolute_url">
