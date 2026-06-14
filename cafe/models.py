@@ -54,7 +54,6 @@ class Menu(CorePage):
         message="آیتم غذایی با موفقیت اضافه شد."
         return (result,message,menu)
          
-  
 
 class TableCustomer(Customer):
     table=models.ForeignKey("cafe.table", verbose_name=_("table"), on_delete=models.CASCADE)
@@ -64,6 +63,7 @@ class TableCustomer(Customer):
         verbose_name = _("TableCustomer")
         verbose_name_plural = _("TableCustomers")  
 
+
 class MenuItem(CartItem):
     table=models.ForeignKey("table", verbose_name=_("table"), on_delete=models.CASCADE)
      
@@ -71,4 +71,4 @@ class MenuItem(CartItem):
         verbose_name = _("MenuItem")
         verbose_name_plural = _("MenuItems")  
 
-
+ 

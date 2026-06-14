@@ -713,10 +713,10 @@ class CartView(View):
         context['customer']=customer
         if customer is None:
             msg={}
-            msg['title']='خطا'
-            msg['body']='خریداری پیدا نشد.'
+            title='خطا'
+            body='خریداری پیدا نشد.'
             mv=MessageView(**msg)
-            return mv.get(request=request)   
+            return mv.get(request=request,title=title,body=body)   
         customer_s=json.dumps(CustomerSerializer(customer,many=False).data)
         context['customer_s']=customer_s
  

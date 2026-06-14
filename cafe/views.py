@@ -5,7 +5,7 @@ from .serializers import TableSerializer
 from django.views import View
 from .forms import *
 from .apps import APP_NAME
-from core.views import CoreContext
+from core.views import CoreContext,MessageView
 from phoenix.server_apps import phoenix_apps
 from market.serializers import ShopSerializer
 
@@ -75,58 +75,47 @@ class TablesView(View):
         return render(request,TEMPLATE_ROOT+"tables.html",context)
 # Create your views here. 
 
- 
-class TableView(View):
-    def get(self,request,*args, **kwargs):
+  
+
+class TableLoginView(View):  
+    def post(self,request,*args, **kwargs):
+        table=None
+        valid=False
+        login_table_form=LoginTableForm(request.POST)
+        title="درخواست غیر مجاز"
+        if login_table_form.is_valid():
+            title="میز مورد نظر پیدا نشد"
+            table_id=login_table_form.cleaned_data['table_id']
+            table=TableRepo(request=request).table(table_id=table_id)
+            if table is not None:
+                valid=True
+        if not valid:
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=title)
+        
         context=getContext(request=request)
         context['name3']="name 3333"
-        table=TableRepo(request=request).table(*args, **kwargs)
         table_s=json.dumps(TableSerializer(table,many=False).data)
         context["table_s"]=table_s
         context["table"]=table
-        return render(request,TEMPLATE_ROOT+"table.html",context)
-# Create your views here. 
+
+
+        menus=table.supplier.menu_set.all()
+        menus_s=json.dumps(MenuSerializer(menus,many=True).data)
+        context['menus']=menus
+        context['menus_s']=menus_s
  
-
-
-class TableLoginView(View):
-    def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        context['name3']="name 3333"
-        table=TableRepo(request=request).table(*args, **kwargs)
-        table_s=json.dumps(TableSerializer(table,many=False).data)
-        context["table_s"]=table_s
-        context["table"]=table
-
-        
-        menu =MenuRepo(request=request).menu(*args, **kwargs)
-        context['table']=table
-        context['menu']=menu
-        
-        
         table_customer=TableCustomerRepo(request=request).table_customer(table_id=table.id)
-        context['table_customer']=table_customer
-
-        table_customer_s=json.dumps(TableCustomerSerializer(table_customer,many=False).data)
-        menu_s=json.dumps(MenuSerializer(menu,many=False).data)
-        context['table_customer_s']=table_customer_s
-        context['menu_s']=menu_s
-
-
-
-        shops=menu.shops.all()
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['table_customer']=table_customer 
+        context['customer']=table_customer 
         
-        
-        context['shops_s']=shops_s
- 
-        context['NOT_NAVBAR']=True
-        context['NOT_FOOTER']=True
-
-        return render(request,TEMPLATE_ROOT+"table-menu.html",context)
-# Create your views here. 
- 
-   
+        try:
+            from django.contrib.auth import login
+            user=table_customer.person_account.person.user
+            login(request,user)
+        except:
+            pass
+        return render(request,TEMPLATE_ROOT+"table.html",context)
     
 class TableView(View):
     def get(self,request,*args, **kwargs):
@@ -174,6 +163,7 @@ class TableMenuView(View):
         context['NOT_NAVBAR']=True
         context['NOT_FOOTER']=True
         return render(request,TEMPLATE_ROOT+"table-menu.html",context) 
+
 
 class TablesView(View):
     def get(self,request,*args, **kwargs):
@@ -249,7 +239,8 @@ class MenuView(View):
         # context['NOT_NAVBAR']=True
         # context['NOT_FOOTER']=True
         return render(request,TEMPLATE_ROOT+"menu.html",context) 
-    
+
+
 class TableCustomerView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

@@ -1,5 +1,23 @@
 {% extends "cafe/layout.html" %} {% load static %} {% block content %}
 <div class="row rtl farsi">
+  {% if table_customer %}
+    
+  <div class="col-md-12 ">
+    <div class="card">
+      <div class="card-header">
+        <h4>مشتری</h4>
+      </div>
+      <div class="card-body"> 
+        {{customer.title}}
+
+ 
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  
   <div class="col-md-4 col-lg-3 text-center my-3">
     <div class="card">
       <div class="card-header">
@@ -22,12 +40,20 @@
             </a>
             </h6>
 
-             <h6 class="text-center">لاگین 
-            <a href="{% url 'cafe:table_login' table.code %}">
+             <div class=""> 
+              <form action="{% url 'cafe:table_login' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="table_id" value="{{table.id}}">
+                <button class="btn btn-info" type="submit">
+                  <i class="fa fa-key ml-2"></i>
+                  لاگین
+                </button>
+              </form>
+            <a href="">
             
               {{table.title}}
             </a>
-            </h6>
+            </div>
 
           <h6 class="text-center">شماره {{table.table_no}}</h6>
           
@@ -40,6 +66,16 @@
             </h6>
 
  
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        {% for menu in menus %}
+          <a class="btn btn-{{menu.color}}" href="{{menu.get_absolute_url}}">{{menu.title}}</a>
+        {% endfor %}
       </div>
     </div>
   </div>
