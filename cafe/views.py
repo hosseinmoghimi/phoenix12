@@ -58,10 +58,8 @@ class IndexView(View):
 
         context['phoenix_apps']=phoenix_apps
         return render(request,TEMPLATE_ROOT+"index.html",context)
-# Create your views here. 
 
- 
- 
+
 class TablesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -73,9 +71,7 @@ class TablesView(View):
         if request.user.has_perm(APP_NAME+".add_table"):
             context['add_table_form']=AddTableForm()
         return render(request,TEMPLATE_ROOT+"tables.html",context)
-# Create your views here. 
 
-  
 
 class TableLoginView(View):  
     def post(self,request,*args, **kwargs):
@@ -117,6 +113,7 @@ class TableLoginView(View):
             pass
         return render(request,TEMPLATE_ROOT+"table.html",context)
     
+
 class TableView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

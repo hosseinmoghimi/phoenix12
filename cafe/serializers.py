@@ -18,13 +18,13 @@ class TableCustomerSerializer(serializers.ModelSerializer):
         model=TableCustomer 
         fields=['id','table','account',  'get_absolute_url', 'get_edit_url','get_delete_url']
  
+
 class MenuSerializer(serializers.ModelSerializer):
     supplier=SupplierSerializer()
     shops=ShopSerializer(many=True)
     class Meta:
         model=Menu
         fields=['id','title','supplier','shops', 'get_absolute_url', 'get_edit_url','get_delete_url']
-
 
 
 class MenuItemSerializer(serializers.ModelSerializer):

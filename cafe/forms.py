@@ -6,6 +6,7 @@ class AddTableForm(forms.Form):
     code=forms.CharField(max_length=500,required=True)
     supplier_id=forms.IntegerField(required=True)
 
+
 class AddMenuForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     supplier_id=forms.IntegerField(required=True)
