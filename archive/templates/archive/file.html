@@ -1,0 +1,88 @@
+{% extends "archive/wide-layout.html" %}
+{% block content %}
+{% include "core/includes/page-app/navbar.html" %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div>
+            {{file.folder.get_breadcrumb|safe}}
+        </div>
+    </div>
+     
+    </div> 
+<div class="row rtl">
+    <div class="col-md-3">
+        {% include "core/includes/page-app/thumbnail-card.html" %}
+        {% include "core/includes/page-app/card.html" %}
+        {% include "core/includes/page-thumbnail-header-app/template.html" %}
+
+
+    </div>
+    <div class="col-md-9">
+        <div class="row rtl">
+
+
+
+
+            <div class="col-md-4">
+                {% include "attachments/includes/links-app/template.html" %}
+
+            </div>
+ 
+            <div class="col-md-4">
+                {% include "attachments/includes/downloads-app/template.html" %}
+
+            </div>
+
+            <div class="col-md-4">
+                {% include "attachments/includes/tags-app/template.html" %}
+
+            </div>
+
+            <div class="col-md-12">
+                {% include "core/includes/page-description-app/short-description.html" %}
+            </div>
+
+            
+            <div class="col-md-12">
+                {% include "core/includes/page-description-app/description.html" %}
+
+            </div>
+      
+            
+            <div class="col-md-12">
+                {% include "attachments/includes/comments-app/template.html" %}
+
+            </div>
+            
+            <div class="col-md-12">
+                {% include "attachments/includes/page-like-app/page-likes.html" %}
+
+            </div>
+            <div class="col-md-12">
+                {% include "attachments/includes/images-app/template.html" %}
+
+            </div>
+
+            <div class="col-md-12">
+                {% include "core/includes/page-related-app/template.html" %}
+
+            </div>
+
+            <div class="col-md-12">
+                {% include "attachments/includes/locations-app/template.html" %}
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+{% include "core/includes/page-app/script.html" %}
+
+{% endblock script %}

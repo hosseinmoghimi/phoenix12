@@ -35,11 +35,7 @@ class SelectCategoryApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
-  
- 
-
    
-
   
 class AddShopPackageApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -64,7 +60,6 @@ class AddShopPackageApi(APIView):
         return JsonResponse(context)
   
  
-
 class ImportShopsFromExcelApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -91,8 +86,6 @@ class ImportShopsFromExcelApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
-
-
 
   
 class AddCartItemApi(APIView):

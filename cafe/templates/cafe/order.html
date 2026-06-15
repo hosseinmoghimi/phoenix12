@@ -1,0 +1,208 @@
+{% extends "cafe/layout.html" %} {% load static %}{% load to_price %} {% block content %}
+<div class="row rtl farsi" id="order-app">
+  <div class="col-md-12" v-for="menu in menus">
+    <div :id="`accordion-menu`+menu.id" class="rtl text-right farsi" v-if=" menu.shops.length>0 ">
+      <div class="card" id="menu-app">
+        <div class="card-header">
+          <h5 class="text-center">
+            <button
+              class="btn btn-link"
+              data-toggle="collapse"
+              :data-target="`#collapse-menu`+menu.id"
+              aria-expanded="true"
+              :aria-controls="`collapse-menu`+menu.id"
+            >
+              <span v-text="menu.title"></span>
+            </button>
+          </h5>
+        </div>
+
+        <div
+          :id="`collapse-menu`+menu.id"
+          class="collapse show"
+          :aria-labelledby="`heading-menu`+menu.id"
+          :data-parent="`#accordion-menu`+menu.id"
+        >
+          <div class="card-body">
+            <table class="table rtl">
+              <tr  v-for="shop in menu.shops" >
+                <td>
+                  <div class="media">
+                      <img :src="shop.product.thumbnail" class="rounded" width="48" alt="">
+                      <div class="media-body mr-2">
+                <span v-text="shop.product.title"></span>
+
+                      </div>
+                  </div>
+                </td>
+                <td>
+                    هر
+                <span v-text="shop.unit_name"></span>
+                <span v-text="to_price_tuman(shop.unit_price)"></span>
+                {{CURRENCY_TUMAN}}
+                </td>
+                <td>
+                  <button class="btn btn-success"  @click="add_to_cart(shop,1)">
+                    +
+                  </button>
+
+                  
+                  <button class="btn btn-danger"  @click="add_to_cart(shop,-1)">
+                    -
+                  </button>
+
+                </td>
+              </tr>
+            </table>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        {% include 'market/includes/cart-app/template.html' %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5>تکمیلی</h5>
+      </div>
+      <div class="card-body">
+        <div class="row rtl" id="checkout-cart-app">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">میز</label>
+              <select name="" id="" v-model="table_id" class="form-control">
+                {% for table in tables %}
+                <option value="{{table.id}}">{{table.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">توضیحات</label>
+              <input
+                type="text"
+                v-model="description"
+                class="form-control"
+                id="seetgreghfdgtre"
+              />
+            </div>
+          </div>
+
+           <div class="col-md-4">
+            <div class="form-group">
+              <label for="">شناسه مشتری</label>
+             <input
+                type="text" 
+                v-model="customer_id"
+                class="form-control"
+                id="sestetgreghfdgtre"
+              />
+            </div>
+          </div>
+
+
+          <div class="col-md-12">
+            <button @click="checkout()" class="btn btn-success">تایید</button>
+          </div>
+          <div class="col-md-12">
+            <div class="my-2">
+                {% include "utility/includes/message.html" %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block script %}
+
+<script>
+  let menus_for_order_app = JSON.parse(`{{menus_for_order_app|escapejs}}`);
+  let order_app = new Vue({
+    el: "#order-app",
+    data: {
+      menus: menus_for_order_app,
+    },
+    
+    mounted:function(){ 
+    },
+    methods: {
+      to_price_tuman: function (vall) {
+        return to_price(parseInt(vall) / 10);
+      },
+      add_to_cart: function (shop, step) {
+        cart_app.add_to_cart(shop, step);
+      },
+    },
+  });
+</script>
+
+{% include 'market/includes/cart-app/script.html' %}
+
+<script>
+  let customer_id=0
+</script>
+{% if me_customer %}
+  
+<script>
+  customer_id=parseInt("{{me_customer.id}}")
+</script>
+{% endif %}
+<script>
+  let checkout_cart_app = new Vue({
+    el: "#checkout-cart-app",
+    data: {
+      description: "",
+      customer_id: customer_id,
+      table_id: 0,
+      message:{show:false},
+    },
+    methods: {
+      to_price_tuman: function (vall) {
+        return to_price(parseInt(vall) / 10);
+      },
+      checkout: function () {
+        let cart_items = [];
+        cart_app.cart_items.forEach((cart_item) => {
+          cart_items.push({
+            shop_id: cart_item.shop.id,
+            quantity: cart_item.quantity,
+          });
+        });
+        let payload={
+            csrfmiddlewaretoken:csrfmiddlewaretoken,
+            table_id:parseInt(checkout_cart_app.table_id),
+            customer_id:parseInt(checkout_cart_app.customer_id),
+            description:(checkout_cart_app.description),
+            cart_items:JSON.stringify(cart_items),
+        }
+        console.log(payload)
+        $.post("{% url 'cafe:checkout_cart' %}",payload).done(data=>{
+            if(data.result==='SUCCEED'){
+                show_message(checkout_cart_app,'موفق',data.message,'success',5000)
+                if(data.invoices.length==1){
+                    location.href = "/accounting/invoice/print/"+data.invoices[0].id+"/"
+                }
+            }
+
+            if(data.result!='SUCCEED'){
+                show_message(checkout_cart_app,'خطا',data.message,'danger',5000)
+            }
+        })
+      },
+    },
+  });
+</script>
+{% endblock script %}

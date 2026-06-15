@@ -23,9 +23,15 @@ LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='core/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
+WIDE_LAYOUT_PARENT = "phoenix/wide-layout.html"
 NO_NAVBAR="NO_NAVBAR"
 def CoreContext(request,*args, **kwargs):
     context={}
+
+    
+    context['LAYOUT_PARENT'] = LAYOUT_PARENT
+    context['WIDE_LAYOUT_PARENT'] = WIDE_LAYOUT_PARENT
+
     context['INDEX_FOR_ALL_CHOICES']=INDEX_FOR_ALL_CHOICES
     app_name='core'
     if 'app_name' in kwargs:

@@ -3,7 +3,7 @@ from django.urls import path,include,re_path
 from django.views.static import serve
 from phoenix.server_settings import QRCODE_ROOT,STATIC_ROOT,MEDIA_ROOT
 from authentication.views import LoginView
-from market.views import IndexView
+from market.views import HomeView
 from phoenix.settings import COMING_SOON
 if COMING_SOON:
     from core.views import ComingSoonView
@@ -22,7 +22,7 @@ if COMING_SOON:
 else:
         
     urlpatterns = [ 
-        path('', IndexView.as_view(),name='home'),
+        path('', HomeView.as_view(),name='home'),
         path('admin/', admin.site.urls),
         path('utility/', include('utility.urls')),
         path('authentication/', include('authentication.urls')),
@@ -39,6 +39,8 @@ else:
         path('market/', include('market.urls')),
         path('cafe/', include('cafe.urls')),
         path('bms/', include('bms.urls')),
+        path('transport/', include('transport.urls')),
+        path('archive/', include('archive.urls')),
         
 
         re_path(r'^qrcode/(?P<path>.*)$', serve, {'document_root': QRCODE_ROOT}),

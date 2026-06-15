@@ -1,0 +1,95 @@
+{% extends "archive/layout.html" %}
+{% load to_persian_date %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" id="archive-app">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <th>
+                            عنوان
+                        </th>
+                        <th>
+                            تاریخ ایجاد
+                        </th>
+                        <th>
+
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for folder in folders %}
+
+                        <tr>
+                            <td>
+                                <a href="{{folder.get_absolute_url}}">
+                                    <div class="media">
+                                        <img src="{{folder.thumbnail}}" class="rounded" width="48" alt="">
+                                        <div class="media-body mr-2">
+                                            <h5>
+                                                {{folder.name}}
+
+                                            </h5>
+
+
+                                            <div class="text-muted small">
+                                                پوشه
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                            <td>
+                                {{folder.date_added|to_persian_datetime|safe}}
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        {% for file in files %}
+
+                        <tr>
+                            <td>
+
+                                <a href="{{file.get_absolute_url}}">
+
+
+                                    <div class="media">
+                                        <img src="{{file.thumbnail}}" class="rounded" width="48" alt="">
+                                        <div class="media-body mr-2">
+                                            <h5>
+                                                {{file.name}}
+
+                                            </h5>
+
+
+                                            <div class="text-muted small">
+                                                پرونده
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </a>
+                            </td>
+                            <td>
+                                {{file.date_added|to_persian_datetime|safe}}
+
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

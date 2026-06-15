@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'cafe',
     'bms',
     'django_social_share',
+    'archive',
 
 
     'allauth',   # <--

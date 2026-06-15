@@ -36,6 +36,14 @@ class PersonRepo():
             return SUCCEED
         return FAILED
     
+    def misc_person(self,title="متفرقه",*args, **kwargs):
+        misc_person=Person.objects.filter(title=title).first()
+        if misc_person is None: 
+            misc_person=Person()
+            misc_person.title=title
+            misc_person.save()
+        return misc_person
+    
     def person(self,*args, **kwargs):
         if "person_id" in kwargs and kwargs["person_id"] is not None:
             return self.objects.filter(pk=kwargs['person_id']).first()

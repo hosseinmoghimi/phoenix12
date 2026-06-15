@@ -12,5 +12,12 @@ class AddMenuForm(forms.Form):
     supplier_id=forms.IntegerField(required=True)
      
 
+class CheckoutCartForm(forms.Form):
+    cart_items=forms.CharField(max_length=500, required=True)
+    table_id=forms.IntegerField(required=True)
+    customer_id=forms.IntegerField( required=False)
+    description=forms.CharField( max_length=200, required=False)
+
+    
 class LoginTableForm(forms.Form):
     table_id=forms.IntegerField(required=True)

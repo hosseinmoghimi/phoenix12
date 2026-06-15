@@ -15,7 +15,7 @@ from utility.enums import *
 class Person(models.Model,ImageHelper,LinkHelper):
     user=models.OneToOneField(settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,null=True,blank=True)
-    prefix=models.CharField(_("پیشوند"),default=PersonPrefixEnum.MR,choices=PersonPrefixEnum.choices, max_length=50)
+    prefix=models.CharField(_("پیشوند"),choices=PersonPrefixEnum.choices,null=True,blank=True, max_length=50)
     title=models.CharField(_("عنوان"),null=True,blank=True, max_length=50)
     first_name=models.CharField(_("نام"),null=True,blank=True, max_length=50)
     last_name=models.CharField(_("نام خانوادگی"),null=True,blank=True, max_length=50)
