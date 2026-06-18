@@ -14,6 +14,14 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static 'grad-school/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
+    
+    {% if farsi_font_name %}
+    <link href="{{STATIC_URL}}leo/css/font-farsi-{{farsi_font_name}}.css" rel="stylesheet">
+    {% else %}
+    <link href="{% static 'leo/css/font-farsi.css' %}" rel="stylesheet">
+    {% endif %}
+    
+    <link href="{% static 'leo/css/style.css' %}" rel="stylesheet">
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="{% static 'grad-school/assets/css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'grad-school/assets/css/templatemo-grad-school.css' %}">
@@ -32,14 +40,14 @@ https://templatemo.com/tm-557-grad-school
 
    
   <!--header-->
-  <header class="main-header clearfix" role="header">
+  <header class="main-header clearfix rtl" role="header">
     <div class="logo">
-      <a href="#"><em>Grad</em> School</a>
+      <a class="farsi" href="#"><em>کافه</em> روچه</a>
     </div>
     <a href="#menu" class="menu-link"><i class="fa fa-bars"></i></a>
     <nav id="menu" class="main-nav" role="navigation">
-      <ul class="main-menu">
-        <li><a href="#section1">Home</a></li>
+      <ul class="main-menu ">
+        <li><a href="#section1" class="farsi">خانه</a></li>
         <li class="has-submenu"><a href="#section2">About Us</a>
           <ul class="sub-menu">
             <li><a href="#section2">Who we are?</a></li>
