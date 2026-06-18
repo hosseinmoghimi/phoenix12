@@ -12,8 +12,9 @@ from market.serializers import ShopSerializer
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import MenuSerializer,TableSerializer
+from .serializers import MenuSerializer,TableSerializer,OrderSerializer
 from .repo import MenuRepo,TableRepo
+from .enums import OrderStatusEnum
 
 from utility.enums import UnitNameEnum
 from utility.log import leolog
@@ -66,14 +67,12 @@ class TableView(View):
         table =TableRepo(request=request).table(*args, **kwargs)
         context['table']=table
         
-        menus=table.supplier.menu_set.all()
-        menus_s=json.dumps(MenuSerializer(menus,many=True).data)
-        context['menus']=menus
-        context['menus_s']=menus_s
+        orders=table.order_set.all()
+        orders_s=json.dumps(OrderSerializer(orders,many=True).data)
+        context['orders']=orders
+        context['orders_s']=orders_s
  
-  
-        context['NOT_NAVBAR']=True
-        context['NOT_FOOTER']=True
+   
         return render(request,TEMPLATE_ROOT+"table.html",context) 
     
      
@@ -107,6 +106,71 @@ class MenusView(View):
             context['suppliers']=suppliers
         return render(request,TEMPLATE_ROOT+"menus.html",context) 
     
+
+
+class GraphView(View):
+    def get(self,request,*args, **kwargs):
+        if not request.user.has_perm(APP_NAME+'.add_table'):
+            mv=MessageView()
+            title="دسترسی غیر مجاز"
+            return mv.get(request=request,title=title)
+
+        context=getContext(request=request)
+        tables =TableRepo(request=request).list(*args, **kwargs)
+        context['tables']=tables
+        
+        tables_s=json.dumps(TableSerializer(tables,many=True).data)
+        context['tables_s']=tables_s 
+
+        return render(request,TEMPLATE_ROOT+"graph.html",context) 
+    
+
+    
+class Graph2View(View):
+    def get(self,request,*args, **kwargs):
+        if not request.user.has_perm(APP_NAME+'.add_table'):
+            mv=MessageView()
+            title="دسترسی غیر مجاز"
+            return mv.get(request=request,title=title)
+
+        context=getContext(request=request)
+        table_repo=TableRepo(request=request)
+
+        tables =table_repo.list(*args, **kwargs)
+        context['tables']=tables
+        
+        tables_s=json.dumps(TableSerializer(tables,many=True).data)
+        context['tables_s']=tables_s
+         
+
+        table_free =table_repo.list(status=OrderStatusEnum.FREE)
+        context['table_free']=table_free
+         
+
+        table_finished =table_repo.list(status=OrderStatusEnum.FINISHED)
+        context['table_finished']=table_finished
+ 
+
+         
+        table_choosing =table_repo.list(status=OrderStatusEnum.CHOOSING)
+        context['table_choosing']=table_choosing
+
+         
+
+        table_enterance =table_repo.list(status=OrderStatusEnum.CUSTOMER_ENTERANCE)
+        context['table_enterance']=table_enterance
+
+        
+        table_waiting_to_server =table_repo.list(status=OrderStatusEnum.WAITING_TO_SERVE)
+        context['table_waiting_to_server']=table_waiting_to_server
+
+        
+        table_serving =table_repo.list(status=OrderStatusEnum.SERVING)
+        context['table_serving']=table_serving
+
+        return render(request,TEMPLATE_ROOT+"graph2.html",context) 
+    
+
 
 class MenuView(View):
     def get(self,request,*args, **kwargs):

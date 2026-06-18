@@ -87,12 +87,13 @@ INSTALLED_APPS = [
     'bms',
     'django_social_share',
     'archive',
+    'transport'
 
 
-    'allauth',   # <--
-    'allauth.account',   # <--
-    'allauth.socialaccount',   # <--
-    'allauth.socialaccount.providers.google',   # <--
+    # 'allauth',   # <--
+    # 'allauth.account',   # <--
+    # 'allauth.socialaccount',   # <--
+    # 'allauth.socialaccount.providers.google',   # <--
 
 
 

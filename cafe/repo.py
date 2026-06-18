@@ -1,4 +1,4 @@
-from .models import Table,Menu
+from .models import Table,Menu,Order,OrderLog
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -86,6 +86,7 @@ class TableRepo():
             if request.user.has_perm(APP_NAME+".view_account"):
                 self.objects=Table.objects
                 self.my_accounts=self.objects 
+    
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -94,6 +95,16 @@ class TableRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "status" in kwargs:
+            status=kwargs["status"]
+            orders=Order.objects.filter(status=status)
+            leolog(status=status,orders=orders)
+            tables=[]
+            for order in orders:
+                tables.append(order.table_id)
+            return Table.objects.filter(id__in=tables)
+
+
         return objects.all()
         
     def table(self,*args, **kwargs):

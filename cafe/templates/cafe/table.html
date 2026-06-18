@@ -41,14 +41,7 @@
             </h6>
 
              <div class=""> 
-              <form action="{% url 'cafe:table_login' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="table_id" value="{{table.id}}">
-                <button class="btn btn-info" type="submit">
-                  <i class="fa fa-key ml-2"></i>
-                  لاگین
-                </button>
-              </form>
+               
             <a href="">
             
               {{table.title}}
@@ -71,13 +64,7 @@
   </div>
 
   <div class="col-md-8">
-    <div class="card">
-      <div class="card-body">
-        {% for menu in menus %}
-          <a class="btn btn-{{menu.color}}" href="{{menu.get_absolute_url}}">{{menu.title}}</a>
-        {% endfor %}
-      </div>
-    </div>
+    {% include "cafe/includes/orders-app/template.html" %}
   </div>
 </div>
 {% endblock content %} {% block script %}
@@ -86,4 +73,6 @@
   console.log("name2: {{name2}}");
   console.log("name3: {{name3}}");
 </script>
+    {% include "cafe/includes/orders-app/script.html" %}
+
 {% endblock script %}

@@ -3,8 +3,8 @@ from django.urls import path,include,re_path
 from django.views.static import serve
 from phoenix.server_settings import QRCODE_ROOT,STATIC_ROOT,MEDIA_ROOT
 from authentication.views import LoginView
-from market.views import HomeView
-from phoenix.settings import COMING_SOON
+from blog.views import IndexView as HomeView
+from phoenix.server_settings import COMING_SOON
 if COMING_SOON:
     from core.views import ComingSoonView
     urlpatterns=[

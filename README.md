@@ -1,6 +1,6 @@
 # Phoenix12
  
-## Version 0.2.2
+## Version 0.2.4
 
 ## install pip packages
 
@@ -38,6 +38,14 @@ list your apps in
     vi phoenix/server_apps.py
 ```
  
+## pip mirrors
+```
+
+pip config --user set global.index https://mirror-pypi.runflare.com/simple
+pip config --user set global.index-url https://mirror-pypi.runflare.com/simple
+pip config --user set global.trusted-host mirror-pypi.runflare.com
+pip config --user set global.timeout 60
+```
 
 ## Copy accounting config files
 

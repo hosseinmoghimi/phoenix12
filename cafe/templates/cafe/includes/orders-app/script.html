@@ -1,0 +1,15 @@
+<script>
+    
+    let orders_for_orders_app=JSON.parse("{{orders_s|escapejs}}")
+    let orders_app = new Vue({
+        el: "#orders-app",
+        data: {
+            orders: orders_for_orders_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>
