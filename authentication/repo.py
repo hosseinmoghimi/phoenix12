@@ -311,6 +311,8 @@ class PersonRepo():
                     person=Person.objects.filter(user=user).first()
                     description='لاگین با موفقیت انجام شد.'
                     title='لاگین'
+                    if person is None:
+                        return (request,user)
                     url=person.get_absolute_url()
                     LogRepo(request=self.request).add_log(title=title,url=url,person=person,app_name=APP_NAME,description=description)
                     return (request,user)
