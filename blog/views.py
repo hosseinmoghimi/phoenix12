@@ -18,6 +18,7 @@ NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
 LAYOUT_PARENT = "material-kit-pro/layout.html"
 LAYOUT_PARENT = "phoenix/layout.html"
+LAYOUT_PARENT = "grad-school/layout.html"
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
