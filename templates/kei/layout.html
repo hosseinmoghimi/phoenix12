@@ -10,8 +10,16 @@
 <script>window.TEMPLATE_SC = "index";</script>
 <script>window.ENV_SC = true;</script>
 
+    
+    {% if farsi_font_name %}
+    <link href="{{STATIC_URL}}leo/css/font-farsi-{{farsi_font_name}}.css" rel="stylesheet">
+    {% else %}
+    <link href="{% static 'leo/css/font-farsi.css' %}" rel="stylesheet">
+    {% endif %}
 
 
+    
+    <link href="{% static 'leo/css/style.css' %}" rel="stylesheet">
 <meta name="facebook-domain-verification" content="6cdlsub2sqwtm6glvu4340jr5hafjl" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -21,8 +29,9 @@
   <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
   <link rel="dns-prefetch" href="https://ajax.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
-  <link rel="dns-prefetch" href="https://maps.gstatic.com"><link rel="shortcut icon" href="//restaurant-kei.fr/cdn/shop/files/FAVICON_-_Tkei_32x32.png?v=1728925765" type="image/png" /><title>Kei Kobayashi restaurant
-&ndash; RESTAURANT KEI
+  <link rel="dns-prefetch" href="https://maps.gstatic.com"><link rel="shortcut icon" href="//restaurant-kei.fr/cdn/shop/files/FAVICON_-_Tkei_32x32.png?v=1728925765" type="image/png" />
+  
+  <title>Cafe Rocce
 </title>
 <meta name="description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:site_name" content="RESTAURANT KEI">
   <meta property="og:url" content="https://restaurant-kei.fr/en">
@@ -1001,7 +1010,7 @@ first.parentNode.insertBefore(script, first);
       
 </li></ul></div><div class="header-item header-item--icons"><div class="text-center btn_annexe" style="gap:10px;display: flex">
                   <span class="btn btn-second btn_annexe_first_button js-open-header-slider" ></span>
-                  <span class="btn btn-second btn_annexe_second_button js-open-header-slider js-header-second-button" ><span style="font-size: 12px; font-family: 'Avenir Next Medium', sans-serif;">     TO BOOK</span></span></div><div class="site-nav site-nav--icons">
+                  <span class="btn btn-second btn_annexe_second_button js-open-header-slider js-header-second-button" ><span style="font-size: 12px; font-family: 'Avenir Next Medium', sans-serif;" class="farsi">     رزرو کنید</span></span></div><div class="site-nav site-nav--icons">
   <div class="site-nav__icons">
     
 
