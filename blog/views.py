@@ -54,7 +54,33 @@ class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         blogs=BlogRepo(request=request).list(for_home=True)
-        context['blogs']=blogs
+        context['blogs']=blogs 
+        context['LAYOUT_PARENT']="kei/layout-fa.html"
+
+        homesliders=HomeSliderRepo(request=request).list(for_home=True)
+        context['homesliders']=homesliders
+
+
+ 
+        
+        phoenix_apps=context["phoenix_apps"]
+        phoenix_apps=phoenix_apps
+        phoenix_apps = sorted(phoenix_apps, key=lambda d: d['priority'])
+
+        context['phoenix_apps']=phoenix_apps
+        return render(request,TEMPLATE_ROOT+"index.html",context)
+# Create your views here. 
+
+
+
+ 
+ 
+class IndexEnView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        blogs=BlogRepo(request=request).list(for_home=True)
+        context['blogs']=blogs 
+        context['LAYOUT_PARENT']="kei/layout-en.html"
 
         homesliders=HomeSliderRepo(request=request).list(for_home=True)
         context['homesliders']=homesliders
@@ -69,6 +95,7 @@ class IndexView(View):
         context['phoenix_apps']=phoenix_apps
         return render(request,TEMPLATE_ROOT+"index.html",context)
 # Create your views here. 
+
 
  
  
