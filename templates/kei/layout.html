@@ -24,21 +24,22 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-  <meta name="theme-color" content="#ffffff"><link rel="canonical" href="https://restaurant-kei.fr/en"><link rel="preconnect" href="https://cdn.shopify.com">
+  <meta name="theme-color" content="#ffffff"><link rel="canonical" href="https:{% static 'kei/en' %}"><link rel="preconnect" 
+  href="{% static 'kei/cdnshopifycom' %}">
   <link rel="preconnect" href="https://fonts.shopifycdn.com">
   <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
   <link rel="dns-prefetch" href="https://ajax.googleapis.com">
   <link rel="dns-prefetch" href="https://maps.googleapis.com">
-  <link rel="dns-prefetch" href="https://maps.gstatic.com"><link rel="shortcut icon" href="//restaurant-kei.fr/cdn/shop/files/FAVICON_-_Tkei_32x32.png?v=1728925765" type="image/png" />
+  <link rel="dns-prefetch" href="https://maps.gstatic.com"><link rel="shortcut icon" href="{% static 'kei/cdn/shop/files/FAVICON_-_Tkei_32x32.png' %}" type="image/png" />
   
   <title>Cafe Rocce
 </title>
 <meta name="description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:site_name" content="RESTAURANT KEI">
-  <meta property="og:url" content="https://restaurant-kei.fr/en">
+  <meta property="og:url" content="https:{% static 'kei/en' %}">
   <meta property="og:title" content="Kei Kobayashi restaurant">
   <meta property="og:type" content="website">
-  <meta property="og:description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:image" content="http://restaurant-kei.fr/cdn/shop/files/Logo_Kei_-_noir.png?v=1728924082">
-    <meta property="og:image:secure_url" content="https://restaurant-kei.fr/cdn/shop/files/Logo_Kei_-_noir.png?v=1728924082"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="628"><meta name="twitter:site" content="@">
+  <meta property="og:description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:image" content="{% static 'kei/cdn/shop/files/Logo_Kei_-_noir.png' %}">
+    <meta property="og:image:secure_url" content="{% static 'kei/cdn/shop/files/Logo_Kei_-_noir.png' %}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="628"><meta name="twitter:site" content="@">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kei Kobayashi restaurant">
 <meta name="twitter:description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!">
@@ -47,8 +48,8 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("//restaurant-kei.fr/cdn/fonts/ebgaramond/ebgaramond_n4.f03b4ad40330b0ec2af5bb96f169ce0df8a12bc0.woff2") format("woff2"),
-       url("//restaurant-kei.fr/cdn/fonts/ebgaramond/ebgaramond_n4.73939a8b7fe7c6b6b560b459d64db062f2ba1a29.woff") format("woff");
+  src: url("{% static 'kei/cdn/fonts/ebgaramond/ebgaramond_n4.f03b4ad40330b0ec2af5bb96f169ce0df8a12bc0.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/ebgaramond/ebgaramond_n4.73939a8b7fe7c6b6b560b459d64db062f2ba1a29.woff' %}") format("woff");
 }
 
   @font-face {
@@ -56,8 +57,8 @@
   font-weight: 300;
   font-style: normal;
   font-display: swap;
-  src: url("//restaurant-kei.fr/cdn/fonts/lato/lato_n3.a7080ececf6191f1dd5b0cb021691ca9b855c876.woff2") format("woff2"),
-       url("//restaurant-kei.fr/cdn/fonts/lato/lato_n3.61e34b2ff7341f66543eb08e8c47eef9e1cde558.woff") format("woff");
+  src: url("{% static 'kei/cdn/fonts/lato/lato_n3.a7080ececf6191f1dd5b0cb021691ca9b855c876.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_n3.61e34b2ff7341f66543eb08e8c47eef9e1cde558.woff' %}") format("woff");
 }
 
 
@@ -66,8 +67,8 @@
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-  src: url("//restaurant-kei.fr/cdn/fonts/lato/lato_n5.b2fec044fbe05725e71d90882e5f3b21dae2efbd.woff2") format("woff2"),
-       url("//restaurant-kei.fr/cdn/fonts/lato/lato_n5.f25a9a5c73ff9372e69074488f99e8ac702b5447.woff") format("woff");
+  src: url("{% static 'kei/cdn/fonts/lato/lato_n5.b2fec044fbe05725e71d90882e5f3b21dae2efbd.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_n5.f25a9a5c73ff9372e69074488f99e8ac702b5447.woff' %}") format("woff");
 }
 
   @font-face {
@@ -75,8 +76,8 @@
   font-weight: 300;
   font-style: italic;
   font-display: swap;
-  src: url("//restaurant-kei.fr/cdn/fonts/lato/lato_i3.d6f478a3beb94baebd09d08550010692d0969f6e.woff2") format("woff2"),
-       url("//restaurant-kei.fr/cdn/fonts/lato/lato_i3.881ba892942c15b0c0c25c0b311d6481b5311015.woff") format("woff");
+  src: url("{% static 'kei/cdn/fonts/lato/lato_i3.d6f478a3beb94baebd09d08550010692d0969f6e.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_i3.881ba892942c15b0c0c25c0b311d6481b5311015.woff' %}") format("woff");
 }
 
   @font-face {
@@ -84,11 +85,11 @@
   font-weight: 500;
   font-style: italic;
   font-display: swap;
-  src: url("//restaurant-kei.fr/cdn/fonts/lato/lato_i5.9501f9e8a9e09e142687495e156dec167f6a3ea3.woff2") format("woff2"),
-       url("//restaurant-kei.fr/cdn/fonts/lato/lato_i5.eca6cbf1aa9c70cc6dbfed0353a2f57e5065c864.woff") format("woff");
+  src: url("{% static 'kei/cdn/fonts/lato/lato_i5.9501f9e8a9e09e142687495e156dec167f6a3ea3.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_i5.eca6cbf1aa9c70cc6dbfed0353a2f57e5065c864.woff' %}") format("woff");
 }
 
-</style><link href="//restaurant-kei.fr/cdn/shop/t/2/assets/theme.css?v=181864256686498542741781186941" rel="stylesheet" type="text/css" media="all" />
+</style><link href="{% static 'kei/cdn/shop/t/2/assets/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
 <style data-shopify>:root {
     --typeHeaderPrimary: "EB Garamond";
     --typeHeaderFallback: serif;
@@ -216,13 +217,13 @@
   <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.start');</script><meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/85060649288/digital_wallets/dialog">
 <meta name="shopify-checkout-api-token" content="d6455c25b4583fa0102271504c1b5ab4">
 <meta id="in-context-paypal-metadata" data-shop-id="85060649288" data-venmo-supported="false" data-environment="production" data-locale="en_US" data-paypal-v4="true" data-currency="EUR">
-<link rel="alternate" hreflang="x-default" href="https://restaurant-kei.fr/">
-<link rel="alternate" hreflang="fr" href="https://restaurant-kei.fr/">
-<link rel="alternate" hreflang="ja" href="https://restaurant-kei.fr/ja">
-<link rel="alternate" hreflang="en" href="https://restaurant-kei.fr/en">
-<script async="async" src="/checkouts/internal/preloads.js?locale=en-FR"></script>
+<link rel="alternate" hreflang="x-default" href="https:{% static 'kei/' %}">
+<link rel="alternate" hreflang="fr" href="https:{% static 'kei/' %}">
+<link rel="alternate" hreflang="ja" href="https:{% static 'kei/ja' %}">
+<link rel="alternate" hreflang="en" href="https:{% static 'kei/en' %}">
+<script async="async" src="{% static 'kei/checkouts/internal/preloads.js?locale=en-FR' %}"></script>
 <link rel="preconnect" href="https://shop.app" crossorigin="anonymous">
-<script async="async" src="https://shop.app/checkouts/internal/preloads.js?locale=en-FR&shop_id=85060649288" crossorigin="anonymous"></script>
+<script async="async" src="{% static 'kei/checkouts/internal/preloads.js' %}" crossorigin="anonymous"></script>
 <script id="apple-pay-shop-capabilities" type="application/json">{"shopId":85060649288,"countryCode":"FR","currencyCode":"EUR","merchantCapabilities":["supports3DS"],"merchantId":"gid:\/\/shopify\/Shop\/85060649288","merchantName":"RESTAURANT KEI","requiredBillingContactFields":["postalAddress","email","phone"],"requiredShippingContactFields":["postalAddress","email","phone"],"shippingType":"shipping","supportedNetworks":["visa","masterCard","amex","maestro"],"total":{"type":"pending","label":"RESTAURANT KEI","amount":"1.00"},"shopifyPaymentsEnabled":true,"supportsSubscriptions":true}</script>
 <script id="shopify-features" type="application/json">{"accessToken":"d6455c25b4583fa0102271504c1b5ab4","betas":["rich-media-storefront-analytics"],"domain":"restaurant-kei.fr","predictiveSearch":true,"shopId":85060649288,"locale":"en"}</script>
 <script>var Shopify = Shopify || {};
@@ -236,7 +237,7 @@ Shopify.theme.style = {"id":null,"handle":null};
 Shopify.cdnHost = "restaurant-kei.fr/cdn";
 Shopify.routes = Shopify.routes || {};
 Shopify.routes.root = "/en/";
-Shopify.shopJsCdnBaseUrl = "https://cdn.shopify.com/shopifycloud/shop-js";
+Shopify.shopJsCdnBaseUrl = "{% static 'kei/cdnshopifycom/shopifycloud/shop-js' %}";
 Shopify.SignInWithShop = Shopify.SignInWithShop || {};
 Shopify.SignInWithShop.User = Shopify.SignInWithShop.User || {};
 Shopify.SignInWithShop.User.recognized = false;</script>
@@ -254,9 +255,9 @@ Shopify.SignInWithShop.User.recognized = false;</script>
   window.Shopify.SignInWithShop.eligible = true;
 </script>
 <script id="shop-js-analytics" type="application/json">{"pageType":"index"}</script>
-<script defer="defer" async type="module" src="//restaurant-kei.fr/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js"></script>
+<script defer="defer" async type="module" src="{% static 'kei/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js' %}"></script>
 <script type="module">
-  await import("//restaurant-kei.fr/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js");
+  await import("{% static 'kei/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js' %}");
 
   window.Shopify.SignInWithShop?.initShopCartSync?.({"fedCMEnabled":true,"windoidEnabled":true,"transferSessionEnabled":true});
 
@@ -289,18 +290,18 @@ Shopify.SignInWithShop.User.recognized = false;</script>
 })();</script>
 <script id="__st">var __st={"a":85060649288,"offset":7200,"reqid":"364d1cc0-fd15-4d39-a52b-705a2aee145d-1781820614","pageurl":"restaurant-kei.fr\/en","u":"d37412b982fd","p":"home"};</script>
 <script>window.ShopifyPaypalV4VisibilityTracking = true;</script>
-<script id="captcha-bootstrap">!function(){'use strict';const t='contact',e='account',n='new_comment',o=[[t,t],['blogs',n],['comments',n],[t,'customer']],c=[[e,'customer_login'],[e,'guest_login'],[e,'recover_customer_password'],[e,'create_customer']],r=t=>t.map((([t,e])=>`form[action*='/${t}']:not([data-nocaptcha='true']) input[name='form_type'][value='${e}']`)).join(','),a=t=>()=>t?[...document.querySelectorAll(t)].map((t=>t.form)):[];function s(){const t=[...o],e=r(t);return a(e)}const i='password',u='form_key',d=['recaptcha-v3-token','g-recaptcha-response','h-captcha-response',i],f=()=>{try{return window.sessionStorage}catch{return}},m='__shopify_v',_=t=>t.elements[u];function p(t,e,n=!1){try{const o=window.sessionStorage,c=JSON.parse(o.getItem(e)),{data:r}=function(t){const{data:e,action:n}=t;return t[m]||n?{data:e,action:n}:{data:t,action:n}}(c);for(const[e,n]of Object.entries(r))t.elements[e]&&(t.elements[e].value=n);n&&o.removeItem(e)}catch(o){console.error('form repopulation failed',{error:o})}}const l='form_type',E='cptcha';function T(t){t.dataset[E]=!0}const w=window,h=w.document,L='Shopify',v='ce_forms',y='captcha';let A=!1;((t,e)=>{const n=(g='f06e6c50-85a8-45c8-87d0-21a2b65856fe',I='https://cdn.shopify.com/shopifycloud/storefront-forms-hcaptcha/ce_storefront_forms_captcha_hcaptcha.v1.5.2.iife.js',D={infoText:'Protected by hCaptcha',privacyText:'Privacy',termsText:'Terms'},(t,e,n)=>{const o=w[L][v],c=o.bindForm;if(c)return c(t,g,e,D).then(n);var r;o.q.push([[t,g,e,D],n]),r=I,A||(h.body.append(Object.assign(h.createElement('script'),{id:'captcha-provider',async:!0,src:r})),A=!0)});var g,I,D;w[L]=w[L]||{},w[L][v]=w[L][v]||{},w[L][v].q=[],w[L][y]=w[L][y]||{},w[L][y].protect=function(t,e){n(t,void 0,e),T(t)},Object.freeze(w[L][y]),function(t,e,n,w,h,L){const[v,y,A,g]=function(t,e,n){const i=e?o:[],u=t?c:[],d=[...i,...u],f=r(d),m=r(i),_=r(d.filter((([t,e])=>n.includes(e))));return[a(f),a(m),a(_),s()]}(w,h,L),I=t=>{const e=t.target;return e instanceof HTMLFormElement?e:e&&e.form},D=t=>v().includes(t);t.addEventListener('submit',(t=>{const e=I(t);if(!e)return;const n=D(e)&&!e.dataset.hcaptchaBound&&!e.dataset.recaptchaBound,o=_(e),c=g().includes(e)&&(!o||!o.value);(n||c)&&t.preventDefault(),c&&!n&&(function(t){try{if(!f())return;!function(t){const e=f();if(!e)return;const n=_(t);if(!n)return;const o=n.value;o&&e.removeItem(o)}(t);const e=Array.from(Array(32),(()=>Math.random().toString(36)[2])).join('');!function(t,e){_(t)||t.append(Object.assign(document.createElement('input'),{type:'hidden',name:u})),t.elements[u].value=e}(t,e),function(t,e){const n=f();if(!n)return;const o=[...t.querySelectorAll(`input[type='${i}']`)].map((({name:t})=>t)),c=[...d,...o],r={};for(const[a,s]of new FormData(t).entries())c.includes(a)||(r[a]=s);n.setItem(e,JSON.stringify({[m]:1,action:t.action,data:r}))}(t,e)}catch(e){console.error('failed to persist form',e)}}(e),e.submit())}));const S=(t,e)=>{t&&!t.dataset[E]&&(n(t,e.some((e=>e===t))),T(t))};for(const o of['focusin','change'])t.addEventListener(o,(t=>{const e=I(t);D(e)&&S(e,y())}));const B=e.get('form_key'),M=e.get(l),P=B&&M;t.addEventListener('DOMContentLoaded',(()=>{const t=y();if(P)for(const e of t)e.elements[l].value===M&&p(e,B);[...new Set([...A(),...v().filter((t=>'true'===t.dataset.shopifyCaptcha))])].forEach((e=>S(e,t)))}))}(h,new URLSearchParams(w.location.search),n,t,e,['guest_login'])})(!0,!0)}();</script>
-<script integrity="sha256-JjoPp5ZfB1sSAs5SQaol1x1GgvveM+BgmRzyDexInEQ=" data-source-attribution="shopify.loadfeatures" defer="defer" src="//restaurant-kei.fr/cdn/shopifycloud/storefront/assets/storefront/load_feature-1bd60354.js" crossorigin="anonymous"></script>
-<script crossorigin="anonymous" defer="defer" src="//restaurant-kei.fr/cdn/shopifycloud/storefront/assets/shopify_pay/storefront-bf1cdb70.js?v=20250812"></script>
-<script id="shopify-origin-trials" async="async" integrity="sha256-MrpR+SbfwphjsvuxKsSWA5xxY07P36eahsNLLXSgEwo=" src="//cdn.shopify.com/shopifycloud/storefront/assets/storefront/origin_trials-c173577b.js" crossorigin="anonymous" onload="window.__shopifyOriginTrialsDone = true" onerror="window.__shopifyOriginTrialsDone = true"></script>
-<script data-source-attribution="shopify.dynamic_checkout.dynamic.init">var Shopify=Shopify||{};Shopify.PaymentButton=Shopify.PaymentButton||{isStorefrontPortableWallets:!0,init:function(){window.Shopify.PaymentButton.init=function(){};var t=document.createElement("script");t.src="https://restaurant-kei.fr/cdn/shopifycloud/portable-wallets/latest/portable-wallets.en.js",t.type="module",document.head.appendChild(t)}};
+<script id="captcha-bootstrap">!function(){'use strict';const t='contact',e='account',n='new_comment',o=[[t,t],['blogs',n],['comments',n],[t,'customer']],c=[[e,'customer_login'],[e,'guest_login'],[e,'recover_customer_password'],[e,'create_customer']],r=t=>t.map((([t,e])=>`form[action*='/${t}']:not([data-nocaptcha='true']) input[name='form_type'][value='${e}']`)).join(','),a=t=>()=>t?[...document.querySelectorAll(t)].map((t=>t.form)):[];function s(){const t=[...o],e=r(t);return a(e)}const i='password',u='form_key',d=['recaptcha-v3-token','g-recaptcha-response','h-captcha-response',i],f=()=>{try{return window.sessionStorage}catch{return}},m='__shopify_v',_=t=>t.elements[u];function p(t,e,n=!1){try{const o=window.sessionStorage,c=JSON.parse(o.getItem(e)),{data:r}=function(t){const{data:e,action:n}=t;return t[m]||n?{data:e,action:n}:{data:t,action:n}}(c);for(const[e,n]of Object.entries(r))t.elements[e]&&(t.elements[e].value=n);n&&o.removeItem(e)}catch(o){console.error('form repopulation failed',{error:o})}}const l='form_type',E='cptcha';function T(t){t.dataset[E]=!0}const w=window,h=w.document,L='Shopify',v='ce_forms',y='captcha';let A=!1;((t,e)=>{const n=(g='f06e6c50-85a8-45c8-87d0-21a2b65856fe',I='{% static 'kei/cdnshopifycom/shopifycloud/storefront-forms-hcaptcha/ce_storefront_forms_captcha_hcaptcha.v1.5.2.iife.js' %}',D={infoText:'Protected by hCaptcha',privacyText:'Privacy',termsText:'Terms'},(t,e,n)=>{const o=w[L][v],c=o.bindForm;if(c)return c(t,g,e,D).then(n);var r;o.q.push([[t,g,e,D],n]),r=I,A||(h.body.append(Object.assign(h.createElement('script'),{id:'captcha-provider',async:!0,src:r})),A=!0)});var g,I,D;w[L]=w[L]||{},w[L][v]=w[L][v]||{},w[L][v].q=[],w[L][y]=w[L][y]||{},w[L][y].protect=function(t,e){n(t,void 0,e),T(t)},Object.freeze(w[L][y]),function(t,e,n,w,h,L){const[v,y,A,g]=function(t,e,n){const i=e?o:[],u=t?c:[],d=[...i,...u],f=r(d),m=r(i),_=r(d.filter((([t,e])=>n.includes(e))));return[a(f),a(m),a(_),s()]}(w,h,L),I=t=>{const e=t.target;return e instanceof HTMLFormElement?e:e&&e.form},D=t=>v().includes(t);t.addEventListener('submit',(t=>{const e=I(t);if(!e)return;const n=D(e)&&!e.dataset.hcaptchaBound&&!e.dataset.recaptchaBound,o=_(e),c=g().includes(e)&&(!o||!o.value);(n||c)&&t.preventDefault(),c&&!n&&(function(t){try{if(!f())return;!function(t){const e=f();if(!e)return;const n=_(t);if(!n)return;const o=n.value;o&&e.removeItem(o)}(t);const e=Array.from(Array(32),(()=>Math.random().toString(36)[2])).join('');!function(t,e){_(t)||t.append(Object.assign(document.createElement('input'),{type:'hidden',name:u})),t.elements[u].value=e}(t,e),function(t,e){const n=f();if(!n)return;const o=[...t.querySelectorAll(`input[type='${i}']`)].map((({name:t})=>t)),c=[...d,...o],r={};for(const[a,s]of new FormData(t).entries())c.includes(a)||(r[a]=s);n.setItem(e,JSON.stringify({[m]:1,action:t.action,data:r}))}(t,e)}catch(e){console.error('failed to persist form',e)}}(e),e.submit())}));const S=(t,e)=>{t&&!t.dataset[E]&&(n(t,e.some((e=>e===t))),T(t))};for(const o of['focusin','change'])t.addEventListener(o,(t=>{const e=I(t);D(e)&&S(e,y())}));const B=e.get('form_key'),M=e.get(l),P=B&&M;t.addEventListener('DOMContentLoaded',(()=>{const t=y();if(P)for(const e of t)e.elements[l].value===M&&p(e,B);[...new Set([...A(),...v().filter((t=>'true'===t.dataset.shopifyCaptcha))])].forEach((e=>S(e,t)))}))}(h,new URLSearchParams(w.location.search),n,t,e,['guest_login'])})(!0,!0)}();</script>
+<script integrity="sha256-JjoPp5ZfB1sSAs5SQaol1x1GgvveM+BgmRzyDexInEQ=" data-source-attribution="shopify.loadfeatures" defer="defer" src="{% static 'kei/cdn/shopifycloud/storefront/assets/storefront/load_feature-1bd60354.js' %}" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" defer="defer" src="{% static 'kei/cdn/shopifycloud/storefront/assets/shopify_pay/storefront-bf1cdb70.js' %}"></script>
+<script id="shopify-origin-trials" async="async" integrity="sha256-MrpR+SbfwphjsvuxKsSWA5xxY07P36eahsNLLXSgEwo=" src="{% static 'kei/cdnshopifycom/shopifycloud/storefront/assets/storefront/origin_trials-c173577b.js' %}" crossorigin="anonymous" onload="window.__shopifyOriginTrialsDone = true" onerror="window.__shopifyOriginTrialsDone = true"></script>
+<script data-source-attribution="shopify.dynamic_checkout.dynamic.init">var Shopify=Shopify||{};Shopify.PaymentButton=Shopify.PaymentButton||{isStorefrontPortableWallets:!0,init:function(){window.Shopify.PaymentButton.init=function(){};var t=document.createElement("script");t.src="https:{% static 'kei/cdn/shopifycloud/portable-wallets/latest/portable-wallets.en.js' %}",t.type="module",document.head.appendChild(t)}};
 </script>
 <script data-source-attribution="shopify.dynamic_checkout.buyer_consent">
   function portableWalletsHideBuyerConsent(e){var t=document.getElementById("shopify-buyer-consent"),n=document.getElementById("shopify-subscription-policy-button");t&&n&&(t.classList.add("hidden"),t.setAttribute("aria-hidden","true"),n.removeEventListener("click",e))}function portableWalletsShowBuyerConsent(e){var t=document.getElementById("shopify-buyer-consent"),n=document.getElementById("shopify-subscription-policy-button");t&&n&&(t.classList.remove("hidden"),t.removeAttribute("aria-hidden"),n.addEventListener("click",e))}window.Shopify?.PaymentButton&&(window.Shopify.PaymentButton.hideBuyerConsent=portableWalletsHideBuyerConsent,window.Shopify.PaymentButton.showBuyerConsent=portableWalletsShowBuyerConsent);
 </script>
 <script data-source-attribution="shopify.dynamic_checkout.cart.bootstrap">document.addEventListener("DOMContentLoaded",(function(){function t(){return document.querySelector("shopify-accelerated-checkout-cart, shopify-accelerated-checkout")}if(t())Shopify.PaymentButton.init();else{new MutationObserver((function(e,n){t()&&(Shopify.PaymentButton.init(),n.disconnect())})).observe(document.body,{childList:!0,subtree:!0})}}));
 </script>
-<link id="shopify-accelerated-checkout-styles" rel="stylesheet" media="screen" href="https://restaurant-kei.fr/cdn/shopifycloud/portable-wallets/latest/accelerated-checkout-backwards-compat.css" crossorigin="anonymous">
+<link id="shopify-accelerated-checkout-styles" rel="stylesheet" media="screen" href="{% static 'kei/cdn/shopifycloud/portable-wallets/latest/accelerated-checkout-backwards-compat.css' %}" crossorigin="anonymous">
 <style id="shopify-accelerated-checkout-cart">
         #shopify-buyer-consent {
   margin-top: 1em;
@@ -329,22 +330,22 @@ Shopify.SignInWithShop.User.recognized = false;</script>
 
 <script id="shopify-cfh-end">window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.end');</script>
 
-  <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/vendor-scripts-v12.js" ></script>
+  <script src="{% static 'kei/cdn/shop/t/2/assets/vendor-scripts-v12.js' %}" ></script>
   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link rel="stylesheet" href="{% static 'kei/cdnjsdelivrnet/npm/aos@2.3.4/dist/aos.css' %}">
+    <script src="{% static 'kei/cdnjsdelivrnet/npm/aos@2.3.4/dist/aos.js' %}"></script>
     <script>
       AOS.init();
     </script>
   
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/theme.js?v=137090730228764811271727887578" defer="defer"></script><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{% static 'kei/cdn/shop/t/2/assets/theme.js' %}" defer="defer"></script><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/LIB.lodash.js?v=133994393766299689851727887495" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/LIB.lodash.js' %}" type="text/javascript"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/COMMON.tools.js?v=65830568379309520071727887370" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/COMMON.tools.js' %}" type="text/javascript"></script>
     <!-- CART JS Libraries -->
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/LIB.rivets-cart.js?v=46637445400758574711727887652" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/LIB.rivets-cart.js' %}" type="text/javascript"></script>
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -353,13 +354,13 @@ Shopify.SignInWithShop.User.recognized = false;</script>
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-5VNDFLT');</script>
     <!-- End Google Tag Manager -->
-<script src="https://cdn.shopify.com/extensions/019eda5c-8d9d-71d0-bf1a-2fe4f4cad17e/lb-upsell-398/assets/lb-selleasy.js" type="text/javascript" defer="defer"></script>
+<script src="{% static 'kei/cdnshopifycom/extensions/019eda5c-8d9d-71d0-bf1a-2fe4f4cad17e/lb-upsell-398/assets/lb-selleasy.js' %}" type="text/javascript" defer="defer"></script>
 <link href="https://monorail-edge.shopifysvc.com" rel="dns-prefetch">
 <script>(function(){if ("sendBeacon" in navigator && "performance" in window) {try {var session_token_from_headers = performance.getEntriesByType('navigation')[0].serverTiming.find(x => x.name == '_s').description;} catch {var session_token_from_headers = undefined;}var session_cookie_matches = document.cookie.match(/_shopify_s=([^;]*)/);var session_token_from_cookie = session_cookie_matches && session_cookie_matches.length === 2 ? session_cookie_matches[1] : "";var session_token = session_token_from_headers || session_token_from_cookie || "";function handle_abandonment_event(e) {var entries = performance.getEntries().filter(function(entry) {return /monorail-edge.shopifysvc.com/.test(entry.name);});if (!window.abandonment_tracked && entries.length === 0) {window.abandonment_tracked = true;var currentMs = Date.now();var navigation_start = performance.timing.navigationStart;var payload = {shop_id: 85060649288,url: window.location.href,navigation_start,duration: currentMs - navigation_start,session_token,page_type: "index"};window.navigator.sendBeacon("https://monorail-edge.shopifysvc.com/v1/produce", JSON.stringify({schema_id: "online_store_buyer_site_abandonment/1.1",payload: payload,metadata: {event_created_at_ms: currentMs,event_sent_at_ms: currentMs}}));}}window.addEventListener('pagehide', handle_abandonment_event);}}());</script>
 <script>
   window.__TREKKIE_SHIM_QUEUE = window.__TREKKIE_SHIM_QUEUE || [];
 </script>
-<script id="web-pixels-manager-setup">(function(){var wpmLoader=function(){"use strict";return function(e,d,r,n){var o=arguments.length>4&&void 0!==arguments[4]?arguments[4]:{};if(!Boolean(null==(i=null==(a=window.Shopify)?void 0:a.analytics)?void 0:i.replayQueue)){var a,i;window.Shopify=window.Shopify||{};var t=window.Shopify;t.analytics=t.analytics||{};var s=t.analytics;s.replayQueue=[],s.publish=function(e,d,r){return s.replayQueue.push([e,d,r]),!0};try{self.performance.mark("wpm:start")}catch(e){}var l,u,c,m,p,f,h,g,y,w,v,b,S,P=(u=(l={modern:/Edge?\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Firefox\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Chrom(ium|e)\/(9{2}|\d{3,})\.\d+(\.\d+|)|(Maci|X1{2}).+ Version\/(15\.\d+|(1[6-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(9{2}|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(15[._]\d+|(1[6-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|SamsungBrowser\/([2-9]\d|\d{3,})\.\d+/,legacy:/Edge?\/(1[6-9]|[2-9]\d|\d{3,})\.\d+(\.\d+|)|Firefox\/(5[4-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)|Chrom(ium|e)\/(5[1-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)([\d.]+$|.*Safari\/(?![\d.]+ Edge\/[\d.]+$))|(Maci|X1{2}).+ Version\/(10\.\d+|(1[1-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(3[89]|[4-9]\d|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(10[._]\d+|(1[1-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Mobile Safari.+OPR\/([89]\d|\d{3,})\.\d+\.\d+|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+(UC? ?Browser|UCWEB|U3)[ /]?(15\.([5-9]|\d{2,})|(1[6-9]|[2-9]\d|\d{3,})\.\d+)\.\d+|SamsungBrowser\/(5\.\d+|([6-9]|\d{2,})\.\d+)|Android.+MQ{2}Browser\/(14(\.(9|\d{2,})|)|(1[5-9]|[2-9]\d|\d{3,})(\.\d+|))(\.\d+|)|K[Aa][Ii]OS\/(3\.\d+|([4-9]|\d{2,})\.\d+)(\.\d+|)/}).modern,c=l.legacy,(m=navigator.userAgent).match(u)?"modern":m.match(c)?"legacy":"unknown"),C="modern"===P?"modern":"legacy",_=(null!=n?n:{modern:"",legacy:""})[C],O=[(p={baseUrl:d,hashVersion:r,buildTarget:C}).baseUrl,"/wpm","/b",p.hashVersion,"modern"===p.buildTarget?"m":"l",".js"].join(""),U=(f={version:r,bundleTarget:P,surface:e.surface,pageUrl:self.location.href,monorailEndpoint:e.monorailEndpoint},h=f.version,g=f.bundleTarget,y=f.surface,w=f.pageUrl,v=f.monorailEndpoint,{emit:function(e){var d=e.status,r=e.errorMsg,n=(new Date).getTime(),o=JSON.stringify({metadata:{event_sent_at_ms:n},events:[{schema_id:"web_pixels_manager_load/3.1",payload:{version:h,bundle_target:g,page_url:w,status:d,surface:y,error_msg:r},metadata:{event_created_at_ms:n}}]});if(!v)return console&&console.warn&&console.warn("[Web Pixels Manager] No Monorail endpoint provided, skipping logging."),!1;try{return self.navigator.sendBeacon.bind(self.navigator)(v,o)}catch(e){}var a=new XMLHttpRequest;try{return a.open("POST",v,!0),a.setRequestHeader("Content-Type","text/plain"),a.send(o),!0}catch(e){return console&&console.warn&&console.warn("[Web Pixels Manager] Got an unhandled error while logging to Monorail."),!1}}});try{o.browserTarget=P,function(e){var d=e.src,r=e.async,n=void 0===r||r,o=e.onload,a=e.onerror,i=e.sri,t=e.scriptDataAttributes,s=void 0===t?{}:t,l=document.createElement("script"),u=document.querySelector("head"),c=document.querySelector("body");if(l.async=n,l.src=d,i&&(l.integrity=i,l.crossOrigin="anonymous"),s)for(var m in s)if(Object.prototype.hasOwnProperty.call(s,m))try{l.dataset[m]=s[m]}catch(e){}if(o&&l.addEventListener("load",o),a&&l.addEventListener("error",a),u)u.appendChild(l);else{if(!c)throw new Error("Did not find a head or body element to append the script");c.appendChild(l)}}({src:O,async:!0,onload:function(){if(!function(){var e,d;return Boolean(null==(d=null==(e=window.Shopify)?void 0:e.analytics)?void 0:d.initialized)}()){var d=window.webPixelsManager.init(e)||void 0;if(d){var r=window.Shopify.analytics;r.replayQueue.forEach(function(e){var r=e[0],n=e[1],o=e[2];d.publishCustomEvent(r,n,o)}),r.replayQueue=[],r.publish=d.publishCustomEvent,r.visitor=d.visitor,r.initialized=!0}}},onerror:function(){return U.emit({status:"failed",errorMsg:"".concat(O," has failed to load")})},sri:(b=_,S=/^sha384-[A-Za-z0-9+/=]+$/,"string"==typeof b&&S.test(b)?_:""),scriptDataAttributes:o}),U.emit({status:"loading"})}catch(e){U.emit({status:"failed",errorMsg:(null==e?void 0:e.message)||"Unknown error"})}}}}();wpmLoader({shopId: 85060649288,storefrontBaseUrl: "https://restaurant-kei.fr",extensionsBaseUrl: "https://extensions.shopifycdn.com/cdn/shopifycloud/web-pixels-manager",monorailEndpoint: "https://monorail-edge.shopifysvc.com/unstable/produce_batch",surface: "storefront-renderer",enabledBetaFlags: ["d5bdd5d0","2b8f910e"],webPixelsConfigList: [{"id":"2827583816","configuration":"{\"accountID\":\"selleasy-metrics-track\"}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"130e47e04701969c8470d0150e978250","type":"APP","apiClientId":5519923,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_email","read_customer_name","read_customer_personal_data"],"dataSharingControls":["share_all_events"]},"dataSharingState":"unrestricted"},{"id":"1007812936","configuration":"{\"config\":\"{\\\"google_tag_ids\\\":[\\\"G-HDT22VMR0K\\\"],\\\"gtag_events\\\":[{\\\"type\\\":\\\"begin_checkout\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"search\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"view_item\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"purchase\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"page_view\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_payment_info\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_to_cart\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"}],\\\"enable_monitoring_mode\\\":false}\"}","eventPayloadVersion":"v1","runtimeContext":"OPEN","scriptVersion":"20a1a395175a780fd37f04940f5b4db5","type":"APP","apiClientId":1780363,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_address","read_customer_email","read_customer_name","read_customer_personal_data","read_customer_phone"],"dataSharingControls":["share_all_events"]},"dataSharingState":"optimized","enabledFlags":["9a3ed68a"]},{"id":"shopify-app-pixel","configuration":"{}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"APP","privacyPurposes":["ANALYTICS","MARKETING"]},{"id":"shopify-custom-pixel","eventPayloadVersion":"v1","runtimeContext":"LAX","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"CUSTOM","privacyPurposes":["ANALYTICS","MARKETING"]}],isMerchantRequest: false,initData: {"shop":{"name":"RESTAURANT KEI","paymentSettings":{"currencyCode":"EUR"},"myshopifyDomain":"restaurant-kei.myshopify.com","countryCode":"FR","storefrontUrl":"https:\/\/restaurant-kei.fr\/en"},"customer":null,"cart":null,"checkout":null,"productVariants":[],"products":[{"id":"9168265740616","handle":"livraison","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218956067144","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276160840","handle":"jeudi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008627016","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168278192456","handle":"jeudi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219019342152","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168270164296","handle":"lundi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218981036360","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168280387912","handle":"lundi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219026846024","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273604936","handle":"mardi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995880264","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279994696","handle":"mardi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219025961288","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276029768","handle":"mercredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219006857544","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279568712","handle":"mercredi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219024781640","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273441096","handle":"samedi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995192136","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168281043272","handle":"samedi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219031761224","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276259144","handle":"vendredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008725320","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168277274952","handle":"vendredi-copie","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219014656328","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]}],"purchasingCompany":null,"page":{"pageType":"home","resourceId":null}},},"https://restaurant-kei.fr/cdn","bf1e3d2ew26dbbaaapfd680b2dm57e27560",{"modern":"","legacy":""},{"trekkieShim":true,"apiClientId":"580111","themeId":"165510971720","themeStoreId":"887","pageType":"home","shopId":"85060649288","storefrontBaseUrl":"https:\/\/restaurant-kei.fr","extensionBaseUrl":"https:\/\/extensions.shopifycdn.com\/cdn\/shopifycloud\/web-pixels-manager","surface":"storefront-renderer","enabledBetaFlags":"[\"d5bdd5d0\", \"2b8f910e\"]","isMerchantRequest":"false","hashVersion":"bf1e3d2ew26dbbaaapfd680b2dm57e27560","publish":"custom","events":"[[\"page_viewed\",{}]]"});})();</script><script>
+<script id="web-pixels-manager-setup">(function(){var wpmLoader=function(){"use strict";return function(e,d,r,n){var o=arguments.length>4&&void 0!==arguments[4]?arguments[4]:{};if(!Boolean(null==(i=null==(a=window.Shopify)?void 0:a.analytics)?void 0:i.replayQueue)){var a,i;window.Shopify=window.Shopify||{};var t=window.Shopify;t.analytics=t.analytics||{};var s=t.analytics;s.replayQueue=[],s.publish=function(e,d,r){return s.replayQueue.push([e,d,r]),!0};try{self.performance.mark("wpm:start")}catch(e){}var l,u,c,m,p,f,h,g,y,w,v,b,S,P=(u=(l={modern:/Edge?\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Firefox\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Chrom(ium|e)\/(9{2}|\d{3,})\.\d+(\.\d+|)|(Maci|X1{2}).+ Version\/(15\.\d+|(1[6-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(9{2}|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(15[._]\d+|(1[6-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|SamsungBrowser\/([2-9]\d|\d{3,})\.\d+/,legacy:/Edge?\/(1[6-9]|[2-9]\d|\d{3,})\.\d+(\.\d+|)|Firefox\/(5[4-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)|Chrom(ium|e)\/(5[1-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)([\d.]+$|.*Safari\/(?![\d.]+ Edge\/[\d.]+$))|(Maci|X1{2}).+ Version\/(10\.\d+|(1[1-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(3[89]|[4-9]\d|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(10[._]\d+|(1[1-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Mobile Safari.+OPR\/([89]\d|\d{3,})\.\d+\.\d+|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+(UC? ?Browser|UCWEB|U3)[ /]?(15\.([5-9]|\d{2,})|(1[6-9]|[2-9]\d|\d{3,})\.\d+)\.\d+|SamsungBrowser\/(5\.\d+|([6-9]|\d{2,})\.\d+)|Android.+MQ{2}Browser\/(14(\.(9|\d{2,})|)|(1[5-9]|[2-9]\d|\d{3,})(\.\d+|))(\.\d+|)|K[Aa][Ii]OS\/(3\.\d+|([4-9]|\d{2,})\.\d+)(\.\d+|)/}).modern,c=l.legacy,(m=navigator.userAgent).match(u)?"modern":m.match(c)?"legacy":"unknown"),C="modern"===P?"modern":"legacy",_=(null!=n?n:{modern:"",legacy:""})[C],O=[(p={baseUrl:d,hashVersion:r,buildTarget:C}).baseUrl,"/wpm","/b",p.hashVersion,"modern"===p.buildTarget?"m":"l",".js"].join(""),U=(f={version:r,bundleTarget:P,surface:e.surface,pageUrl:self.location.href,monorailEndpoint:e.monorailEndpoint},h=f.version,g=f.bundleTarget,y=f.surface,w=f.pageUrl,v=f.monorailEndpoint,{emit:function(e){var d=e.status,r=e.errorMsg,n=(new Date).getTime(),o=JSON.stringify({metadata:{event_sent_at_ms:n},events:[{schema_id:"web_pixels_manager_load/3.1",payload:{version:h,bundle_target:g,page_url:w,status:d,surface:y,error_msg:r},metadata:{event_created_at_ms:n}}]});if(!v)return console&&console.warn&&console.warn("[Web Pixels Manager] No Monorail endpoint provided, skipping logging."),!1;try{return self.navigator.sendBeacon.bind(self.navigator)(v,o)}catch(e){}var a=new XMLHttpRequest;try{return a.open("POST",v,!0),a.setRequestHeader("Content-Type","text/plain"),a.send(o),!0}catch(e){return console&&console.warn&&console.warn("[Web Pixels Manager] Got an unhandled error while logging to Monorail."),!1}}});try{o.browserTarget=P,function(e){var d=e.src,r=e.async,n=void 0===r||r,o=e.onload,a=e.onerror,i=e.sri,t=e.scriptDataAttributes,s=void 0===t?{}:t,l=document.createElement("script"),u=document.querySelector("head"),c=document.querySelector("body");if(l.async=n,l.src=d,i&&(l.integrity=i,l.crossOrigin="anonymous"),s)for(var m in s)if(Object.prototype.hasOwnProperty.call(s,m))try{l.dataset[m]=s[m]}catch(e){}if(o&&l.addEventListener("load",o),a&&l.addEventListener("error",a),u)u.appendChild(l);else{if(!c)throw new Error("Did not find a head or body element to append the script");c.appendChild(l)}}({src:O,async:!0,onload:function(){if(!function(){var e,d;return Boolean(null==(d=null==(e=window.Shopify)?void 0:e.analytics)?void 0:d.initialized)}()){var d=window.webPixelsManager.init(e)||void 0;if(d){var r=window.Shopify.analytics;r.replayQueue.forEach(function(e){var r=e[0],n=e[1],o=e[2];d.publishCustomEvent(r,n,o)}),r.replayQueue=[],r.publish=d.publishCustomEvent,r.visitor=d.visitor,r.initialized=!0}}},onerror:function(){return U.emit({status:"failed",errorMsg:"".concat(O," has failed to load")})},sri:(b=_,S=/^sha384-[A-Za-z0-9+/=]+$/,"string"==typeof b&&S.test(b)?_:""),scriptDataAttributes:o}),U.emit({status:"loading"})}catch(e){U.emit({status:"failed",errorMsg:(null==e?void 0:e.message)||"Unknown error"})}}}}();wpmLoader({shopId: 85060649288,storefrontBaseUrl: "https://restaurant-kei.fr",extensionsBaseUrl: "https://extensions.shopifycdn.com/cdn/shopifycloud/web-pixels-manager",monorailEndpoint: "https://monorail-edge.shopifysvc.com/unstable/produce_batch",surface: "storefront-renderer",enabledBetaFlags: ["d5bdd5d0","2b8f910e"],webPixelsConfigList: [{"id":"2827583816","configuration":"{\"accountID\":\"selleasy-metrics-track\"}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"130e47e04701969c8470d0150e978250","type":"APP","apiClientId":5519923,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_email","read_customer_name","read_customer_personal_data"],"dataSharingControls":["share_all_events"]},"dataSharingState":"unrestricted"},{"id":"1007812936","configuration":"{\"config\":\"{\\\"google_tag_ids\\\":[\\\"G-HDT22VMR0K\\\"],\\\"gtag_events\\\":[{\\\"type\\\":\\\"begin_checkout\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"search\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"view_item\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"purchase\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"page_view\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_payment_info\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_to_cart\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"}],\\\"enable_monitoring_mode\\\":false}\"}","eventPayloadVersion":"v1","runtimeContext":"OPEN","scriptVersion":"20a1a395175a780fd37f04940f5b4db5","type":"APP","apiClientId":1780363,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_address","read_customer_email","read_customer_name","read_customer_personal_data","read_customer_phone"],"dataSharingControls":["share_all_events"]},"dataSharingState":"optimized","enabledFlags":["9a3ed68a"]},{"id":"shopify-app-pixel","configuration":"{}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"APP","privacyPurposes":["ANALYTICS","MARKETING"]},{"id":"shopify-custom-pixel","eventPayloadVersion":"v1","runtimeContext":"LAX","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"CUSTOM","privacyPurposes":["ANALYTICS","MARKETING"]}],isMerchantRequest: false,initData: {"shop":{"name":"RESTAURANT KEI","paymentSettings":{"currencyCode":"EUR"},"myshopifyDomain":"restaurant-kei.myshopify.com","countryCode":"FR","storefrontUrl":"https:\/\/restaurant-kei.fr\/en"},"customer":null,"cart":null,"checkout":null,"productVariants":[],"products":[{"id":"9168265740616","handle":"livraison","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218956067144","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276160840","handle":"jeudi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008627016","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168278192456","handle":"jeudi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219019342152","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168270164296","handle":"lundi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218981036360","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168280387912","handle":"lundi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219026846024","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273604936","handle":"mardi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995880264","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279994696","handle":"mardi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219025961288","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276029768","handle":"mercredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219006857544","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279568712","handle":"mercredi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219024781640","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273441096","handle":"samedi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995192136","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168281043272","handle":"samedi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219031761224","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276259144","handle":"vendredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008725320","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168277274952","handle":"vendredi-copie","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219014656328","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]}],"purchasingCompany":null,"page":{"pageType":"home","resourceId":null}},},"https:{% static 'kei/cdn' %}","bf1e3d2ew26dbbaaapfd680b2dm57e27560",{"modern":"","legacy":""},{"trekkieShim":true,"apiClientId":"580111","themeId":"165510971720","themeStoreId":"887","pageType":"home","shopId":"85060649288","storefrontBaseUrl":"https:\/\/restaurant-kei.fr","extensionBaseUrl":"https:\/\/extensions.shopifycdn.com\/cdn\/shopifycloud\/web-pixels-manager","surface":"storefront-renderer","enabledBetaFlags":"[\"d5bdd5d0\", \"2b8f910e\"]","isMerchantRequest":"false","hashVersion":"bf1e3d2ew26dbbaaapfd680b2dm57e27560","publish":"custom","events":"[[\"page_viewed\",{}]]"});})();</script><script>
   window.ShopifyAnalytics = window.ShopifyAnalytics || {};
   window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
   window.ShopifyAnalytics.meta.currency = 'EUR';
@@ -494,15 +495,15 @@ script.onerror = function(e) {
       theme_id: 165510971720,
       app_name: "storefront",
       context_url: window.location.href,
-      source_url: "//restaurant-kei.fr/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js"});
+      source_url: "{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}"});
 
   };
   scriptFallback.async = true;
-  scriptFallback.src = '//restaurant-kei.fr/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js';
+  scriptFallback.src = '{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}';
   first.parentNode.insertBefore(scriptFallback, first);
 };
 script.async = true;
-script.src = '//restaurant-kei.fr/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js';
+script.src = '{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}';
 first.parentNode.insertBefore(script, first);
 
     };
@@ -534,12 +535,12 @@ first.parentNode.insertBefore(script, first);
 
     var eventsListenerScript = document.createElement('script');
     eventsListenerScript.async = true;
-    eventsListenerScript.src = "//restaurant-kei.fr/cdn/shopifycloud/storefront/assets/shop_events_listener-4e26a9ce.js";
+    eventsListenerScript.src = "{% static 'kei/cdn/shopifycloud/storefront/assets/shop_events_listener-4e26a9ce.js";
     document.getElementsByTagName('head')[0].appendChild(eventsListenerScript);
 })();</script>
 <script
   defer
-  src="https://restaurant-kei.fr/cdn/shopifycloud/perf-kit/shopify-perf-kit-3.5.2.min.js"
+  src="https:{% static 'kei/cdn/shopifycloud/perf-kit/shopify-perf-kit-3.5.2.min.js' %}"
   data-application="storefront-renderer"
   data-shop-id="85060649288"
   data-render-region="gcp-europe-west4"
@@ -553,7 +554,7 @@ first.parentNode.insertBefore(script, first);
   data-shs-beacon="true"
   data-shs-export-with-fetch="true"
   data-shs-logs-sample-rate="1"
-  data-shs-beacon-endpoint="https://restaurant-kei.fr/api/collect"
+  data-shs-beacon-endpoint="https:{% static 'kei/api/collect' %}"
 ></script>
 </head>
 
@@ -577,7 +578,7 @@ first.parentNode.insertBefore(script, first);
 
     "is_closed": false
 };
-    var deliveryProduct = {"id":9168265740616,"title":"Delivery","handle":"livraison","description":"75 | 92100.92200.92300.93100.93170.93200.93260.93300.93310.93400.93500.94110.94160.94200.94220.94250,94270.94300.92110.92120,92130,92170,92400 230, 93450.94120.94130.94140.94230.94340.94400.94410.94800 | 92000.92140.9215 0.92160.92190.92210.92220,92230,92240.92250.92260.92270 20.92330, 92340.92350.92360.92370.92380.92390.92410.92420.92430.92500.92600.9270 0.92800 | 94700.9321 | 93000.93110.931.931.93700.94240 0.93430, 93440.93800.94000.94260.94320.94550.93250.93360.94100.94150.94170.94210 | 93350.93380.93150.93220.93320.93330.93340.94290,94310,94360,94","published_at":"2024-10-15T11:14:16+02:00","created_at":"2024-10-15T11:14:16+02:00","vendor":"Chef Kei Kobayashi KEI","type":"Delivery","tags":["_delivery","offre_particulier","TVA 20%"],"price":1200,"price_min":1200,"price_max":7500,"available":true,"price_varies":true,"compare_at_price":null,"compare_at_price_min":0,"compare_at_price_max":0,"compare_at_price_varies":false,"variants":[{"id":49218956067144,"title":"Z1","option1":"Z1","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z1","public_title":"Z1","options":["Z1"],"price":1200,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956132680,"title":"Z2","option1":"Z2","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z2","public_title":"Z2","options":["Z2"],"price":2000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956165448,"title":"Z3","option1":"Z3","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z3","public_title":"Z3","options":["Z3"],"price":3000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956230984,"title":"Z4","option1":"Z4","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z4","public_title":"Z4","options":["Z4"],"price":3500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956263752,"title":"Z5","option1":"Z5","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z5","public_title":"Z5","options":["Z5"],"price":5000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956329288,"title":"Z6","option1":"Z6","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z6","public_title":"Z6","options":["Z6"],"price":6000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956394824,"title":"Z7","option1":"Z7","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z7","public_title":"Z7","options":["Z7"],"price":6500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956427592,"title":"Z8","option1":"Z8","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z8","public_title":"Z8","options":["Z8"],"price":7000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956493128,"title":"Z9","option1":"Z9","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z9","public_title":"Z9","options":["Z9"],"price":7500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}}],"images":["\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png?v=1728924082"],"featured_image":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png?v=1728924082","options":["Area"],"media":[{"alt":null,"id":51666415059272,"position":1,"preview_image":{"aspect_ratio":1.911,"height":628,"width":1200,"src":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png?v=1728924082"},"aspect_ratio":1.911,"height":628,"media_type":"image","src":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png?v=1728924082","width":1200}],"requires_selling_plan":false,"selling_plan_groups":[],"content":"75 | 92100.92200.92300.93100.93170.93200.93260.93300.93310.93400.93500.94110.94160.94200.94220.94250,94270.94300.92110.92120,92130,92170,92400 230, 93450.94120.94130.94140.94230.94340.94400.94410.94800 | 92000.92140.9215 0.92160.92190.92210.92220,92230,92240.92250.92260.92270 20.92330, 92340.92350.92360.92370.92380.92390.92410.92420.92430.92500.92600.9270 0.92800 | 94700.9321 | 93000.93110.931.931.93700.94240 0.93430, 93440.93800.94000.94260.94320.94550.93250.93360.94100.94150.94170.94210 | 93350.93380.93150.93220.93320.93330.93340.94290,94310,94360,94"}
+    var deliveryProduct = {"id":9168265740616,"title":"Delivery","handle":"livraison","description":"75 | 92100.92200.92300.93100.93170.93200.93260.93300.93310.93400.93500.94110.94160.94200.94220.94250,94270.94300.92110.92120,92130,92170,92400 230, 93450.94120.94130.94140.94230.94340.94400.94410.94800 | 92000.92140.9215 0.92160.92190.92210.92220,92230,92240.92250.92260.92270 20.92330, 92340.92350.92360.92370.92380.92390.92410.92420.92430.92500.92600.9270 0.92800 | 94700.9321 | 93000.93110.931.931.93700.94240 0.93430, 93440.93800.94000.94260.94320.94550.93250.93360.94100.94150.94170.94210 | 93350.93380.93150.93220.93320.93330.93340.94290,94310,94360,94","published_at":"2024-10-15T11:14:16+02:00","created_at":"2024-10-15T11:14:16+02:00","vendor":"Chef Kei Kobayashi KEI","type":"Delivery","tags":["_delivery","offre_particulier","TVA 20%"],"price":1200,"price_min":1200,"price_max":7500,"available":true,"price_varies":true,"compare_at_price":null,"compare_at_price_min":0,"compare_at_price_max":0,"compare_at_price_varies":false,"variants":[{"id":49218956067144,"title":"Z1","option1":"Z1","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z1","public_title":"Z1","options":["Z1"],"price":1200,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956132680,"title":"Z2","option1":"Z2","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z2","public_title":"Z2","options":["Z2"],"price":2000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956165448,"title":"Z3","option1":"Z3","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z3","public_title":"Z3","options":["Z3"],"price":3000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956230984,"title":"Z4","option1":"Z4","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z4","public_title":"Z4","options":["Z4"],"price":3500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956263752,"title":"Z5","option1":"Z5","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z5","public_title":"Z5","options":["Z5"],"price":5000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956329288,"title":"Z6","option1":"Z6","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z6","public_title":"Z6","options":["Z6"],"price":6000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956394824,"title":"Z7","option1":"Z7","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z7","public_title":"Z7","options":["Z7"],"price":6500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956427592,"title":"Z8","option1":"Z8","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z8","public_title":"Z8","options":["Z8"],"price":7000,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":49218956493128,"title":"Z9","option1":"Z9","option2":null,"option3":null,"sku":"","requires_shipping":true,"taxable":true,"featured_image":null,"available":true,"name":"Delivery - Z9","public_title":"Z9","options":["Z9"],"price":7500,"weight":0,"compare_at_price":null,"inventory_management":null,"barcode":"","requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}}],"images":["{% static 'kei/cdn/shop/files/Logo_Kei_-_noir.png' %}"],"featured_image":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png","options":["Area"],"media":[{"alt":null,"id":51666415059272,"position":1,"preview_image":{"aspect_ratio":1.911,"height":628,"width":1200,"src":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png"},"aspect_ratio":1.911,"height":628,"media_type":"image","src":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/Logo_Kei_-_noir.png","width":1200}],"requires_selling_plan":false,"selling_plan_groups":[],"content":"75 | 92100.92200.92300.93100.93170.93200.93260.93300.93310.93400.93500.94110.94160.94200.94220.94250,94270.94300.92110.92120,92130,92170,92400 230, 93450.94120.94130.94140.94230.94340.94400.94410.94800 | 92000.92140.9215 0.92160.92190.92210.92220,92230,92240.92250.92260.92270 20.92330, 92340.92350.92360.92370.92380.92390.92410.92420.92430.92500.92600.9270 0.92800 | 94700.9321 | 93000.93110.931.931.93700.94240 0.93430, 93440.93800.94000.94260.94320.94550.93250.93360.94100.94150.94170.94210 | 93350.93380.93150.93220.93320.93330.93340.94290,94310,94360,94"}
     var prodFees = null
     var priceDeliveryNotTT = "0"
     
@@ -664,7 +665,7 @@ first.parentNode.insertBefore(script, first);
 <div id="PageContainer" class="page-container">
   <div class="transition-body">
     <div id="header_filter"  style="display: none"><div id="shopify-section-header" class="shopify-section">
-  <script>console.log({"display_header_typeform":true,"display_header_general":true,"main_menu_link_list":"header","linkopacity":50,"display_cart_icon":true,"logo":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3.png?v=1734373604","logo-inverted":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653.png?v=1734373605","size_link_header":14,"desktop_logo_width":130,"mobile_logo_width":70,"main_menu_alignment":"left-center","header_sticky":true,"sticky_index":true,"sticky_collection":false,"bg_color_submenu":"#fff9f5","bg_opacity_submenu":100,"btn_border_radius":100,"bg_color_btn":"rgba(0,0,0,0)","text_color_btn":"#ffffff","border_color_btn":"#ffffff","hover_bg_color_btn":"#ffffff","hover_text_color_btn":"#000000","hover_border_color_btn":"#ffffff","first_button_title":"","first_button_link":null,"first_button_gap":10,"first_button_display_desktop":false,"first_button_size_desktop":0,"first_button_width_desktop":90,"first_button_display_mobile":false,"first_button_size_mobile":0,"first_button_width_mobile":80,"second_button_title":"\u003cspan style=\"font-size: 12px; font-family: 'Avenir Next Medium', sans-serif;\"\u003e     TO BOOK\u003c\/span\u003e","second_button_link":null,"second_button_display_desktop":true,"second_button_size_desktop":0,"second_button_width_desktop":120,"second_button_display_mobile":true,"second_button_size_mobile":0,"second_button_width_mobile":100,"show_announcement":false,"announcement_text":"Free Shipping and Returns","announcement_link":null,"announcement_closable":false,"color_bg_cart_bubble":"#000000","color_txt_cart_bubble":"#ffffff","color_border_cart_bubble":"#000000","header_slide_html_content":"\u003cp\u003e\u003cem\u003ePets not allowed.\u003cbr\/\u003eChildren from 12 years old (we do not offer children's menus).\u003cbr\/\u003eIn the event of cancellation or changes to the number of place settings less than 48 hours in advance, the sum of €300\u003cbr\/\u003eat Lunch and €400 at Dinner per person not present, will be charged to the card provided at the time of booking.\u003cbr\/\u003eDress code: Casual Chic.\u003cbr\/\u003eValet service: €20\/car (only for dinner).\u003cbr\/\u003e\u003cbr\/\u003eWe open reservations two months in advance. Reservations open on the first Tuesday of each month at 9:30 AM.\u003c\/em\u003e\u003c\/p\u003e","header_slide_link_1_text":"Réserver une table \u003e","header_slide_link_1_link":"\/pages\/reserver-1","header_slide_link_2_text":"Découvrir nos cartes cadeaux","header_slide_link_2_link":"\/en\/pages\/la-boutique-de-kei-kobayashi","header_slide_backgorund_color":"#000000","header_slide_color":"#ffffff"})</script><div id="NavDrawer" class="drawer drawer--right">
+  <script>console.log({"display_header_typeform":true,"display_header_general":true,"main_menu_link_list":"header","linkopacity":50,"display_cart_icon":true,"logo":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3.png","logo-inverted":"\/\/restaurant-kei.fr\/cdn\/shop\/files\/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653.png","size_link_header":14,"desktop_logo_width":130,"mobile_logo_width":70,"main_menu_alignment":"left-center","header_sticky":true,"sticky_index":true,"sticky_collection":false,"bg_color_submenu":"#fff9f5","bg_opacity_submenu":100,"btn_border_radius":100,"bg_color_btn":"rgba(0,0,0,0)","text_color_btn":"#ffffff","border_color_btn":"#ffffff","hover_bg_color_btn":"#ffffff","hover_text_color_btn":"#000000","hover_border_color_btn":"#ffffff","first_button_title":"","first_button_link":null,"first_button_gap":10,"first_button_display_desktop":false,"first_button_size_desktop":0,"first_button_width_desktop":90,"first_button_display_mobile":false,"first_button_size_mobile":0,"first_button_width_mobile":80,"second_button_title":"\u003cspan style=\"font-size: 12px; font-family: 'Avenir Next Medium', sans-serif;\"\u003e     TO BOOK\u003c\/span\u003e","second_button_link":null,"second_button_display_desktop":true,"second_button_size_desktop":0,"second_button_width_desktop":120,"second_button_display_mobile":true,"second_button_size_mobile":0,"second_button_width_mobile":100,"show_announcement":false,"announcement_text":"Free Shipping and Returns","announcement_link":null,"announcement_closable":false,"color_bg_cart_bubble":"#000000","color_txt_cart_bubble":"#ffffff","color_border_cart_bubble":"#000000","header_slide_html_content":"\u003cp\u003e\u003cem\u003ePets not allowed.\u003cbr\/\u003eChildren from 12 years old (we do not offer children's menus).\u003cbr\/\u003eIn the event of cancellation or changes to the number of place settings less than 48 hours in advance, the sum of €300\u003cbr\/\u003eat Lunch and €400 at Dinner per person not present, will be charged to the card provided at the time of booking.\u003cbr\/\u003eDress code: Casual Chic.\u003cbr\/\u003eValet service: €20\/car (only for dinner).\u003cbr\/\u003e\u003cbr\/\u003eWe open reservations two months in advance. Reservations open on the first Tuesday of each month at 9:30 AM.\u003c\/em\u003e\u003c\/p\u003e","header_slide_link_1_text":"Réserver une table \u003e","header_slide_link_1_link":"\/pages\/reserver-1","header_slide_link_2_text":"Découvrir nos cartes cadeaux","header_slide_link_2_link":"\/en\/pages\/la-boutique-de-kei-kobayashi","header_slide_backgorund_color":"#000000","header_slide_color":"#ffffff"})</script><div id="NavDrawer" class="drawer drawer--right">
     <div class="drawer__contents">
         <div class="drawer__scrollable">
             <ul class="mobile-nav" role="navigation" aria-label="Primary"><li class="mobile-nav__item appear-animation appear-delay-3"><div class="mobile-nav__has-sublist"><a href="/en/pages/univers"   class="mobile-nav__link GTM_HEADER_LINK " data-gtm-link="The restaurant" id="Label-en-pages-univers1">
@@ -679,7 +680,7 @@ first.parentNode.insertBefore(script, first);
                                     <div class="mobile-nav__toggle">
                                         <button type="button" class="collapsible-trigger collapsible--auto-height" aria-controls="Linklist-en-pages-univers1" aria-labelledby="Label-en-pages-univers1">
                                             <div class="collapsible-trigger-icon">
-                                                <img src="//restaurant-kei.fr/cdn/shop/t/2/assets/infinite_arrow.svg?v=40082215874733469741727887666" alt="">
+                                                <img src="{% static 'kei/cdn/shop/t/2/assets/infinite_arrow.svg' %}" alt="">
                                             </div>
                                         </button>
                                     </div></div><div id="Linklist-en-pages-univers1" class="mobile-nav__sublist collapsible-content collapsible-content--all">
@@ -873,30 +874,30 @@ first.parentNode.insertBefore(script, first);
               class="site-header__logo-link logo--has-inverted GTM_HEADER_LOGO">
         <img
                 class="small--hide"
-                src="//restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x.png?v=1734373604"
-                srcset="//restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x.png?v=1734373604 1x, //restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x@2x.png?v=1734373604 2x"
-                alt="RESTAURANT KEI"
+                src="{% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x.png' %}"
+                srcset="{% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x.png' %} 1x, {% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_130x@2x.png' %} 2x"
+                alt="RESTAURANT KEI 1"
                 itemprop="logo">
         <img
                 class="medium-up--hide"
-                src="//restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x.png?v=1734373604"
-                srcset="//restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x.png?v=1734373604 1x, //restaurant-kei.fr/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x@2x.png?v=1734373604 2x"
-                alt="RESTAURANT KEI">
+                src="{% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x.png' %}"
+                srcset="{% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x.png' %} 1x, {% static 'kei/cdn/shop/files/logo_kei_cb3eb10a-6787-4d34-9441-0470eefe3bc3_70x@2x.png' %} 2x"
+                alt="RESTAURANT KEI 2">
       </a><a
                 href="/en"
                 itemprop="url"
                 class="site-header__logo-link logo--inverted GTM_HEADER_LOGO">
           <img
                   class="small--hide"
-                  src="//restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x.png?v=1734373605"
-                  srcset="//restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x.png?v=1734373605 1x, //restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x@2x.png?v=1734373605 2x"
-                  alt="RESTAURANT KEI"
+                  src="{% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x.png' %}"
+                  srcset="{% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x.png' %} 1x, {% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_130x@2x.png' %} 2x"
+                  alt="RESTAURANT KEI 3"
                   itemprop="logo">
           <img
                   class="medium-up--hide"
-                  src="//restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x.png?v=1734373605"
-                  srcset="//restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x.png?v=1734373605 1x, //restaurant-kei.fr/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x@2x.png?v=1734373605 2x"
-                  alt="RESTAURANT KEI">
+                  src="{% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x.png' %}"
+                  srcset="{% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x.png' %} 1x,{% static 'kei/cdn/shop/files/logo_kei_f0ce3e4e-206f-4e3a-b478-654bb9963653_70x@2x.png' %} 2x"
+                  alt="RESTAURANT KEI 4">
         </a></h1></div>
               <div class="header-item header-item--navigation text-center"><ul class="site-nav site-navigation medium-down--hide"  role="navigation" aria-label="Primary" ><li class="site-nav__item site-nav__expanded-item
         site-nav--first-level
@@ -1318,8 +1319,8 @@ first.parentNode.insertBefore(script, first);
     <form method="post" action="/en/localization" id="localization_form" accept-charset="UTF-8" class="shopify-localization-form" enctype="multipart/form-data"><input type="hidden" name="form_type" value="localization" /><input type="hidden" name="utf8" value="✓" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="return_to" value="/en" /><input type="hidden" name="language_code" value="en"></form>
     
     <div class="FloatingTranslate_Button js-floating-translate-toggle">
-        <div class="FloatingTranslate_Button--icon"><img src="https://cdn.shopify.com/s/files/1/0780/0799/2615/files/map_trad.png?v=1690476742" alt="en" ></div>
-        <div class="FloatingTranslate_Button--icon --onLight"><img src="https://cdn.shopify.com/s/files/1/0780/0799/2615/files/map_trad.png?v=1690476742" alt="en" ></div>
+        <div class="FloatingTranslate_Button--icon"><img src="{% static 'kei/cdnshopifycom/s/files/1/0780/0799/2615/files/map_trad.png' %}" alt="en" ></div>
+        <div class="FloatingTranslate_Button--icon --onLight"><img src="{% static 'kei/cdnshopifycom/s/files/1/0780/0799/2615/files/map_trad.png' %}" alt="en" ></div>
     </div>
     <div class="FloatingTranslate_Menu">
         
@@ -1382,7 +1383,7 @@ first.parentNode.insertBefore(script, first);
                 <div class="FloatingTranslate_MenuItem--flag --flag-only">
                     
                     
-                    <div class="FloatingTranslate_MenuItem--flagIcon"><img src="https://cdn.shopify.com/s/files/1/0850/6064/9288/files/drapeau_japonais.png?v=1735843057" alt="ja flag icon"></div>
+                    <div class="FloatingTranslate_MenuItem--flagIcon"><img src="{% static 'kei/cdnshopifycom/s/files/1/0850/6064/9288/files/drapeau_japonais.png' %}" alt="ja flag icon"></div>
                 </div>
                 
                 
@@ -1597,7 +1598,7 @@ first.parentNode.insertBefore(script, first);
         <div class="button  js-btn_chef_indispo" >Cancel</div>
       </div>
       <div class="close js-btn_chef_indispo">
-        <img src="//restaurant-kei.fr/cdn/shop/t/2/assets/croix_pop_up.svg?v=87914364060965199011727887663" alt="fermer" />
+        <img src="{% static 'kei/cdn/shop/t/2/assets/croix_pop_up.svg' %}" alt="fermer" />
       </div>
     </div>
 
@@ -1703,7 +1704,7 @@ first.parentNode.insertBefore(script, first);
       <div class="button js-button-modify">Modify filters</div>
     </div>
     <div class="close js-button-cancel">
-      <img src="//restaurant-kei.fr/cdn/shop/t/2/assets/croix_pop_up.svg?v=87914364060965199011727887663"  alt="fermer" />
+      <img src="{% static 'kei/cdn/shop/t/2/assets/croix_pop_up.svg' %}"  alt="fermer" />
     </div>
   </div>
 </section>
@@ -1820,24 +1821,24 @@ first.parentNode.insertBefore(script, first);
 
 
   .ui-datepicker-header .ui-datepicker-prev:before {
-    content: url(//restaurant-kei.fr/cdn/shop/t/2/assets/fleche_calendrier.svg?v=46693583701941437731729240925);
+    content: url(`{% static 'kei/cdn/shop/t/2/assets/fleche_calendrier.svg' %}`);
     position: relative;
     cursor:pointer;
   }
 
   .ui-datepicker-header .ui-datepicker-next:before {
-    content: url(//restaurant-kei.fr/cdn/shop/t/2/assets/fleche_calendrier.svg?v=46693583701941437731729240925);
+    content: url(`{% static 'kei/cdn/shop/t/2/assets/fleche_calendrier.svg' %}`);
     position: relative;
     cursor:pointer;
   }
 
   .ui-datepicker-header .ui-datepicker-prev.ui-state-disabled:before {
-    content: url(//restaurant-kei.fr/cdn/shop/t/2/assets/fleche_calendrier_disabled.svg?v=129689393063761730611729156287);
+    content: url(`{% static 'kei/cdn/shop/t/2/assets/fleche_calendrier_disabled.svg' %}`);
     position: relative;
     cursor:pointer;
   }
   .ui-datepicker-header .ui-datepicker-next.ui-state-disabled:before {
-    content: url(//restaurant-kei.fr/cdn/shop/t/2/assets/fleche_calendrier_disabled.svg?v=129689393063761730611729156287);
+    content: url(`{% static 'kei/cdn/shop/t/2/assets/fleche_calendrier_disabled.svg' %}`);
     position: relative;
     cursor:pointer;
   }
@@ -1947,12 +1948,12 @@ first.parentNode.insertBefore(script, first);
   
 </script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/LIB.jquery.mobile.custom.min.js?v=124096137454707077661727887583" type="text/javascript"></script>
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/LIB.jquery-ui.min.js?v=46089069986350409251727887550" type="text/javascript"></script>
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/LIB.datepicker.js?v=67154468867845795851727887496" type="text/javascript"></script>
+<script src="{% static 'kei/cdn/shop/t/2/assets/LIB.jquery.mobile.custom.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'kei/cdn/shop/t/2/assets/LIB.jquery-ui.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'kei/cdn/shop/t/2/assets/LIB.datepicker.js' %}" type="text/javascript"></script>
 
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/SC.filters.js?v=55102953868921517431727887644" type="text/javascript"></script>
-<script src="//restaurant-kei.fr/cdn/shop/t/2/assets/SC.filters_modal.js?v=143893921958757128551727887573" type="text/javascript"></script>
+<script src="{% static 'kei/cdn/shop/t/2/assets/SC.filters.js' %}" type="text/javascript"></script>
+<script src="{% static 'kei/cdn/shop/t/2/assets/SC.filters_modal.js' %}" type="text/javascript"></script>
 
 <script>
   /** Days to be disabled as an array */
@@ -2071,18 +2072,19 @@ Vous pouvez postuler en nous adressant votre CV à l'adresse recrutement.restaur
     max-width: 140px;
     width: 100% !important;
   }
-</style><div id="hero_video" class="hero_video transition"><div  data-section-id="1499790529450" data-section-type="video-section" data-mobile-natural="false" class="video-parent-section hero hero--1499790529450 hero--100vh" data-aos="hero__animation">
+</style>
+<div id="hero_video" class="hero_video transition"><div  data-section-id="1499790529450" data-section-type="video-section" data-mobile-natural="false" class="video-parent-section hero hero--1499790529450 hero--100vh" data-aos="hero__animation">
     <div class="js-home-waiting-overlay hero__mediaOverlay">
         <div class="page-width">
             <div class="hero__text-content vertical-center horizontal-center"></div>
         </div>
     </div>
-    <div class="js-home-video-container hero__media hero__media--1499790529450 GTM_HP_VIDEO"><video id="Mp4Video-1499790529450" class="video-div js-home-video " data-mobile-src="https://cdn.shopify.com/videos/c/o/v/085842cd097d491eae68ec2e8e2962cf.mp4" data-src="https://cdn.shopify.com/videos/c/o/v/fe0c0279579242fea0430ce9bcc445bd.mp4" data-type="mp4" loop muted playsinline></video>
+    <div class="js-home-video-container hero__media hero__media--1499790529450 GTM_HP_VIDEO"><video id="Mp4Video-1499790529450" class="video-div js-home-video " data-mobile-src="{% static 'kei/cdnshopifycom/videos/085842cd097d491eae68ec2e8e2962cf.mp4' %}" data-src="{% static 'kei/cdnshopifycom/videos/fe0c0279579242fea0430ce9bcc445bd.mp4' %}" data-type="mp4" loop muted playsinline></video>
     </div>
     <div class="hero__text-wrap GTM_HP_VIDEOHERO">
         
           <div class="bg_section_logo">
-              <img class="image_logo" src="//restaurant-kei.fr/cdn/shop/files/logo-kei-video-hero-4.jpg?v=1734432774">
+              <img class="image_logo" src="{% static 'kei/cdn/shop/files/logo-kei-video-hero-4.jpg' %}">
           </div>
         
         <div class="page-width">
@@ -2522,22 +2524,22 @@ $(document).ready(function () {
                                                 font-family: "object-fit: cover; object-position: center center;";
                                                 }</style><img
                                                     class="hero__image hero__image--70707 lazyload small--hide"
-                                                    src="//restaurant-kei.fr/cdn/shop/files/Photo-kei.png?v=1729161039"
-                                                    data-src="//restaurant-kei.fr/cdn/shop/files/Photo-kei.png?v=1729161039"
+                                                    src="{% static 'kei/cdn/shop/files/Photo-kei.png' %}"
+                                                    data-src="{% static 'kei/cdn/shop/files/Photo-kei.png' %}"
                                                     data-aspectratio="2.56"
                                                     data-sizes="auto"
                                                     alt=""
                                             ><img
                                                         class="hero__image hero__image--70707 lazyload medium-up--hide"
-                                                        src="//restaurant-kei.fr/cdn/shop/files/571_HD.jpg?v=1728995209"
-                                                        data-src="//restaurant-kei.fr/cdn/shop/files/571_HD.jpg?v=1728995209"
+                                                        src="{% static 'kei/cdn/shop/files/571_HD.jpg' %}"
+                                                        data-src="{% static 'kei/cdn/shop/files/571_HD.jpg' %}"
                                                         data-aspectratio="1.5309523809523808"
                                                         data-sizes="auto"
                                                         alt=""
                                                 ><noscript>
                                                 <img
                                                         class="hero__image hero__image--70707"
-                                                        src="//restaurant-kei.fr/cdn/shop/files/Photo-kei.png?v=1729161039"
+                                                        src="{% static 'kei/cdn/shop/files/Photo-kei.png' %}"
                                                         alt=""
                                                 >
                                             </noscript></div><div class="hero__text-wrap">
@@ -2726,22 +2728,22 @@ $(document).ready(function () {
                                                 font-family: "object-fit: cover; object-position: center center;";
                                                 }</style><img
                                                     class="hero__image hero__image--14436 lazyload small--hide"
-                                                    src="//restaurant-kei.fr/cdn/shop/files/359a_HD.jpg?v=1728995198"
-                                                    data-src="//restaurant-kei.fr/cdn/shop/files/359a_HD.jpg?v=1728995198"
+                                                    src="{% static 'kei/cdn/shop/files/359a_HD.jpg' %}"
+                                                    data-src="{% static 'kei/cdn/shop/files/359a_HD.jpg' %}"
                                                     data-aspectratio="1.5309523809523808"
                                                     data-sizes="auto"
                                                     alt=""
                                             ><img
                                                         class="hero__image hero__image--14436 lazyload medium-up--hide"
-                                                        src="//restaurant-kei.fr/cdn/shop/files/359a_HD.jpg?v=1728995198"
-                                                        data-src="//restaurant-kei.fr/cdn/shop/files/359a_HD.jpg?v=1728995198"
+                                                        src="{% static 'kei/cdn/shop/files/359a_HD.jpg' %}"
+                                                        data-src="{% static 'kei/cdn/shop/files/359a_HD.jpg' %}"
                                                         data-aspectratio="1.5309523809523808"
                                                         data-sizes="auto"
                                                         alt=""
                                                 ><noscript>
                                                 <img
                                                         class="hero__image hero__image--14436"
-                                                        src="//restaurant-kei.fr/cdn/shop/files/359a_HD.jpg?v=1728995198"
+                                                        src="{% static 'kei/cdn/shop/files/359a_HD.jpg' %}"
                                                         alt=""
                                                 >
                                             </noscript></div><div class="hero__text-wrap">
@@ -2792,7 +2794,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/logo_kei_restaurant_ok.png?v=1735313996"
+                data-src="{% static 'kei/cdn/shop/files/logo_kei_restaurant_ok.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2807,7 +2809,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/kei_collection_logo_page_restaurant.png?v=1734460314"
+                data-src="{% static 'kei/cdn/shop/files/kei_collection_logo_page_restaurant.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="1.390495867768595"
                 data-sizes="auto"
@@ -2822,7 +2824,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Heritage_ok.png?v=1734459262"
+                data-src="{% static 'kei/cdn/shop/files/Heritage_ok.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2850,7 +2852,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Maison_Kei_2_99de43a6-1bdd-4ded-a643-eacb53bfc645.png?v=1735313365"
+                data-src="{% static 'kei/cdn/shop/files/Maison_Kei_2_99de43a6-1bdd-4ded-a643-eacb53bfc645.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2865,7 +2867,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Esprit_C_ok_2.png?v=1734459523"
+                data-src="{% static 'kei/cdn/shop/files/Esprit_C_ok_2.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2880,7 +2882,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/logo_saint_louis_ok_3.png?v=1734459700"
+                data-src="{% static 'kei/cdn/shop/files/logo_saint_louis_ok_3.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2908,7 +2910,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/logo_kei_restaurant_ok.png?v=1735313996"
+                data-src="{% static 'kei/cdn/shop/files/logo_kei_restaurant_ok.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2923,7 +2925,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Maison_Kei_2_99de43a6-1bdd-4ded-a643-eacb53bfc645.png?v=1735313365"
+                data-src="{% static 'kei/cdn/shop/files/Maison_Kei_2_99de43a6-1bdd-4ded-a643-eacb53bfc645.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2938,7 +2940,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Heritage_ok.png?v=1734459262"
+                data-src="{% static 'kei/cdn/shop/files/Heritage_ok.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -2953,7 +2955,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/kei_collection_logo_page_restaurant.png?v=1734460314"
+                data-src="{% static 'kei/cdn/shop/files/kei_collection_logo_page_restaurant.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="1.390495867768595"
                 data-sizes="auto"
@@ -2968,7 +2970,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/Esprit_C_logo_page_restaurant.png?v=1734467724"
+                data-src="{% static 'kei/cdn/shop/files/Esprit_C_logo_page_restaurant.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="2.109865470852018"
                 data-sizes="auto"
@@ -2983,7 +2985,7 @@ $(document).ready(function () {
           
           
             <img class="logo-bar__image lazyload"
-                data-src="//restaurant-kei.fr/cdn/shop/files/logo_saint_louis_ok_3.png?v=1734459700"
+                data-src="{% static 'kei/cdn/shop/files/logo_saint_louis_ok_3.png' %}"
                 data-widths="[180, 360, 540, 720]"
                 data-aspectratio="0.7273718647764449"
                 data-sizes="auto"
@@ -3005,7 +3007,7 @@ $(document).ready(function () {
     background-color: rgba(0, 0, 0, 0.8);
   }
   .site-footer:after {
-    background-image: url(//restaurant-kei.fr/cdn/shop/files/footer_5.jpg?v=1735311178);
+    background-image: url({% static 'kei/cdn/shop/files/footer_5.jpg' %});
     opacity: 1.0;
     background-size: cover;
   }
@@ -3030,7 +3032,7 @@ $(document).ready(function () {
   }
   @media only screen and (max-width: 768px) {
     .site-footer.footer--has-mobile-image:after {
-      background: url(//restaurant-kei.fr/cdn/shop/files/footer_mobile_2.jpg?v=1735311488);
+      background: url({% static 'kei/cdn/shop/files/footer_mobile_2.jpg' %});
       opacity: 0.6;
       background-size: cover;
       background-position: center;
@@ -3184,16 +3186,16 @@ $(document).ready(function () {
 </div></div>
 <div class="site-footer__logos">
   
-  <img src="//restaurant-kei.fr/cdn/shop/files/logo-gault-et-millau_blanc_90x.png?v=1735312489">
+  <img src="{% static 'kei/cdn/shop/files/logo-gault-et-millau_blanc_90x.png' %}">
   
   
-    <img src="//restaurant-kei.fr/cdn/shop/files/logo-la-liste_90x.png?v=1734514568">
+    <img src="{% static 'kei/cdn/shop/files/logo-la-liste_90x.png' %}">
   
   
-    <img src="//restaurant-kei.fr/cdn/shop/files/logo-les-grandes-tables-du-monde_90x.png?v=1734514568">
+    <img src="{% static 'kei/cdn/shop/files/logo-les-grandes-tables-du-monde_90x.png' %}">
   
   
-    <img src="//restaurant-kei.fr/cdn/shop/files/logo-michelin-2024_blanc_90x.png?v=1735312503">
+    <img src="{% static 'kei/cdn/shop/files/logo-michelin-2024_blanc_90x.png' %}">
   
   
 </div>
@@ -3382,7 +3384,7 @@ $(document).ready(function () {
 
 
 
-</div><script src="//restaurant-kei.fr/cdn/shop/t/2/assets/PART.stripe_deposit.js?v=119683100702109879161727887651" type="text/javascript"></script>
+</div><script src="{% static 'kei/cdn/shop/t/2/assets/PART.stripe_deposit.js' %}" type="text/javascript"></script>
 
 <!--optin_cookie_modal-->
 <div id="shopify-section-optin_cookie_modal" class="shopify-section">
@@ -3911,13 +3913,13 @@ We will not be informed of your visit to our site.</div>
 </div>
 
 
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script type="text/javascript" src="{% static 'kei/cdnjsdelivrnet/npm/slick-carousel@1.8.1/slick/slick.min.js' %}"></script>
 
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/PART.controller.js?v=92041886803116654871727887505" type="text/javascript"></script>
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/SC.controller.js?v=136697533297947600201727887341" type="text/javascript"></script>
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/PART.cart.js?v=98503685443281646081727887635" type="text/javascript"></script>
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/SC.cart.js?v=27972044501939951141727887645" type="text/javascript"></script>
-    <script src="//restaurant-kei.fr/cdn/shop/t/2/assets/COMMON.utils.js?v=177031780657914248871727887563" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/PART.controller.js' %}" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/SC.controller.js' %}" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/PART.cart.js' %}" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/SC.cart.js' %}" type="text/javascript"></script>
+    <script src="{% static 'kei/cdn/shop/t/2/assets/COMMON.utils.js' %}" type="text/javascript"></script>
 
     <script type="text/javascript">
         (function (){
