@@ -21,6 +21,8 @@ LAYOUT_PARENT = "phoenix/layout.html"
 LAYOUT_PARENT = "grad-school/layout.html"
 LAYOUT_PARENT = "cafe/layout.html"
 LAYOUT_PARENT = "kei/layout-fa.html"
+TEMPLATE_ROOT='robot/'
+LAYOUT_PARENT='robot/layout.html'
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
