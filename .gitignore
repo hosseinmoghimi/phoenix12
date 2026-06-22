@@ -1,6 +1,7 @@
 ########################################
 #by leo
 secret/
+secrets/
 
 server_settings.py
 server_urls.py
