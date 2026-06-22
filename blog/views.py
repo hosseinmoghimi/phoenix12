@@ -19,7 +19,8 @@ NO_NAVBAR="NO_NAVBAR"
 LAYOUT_PARENT = "material-kit-pro/layout.html"
 LAYOUT_PARENT = "phoenix/layout.html"
 LAYOUT_PARENT = "grad-school/layout.html"
-LAYOUT_PARENT = "kei/layout.html"
+LAYOUT_PARENT = "cafe/layout.html"
+LAYOUT_PARENT = "kei/layout-fa.html"
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
@@ -54,8 +55,7 @@ class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         blogs=BlogRepo(request=request).list(for_home=True)
-        context['blogs']=blogs 
-        context['LAYOUT_PARENT']="kei/layout-fa.html"
+        context['blogs']=blogs  
 
         homesliders=HomeSliderRepo(request=request).list(for_home=True)
         context['homesliders']=homesliders
