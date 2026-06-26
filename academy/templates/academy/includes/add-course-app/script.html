@@ -5,6 +5,7 @@
     data: {
     title: "",
     supplier_id: 0,
+    message:{show:false},
     
     event_date: current_date,
     event_time: "00:00:00",
@@ -31,14 +32,19 @@
         };
 
         console.log(payload);
-        let url = "{% url 'cafe:add_course' %}"
+        let url = "{% url 'academy:add_course' %}"
         let posting = $.post(url, payload);
         posting.done((data) => {
           console.log(data);
           if (data.result === "SUCCEED") {
+            show_message(add_course_app,'موفق',data.message,'success',1000)
             if (typeof courses_app != "undefined") {
               courses_app.courses.push(data.course);
             }
+          }
+          else{
+
+            show_message(add_course_app,'خطا',data.message,'danger',1000)
           }
         });
       },

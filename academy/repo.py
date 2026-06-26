@@ -49,9 +49,10 @@ class CourseRepo():
         if not self.request.user.has_perm(APP_NAME+".add_course"):
             message="دسترسی غیر مجاز"
             return result,message,course
-
         course=Course()
         if 'title' in kwargs:
+            if len(Course.objects.filter(title=kwargs["title"]))>0:
+                return FAILED,'عنوان تکراری',None
             course.title=kwargs["title"]
         if 'parent_id' in kwargs:
             if kwargs["parent_id"]>0:
