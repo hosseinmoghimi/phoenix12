@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TableRepo,CourseRepo,TableRepo,checkout_cart
-from .serializers import TableSerializer,CourseSerializer
+from .repo import CourseRepo 
+from .serializers import CourseSerializer
 from django.http import JsonResponse
 from .forms import *
     

@@ -1,24 +1,16 @@
 from django.shortcuts import render
-from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .repo import TableRepo
-from .serializers import TableSerializer
+from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL 
 from django.views import View
 from .forms import *
 from .apps import APP_NAME
-from core.views import CoreContext,MessageView
-from phoenix.server_apps import phoenix_apps
-from market.serializers import ShopSerializer
+from core.views import CoreContext,MessageView 
 
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import CourseSerializer,TableSerializer,OrderSerializer
-from .repo import CourseRepo,TableRepo
-from .enums import OrderStatusEnum
-
-from utility.enums import UnitNameEnum
-from utility.log import leolog
-from accounting.views import AddInvoiceLineContext,InvoiceContext,ProductContext
+from .serializers import CourseSerializer 
+from .repo import CourseRepo  
+ 
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
 WIDE_LAYOUT="WIDE_LAYOUT"
