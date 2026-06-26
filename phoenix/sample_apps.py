@@ -14,7 +14,7 @@ phoenix_apps=[
     {'priority':8,'name':'archive','url':SITE_URL+'archive/','title':'آرشیو','logo':STATIC_URL+'archive'+'/img/'+'logo.png','color':'info','on_nav':True,'on_index':True,},
     {'priority':8,'name':'messenger','url':SITE_URL+'messenger/','title':'پیام رسان','logo':STATIC_URL+'messenger'+'/img/'+'logo.png','color':'primary','on_nav':True,'on_index':True,},
     {'priority':9,'name':'organization','url':SITE_URL+'organization/','title':'مدیریت سازمانی','logo':STATIC_URL+'organization'+'/img/'+'logo.png','color':'primary','on_nav':True,'on_index':True,},
-    {'priority':10,'name':'school','url':SITE_URL+'school/','title':'آموزشگاه','logo':STATIC_URL+'school'+'/img/'+'logo.png','color':'danger','on_nav':True,'on_index':True,},
+    {'priority':10,'name':'academy','url':SITE_URL+'academy/','title':'آموزشگاه','logo':STATIC_URL+'academy'+'/img/'+'logo.png','color':'danger','on_nav':True,'on_index':True,},
     {'priority':10,'name':'transport','url':SITE_URL+'transport/','title':'حمل و نقل','logo':STATIC_URL+'transport'+'/img/'+'logo.png','color':'primary','on_nav':True,'on_index':True,},
     {'priority':11,'name':'bms','url':SITE_URL+'bms/','title':'هوشمند سازی','logo':STATIC_URL+'bms'+'/img/'+'logo.png','color':'info','on_nav':True,'on_index':True,},
     {'priority':4,'name':'resume','url':SITE_URL+'resume/','title':'رزومه','logo':STATIC_URL+'resume'+'/img/'+'logo.png','color':'success','on_nav':True,'on_index':True,},

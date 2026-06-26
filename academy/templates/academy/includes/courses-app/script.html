@@ -1,0 +1,15 @@
+<script>
+    
+    let courses_for_courses_app=JSON.parse("{{courses_s|escapejs}}")
+    let courses_app = new Vue({
+        el: "#courses-app",
+        data: {
+            courses: courses_for_courses_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>
