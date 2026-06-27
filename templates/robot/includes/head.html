@@ -5,7 +5,17 @@
     href="https://cdn.prod.website-files.com"
     rel="preconnect"
     crossorigin="anonymous"/>
-    <title>Robotflow - Webflow HTML website template</title>
+    <title>Rocce</title>
+
+    
+{% if farsi_font_name %}
+<link href="{{STATIC_URL}}leo/css/font-farsi-{{farsi_font_name}}.css" rel="stylesheet">
+{% else %}
+<link href="{% static 'leo/css/font-farsi.css' %}" rel="stylesheet">
+{% endif %}
+
+<link href="{% static 'leo/css/style.css' %}" rel="stylesheet">
+
     <meta
     content="Robotflow 🤖💻 empowers Machine Learning Robot Webflow Template users with a professional, dynamic platform to showcase groundbreaking robotic technologies."
     name="description"/>
