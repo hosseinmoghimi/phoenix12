@@ -12,7 +12,6 @@ import json
 from utility.enums import UnitNameEnum
 from utility.log import leolog
 
-TEMPLATE_ROOT='blog/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
@@ -23,6 +22,11 @@ LAYOUT_PARENT = "cafe/layout.html"
 LAYOUT_PARENT = "kei/layout-fa.html"
 TEMPLATE_ROOT='robot/'
 LAYOUT_PARENT='robot/layout.html'
+TEMPLATE_ROOT='blog/'
+LAYOUT_PARENT='mostudio/layout.html'
+LAYOUT_PARENT='phoenix-theme/layout.html'
+LAYOUT_PARENT='phoenix-theme/layout.html'
+TEMPLATE_ROOT='phoenix-theme/'
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
@@ -73,6 +77,28 @@ class IndexView(View):
         return render(request,TEMPLATE_ROOT+"index.html",context)
 # Create your views here. 
 
+
+
+ 
+class StylesAndComponentsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        blogs=BlogRepo(request=request).list(for_home=True)
+        context['blogs']=blogs  
+
+        homesliders=HomeSliderRepo(request=request).list(for_home=True)
+        context['homesliders']=homesliders
+
+
+ 
+        
+        phoenix_apps=context["phoenix_apps"]
+        phoenix_apps=phoenix_apps
+        phoenix_apps = sorted(phoenix_apps, key=lambda d: d['priority'])
+
+        context['phoenix_apps']=phoenix_apps
+        return render(request,TEMPLATE_ROOT+"styles-and-components.html",context)
+# Create your views here. 
 
 
  
@@ -180,12 +206,7 @@ class AboutUsView(View):
 class ContactUsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        context['name3']="name 3333"
-        blog=BlogRepo(request=request).blog(*args, **kwargs)
-        context.update(PageContext(request=request,page=blog))
-        context["blog"]=blog
-        blog_s=json.dumps(BlogSerializer(blog,many=False).data)
-        context["blog_s"]=blog_s
+        context['name3']="name 3333"  
 
         return render(request,TEMPLATE_ROOT+"contact-us.html",context)
 # Create your views here. 

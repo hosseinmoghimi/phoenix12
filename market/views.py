@@ -23,10 +23,13 @@ from utility.views import RegionRepo
 from .serializers import CustomerSerializer
 from utility.views import MessageView
 LAYOUT_PARENT='market/layout.html'
+TEMPLATE_ROOT_ADMIN="market/"
 TEMPLATE_ROOT='market/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
+TEMPLATE_ROOT='phoenix-theme/'
+LAYOUT_PARENT='phoenix-theme/layout.html'
         
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
@@ -224,7 +227,7 @@ class LinksView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
         if request.user.is_authenticated and request.user.has_perm(APP_NAME+".add_supplier"):
-            return render(request,TEMPLATE_ROOT+"links.html",context)
+            return render(request,"market/links.html",context)
         else: 
             mv=MessageView()
             context={}
@@ -665,7 +668,7 @@ class CustomerView(View):
 
  
  
-        return render(request,TEMPLATE_ROOT+"customer.html",context) 
+        return render(request,TEMPLATE_ROOT_ADMIN+"customer.html",context) 
      
 
 class CustomerGroupView(View):
@@ -703,7 +706,7 @@ class CustomersView(View):
         if request.user.has_perm(APP_NAME+'.add_customer'):
             context.update(AddCustomerContext(request=request))
  
-        return render(request,TEMPLATE_ROOT+"customers.html",context) 
+        return render(request,TEMPLATE_ROOT_ADMIN+"customers.html",context) 
 
 
 class CartView(View):
