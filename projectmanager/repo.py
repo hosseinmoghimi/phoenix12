@@ -1,4 +1,4 @@
-from .models import Project,RemoteClient,Ticket
+from .models import Project,RemoteClient,Ticket,Issue
 from .apps import APP_NAME
 from core.repo import EventRepo
 from .enums import *
@@ -13,6 +13,94 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from .enums import *
  
+ 
+class IssueRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Issue.objects.filter(id=0)
+        me_person=PersonRepo(request=request).me
+        self.me_person=me_person
+        if me_person is not None:
+            if request.user.has_perm(APP_NAME+".view_issue"):
+                self.objects=Issue.objects 
+    
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            if parent_id is not None and parent_id>0:
+                objects=objects.filter(parent_id=parent_id)  
+        if "project_id" in kwargs:
+            project_id=kwargs["project_id"]
+            objects=objects.filter(project_id=project_id)  
+        if "project_id__in" in kwargs:
+            project_id__in=kwargs["project_id__in"]
+            objects=objects.filter(project_id__in=project_id__in)  
+        return objects.all()
+        
+    def issue(self,*args, **kwargs):
+        if "issue_id" in kwargs and kwargs["issue_id"] is not None:
+            return self.objects.filter(pk=kwargs['issue_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_issue(self,*args,**kwargs):
+        result,message,issue=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_issue"):
+            message="دسترسی غیر مجاز"
+            return result,message,issue
+        issue=Issue()
+        if 'title' in kwargs:
+            title=kwargs["title"]
+            issue.title=title
+ 
+        if 'project_id' in kwargs:
+            issue.project_id=kwargs["project_id"]
+         
+        me_person =PersonRepo(request=self.request).me
+        if me_person is not None:
+            person_id =me_person.id
+            issue.creator_id=person_id
+        else:
+            message="شخص فاقد شناسه می باشد."
+            return FAILED,message,None
+
+        if 'status' in kwargs:
+            issue.status=kwargs["status"]
+        if 'description' in kwargs:
+            issue.description=kwargs["description"]
+         
+        if 'start_datetime' in kwargs:
+            issue.start_datetime=kwargs["start_datetime"]
+            issue.start_datetime=kwargs["start_datetime"]
+            year=kwargs['start_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])
+            issue.start_datetime=kwargs['start_datetime']
+
+ 
+        if 'end_datetime' in kwargs:
+            issue.end_datetime=kwargs["end_datetime"]
+            issue.end_datetime=kwargs["end_datetime"]
+            year=kwargs['end_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])
+            issue.end_datetime=kwargs['end_datetime']
+
+  
+             
+        (result,message,issue)=issue.save()
+        return result,message,issue
+
+  
  
 class TicketRepo():
     def __init__(self,request,*args, **kwargs):

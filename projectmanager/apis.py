@@ -4,9 +4,9 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import ProjectRepo,RemoteClientRepo,TicketRepo
+from .repo import ProjectRepo,RemoteClientRepo,TicketRepo,IssueRepo
 from core.serializers import EventSerializer
-from .serializers import ProjectSerializer,RemoteClientSerializer,TicketSerializer
+from .serializers import ProjectSerializer,RemoteClientSerializer,TicketSerializer,IssueSerializer
 from accounting.serializers import InvoiceSerializer
 from django.http import JsonResponse
 from .forms import *
@@ -39,6 +39,29 @@ class SelectProjectApi(APIView):
         return JsonResponse(context)
  
 
+class AddIssueApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_issue_form=AddIssueForm(request.POST)
+        if add_issue_form.is_valid():
+            log=333
+            cd=add_issue_form.cleaned_data
+            result,message,issue=IssueRepo(request=request).add_issue(**cd)
+            if issue is not None:
+                context['issue']=IssueSerializer(issue).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+   
 
 class AddTicketApi(APIView):
     def post(self,request,*args, **kwargs):

@@ -34,6 +34,12 @@ urlpatterns = [
     path('remote-clients/',login_required(views.RemoteClientsView.as_view()),name="remote_clients"),  
     path('remote-client/<int:pk>/',login_required(views.RemoteClientView.as_view()),name="remoteclient"),
 
+    
+    path('add-issue/',login_required(apis.AddIssueApi.as_view()),name="add_issue"),  
+    path('remote-issues/',login_required(views.IssuesView.as_view()),name="issues"),  
+    path('remote-issue/<int:pk>/',login_required(views.IssueView.as_view()),name="issue"),
+
+
 
 
    

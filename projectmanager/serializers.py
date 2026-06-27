@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project,RemoteClient,Ticket
+from .models import Project,RemoteClient,Ticket,Issue
 from accounting.serializers import FinancialEventSerializer,InvoiceLineSerializer,BrandSerializer,ProductSerializer
 from organization.serializers import OrganizationalUnitSerializer,PersonSerializer
 
@@ -10,6 +10,16 @@ class ProjectSerializer(FinancialEventSerializer):
         model = Project
         fields = ['id','percentage_completed','amount','weight','title','thumbnail','persian_start_datetime','persian_end_datetime','employer','contractor', 'get_absolute_url','get_edit_url','get_delete_url']
  
+
+ 
+class IssueSerializer(FinancialEventSerializer):
+       project=ProjectSerializer()
+       creator=PersonSerializer()
+       class Meta:
+        model = Issue
+        fields = ['id','get_status_color','status','percentage_completed','title','project','persian_start_datetime','persian_end_datetime','creator',  'get_absolute_url','get_edit_url','get_delete_url']
+ 
+
 
   
 class ProjectSerializerForGuantt(serializers.ModelSerializer):
