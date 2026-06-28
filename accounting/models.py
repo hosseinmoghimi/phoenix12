@@ -847,6 +847,8 @@ class Category(models.Model,LinkHelper,ImageHelper):
 
     def primary_childs(self):
         return self.category_set.all()[:5]
+
+
 class Product(InvoiceLineItem):
     brand=models.ForeignKey("brand",null=True,blank=True, verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"),null=True,blank=True, max_length=50)
@@ -897,6 +899,7 @@ class Product(InvoiceLineItem):
 
 class ProductSpecification(models.Model,LinkHelper):
     product=models.ForeignKey("product", verbose_name=_("product"), on_delete=models.CASCADE)
+    parent=models.ForeignKey("productspecification", verbose_name=_("parent"),null=True,blank=True, on_delete=models.SET_NULL)
     name=models.CharField(_("name"),max_length=50)
     value=models.CharField(_("value"),max_length=50)
 
