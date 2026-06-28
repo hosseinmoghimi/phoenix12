@@ -1,41 +1,34 @@
-
-<!DOCTYPE html>
-<html lang="en-US" dir="rtl" data-navigation-type="default" data-navbar-horizontal-shape="default">
-
+<!doctype html>
+<html
+  lang="en-US"
+  dir="rtl"
+  data-navigation-type="default"
+  data-navbar-horizontal-shape="default"
+>
   <head>
-{% include "phoenix-theme/includes/head.html" %}
-
-</head>
+    {% include "phoenix-theme/includes/head.html" %}
+  </head>
 
   <body>
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
-     
     <main class="main" id="top">
-{% include "phoenix-theme/includes/navbar.html" %}
+      {% include "phoenix-theme/includes/headbar.html" %}
+      {% include "phoenix-theme/includes/navbar.html" %}
 
-{% block content %}
-  
-{% endblock content %}
-  
+      
+      {% include "phoenix-theme/includes/content.html" %} 
+      
+      {% include "phoenix-theme/includes/chat.html" %} 
+      {% include "phoenix-theme/includes/pre-footer.html" %} 
+      {% include "phoenix-theme/includes/footer.html" %}
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
 
- 
-{% include "phoenix-theme/includes/chat.html" %}
-    {% include "phoenix-theme/includes/footer.html" %}
-
-</main>
-<!-- ===============================================-->
-<!--    End of Main Content-->
-<!-- ===============================================-->
-
-
-
-{% include "phoenix-theme/includes/customize.html" %}
-   
-    
-
-{% include "phoenix-theme/includes/script.html" %}
+    {% include "phoenix-theme/includes/customizer.html" %} 
+    {% include "phoenix-theme/includes/script.html" %}
   </body>
-
 </html>
