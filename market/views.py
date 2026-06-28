@@ -35,6 +35,23 @@ def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
     context[WIDE_LAYOUT]=True 
     context['NO_FILTER']=True
+
+    
+    from utility.repo import ParameterRepo,PictureRepo
+    param_repo=ParameterRepo(request=request,app_name=APP_NAME)
+    pic_repo=PictureRepo(request=request,app_name=APP_NAME)
+    market_site_title=param_repo.parameter(name="عنوان سایت فروشگاه",default="فونیکس")
+    market_site_description=param_repo.parameter(name="درباره سایت فروشگاه",default="فونیکس")
+    market_site_logo=pic_repo.picture(name="لوگوی سایت فروشگاه")
+    context['market_site_title']=market_site_title.value
+    context['market_site_description']=market_site_description.value
+    context['market_site_logo']=market_site_logo.image
+    
+    
+    root_categories=CategoryRepo(request=request).list(for_home=True)
+    context['root_categories']=root_categories  
+
+
     me_supplier=SupplierRepo(request=request).me
     me_customer=CustomerRepo(request=request).me
     context['market_navbar']=False
@@ -47,9 +64,8 @@ def getContext(request,*args, **kwargs):
         context.update(CartItemContext(request=request,customer=me_customer))
     tuman_view=False
     from utility.repo import ParameterRepo
-    from phoenix.server_settings import CURRENCY,CURRENCY_TUMAN
-    p_repo=ParameterRepo(request=request,app_name=APP_NAME)
-    param=p_repo.parameter(name="واحد پولی برای نمایش ( "+CURRENCY+" , "+CURRENCY_TUMAN+" )",default=CURRENCY)
+    from phoenix.server_settings import CURRENCY,CURRENCY_TUMAN 
+    param=param_repo.parameter(name="واحد پولی برای نمایش ( "+CURRENCY+" , "+CURRENCY_TUMAN+" )",default=CURRENCY)
     if param.value==CURRENCY_TUMAN:
         context['SHOW_TUMAN']=True
     context['LAYOUT_PARENT']=LAYOUT_PARENT
@@ -212,12 +228,6 @@ class HomeView(View):
         context['products']=products
         products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
         context['products_s']=products_s
-
-
-        categories=CategoryRepo(request=request).list(for_home=True)
-        context['categories']=categories
-        categories_s=json.dumps(CategorySerializer(categories,many=True).data)
-        context['categories_s']=categories_s
 
 
         return render(request,TEMPLATE_ROOT+"home.html",context) 

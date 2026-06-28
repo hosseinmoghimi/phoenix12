@@ -763,10 +763,12 @@ class Category(models.Model,LinkHelper,ImageHelper):
     thumbnail_origin = models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'category/thumbnail/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
     products=models.ManyToManyField("product",blank=True, verbose_name=_("products"))
     header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'category/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
+    
     def get_link(self):
             return f"""
                     <a href="{self.get_absolute_url()}" class="ml-2 "> {self.title} </a>
                     """
+    
     def get_market_link(self):
             return f"""
                     <a href="{self.get_market_absolute_url()}" class="ml-2 "> {self.title} </a>
@@ -806,12 +808,14 @@ class Category(models.Model,LinkHelper,ImageHelper):
         # return self.parent.get_breadcrumb_link()+f"""<span class="my-2">{ACCOUNT_NAME_SEPERATOR}</span>"""+self.get_link()
         return f""" {self.parent.get_breadcrumb_link()} / {self.get_link()} """
         # return f"""<span>{self.parent.get_breadcrumb_link()}</span>{ACCOUNT_NAME_SEPERATOR}<span>{self.get_link()}</span>"""
+    
     def get_market_breadcrumb_link(self):
         if self.parent is None:
             return  self.get_market_link() 
         # return self.parent.get_breadcrumb_link()+f"""<span class="my-2">{ACCOUNT_NAME_SEPERATOR}</span>"""+self.get_link()
         return f""" {self.parent.get_market_breadcrumb_link()} / {self.get_market_link()} """
         # return f"""<span>{self.parent.get_breadcrumb_link()}</span>{ACCOUNT_NAME_SEPERATOR}<span>{self.get_link()}</span>"""
+    
     @property
     def full_title(self):
         if self.parent is None:
@@ -841,6 +845,8 @@ class Category(models.Model,LinkHelper,ImageHelper):
 
         return thumbnail
 
+    def primary_childs(self):
+        return self.category_set.all()[:5]
 class Product(InvoiceLineItem):
     brand=models.ForeignKey("brand",null=True,blank=True, verbose_name=_("brand"), on_delete=models.CASCADE)
     model=models.CharField(_("model"),null=True,blank=True, max_length=50)
