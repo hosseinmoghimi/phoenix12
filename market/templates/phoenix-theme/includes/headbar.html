@@ -292,7 +292,7 @@
                                     </div>
                                     <div class="flex-1 me-sm-3">
                                       <h4 class="fs-9 text-body-emphasis">
-                                        Kiera Anderson
+                                        {{me_person.full_name}}
                                       </h4>
                                       <p
                                         class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"
@@ -492,12 +492,14 @@
                               <div class="avatar avatar-xl">
                                 <img
                                   class="rounded-circle"
-                                  src="{{STATIC_URL}}phoenix-theme/assets/img/team/72x72/57.webp"
+                                  src="{{me_person.image}}"
                                   alt=""
                                 />
                               </div>
-                              <h6 class="mt-2 text-body-emphasis">
-                                Jerry Seinfield
+                              <h6 class="farsi mt-2 text-body-emphasis">
+                              
+                                  {{me_person.full_name}}
+                                
                               </h6>
                             </div>
                             <div class="mb-3 mx-3">
@@ -515,36 +517,39 @@
                           >
                             <ul class="nav d-flex flex-column mb-2 pb-1">
                               <li class="nav-item">
-                                <a class="nav-link px-3 d-block" href="#!">
+                                <a class="nav-link px-3 d-block" href="{{me_person.get_absolute_url}}">
                                   <span
                                     class="me-2 text-body align-bottom"
                                     data-feather="user"
                                   ></span
-                                  ><span>Profile</span></a
+                                  ><span class="farsi">پروفایل</span></a
                                 >
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link px-3 d-block" href="#!"
+                                <a class="farsi nav-link px-3 d-block" href="{{me_person.get_absolute_url}}"
                                   ><span
                                     class="me-2 text-body align-bottom"
                                     data-feather="pie-chart"
                                   ></span
-                                  >Dashboard</a
+                                  >
+                                  <span class="farsi">
+                                    دشبورد
+                                  </span></a
                                 >
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link px-3 d-block" href="#!">
+                                <a class="nav-link px-3 d-block" href="{{me_person.get_absolute_url}}">
                                   <span
-                                    class="me-2 text-body align-bottom"
+                                    class="  me-2 text-body align-bottom"
                                     data-feather="lock"
                                   ></span
                                   >Posts &amp; Activity</a
                                 >
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link px-3 d-block" href="#!">
+                                <a class="nav-link px-3 d-block" href="{{me_person.get_absolute_url}}">
                                   <span
-                                    class="me-2 text-body align-bottom"
+                                    class="  me-2 text-body align-bottom"
                                     data-feather="settings"
                                   ></span
                                   >Settings &amp; Privacy
@@ -587,12 +592,16 @@
                             <hr />
                             <div class="px-3">
                               <a
-                                class="btn btn-phoenix-secondary d-flex flex-center w-100"
-                                href="#!"
+                                class="btn btn-phoenix-danger d-flex flex-center w-100"
+                                href="{% url 'authentication:logout' %}"
                               >
                                 <span class="me-2" data-feather="log-out">
                                 </span
-                                >Sign out</a
+                                >
+                                <span class="farsi">
+                                  خروج از حساب کاربری
+                                </span>
+                                </a
                               >
                             </div>
                             <div

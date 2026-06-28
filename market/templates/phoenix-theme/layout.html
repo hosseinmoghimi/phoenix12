@@ -17,9 +17,10 @@
       {% include "phoenix-theme/includes/headbar.html" %}
       {% include "phoenix-theme/includes/navbar.html" %}
 
-      
-      {% include "phoenix-theme/includes/content.html" %} 
-      
+       
+      {% block content %}
+        
+      {% endblock content %}
       {% include "phoenix-theme/includes/chat.html" %} 
       {% include "phoenix-theme/includes/pre-footer.html" %} 
       {% include "phoenix-theme/includes/footer.html" %}
