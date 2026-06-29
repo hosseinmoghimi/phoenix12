@@ -23,6 +23,7 @@ else:
         
     urlpatterns = [ 
         path('', IndexView.as_view(),name='home'),
+        path('accounts/', include('allauth.urls')),
         path('admin/', admin.site.urls),
         path('utility/', include('utility.urls')),
         path('authentication/', include('authentication.urls')),
