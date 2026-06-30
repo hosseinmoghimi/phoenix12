@@ -44,10 +44,7 @@ class Customer(MarketPerson):
         result=SUCCEED
         message='مشتری با موفقیت اضافه شد.'
         return result,message,customer
-    
-    @property
-    def total_in_cart(self):
-        return 0
+         
     
     @property
     def total_in_cart(self):
@@ -55,6 +52,10 @@ class Customer(MarketPerson):
         for cart_item in self.cartitem_set.all():
             sum+=cart_item.sum
         return sum
+
+    @property
+    def items_in_cart_count(self):
+        return len(self.cartitem_set.all())
 
 
 class Supplier(MarketPerson):

@@ -56,14 +56,16 @@
                     <li class="nav-item feather-icon-wait" style="height: 40px">
                       <a
                         class="nav-link px-2 icon-indicator icon-indicator-primary"
-                        href="{% url 'market:cart' customer_id=me_custometr.id %}"
+                        href="{% url 'market:cart' customer_id=me_customer.id %}"
                         role="button"
                         ><span
                           class="text-body-tertiary"
                           data-feather="shopping-cart"
                           style="height: 20px; width: 20px"
                         ></span
-                        ><span class="icon-indicator-number">3</span></a
+                        ><span class="icon-indicator-number">
+                          {{items_in_cart_count}}
+                        </span></a
                       >
                     </li>
                     {% endif %}
@@ -638,12 +640,14 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <div class="search-box ecommerce-search-box w-100">
-                    <form class="position-relative">
+                    <form class="position-relative" method="POST" action="{% url 'market:search' %}">
+                      {% csrf_token %}
                       <input
-                        class="form-control search-input search form-control-sm"
+                        class="farsi form-control search-input search form-control-sm"
                         type="search"
-                        placeholder="Search"
-                        aria-label="Search"
+                        placeholder="جستجو ..."
+                        aria-label="Search" 
+                        name="search_for"
                       />
                       <span class="fas fa-search search-box-icon"></span>
                     </form>

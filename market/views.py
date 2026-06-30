@@ -6,9 +6,7 @@ from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSeriali
 from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo,ShipRepo,PackageRepo
 from .forms import *
 from .apps import APP_NAME
-
 from accounting.views import InvoiceLineItemContext,ProductSpecificationSerializer,PageContext
-
 from .serializers import ShipperSerializer,ProductWithPriceSerializer,CustomerGroupSerializer
 from .repo import ShipperRepo,CustomerGroupRepo
 from phoenix.server_apps import phoenix_apps
@@ -22,22 +20,37 @@ from authentication.views import PersonRepo,PersonSerializer,AddPersonContext
 from utility.views import RegionRepo
 from .serializers import CustomerSerializer
 from utility.views import MessageView
-LAYOUT_PARENT='market/layout.html'
+from utility.repo import ParameterRepo,PictureRepo
+
 TEMPLATE_ROOT_ADMIN="market/"
-TEMPLATE_ROOT='market/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
 TEMPLATE_ROOT='phoenix-theme/'
 LAYOUT_PARENT='phoenix-theme/layout.html'
-        
+
+LAYOUT_PARENT='market/layout.html'
+TEMPLATE_ROOT='market/'
+
+DASHBOARD_LAYOUT_PARENT='phoenix-dashboard/layout.html'
+DASHBOARD_TEMPLATE_ROOT='phoenix-dashboard/'
+
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+    global TEMPLATE_ROOT
+    global DASHBOARD_TEMPLATE_ROOT
     context[WIDE_LAYOUT]=True 
     context['NO_FILTER']=True
 
-    
     from utility.repo import ParameterRepo,PictureRepo
+    param_repo=ParameterRepo(request=request,app_name=APP_NAME)
+        
+    DASHBOARD_LAYOUT_PARENT=param_repo.parameter(name="DASHBOARD_LAYOUT_PARENT",default='phoenix-dashboard/layout.html').value
+    DASHBOARD_TEMPLATE_ROOT=param_repo.parameter(name="DASHBOARD_TEMPLATE_ROOT",default='phoenix-dashboard/').value
+        
+    LAYOUT_PARENT=param_repo.parameter(name="LAYOUT_PARENT",default='market/layout.html').value
+    TEMPLATE_ROOT=param_repo.parameter(name="TEMPLATE_ROOT",default='market/').value
+    
     param_repo=ParameterRepo(request=request,app_name=APP_NAME)
     pic_repo=PictureRepo(request=request,app_name=APP_NAME)
     market_site_title=param_repo.parameter(name="عنوان سایت فروشگاه",default="فونیکس")
@@ -61,6 +74,9 @@ def getContext(request,*args, **kwargs):
     if me_customer is not None:
         context['market_navbar']=True
         context['me_customer']=me_customer
+        items_in_cart_count=0
+        items_in_cart_count=me_customer.items_in_cart_count
+        context['items_in_cart_count']=items_in_cart_count
         context.update(CartItemContext(request=request,customer=me_customer))
     tuman_view=False
     from utility.repo import ParameterRepo
@@ -224,6 +240,13 @@ class HomeView(View):
                 product.available=True
                 product.unit_name=primary_shop.unit_name
                 product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
+           
+        categories=CategoryRepo(request=request).list(for_home=True)
+        context['categories']=categories  
+
+
+        categories_s=json.dumps(CategorySerializer(categories,many=True).data)
+        context['categories_s']=categories_s
            
         context['products']=products
         products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
@@ -551,10 +574,11 @@ class SuppliersView(View):
         suppliers_s=json.dumps(SupplierSerializer(suppliers,many=True).data)
         context['suppliers']=suppliers
         context['suppliers_s']=suppliers_s
+        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
         
         if request.user.has_perm(APP_NAME+".add_supplier"):
             context.update(AddSupplierContext(request=request))
-        return render(request,TEMPLATE_ROOT+"suppliers.html",context) 
+        return render(request,DASHBOARD_TEMPLATE_ROOT+"suppliers.html",context) 
 
 
 class ShopPackagesView(View):

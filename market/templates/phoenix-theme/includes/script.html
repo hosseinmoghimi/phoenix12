@@ -13,3 +13,62 @@
 <script src="{% static 'phoenix-theme/vendors/dayjs/dayjs.min.js' %}"></script>
 <script src="{% static 'phoenix-theme/assets/js/phoenix.js' %}"></script>
 <script src="{% static 'phoenix-theme/vendors/swiper/swiper-bundle.min.js' %}"></script>
+
+
+
+
+
+<script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+<script src="{% static 'utility/js/utility.js' %}"></script>
+<script src="{% static 'utility/js/message.js' %}"></script>
+<script>
+  let DEBUG = false;
+</script>
+{% if DEBUG %}
+<script>
+    DEBUG=true
+</script>
+<script src="{% static 'vendor/js/vue.js' %}"></script>
+
+{% else %}
+<script>
+    DEBUG=false
+</script>
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+
+{% endif %}
+
+
+<script src="{% static 'persian/moment.js' %}"></script>
+<script src="{% static 'persian/moment-jalaali.js' %}"></script>
+<script src="{% static 'persian/vue-persian-datetime-picker-browser.js' %}"></script>
+
+
+<script>
+  let CURRENCY = "{{CURRENCY}}";
+  let current_datetime = "{{current_datetime}}";
+  let current_date = "{{current_date}}";
+  let current_time = "{{current_time}}";
+  function leolog(data) {
+    if (DEBUG) {
+      console.log(data);
+    }
+  }
+</script>
+<script>
+  var csrfmiddlewaretoken = "";
+  $(document).ready(function () {
+    // Javascript method's body can be found in assets/js/demos.js
+    let csrfmiddlewaretoken_input=$("input[name='csrfmiddlewaretoken']")
+    if(typeof csrfmiddlewaretoken_input != "undefined"){
+        
+        csrfmiddlewaretoken = csrfmiddlewaretoken_input.val();
+    }
+    
+    let notification_devider=$(".notification-divider:last")
+    if(typeof notification_devider != "undefined"){
+        
+        notification_devider.addClass("d-none");
+    }
+  });
+</script>
