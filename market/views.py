@@ -576,41 +576,10 @@ class SuppliersView(View):
         context['suppliers_s']=suppliers_s
         context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
         
+        context['SUPPLIERS_ACTIVE_LINK']=True
         if request.user.has_perm(APP_NAME+".add_supplier"):
             context.update(AddSupplierContext(request=request))
         return render(request,DASHBOARD_TEMPLATE_ROOT+"suppliers.html",context) 
-
-
-class ShopPackagesView(View):
-    def get(self,request,*args,**kwargs):
-        context=getContext(request=request)
-        shop_packages=ShopPackageRepo(request=request).list(*args,**kwargs)
-        shop_packages_s=json.dumps(ShopPackageSerializer(shop_packages,many=True).data)
-        context['shop_packages']=shop_packages
-        context['shop_packages_s']=shop_packages_s
-        
-        if request.user.has_perm(APP_NAME+".add_shoppackage"):
-            context.update(AddShopPackageContext(request=request))
-        return render(request,TEMPLATE_ROOT+"shop-packages.html",context) 
-
-
-class ShopPackageView(View):
-    def get(self,request,*args,**kwargs):
-        context=getContext(request=request)
-        shop_package=ShopPackageRepo(request=request).shop_package(*args,**kwargs)
-        shop_package_s=json.dumps(ShopPackageSerializer(shop_package).data)
-        context['shop_package']=shop_package
-        context['shop_package_s']=shop_package_s
-
-
-        shops=shop_package.shops.all()
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
-        context['shops']=shops
-        context['shops_s']=shops_s
-
-        if 'me_supplier' in kwargs and context['me_supplier'] is not None:
-            context.update(AddShopContext(request=request))
-        return render(request,TEMPLATE_ROOT+"shop-package.html",context) 
 
         
 class SupplierView(View):
@@ -654,6 +623,38 @@ class SupplierView(View):
         return render(request,TEMPLATE_ROOT+"supplier.html",context) 
 
     
+class ShopPackagesView(View):
+    def get(self,request,*args,**kwargs):
+        context=getContext(request=request)
+        shop_packages=ShopPackageRepo(request=request).list(*args,**kwargs)
+        shop_packages_s=json.dumps(ShopPackageSerializer(shop_packages,many=True).data)
+        context['shop_packages']=shop_packages
+        context['shop_packages_s']=shop_packages_s
+        
+        if request.user.has_perm(APP_NAME+".add_shoppackage"):
+            context.update(AddShopPackageContext(request=request))
+        return render(request,TEMPLATE_ROOT+"shop-packages.html",context) 
+
+
+class ShopPackageView(View):
+    def get(self,request,*args,**kwargs):
+        context=getContext(request=request)
+        shop_package=ShopPackageRepo(request=request).shop_package(*args,**kwargs)
+        shop_package_s=json.dumps(ShopPackageSerializer(shop_package).data)
+        context['shop_package']=shop_package
+        context['shop_package_s']=shop_package_s
+
+
+        shops=shop_package.shops.all()
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['shops']=shops
+        context['shops_s']=shops_s
+
+        if 'me_supplier' in kwargs and context['me_supplier'] is not None:
+            context.update(AddShopContext(request=request))
+        return render(request,TEMPLATE_ROOT+"shop-package.html",context) 
+
+
 class ShippersView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -734,13 +735,14 @@ class CustomersView(View):
         context=getContext(request=request)
         customers =CustomerRepo(request=request).list(*args, **kwargs)
         context['customers']=customers
-        
+        context['CUSTOMERS_ACTIVE_LINK']=True
         customers_s=json.dumps(CustomerSerializer(customers,many=True).data)
         context['customers_s']=customers_s
         if request.user.has_perm(APP_NAME+'.add_customer'):
             context.update(AddCustomerContext(request=request))
  
-        return render(request,TEMPLATE_ROOT_ADMIN+"customers.html",context) 
+        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
+        return render(request,DASHBOARD_TEMPLATE_ROOT+"customers.html",context) 
 
 
 class CartView(View):

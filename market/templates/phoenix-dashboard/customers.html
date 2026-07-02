@@ -10,7 +10,7 @@
 <div class="mb-9">
   <div class="row g-2 mb-4">
     <div class="col-auto">
-      <h2 class="mb-0 farsi">فروشنده ها و تامین کننده ها</h2>
+      <h2 class="mb-0 farsi">مشتریان و خریداران</h2>
     </div>
   </div>
   <ul class="nav nav-links mb-3 mb-lg-2 mx-n3">
@@ -61,7 +61,7 @@
           <div class="search-box">
             <form class="position-relative">
               <input
-                class="farsi form-control search-input search"
+                class="form-control search-input search"
                 type="search"
                 placeholder="Search customers"
                 aria-label="Search"
@@ -220,14 +220,14 @@
                 aria-label="scrollable content"
                 style="height: auto; overflow: scroll hidden"
               >
-                <div id="suppliers-app" class="simplebar-content" style="padding: 0px 4px">
+                <div id="customers-app" class="simplebar-content" style="padding: 0px 4px">
                   <table class="table table-sm fs-9 mb-0">
                     <thead>
                       <tr>
                         <th class="white-space-nowrap fs-9 align-middle ps-0">
                           <div class="form-check mb-0 fs-8">
                             <input
-                              class="form-check-input"
+                              class="farsi form-check-input"
                               id="checkbox-bulk-customers-select"
                               type="checkbox"
                               data-bulk-select='{"body":"customers-table-body"}'
@@ -240,7 +240,7 @@
                           data-sort="customer"
                           style="width: 10%"
                         >
-                          فروشنده
+                          مشتری
                         </th>
                         <th
                           class="farsi sort align-middle pe-5"
@@ -294,7 +294,7 @@
                     </thead>
                     <tbody class="list" id="customers-table-body">
 
-                      <tr v-for="supplier in suppliers"
+                      <tr v-for="customer in customers"
                         class="hover-actions-trigger btn-reveal-trigger position-static"
                       >
                         <td class="fs-9 align-middle ps-0 py-3">
@@ -311,27 +311,26 @@
                         >
                           <a
                             class="d-flex align-items-center text-body-emphasis"
-                            :href="supplier.get_absolute_url"
+                            :href="customer.get_absolute_url"
                           >
                             <div class="avatar avatar-m">
                               <img
                                 class="rounded-circle"
-                                :src="supplier.person_account.person.image"
+                                :src="customer.person_account.person.image"
                                 alt=""
                               />
                             </div>
                             <p class="mb-0 ms-3 text-body-emphasis fw-bold">
-                              <span v-text="supplier.full_name" class="farsi">
+                              <span v-text="customer.full_name" class="farsi">
 
                               </span>
                             </p>
                           </a>
                         </td>
                         <td class="email align-middle white-space-nowrap pe-5">
-                          <a class="fw-semibold" :href="supplier.person_account.get_absolute_url"
+                          <a class="fw-semibold" :href="customer.person_account.get_absolute_url"
                             >
-                            <span class="farsi" v-text="supplier.person_account.person.full_name"></span>
-                            
+                            <span class="farsi" v-text="customer.person_account.person.full_name"></span>
                             </a
                           >
                         </td>
@@ -517,6 +516,6 @@
 </div>
 {% endblock content %}
 {% block script %}
-    {% include "market/includes/suppliers-app/script.html" %}
+    {% include "market/includes/customers-app/script.html" %}
   
 {% endblock script %}

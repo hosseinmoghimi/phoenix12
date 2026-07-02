@@ -19,6 +19,7 @@ class Course(models.Model,LinkHelper):
         super(Course,self).save()
         return SUCCEED,'واحد درسی با موفقیت ذخیره شد.',self
 
+
 class Word(Page):
      
 
@@ -76,4 +77,5 @@ class Word(Page):
                     </ol>
                     </nav>
             """
-        
+
+ 

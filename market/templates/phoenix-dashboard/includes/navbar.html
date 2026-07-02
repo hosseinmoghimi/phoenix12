@@ -42,12 +42,24 @@
 
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'market:suppliers' %}">
+                  <a class="nav-link {% if SUPPLIERS_ACTIVE_LINK %} active{% endif %}" href="{% url 'market:suppliers' %}">
                     <div class="d-flex align-items-center">
                       <span class="nav-link-text farsi">فروشنده ها</span>
                     </div> </a
                   ><!-- more inner pages-->
                 </li>
+                
+                  
+                
+
+                 <li class="nav-item">
+                  <a class="nav-link {% if CUSTOMERS_ACTIVE_LINK %} active{% endif %} " href="{% url 'market:customers' %}">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-text farsi">مشتریان</span>
+                    </div> </a
+                  ><!-- more inner pages-->
+                </li>
+
 
 
                 <li class="nav-item">

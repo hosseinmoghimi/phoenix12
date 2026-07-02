@@ -732,7 +732,7 @@ class SupplierRepo():
             search_for=kwargs["search_for"]
 
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=pure_code ) )
-        return objects.all()
+        return objects.all() 
     
 
     def supplier(self,*args, **kwargs):

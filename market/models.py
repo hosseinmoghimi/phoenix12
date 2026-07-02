@@ -91,7 +91,6 @@ class Shipper(MarketPerson):
         return result,message,shipper
 
 
-
 class Ship(FinancialEvent,LinkHelper):
     packages=models.ManyToManyField("package", verbose_name=_("packages"))
 
