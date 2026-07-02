@@ -1,0 +1,332 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+<div class="row ltr">
+  <div class="col-12 mb-3">
+    <form action="{% url 'academy:search' %}" method="POST">
+    <input placeholder="search ..." type="text" class="form-control" name="search_for">
+      {% csrf_token %}
+
+    </form>
+  </div>
+  {% if word %}
+  <div class="col-md-12">
+    <div>{{word.get_breadcrumb|safe}}</div>
+  </div>
+  <div class="col-12 col-md-3">
+    {% if word %}
+    <div class="card">
+      <div class="card-header">
+        <h6>Word</h6>
+      </div>
+      <div class="card-body">
+        <h2 class="text-center">{{word.title}}</h2>
+
+        <div class="text-center">
+          <img
+            src="{{word.thumbnail}}"
+            class="rounded my-4"
+            width="80%"
+            alt=""
+          />
+        </div>
+
+        <div>
+          {% if perms.academy.change_word %}
+          <a
+            target="_blank"
+            title="edit"
+            href="{{word.get_edit_url}}"
+            class="mx-2"
+            ><i class="fa fa-edit text-warning"></i
+          ></a>
+          {% endif %} {% if perms.academy.delete_word %}
+          <a
+            target="_blank"
+            title="delete"
+            href="{{word.get_delete_url}}"
+            class="mx-2"
+            ><i class="fa fa-trash text-danger"></i
+          ></a>
+          {% endif %}
+          <a
+            target="_blank"
+            href="https://www.google.com/search?q={{page.title}}"
+            title="search"
+          >
+            <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
+          </a>
+
+          <a
+            target="_blank"
+            href="https://www.google.com/search?q={{word.title}}+icon&sca_esv=11b7b2325caaf8c6&udm=2&biw=1745&bih=859&sxsrf=APpeQns2eaLYiwi4_1vHjLICgnDOkI5y6Q%3A1782912124939&ei=fBRFaor1ONOZhbIPtc_DoAk&ved=0ahUKEwiKo_2eybGVAxXTTEEAHbXnEJQQ4dUDCBE&uact=5&oq={{word.title}}+icon&gs_lp=Egtnd3Mtd2l6LWltZyIHZ2lyYWZmZTIKEAAYgAQYigUYQzIGEAAYBxgeMgYQABgHGB4yBhAAGAcYHjIGEAAYBxgeMgYQABgHGB4yBhAAGAcYHjIGEAAYBxgeMgYQABgHGB4yBhAAGAcYHkjpBlAAWABwAXgAkAEAmAEAoAEAqgEAuAEDyAEAmAIBoAIPmAMAiAYBkgcBMaAHALIHALgHAMIHAzMtMcgHDYAIAQ&sclient=gws-wiz-img"
+            title="image"
+          >
+            <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+  </div>
+  {% endif %}
+  <div class="col-12 col-md-9">
+    <div class="card">
+      <div class="card-body">
+         <div id="words-app">
+      <div class="row ltr">
+        <div class="col-12 my-4" v-for="word in words">
+          <div class="media">
+            <a :href="word.get_absolute_url">
+              <img :src="word.thumbnail" width="64" class="rounded" alt="" />
+            </a>
+            <div class="media-body ml-2">
+              <h5 class="text-left">
+                <a :href="word.get_absolute_url">
+                  <span v-text="word.title"> </span>
+                </a>
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <!-- <form @submit.prevent="add_word()">
+
+        <input type="text" class="form-control" v-model="title" placeholder="کلمه جدید">
+        <button type="submit" class="btn btn-success">
+          <span>
+            افزودن
+          </span>
+        </button>
+        <div>
+          {% include 'utility/includes/message.html' %}
+        </div>
+      </form> -->
+          {% if add_word_form %}
+
+          <div>
+            <form class="form-inline" @submit.prevent="add_word()">
+              
+              <input
+                class="form-control  "
+                style="border-radius: 0 0.5rem 0.5rem 0 !important"
+                value=""
+                type="search"
+                v-model="title"
+                width="300"
+                placeholder="افزودن"
+              />
+              <button
+                class="btn btn-success my-2 "
+                type="submit"
+                style="border-radius: 0.5rem 0 0 0.5rem !important"
+              >
+                <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> -->
+                <!-- جستجو -->
+                <i class="fa fa-plus"></i>
+              </button>
+            </form>
+
+            <div>{% include 'utility/includes/message.html' %}</div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+   
+  </div>
+
+  {% if word %}
+  <div class="col-md-12">
+    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+      {% include "attachments/includes/images-app/template.html" %}
+
+  </div>
+ 
+  <div class="col-md-12">
+      {% include "attachments/includes/comments-app/template.html" %}
+
+  </div>
+  <div class="col-md-12">
+      {% include "core/includes/page-related-app/template.html" %}
+
+  </div>
+
+  {% endif %}
+  
+  <div class="col-md-12">
+
+
+
+
+    <div id="accordion-words-spell" class="rtl text-right farsi">
+  <div class="card" id="words-spell-app">
+    <div class="card-header" id="heading-words-spell">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-words-spell"
+          aria-expanded="true"
+          aria-controls="collapse-words-spell"
+        >
+          words spell
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-words-spell"
+      class="collapse"
+      aria-labelledby="heading-words-spell"
+      data-parent="#accordion-words-spell"
+    >
+      <div class="card-body">
+        
+         {% for word in words %}
+          <h5 class="text-left">
+            <a href="{{word.get_absolute_url}}">
+
+              {{word.title}}
+            </a>
+            </h5>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+    </div>
+
+
+
+
+
+ 
+  </div>
+  {% if word %}
+     <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        {% load static %}
+{% load to_persian_date %}
+<h5>
+  <a href="{% url 'core:page' pk=page.pk %}"> page: {{page.title}} </a>
+</h5>
+<img src="{{page.thumbnail}}" width="128" alt="" />
+<div class="my-3">
+
+  <h5>{{page.title}}
+    <span class="badge badge-{{financial_event.get_status_color}}">
+        {{financial_event.status}}
+      </span>
+  </h5>
+
+  <a href="{{page.get_absolute_url}}">
+    <small class="text-muted2">{{page.class_title}}</small>
+  </a>
+</div>
+<div class="text-center">
+  <a href="{{page.get_absolute_url}}">
+
+    <img width="128" src="{{page.get_qrcode_url}}" alt="">
+  </a>
+</div>
+<hr>
+<div>
+  <h6>
+  <small class="text-muted">
+    تاریخ ایجاد
+  </small>
+  
+
+  {{page.date_added|to_persian_datetime|safe}}
+</h6>
+</div>
+<div>
+  <h6>
+  <small class="text-muted">
+    تاریخ ویرایش
+  </small>
+  
+
+  {{page.date_updated|to_persian_datetime|safe}}
+</h6>
+</div>
+<div>{% include "attachments/includes/page-like-app/template.html" %}</div>
+<div class="my-3">
+  <form action="https://www.google.com/search" method="get" target="_blank" id="search-form">
+    <input name="q" type="hidden" value="{{page.title}}" />
+    <button type="submit" class="btn btn-link p-0">
+      <img src="{% static 'img/icons/google.png' %}" width="32" alt="" />
+
+      جستجوی گوگل
+    </button>
+  </form>
+</div>
+
+<div>
+  {% if perms.core.change_page %}
+  <a href="{{page.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+    <i class="fa fa-edit text-warning"></i>
+    ویرایش
+  </a>
+  {% endif %} {% if perms.core.delete_page %}
+
+  <a href="{{page.get_delete_url}}" class="my-2 text-danger mx-2" title="حذف" target="_blank">
+    <i class="fa fa-trash text-danger"></i>
+    حذف
+  </a>
+  {% endif %}
+</div> 
+      </div>
+    </div>
+  </div>
+  {% endif %}
+ 
+</div>
+
+{% endblock content %} {% block script %}
+<script>
+  let parent_id = 0;
+</script>
+{% if word %}
+<script>
+  parent_id = parseInt("{{word.id}}");
+</script>
+{% include "core/includes/page-app/script.html" %} {% endif %}
+<script>
+  let words_for_words_app = JSON.parse(`{{words_s|escapejs}}`);
+  let words_app = new Vue({
+    el: "#words-app",
+    data: {
+      words: words_for_words_app,
+      title: "",
+      message: { show: false },
+    },
+    methods: {
+      add_word: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          parent_id: parseInt(parent_id),
+          title: this.title,
+        };
+
+        let url = "{% url 'academy:add_word' %}";
+        $.post(url, payload).done((data) => {
+          if (data.result === "SUCCEED") {
+            words_app.words.push(data.word);
+            words_app.title = "";
+          }
+
+          if (data.result != "SUCCEED") {
+            show_message(words_app, "خطا", data.message, "danger", 3000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endblock script %}

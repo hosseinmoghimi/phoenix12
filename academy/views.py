@@ -3,13 +3,13 @@ from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_UR
 from django.views import View
 from .forms import *
 from .apps import APP_NAME
-from core.views import CoreContext,MessageView 
+from core.views import CoreContext,MessageView,PageContext
 
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import CourseSerializer 
-from .repo import CourseRepo  
+from .serializers import CourseSerializer,WordSerializer
+from .repo import CourseRepo,WordRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -34,6 +34,23 @@ class IndexView(View):
         context['phoenix_apps']=phoenix_apps
         return render(request,TEMPLATE_ROOT+"index.html",context)
 
+class SearchView(View):
+    def post(self,request,*args, **kwargs):
+        search_form=SearchForm(request.POST)
+        if search_form.is_valid():
+            search_for=search_form.cleaned_data['search_for']
+            context=getContext(request=request)
+           
+
+            words=WordRepo(request=request).list(search_for=search_for).order_by('title')
+
+            context['search_for']=search_for
+            words_s=json.dumps(WordSerializer(words,many=True).data)
+            context['words_s']=words_s
+            context['words']=words
+        
+        return render(request,TEMPLATE_ROOT+"search.html",context)
+
  
 
 class CoursesView(View):
@@ -51,9 +68,7 @@ class CoursesView(View):
             suppliers=SupplierRepo(request=request).list()
             context['suppliers']=suppliers
         return render(request,TEMPLATE_ROOT+"courses.html",context) 
-    
  
-
 
 class CourseView(View):
     def get(self,request,*args, **kwargs):
@@ -76,4 +91,42 @@ class CourseView(View):
         # context['NOT_FOOTER']=True
         return render(request,TEMPLATE_ROOT+"course.html",context) 
  
+
+class WordView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        word =WordRepo(request=request).word(*args, **kwargs) 
+        if word is None:
+            words=WordRepo(request=request).list(parent_id=None).order_by('title')
+        else:
+            context.update(PageContext(request=request,page=word))
+            words=WordRepo(request=request).list(parent_id=word.id).order_by('title')
+            context['word']=word
+            word_s=json.dumps(WordSerializer(word,many=False).data)
+            context['word_s']=word_s
+
+        words_s=json.dumps(WordSerializer(words,many=True).data)
+        context['words_s']=words_s
+        context['words']=words
  
+        if request.user.has_perm(APP_NAME+".add_word"):
+            context['add_word_form']=AddWordForm()
+        return render(request,TEMPLATE_ROOT+"word.html",context) 
+ 
+
+class WordsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+         
+
+        words=WordRepo(request=request).list().order_by('title')
+        words_s=json.dumps(WordSerializer(words,many=True).data)
+        context['words_s']=words_s
+        context['words']=words
+ 
+   
+        return render(request,TEMPLATE_ROOT+"words.html",context) 
+ 
+ 
+

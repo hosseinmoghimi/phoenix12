@@ -1,4 +1,4 @@
-from .models import Course
+from .models import Course,Word
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -73,4 +73,65 @@ class CourseRepo():
             course.nature=kwargs["nature"]
         (result,message,course)=course.save()
         return result,message,course
+ 
+
+  
+ 
+
+class WordRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Word.objects.all().order_by('title')
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Word.objects
+            if request.user.has_perm(APP_NAME+".view_word"):
+                self.objects=Word.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(title__contains=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        return objects.all()
+        
+    def word(self,*args, **kwargs):
+        if "word_id" in kwargs and kwargs["word_id"] is not None:
+            return self.objects.filter(pk=kwargs['word_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_word(self,*args,**kwargs):
+        result,message,word=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_word"):
+            message="دسترسی غیر مجاز"
+            return result,message,word
+        word=Word()
+        if 'title' in kwargs:
+            if len(Word.objects.filter(title=kwargs["title"]))>0:
+                return FAILED,'عنوان تکراری',None
+            word.title=kwargs["title"] 
+        if 'color' in kwargs:
+            word.color=kwargs["color"]
+        if 'supplier_id' in kwargs:
+            word.supplier_id=kwargs["supplier_id"]
+        if 'parent_id' in kwargs:
+            if kwargs['parent_id'] is not None and kwargs['parent_id']>0:
+                word.parent_id=kwargs["parent_id"]
+
+            
+        
+
+        if 'nature' in kwargs:
+            word.nature=kwargs["nature"]
+        (result,message,word)=word.save()
+        
+        return result,message,word
  

@@ -1,0 +1,54 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %} 
+ 
+<div id="words-app">
+  <div class="row ltr">
+    <div class="col-4 my-4" v-for="word in words">
+      <div class="media">
+        <a :href="word.get_absolute_url">
+          <img :src="word.thumbnail" width="64" class="rounded" alt="" />
+        </a>
+        <div class="media-body ml-2">
+          <h3 class="text-">
+            <a :href="word.get_absolute_url">
+              <span v-text="word.title"> </span>
+            </a>
+          </h3>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+</div>
+<div>
+  <div class="card ltr text-left">
+    <div class="card-body">
+      {% for word in words %}
+        <h4 class=" ltr text-left">
+          {{word.title}}
+        </h4>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block script %}
+<script>
+  let parent_id = 0;
+</script>
+{% if word %}
+<script>
+  parent_id = parseInt("{{word.id}}");
+</script>
+{% endif %}
+<script>
+  let words_for_words_app = JSON.parse(`{{words_s|escapejs}}`);
+  let words_app = new Vue({
+    el: "#words-app",
+    data: {
+      words: words_for_words_app, 
+    },
+    methods: {
+    },
+  });
+</script>
+{% endblock script %}
