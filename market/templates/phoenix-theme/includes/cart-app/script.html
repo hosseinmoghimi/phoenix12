@@ -22,8 +22,15 @@
       };
     },
     methods: {
+      plus:function(){
+        this.cart_item.quantity++
+      },
+      minus:function(){
+        this.cart_item.quantity--
+      },
       to_price: (vv) => to_price(vv),
       change_quantity: function (quantity) {
+        console.log(quantity)
         if(quantity<0){
             return
         }
@@ -107,6 +114,7 @@
       },
       to_price: (vv) => to_price(vv),
       checkout_cart: function () {
+        console.log("sadaetrrdyg dreytfdrytryrte5y rrfy rty ")
         let cart_items=[]
         this.cart_items.forEach(cart_item => {
             cart_items.push({
@@ -125,6 +133,7 @@
         };
         let url = "{% url 'market:checkout_cart' %}";
         $.post(url, payload).done((data) => {
+          console.log(data)
           if (data.result === "SUCCEED") {
             show_message(
               cart_app,
