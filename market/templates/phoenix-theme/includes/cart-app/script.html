@@ -22,6 +22,7 @@
       };
     },
     methods: {
+      
       plus:function(){
         this.cart_item.quantity++
       },
@@ -71,7 +72,16 @@
     components: {
       cart_item_component,
     },
-    methods: {
+    methods: { 
+      cart_total_without_discount:function(){
+        let sum=0
+        this.cart_items.forEach(cart_item => {
+          sum+=cart_item.quantity*cart_item.shop.unit_price 
+          
+        });
+        return this.to_price(sum)
+      },
+
       cart_total:function(){
         let sum=0
         this.cart_items.forEach(cart_item => {

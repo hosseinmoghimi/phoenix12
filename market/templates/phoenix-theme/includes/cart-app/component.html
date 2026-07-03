@@ -1,4 +1,4 @@
-<tr v-if="cart_item.quantity>0" class="cart-table-row btn-reveal-trigger">
+<tr v-if="cart_item.quantity>0 || true" class="cart-table-row btn-reveal-trigger">
   <td class="align-middle white-space-nowrap py-0">
     <a
       class="d-block border border-translucent rounded-2"
@@ -19,6 +19,18 @@
     </a>
   </td>
 
+  
+  <td class="  align-middle">
+    <a :title="cart_item.shop.supplier.person_account.person.full_name"
+      class="fw-semibold mb-0 line-clamp-2"
+      :href="cart_item.shop.supplier.get_absolute_url"
+    >
+    <img  :src="cart_item.shop.supplier.person_account.person.image" width="32" class="rounded" alt="">
+      <!-- <span class="farsi" v-text="cart_item.shop.supplier.person_account.person.full_name"> </span> -->
+    </a>
+  </td>
+
+
   <td class="  align-middle fs-8 ps-5">
     <div
       class="input-group input-group-sm flex-nowrap"
@@ -32,7 +44,7 @@
         +
       </button>
       <button   class="btn btn-light">
-        <div class="text-center">
+        <div class="text-center farsi">
           <span class="farsi" v-text="cart_item.quantity"> </span>
           <span v-text="cart_item.shop.unit_name"> </span>
         </div>

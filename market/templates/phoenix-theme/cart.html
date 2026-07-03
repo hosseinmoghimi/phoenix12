@@ -37,6 +37,13 @@
                   >
                     کالا
                   </th>
+                  <th
+                    class=" farsi sort white-space-nowrap align-middle"
+                    scope="col"
+                    style=" "
+                  >
+                    فروشنده
+                  </th>
                  
                   <th
                     class="farsi sort align-middle ps-5"
@@ -105,39 +112,55 @@
               <option value="paypal">Paypal</option>
             </select>
             <div>
-              <div class="d-flex justify-content-between">
-                <p class="text-body fw-semibold">Items subtotal :</p>
-                <p class="text-body-emphasis fw-semibold">$691</p>
+              <div class="d-flex justify-content-between farsi">
+                <p class="text-body fw-semibold">جمع اقلام :</p>
+                <p class="text-body-emphasis fw-semibold">
+                <span v-text="to_price(cart_total_without_discount())"></span>
+                  {{CURRENCY}}
+
+                </p>
               </div>
-              <div class="d-flex justify-content-between">
-                <p class="text-body fw-semibold">Discount :</p>
-                <p class="text-danger fw-semibold">-$59</p>
+              <div class="d-flex justify-content-between farsi" >
+                <p class="text-body fw-semibold">تخفیف :</p>
+                <p class="text-danger fw-semibold">
+                <span v-text="to_price(discount_total())"></span>
+                  {{CURRENCY}}
+                </p>
               </div>
-              <div class="d-flex justify-content-between">
-                <p class="text-body fw-semibold">Tax :</p>
-                <p class="text-body-emphasis fw-semibold">$126.20</p>
+              <div class="d-flex justify-content-between farsi">
+                <p class="text-body fw-semibold ">مالیات :</p>
+                <p class="text-body-emphasis fw-semibold">0 {{CURRENCY}}</p>
+                  
               </div>
-              <div class="d-flex justify-content-between">
-                <p class="text-body fw-semibold">Subtotal :</p>
-                <p class="text-body-emphasis fw-semibold">$665</p>
+              <div class="d-flex justify-content-between farsi">
+                <p class="text-body fw-semibold">جمع فاکتور :</p>
+                <p class="text-body-emphasis fw-semibold">
+                <span v-text="to_price(cart_total())"></span>
+
+                  {{CURRENCY}}
+                </p>
+                  
               </div>
-              <div class="d-flex justify-content-between">
-                <p class="text-body fw-semibold">Shipping Cost :</p>
-                <p class="text-body-emphasis fw-semibold">$30</p>
+              <div class="d-flex justify-content-between farsi">
+                <p class="text-body fw-semibold">هزینه حمل :</p>
+                <p class="text-body-emphasis fw-semibold">0 {{CURRENCY}}</p>
               </div>
             </div>
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 farsi">
               <input
-                class="form-control"
+                class="farsi form-control"
                 type="text"
-                placeholder="Voucher"
-              /><button class="btn btn-phoenix-primary px-5">Apply</button>
+                placeholder="کد تخفیف"
+              /><button class="btn btn-phoenix-primary px-5">تایید</button>
             </div>
             <div
-              class="d-flex justify-content-between border-y border-dashed py-3 mb-4"
+              class=" farsi d-flex justify-content-between border-y border-dashed py-3 mb-4"
             >
-              <h4 class="mb-0">Total :</h4>
-              <h4 class="mb-">$695.20</h4>
+              <h4 class="mb-0">قابل پرداخت :</h4>
+              <h4 class="mb-0 farsi">
+                <span v-text="to_price(cart_total())"></span>
+                {{CURRENCY}}
+              </h4>
             </div>
             <button @click="checkout_cart()" class=" farsi btn btn-primary w-100">
               ثبت نهایی<span
