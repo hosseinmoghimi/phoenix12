@@ -3,8 +3,8 @@ from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_UR
 from django.views import View
 from .forms import *
 from utility.enums import *
-from .serializers import ProjectSerializer,RemoteClientSerializer,TicketWithChildrenSerializer,ProjectSerializerForGuantt,TicketSerializer
-from .repo import ProjectRepo,RemoteClientRepo,TicketRepo
+from .serializers import ProjectSerializer,RemoteClientSerializer,TicketWithChildrenSerializer,ProjectSerializerForGuantt,TicketSerializer,IssueSerializer
+from .repo import ProjectRepo,RemoteClientRepo,TicketRepo,IssueRepo
 from organization.views import OrganizationalUnitRepo,OrganizationalUnitSerializer
 from .apps import APP_NAME
 from core.views import CoreContext,PageContext,MessageView
@@ -28,6 +28,16 @@ def getContext(request,*args, **kwargs):
  
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
+
+
+
+def AddIssueContext(request,*args, **kwargs):
+    context={}
+    if request.user.has_perm(APP_NAME+".add_issue"):
+        context['add_issue_form']=AddIssueForm()
+    context['statuses_for_add_issue']=(i[0] for i in IssueStatusEnum.choices)
+    return context
+
 
 def TicketContext(request,ticket,*args, **kwargs):
     context={}
@@ -318,6 +328,19 @@ class ProjectView(View):
         context['tickets_s']=tickets_s
         if request.user.has_perm(APP_NAME+".add_ticket"):
             context.update(AddTicketContext(request=request,project=project))
+
+
+
+
+            
+        issues=project.issue_set.all()
+        context['issues']=issues
+        issues_s=json.dumps(IssueSerializer(issues,many=True).data)
+        context['issues_s']=issues_s
+        if request.user.has_perm(APP_NAME+".add_issue"):
+            context.update(AddIssueContext(request=request,project=project))
+
+
    
         remote_clients = project.all_remote_clients.all()
         context['remote_clients'] = remote_clients
@@ -422,4 +445,36 @@ class TicketsView(View):
             context.update(AddTicketContext(request=request,project=None))
             
         return render(request,TEMPLATE_ROOT+"tickets.html",context)
+
+
+class IssueView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        issue=IssueRepo(request=request).issue(*args, **kwargs)
+        if issue is None:
+            title='ایشو وجود ندارد'
+            body='ایشو وجود ندارد'
+            mv=MessageView()
+            return mv.get(request=request,title=title,body=body)
+        context['issue']=issue
+        
+        issue_s=json.dumps(IssueSerializer(issue,many=False).data)
+        context['issue_s']=issue_s
+  
+  
+        return render(request,TEMPLATE_ROOT+"issue.html",context)
+    
+class IssuesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        issues = IssueRepo(request=request).list(parent_id=None,*args, **kwargs)
+
+        context['issues']=issues
+        issues_s=json.dumps(IssueSerializer(issues,many=True).data)
+        context['issues_s']=issues_s
+        if request.user.has_perm(APP_NAME+".add_issue"):
+            context.update(AddIssueContext(request=request,project=None))
+            
+        return render(request,TEMPLATE_ROOT+"issues.html",context)
 

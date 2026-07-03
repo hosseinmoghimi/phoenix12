@@ -17,11 +17,17 @@
         <div class="mt-2" id="account-code-app" vcloack>
             <h5 class="ltr" @click="copy_code_to_clipboard(account.code)" style="cursor: pointer;">
                 <span class="ltr">
-                    {{account.code | account_code_seperator}}
+                    {{account.code | account_code_seperator|safe}}
                 </span>
 
             </h5>
+                        
+            <h5 class="ltr">
+                <span class="ltr">
+                    {{account.code }}
+                </span>
 
+            </h5>
         </div>
         <div>
             <h3>

@@ -1,0 +1,159 @@
+{% extends "phoenix-theme/layout.html" %} {% block content %}
+
+<!-- ============================================-->
+<!-- <section> begin ============================-->
+<section class="pt-5 pb-9" id="cart-app">
+  <div class="container-small cart">
+    <nav class="mb-3" aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="#!">Page 1</a></li>
+        <li class="breadcrumb-item"><a href="#!">Page 2</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Default</li>
+      </ol>
+    </nav>
+    <h2 class="mb-6 farsi">سبد خرید</h2>
+    <img src="{{customer.person_account.person.image}}" width="32" class="rounded-circle" alt="">
+    <a href="{{customer.get_absolute_url}}">
+      <span class="farsi">{{customer.person_account.person.full_name}}</span>
+    </a>
+    <div class="row g-5">
+      <div class="col-12 col-lg-8">
+        <div
+          id="cartTable"
+          data-list='{"valueNames":["products","color","size","price","quantity","total"],"page":10}'
+        >
+          <div class="table-responsive scrollbar mx-n1 px-1">
+            <table class="table fs-9 mb-0 border-top border-translucent">
+              <thead>
+                <tr>
+                  <th
+                    class="sort white-space-nowrap align-middle fs-10"
+                    scope="col"
+                  ></th>
+                  <th
+                    class=" farsi sort white-space-nowrap align-middle"
+                    scope="col"
+                    style="min-width: 250px"
+                  >
+                    کالا
+                  </th>
+                 
+                  <th
+                    class="farsi sort align-middle ps-5"
+                    scope="col"
+                    style="width: 200px"
+                  >
+                    تعداد
+                  </th>
+                  <th
+                    class=" farsi sort align-middle text-end"
+                    scope="col"
+                    style="width: 300px"
+                  >
+                    قیمت  
+                  </th>
+                  <th
+                    class="sort farsi align-middle text-end"
+                    scope="col"
+                    style="width: 250px"
+                  >
+                    جمع
+                  </th>
+                  <th class="sort text-end align-middle pe-0" scope="col"></th>
+                </tr>
+              </thead>
+              <tbody class="list" id="cart-table-body">
+                <template v-for="cart_item in cart_items" >
+                  
+                  
+                  <cart-item-component :cart_item="cart_item">
+                  </cart-item-component>
+                </template>
+          
+
+                
+              
+              </tbody>
+              <tfoot>
+                    <th
+                    class="text-body-emphasis fw-semibold ps-0 fs-8"
+                    colspan="4"
+                  >
+                   
+                  </th>
+                  <th class=" farsi text-body-emphasis fw-bold text-end fs-8">
+                    <span v-text="to_price(cart_total())"></span>
+                    {{CURRENCY}}
+                  </th>
+                  <th></th>
+                 
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-between-center mb-3">
+              <h3 class="card-title mb-0 farsi">تکمیلی</h3>
+              <a class="btn btn-link p-0" href="#!">Edit cart </a>
+            </div>
+            <select class="form-select mb-3" aria-label="delivery type">
+              <option value="cod">Cash on Delivery</option>
+              <option value="card">Card</option>
+              <option value="paypal">Paypal</option>
+            </select>
+            <div>
+              <div class="d-flex justify-content-between">
+                <p class="text-body fw-semibold">Items subtotal :</p>
+                <p class="text-body-emphasis fw-semibold">$691</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="text-body fw-semibold">Discount :</p>
+                <p class="text-danger fw-semibold">-$59</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="text-body fw-semibold">Tax :</p>
+                <p class="text-body-emphasis fw-semibold">$126.20</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="text-body fw-semibold">Subtotal :</p>
+                <p class="text-body-emphasis fw-semibold">$665</p>
+              </div>
+              <div class="d-flex justify-content-between">
+                <p class="text-body fw-semibold">Shipping Cost :</p>
+                <p class="text-body-emphasis fw-semibold">$30</p>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Voucher"
+              /><button class="btn btn-phoenix-primary px-5">Apply</button>
+            </div>
+            <div
+              class="d-flex justify-content-between border-y border-dashed py-3 mb-4"
+            >
+              <h4 class="mb-0">Total :</h4>
+              <h4 class="mb-">$695.20</h4>
+            </div>
+            <button @click="checkout_cart()" class=" farsi btn btn-primary w-100">
+              ثبت نهایی<span
+                class="fas fa-chevron-right ms-1 fs-10"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of .container-->
+</section>
+<!-- <section> close ============================-->
+<!-- ============================================-->
+
+{% endblock content %} {% block script %} 
+{% include "phoenix-theme/includes/cart-app/script.html" %}
+{% endblock script %}

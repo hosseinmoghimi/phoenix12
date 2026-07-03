@@ -1,0 +1,54 @@
+ {% include "accounting/includes/person-account-app/select-script.html" %}
+<script>
+  let add_person_account_app = new Vue({
+    el: "#add-service-man-app",
+    data: {
+      title: "",
+      person_account_code:"",
+      person_account: { },
+      message:{show:false},
+      waiting:false,
+    },
+    methods: {
+      select_person_account: function () {
+        select_person_account_by_code(add_person_account_app.person_account_code).done((data) => {
+          if (data.result === "SUCCEED") {
+            leolog(data.person_account);
+            add_person_account_app.person_account = data.person_account;
+          }
+
+          if (data.result === "FAILED") {
+            add_person_account_app.person_account={};
+          }
+        });
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_service_man: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          person_account_id: this.person_account.id,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_service_man' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof service_mans_app != "undefined") {
+              service_mans_app.service_mans.push(data.service_man);
+            }
+            show_message(add_person_account_app,'موفق',data.message,'success',3000)
+          }
+          else{
+            show_message(add_person_account_app,'خطا',data.message,'danger',3000)
+          }
+        });
+      },
+    },
+  });
+</script>

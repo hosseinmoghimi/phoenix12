@@ -29,8 +29,7 @@
         <div class="table-responsive">
           <table class="table table-striped">
             <thead> 
-              <th>منو</th>
-              <th>فروشنده</th>
+              <th>منو</th> 
               <th>
 
               </th>
@@ -44,20 +43,7 @@
                   </a>
  
                 </td>
-                <td>
-                     
-                     <a :href="menu.supplier.get_absolute_url">
-                    <div class="media">
-                    <img class="rounded-circle" width="32" :src="menu.supplier.person_account.person.image"> 
-
-                      <div class="media-body mr-2">
-                    <span v-text="menu.supplier.full_name"></span>
-
-                      </div>
-                    </div>
-                  </a>
-                </td>
-
+             
                 <td>
                   <a
                     target="_blank"

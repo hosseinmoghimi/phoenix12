@@ -1,4 +1,4 @@
-<tr>
+<tr v-if="cart_item.quantity>0">
   <td>
     <span v-text="cart_item.row"></span>
   </td>
@@ -36,11 +36,11 @@
   <td>
     <button
       type="button"
-      class="btn btn-danger"
-      @click="change_quantity(cart_item.shop,cart_item.quantity-1)"
+      class="btn btn-success"
+      @click="change_quantity(cart_item.shop,cart_item.quantity+1)"
       style="border-radius: 0 5px 5px 0"
     >
-      -
+      +
     </button>
     <button type="button" class="btn btn-light">
         <div class="text-center">
@@ -51,11 +51,11 @@
     </button>
     <button
       type="button"
-      class="btn btn-success"
-      @click="change_quantity(cart_item.shop,cart_item.quantity+1)"
+      class="btn btn-danger"
+      @click="change_quantity(cart_item.shop,cart_item.quantity-1)"
       style="border-radius: 5px 0 0 5px"
     >
-      +
+      -
     </button>
 
      

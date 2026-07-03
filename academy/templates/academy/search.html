@@ -1,0 +1,167 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+<div class="row ltr">
+  <div class="col-12 mb-3">
+    <form action="{% url 'academy:search' %}" method="POST">
+    <input value="{{search_for}}" placeholder="search ..." type="text" class="form-control" name="search_for">
+      {% csrf_token %}
+
+    </form>
+  </div> 
+  <div class="col-12 col-md-12">
+    <div class="card">
+      <div class="card-body">
+         <div id="words-app">
+      <div class="row ltr">
+        <div class="col-12 my-4" v-for="word in words">
+          <div class="media">
+            <a :href="word.get_absolute_url">
+              <img :src="word.thumbnail" width="64" class="rounded" alt="" />
+            </a>
+            <div class="media-body ml-2">
+              <h5 class="text-left">
+                <a :href="word.get_absolute_url">
+                  <span v-text="word.title"> </span>
+                </a>
+              </h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <!-- <form @submit.prevent="add_word()">
+
+        <input type="text" class="form-control" v-model="title" placeholder="کلمه جدید">
+        <button type="submit" class="btn btn-success">
+          <span>
+            افزودن
+          </span>
+        </button>
+        <div>
+          {% include 'utility/includes/message.html' %}
+        </div>
+      </form> -->
+          {% if add_word_form %}
+
+          <div>
+            <form class="form-inline" @submit.prevent="add_word()">
+              
+              <input
+                class="form-control  "
+                style="border-radius: 0 0.5rem 0.5rem 0 !important"
+                value=""
+                type="search"
+                v-model="title"
+                width="300"
+                placeholder="افزودن"
+              />
+              <button
+                class="btn btn-success my-2 "
+                type="submit"
+                style="border-radius: 0.5rem 0 0 0.5rem !important"
+              >
+                <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit"> -->
+                <!-- جستجو -->
+                <i class="fa fa-plus"></i>
+              </button>
+            </form>
+
+            <div>{% include 'utility/includes/message.html' %}</div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+   
+  </div>
+
+  
+  
+  <div class="col-md-12">
+
+
+
+
+    <div id="accordion-words-spell" class="rtl text-right farsi">
+  <div class="card" id="words-spell-app">
+    <div class="card-header" id="heading-words-spell">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-words-spell"
+          aria-expanded="true"
+          aria-controls="collapse-words-spell"
+        >
+          words spell
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-words-spell"
+      class="collapse"
+      aria-labelledby="heading-words-spell"
+      data-parent="#accordion-words-spell"
+    >
+      <div class="card-body">
+        
+         {% for word in words %}
+          <h5 class="text-left">
+            <a href="{{word.get_absolute_url}}">
+
+              {{word.title}}
+            </a>
+            </h5>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+    </div>
+
+
+
+
+
+ 
+  </div> 
+ 
+</div>
+
+{% endblock content %} {% block script %}
+<script>
+  let parent_id = 0;
+</script> 
+<script>
+  let words_for_words_app = JSON.parse(`{{words_s|escapejs}}`);
+  let words_app = new Vue({
+    el: "#words-app",
+    data: {
+      words: words_for_words_app,
+      title: "",
+      message: { show: false },
+    },
+    methods: {
+      add_word: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          parent_id: parseInt(parent_id),
+          title: this.title,
+        };
+
+        let url = "{% url 'academy:add_word' %}";
+        $.post(url, payload).done((data) => {
+          if (data.result === "SUCCEED") {
+            words_app.words.push(data.word);
+            words_app.title = "";
+          }
+
+          if (data.result != "SUCCEED") {
+            show_message(words_app, "خطا", data.message, "danger", 3000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endblock script %}

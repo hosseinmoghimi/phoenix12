@@ -1,0 +1,84 @@
+{% extends "transport/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+  <div class="col-md-3">
+    {% include "accounting/includes/invoice-app/card.html" %}
+    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+
+  </div>
+
+  <div class="col-md-9">
+    <div class="row rtl">
+<div class="col-md-12">
+  </div>
+  {% if add_invoice_line_form %}
+  <div class="col-md-12 ">
+    {% include "accounting/includes/add-invoice-line-app/template.html" %}
+  </div>
+  {% endif %}
+  <div class="col-md-12 ">
+    {% include "accounting/includes/invoice-lines-app/template.html" %}
+  </div>
+
+
+  <div class="col-md-12 ">
+    {% include "attachments/includes/locations-app/template.html" %}
+  </div>
+
+
+  <div class="col-md-12 ">
+    {% include "accounting/includes/financial-document-lines-app/template.html" %}
+  </div>
+  
+   {% if edit_financial_event_form %}
+  <div class="col-md-12">
+    {% include "accounting/includes/edit-financial-event-app/template.html" %}
+  </div>
+  {% endif %}
+
+
+  {% if add_financial_document_line_form %}
+  <div class="col-md-12">
+    {% include "accounting/includes/add-financial-document-line-app/template.html" %}
+  </div>
+  {% endif %}
+
+  <div class="col-md-4">
+    {% include "attachments/includes/downloads-app/template.html" %}
+  </div>
+  <div class="col-md-4">
+    {% include "attachments/includes/links-app/template.html" %}
+  </div>
+  <div class="col-md-4">
+    {% include "attachments/includes/tags-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "attachments/includes/comments-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "core/includes/page-related-app/template.html" %}
+  </div>
+
+  <div class="col-md-12">
+    {% include "attachments/includes/images-app/template.html" %}
+  </div>
+    </div>
+  </div>
+  
+
+</div>
+{% endblock content %}
+
+
+
+
+
+
+
+
+{% block script %}
+ 
+{% include "accounting/includes/invoice-app/script.html" %}
+ 
+{% endblock script %}

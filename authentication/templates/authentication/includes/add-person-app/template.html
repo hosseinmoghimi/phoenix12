@@ -35,6 +35,7 @@
               <div class="form-group">
                 <label for="">جنسیت</label>
                 <select v-model="gender" required type="text" class="form-control">
+                  <option value=" "> </option>
                   {% for gender in genders %}
                   <option value="{{gender}}">{{gender}}</option>
                   {% endfor %}
@@ -72,6 +73,8 @@
               <div class="form-group">
                 <label for="">پیشوند</label>
                 <select v-model="prefix" required type="text" class="form-control">
+                  <option value=" "> </option>
+
                   {% for prefix in prefixes %}
                   <option value="{{prefix}}">{{prefix}}</option>
                   {% endfor %}

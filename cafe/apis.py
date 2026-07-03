@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import TableRepo,MenuRepo,TableRepo
-from .serializers import TableSerializer,MenuSerializer,TableSerializer
+from .repo import TableRepo,MenuRepo,TableRepo,checkout_cart
+from .serializers import TableSerializer,MenuSerializer
 from django.http import JsonResponse
 from .forms import *
     
@@ -50,6 +50,31 @@ class AddTableApi(APIView):
             result,message,table=TableRepo(request=request).add_table(**cd)
             if table is not None:
                 context['table']=TableSerializer(table).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+  
+class CheckoutCartApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_table_form=CheckoutCartForm(request.POST)
+        if add_table_form.is_valid():
+            log=333
+            cd=add_table_form.cleaned_data
+
+        
+            result,message,invoices=checkout_cart(request=request,**cd)
+            if result==SUCCEED:
+                from accounting.serializers import InvoiceSerializer
+                context['invoices']=InvoiceSerializer(invoices,many=True).data
         context['message']=message
         context['result']=result
         context['log']=log

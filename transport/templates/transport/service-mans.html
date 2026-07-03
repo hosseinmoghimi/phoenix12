@@ -1,0 +1,31 @@
+{% extends "transport/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_service_man_form %}
+    <div class="col-md-12">
+        {% include "transport/includes/add-service-man-app/template.html" %}
+    </div>
+    {% endif %}
+   
+    <div class="col-md-12 ">
+        {% include "transport/includes/service-mans-app/template.html" %}
+    </div>
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "transport/includes/service-mans-app/script.html" %}
+
+{% if add_service_man_form %}
+{% include "transport/includes/add-service-man-app/script.html" %}
+{% endif %}
+ 
+{% endblock script %}

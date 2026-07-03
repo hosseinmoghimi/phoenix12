@@ -1,0 +1,74 @@
+<div id="accordion-orders" class="rtl text-right farsi">
+  <div class="card" id="orders-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-orders"
+          aria-expanded="true"
+          aria-controls="collapse-orders"
+        >
+          سفارش ها
+          <span v-if="orders.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="orders.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-orders"
+      class="collapse show {% if expand_orders %} show {% endif %}"
+      aria-labelledby="heading-orders"
+      data-parent="#accordion-orders"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead> 
+              <th>منو</th> 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="order in orders">
+               
+                <td>
+                  <a :href="order.get_absolute_url">
+                    <span v-text="order.status"></span>
+                  </a>
+ 
+                </td>
+             
+                <td>
+                  <a
+                    target="_blank"
+                    :href="order.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="order.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

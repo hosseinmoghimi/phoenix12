@@ -1,0 +1,103 @@
+<div id="accordion-add-service-man" class="rtl text-right farsi">
+  <div class="card" id="add-service-man-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-service-man"
+          aria-expanded="true"
+          aria-controls="collapse-add-service-man"
+        >
+          افزودن سرویس کار
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-service-man"
+      class="collapse"
+      aria-labelledby="heading-add-service-man"
+      data-parent="#accordion-add-service-man"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_service_man()">
+          <div class="row">
+            <!-- <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input
+                  required
+                  v-model="title"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div> -->
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">حساب</label>
+                <input
+                  required
+                  v-model="person_account_code"
+                  type="number"
+                  class="form-control"
+                  @input="select_person_account()"
+                />
+              </div>
+            </div>
+
+            <div class="col-6 mt-3">
+              <hr />
+              <a :href="person_account.get_absolute_url" v-if="person_account.name">
+                <div class="media">
+                  <img :src="person_account.thumbnail" width="64" alt="" />
+                  <div class="mr-2 media-body">
+                    <h5 class="my-2">
+                      <span v-text="person_account.name"></span>
+                    </h5>
+                    <h6>
+                      <span v-text="person_account.code"></span>
+                    </h6>
+
+                    
+
+                    <h6>
+                      <small v-text="person_account.full_name"></small>
+                    </h6>
+                  </div>
+                </div>
+              </a>
+              <div v-if="!person_account.full_name">
+                <h5 class="text-danger">حساب انتخاب نشده است.</h5>
+                <a href="{% url 'accounting:person_accounts' %}" target="_blank">همه حساب های افراد</a>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+
+
+             <div class="col-md-12" v-if="message.show">
+           <div :class="'alert alert-' + message.color">
+            <h5 v-text="message.title">
+
+            </h5>
+            <div v-html="message.body">
+
+            </div>
+           </div>
+          </div>
+
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

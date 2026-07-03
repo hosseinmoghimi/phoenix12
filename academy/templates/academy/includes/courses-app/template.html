@@ -1,0 +1,74 @@
+<div id="accordion-courses" class="rtl text-right farsi">
+  <div class="card" id="courses-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-courses"
+          aria-expanded="true"
+          aria-controls="collapse-courses"
+        >
+          واحد های درسی
+          <span v-if="courses.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="courses.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-courses"
+      class="collapse {% if expand_courses %} show {% endif %}"
+      aria-labelledby="heading-courses"
+      data-parent="#accordion-courses"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead> 
+              <th>عنوان</th> 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="course in courses">
+               
+                <td>
+                  <a :href="course.get_absolute_url">
+                    <span v-text="course.title"></span>
+                  </a>
+ 
+                </td>
+             
+                <td>
+                  <a
+                    target="_blank"
+                    :href="course.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="course.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

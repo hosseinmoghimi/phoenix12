@@ -1,0 +1,137 @@
+<div id="accordion-add-maintenance" class="rtl text-right farsi">
+  <div class="card" id="add-maintenance-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-maintenance"
+          aria-expanded="true"
+          aria-controls="collapse-add-maintenance"
+        >
+          افزودن تعمیر و نگهداری
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-maintenance"
+      class="collapse"
+      aria-labelledby="heading-add-maintenance"
+      data-parent="#accordion-add-maintenance"
+    >
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">عنوان</label>
+              <input v-model="title" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">کیلومتر  
+                <span v-text="separate(kilometer)"></span>
+              </label>
+              <input v-model="kilometer" type="number" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">تعمیرکار</label>
+              <select v-model="service_man_id" class="form-control">
+                {% for service_man in service_mans %}
+                <option value="{{service_man.id}}">{{service_man}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">وسیله نقلیه</label>
+              <select v-model="vehicle_id" class="form-control">
+                {% for vehicle in vehicles %}
+                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">نوع</label>
+              <select name="" v-model="maintenance_type" class="form-control">
+                {% for maintenance_type in maintenance_types %}
+                <option value="{{maintenance_type}}">
+                  {{maintenance_type}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ</label>
+              <date-picker v-model="event_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="event_date"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">زمان</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="event_time"
+              />
+            </div>
+          </div>
+
+          
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">توضیحات</label>
+              <input v-model="description" type="text" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4"></div>
+
+          <div class="col-md-12">
+            <div v-if="message.show">
+              <div :class="'my-2 alert alert-'+message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click="add_maintenance()"
+              v-if="!waiting"
+              type="submit"
+            >
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -30,8 +30,6 @@
         if(quantity>this.cart_item.shop.available){
             return
         }
-        console.log(quantity)
-        console.log(shop.id)
         this.cart_item.quantity=quantity
         // let url = url_delete_comment;
         // let payload = {
@@ -40,7 +38,6 @@
         // };
         // let posting = $.post(url, payload);
         // posting.done(function (data) {
-        //   console.log(data);
         //   if (data.result === "SUCCEED") {
         //     comments_app.comments = comments_app.comments.filter((comment) => {
         //       return comment.id != comment_id;
@@ -54,8 +51,8 @@
     template: cart_item_component_template,
   });
 
-  let checkout_cart_app = new Vue({
-    el: "#checkout-cart-app",
+  let cart_app = new Vue({
+    el: "#cart-app",
     data: {
       address: `{% if customer.person_account.person.address %}{{customer.person_account.person.address}}{% endif %}`,
       postal_code: `{% if customer.person_account.person.postal_code %}{{customer.person_account.person.postal_code}}{% endif %}`,
@@ -85,6 +82,29 @@
         });
         return to_price(sum)
       },
+      add_to_cart:function(shop,step){
+
+        let done=false
+        cart_app.cart_items.forEach(cart_item => {
+            
+            if(cart_item.shop.id==shop.id){
+              if(cart_item.quantity+step>-1){
+                
+                cart_item.quantity=cart_item.quantity+step
+              }
+              
+              done=true
+            }
+            
+          });
+          if(!done && step>0){
+          cart_app.cart_items.push({
+            shop:shop,
+            quantity:step
+          })
+
+        }
+      },
       to_price: (vv) => to_price(vv),
       checkout_cart: function () {
         let cart_items=[]
@@ -103,12 +123,11 @@
           cart_items: (cart_items),
           csrfmiddlewaretoken: csrfmiddlewaretoken,
         };
-        console.log(payload);
         let url = "{% url 'market:checkout_cart' %}";
         $.post(url, payload).done((data) => {
           if (data.result === "SUCCEED") {
             show_message(
-              checkout_cart_app,
+              cart_app,
               "موفق",
               data.message,
               "success",
@@ -120,7 +139,7 @@
             }
           } else {
             show_message(
-              checkout_cart_app,
+              cart_app,
               "خطا",
               data.message,
               "danger",

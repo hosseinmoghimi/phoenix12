@@ -1,14 +1,14 @@
 <div class="text-right">
 
-    {% for category in product.category_set.all %}
-    <div>
+    {% if product.category_set.last %}
+    <div class="mt-2">
 
         <small>
 
-            {{category.get_market_breadcrumb_link|safe}}
+            {{product.category_set.last.get_market_breadcrumb_link|safe}}
         </small>
     </div>
-    {% endfor %}
+    {% endif %}
     <h1>
 
         {{product.title}}

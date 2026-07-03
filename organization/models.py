@@ -4,6 +4,7 @@ from phoenix.server_settings import STATIC_URL,MEDIA_URL
 from django.utils.translation import gettext as _
 from .apps import APP_NAME
 from utility.models import DateTimeHelper
+from .enums import EmployeeJobEnum
 
 
 class OrganizationalUnit(Page,LinkHelper):
@@ -66,7 +67,7 @@ class OrganizationalUnit(Page,LinkHelper):
 class Employee(models.Model,LinkHelper,DateTimeHelper):
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person account"), on_delete=models.CASCADE)
     organizational_unit=models.ForeignKey("organizationalunit",null=True,blank=True, verbose_name=_("organizational_unit"), on_delete=models.CASCADE)
-    job_title=models.CharField(_("job_title"),max_length=100)
+    job_title=models.CharField(_("job_title"),choices=EmployeeJobEnum.choices,max_length=100)
 
     class_name="employee"
     app_name=APP_NAME

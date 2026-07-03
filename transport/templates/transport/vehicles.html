@@ -1,0 +1,27 @@
+
+{% extends "transport/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_vehicle_form %}
+      <div class="col-md-12">
+          {% include "transport/includes/add-vehicle-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "transport/includes/vehicles-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "transport/includes/vehicles-app/script.html" %}
+{% if add_vehicle_form %}
+{% include "transport/includes/add-vehicle-app/script.html" %}
+{% endif %}
+{% endblock script %}

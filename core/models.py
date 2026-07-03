@@ -37,7 +37,7 @@ class Page(models.Model,LinkHelper,DateTimeHelper,ImageHelper):
     header_origin = models.ImageField(_("تصویر سربرگ"), upload_to=IMAGE_FOLDER+'page/header/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
      
     def get_status_color(self):
-        return StatusColor(self)
+        return StatusColor(page=self,color=self.color)
     
     def get_breadcrumb_link(self):
         aaa=f"""

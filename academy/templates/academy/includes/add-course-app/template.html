@@ -1,0 +1,82 @@
+<div id="accordion-add-course" class="rtl text-right farsi">
+  <div class="card" id="add-course-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-course"
+          aria-expanded="true"
+          aria-controls="collapse-add-course"
+        >
+          افزودن واحد درسی
+          
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-course"
+      class="collapse  "
+      aria-labelledby="heading-add-course"
+      data-parent="#accordion-add-course"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_course()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input required v-model="title" type="text" class="form-control" />
+              </div>
+            </div>
+ 
+ 
+
+              <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ</label>
+                <date-picker v-model="event_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_date"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">زمان</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_time"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="my-2 mx-2">
+
+                {% include "utility/includes/message.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

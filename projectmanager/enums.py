@@ -5,6 +5,14 @@ from django.db.models import TextChoices
 from utility.enums import OperatingSystemNameEnum
 
 
+class IssueStatusEnum(TextChoices):
+    INITIAL="تعریف اولیه",_("تعریف اولیه")
+    PLANNED="برنامه ریزی شده",_("برنامه ریزی شده")
+    NOT_PLANNED="برنامه ریزی نشده",_("برنامه ریزی نشده")
+    COMPLETED="پایان یافته",_("پایان یافته")
+
+
+
 
 class ProjectTypeEnum(TextChoices):
     TYPE_A="تایپ A",_("تایپ A")

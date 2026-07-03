@@ -1,0 +1,67 @@
+<tr v-if="cart_item.quantity>0" class="cart-table-row btn-reveal-trigger">
+  <td class="align-middle white-space-nowrap py-0">
+    <a
+      class="d-block border border-translucent rounded-2"
+      :href="cart_item.shop.product.get_market_absolute_url"
+      ><img
+        class="rounded"
+        :src="cart_item.shop.product.thumbnail"
+        alt=""
+        width="53"
+    /></a>
+  </td>
+  <td class="products align-middle">
+    <a
+      class="fw-semibold mb-0 line-clamp-2"
+      :href="cart_item.shop.product.get_market_absolute_url"
+    >
+      <span class="farsi" v-text="cart_item.shop.product.title"> </span>
+    </a>
+  </td>
+
+  <td class="  align-middle fs-8 ps-5">
+    <div
+      class="input-group input-group-sm flex-nowrap"
+      data-quantity="data-quantity"
+    >
+    <button 
+        class="btn btn-success"
+        @click="change_quantity(cart_item.quantity+1)"
+        style="border-radius: 0 5px 5px 0"
+      >
+        +
+      </button>
+      <button   class="btn btn-light">
+        <div class="text-center">
+          <span class="farsi" v-text="cart_item.quantity"> </span>
+          <span v-text="cart_item.shop.unit_name"> </span>
+        </div>
+      </button>
+      <button 
+        class="btn btn-danger"
+        @click="change_quantity(cart_item.quantity-1)"
+        style="border-radius: 5px 0 0 5px"
+      >
+        -
+      </button>
+
+    </div>
+  </td>
+  <td class="price align-middle text-body fs-9 fw-semibold text-end">
+    <span v-text="to_price(cart_item.shop.unit_price*(100-cart_item.shop.discount_percentage)/100)" class="farsi"> </span>
+  </td>
+  <td class="farsi   align-middle fw-bold text-body-highlight text-end">
+    <span
+      v-text="to_price(cart_item.shop.unit_price*cart_item.quantity*(100-cart_item.shop.discount_percentage)/100)"
+    ></span>
+    <small class="text-muted">{{CURRENCY}} </small>
+  </td>
+  <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
+    <button
+      class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2" @click="plus()"
+    >
+      <span class="fas fa-trash"></span>
+    </button>
+     
+  </td>
+</tr>

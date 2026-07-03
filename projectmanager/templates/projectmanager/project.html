@@ -57,6 +57,18 @@
       <div class="col-md-12">
           {% include "projectmanager/includes/tickets-app/template.html" %}
       </div>
+
+
+      
+      {% if add_issue_form %}
+      <div class="col-md-12">
+          {% include "projectmanager/includes/add-issue-app/template.html" %}
+      </div>
+      {% endif %}
+      <div class="col-md-12">
+          {% include "projectmanager/includes/issues-app/template.html" %}
+      </div>
+
       {% if add_event_to_project_form %}
         
       <div class="col-md-12">
@@ -94,10 +106,21 @@
 {% include "projectmanager/includes/add-invoice-to-project-app/script.html" %}
 {% endif %}
 {% include "projectmanager/includes/project-app/script.html" %}
+
 {% if add_ticket_form %}
 {% include "projectmanager/includes/add-ticket-app/script.html" %}
 {% endif %}
 {% include "projectmanager/includes/tickets-app/script.html" %}
+
+
+
+
+{% if add_issue_form %}
+{% include "projectmanager/includes/add-issue-app/script.html" %}
+{% endif %}
+{% include "projectmanager/includes/issues-app/script.html" %}
+
+
 {% include "core/includes/events-app/script.html" %}
 {% if add_event_to_project_form %}
 {% include "projectmanager/includes/add-event-to-project-app/script.html" %}

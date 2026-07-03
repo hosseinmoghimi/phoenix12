@@ -1,0 +1,50 @@
+
+<script>
+    let my_like = true
+</script>
+
+{% if my_like %}
+<script>
+    my_like = true
+</script>
+{% else %}
+<script>
+    my_like = false
+</script>
+{% endif %}
+<script>
+    let url_toggle_page_like = "{% url 'attachments:toggle_like' %}"
+    let likes_count = parseInt("{{likes_count}}")
+    let page_like_app = new Vue({
+        el: "#page-like-app",
+        data: {
+            likes_count: likes_count,
+            my_like: my_like
+        },
+        methods: {
+            likes_count_message: function () {
+                if (this.likes_count < 1) {
+                    return "کسی این صفحه را نپسندیده است."
+                }
+                let aa = 'است.'
+                if (this.likes_count > 1)
+                    aa = 'اند .'
+                return this.likes_count + '  نفر این صفحه را پسندیده  ' + aa
+            },
+            toggle_like: function () {
+                let payload = {
+                    page_id: page_id,
+                    csrfmiddlewaretoken: csrfmiddlewaretoken
+                }
+
+                let posting = $.post(url_toggle_page_like, payload)
+                posting.done((data) => {
+                    if (data.result === "SUCCEED") {
+                        page_like_app.my_like = data.my_like
+                        page_like_app.likes_count = data.likes_count
+                    }
+                })
+            }
+        }
+    })
+</script>

@@ -1,0 +1,228 @@
+ 
+
+
+
+{% extends "cafe/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>
+                    گزارش میز ها
+                </h5>
+            </div>
+            <div class="card-body">
+                <h5>
+                    خالی
+                </h5>
+                {% for table in table_free %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+
+                        {{table.title}}
+                    </h6>
+                </a>  
+                {% endfor %}
+                <hr>
+                <h5>
+                    در انتظار سرویس
+                </h5>
+                {% for table in table_waiting_to_server %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+                        {{table.title}}
+                    </h6>
+                </a>  
+                {% endfor %}
+                <hr>
+                <h5> 
+                    در حال پذیرایی
+                </h5>
+
+                {% for table in table_serving %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+                        {{table.title}}
+                    </h6>
+                </a>  
+                {% endfor %}
+                <hr>
+
+                <h5>
+                    در حال انتخاب
+                </h5>
+                
+                {% for table in table_choosing %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+                        {{table.title}}
+                    </h6>
+                </a>  
+                {% endfor %}
+                <hr>
+
+                 <h5>
+                    در حال استقرار
+                </h5>
+                
+                {% for table in table_enterance %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+                    {{table.title}}
+                    </h6>
+                </a>
+                <hr>  
+                {% endfor %}
+                <hr>
+                <h5>
+                    اتمام یافته
+                </h5>
+                
+                {% for table in table_finished %}
+                <a href="{{table.get_absolute_url}}">
+                    <h6>
+                    {{table.title}}
+                    </h6>
+                </a>  
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    {% for table in tables %}
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    
+            {{table}}
+                </h6>
+                
+            </div>
+            <div class="card-body">
+                <h6 class="text-{{table.color}}">
+                    {{table.title}}
+            <span class="badge badge-{{table.color}}">{{table.status}} </span>
+
+                </h6>
+                {% if sdsafds %}
+                  
+                <div id='wrapper2'>
+                    <div class='pctTimer pctCountdown'>
+                                                                                    <div class='pctTrack'></div>
+                                                                                    <div class='pctPie'>
+                                                                                        <div class='pctSpinner pctSlice'></div>
+                                                                                        <div class='pctFiller pctSlice'></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            {% endif %}
+
+            </div>
+        </div>
+      
+    </div>
+    {% endfor %}
+
+  
+ 
+
+ 
+
+</div>
+{% endblock content %} {% block script %}
+
+
+
+{% endblock script %}
+
+
+{% block head %}
+  {% if sdffsdf %}
+    
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+        <link rel='stylesheet' type="text/css" href='/static/timer/pie_chart_timer.css'></link>
+        
+
+        <script type="text/javascript">
+            var getColorForPercentage = function(percentColors, pct) {
+                for (var i = 0; i < percentColors.length; i++) {
+                    if (pct <= percentColors[i].pct) {
+                        var lower = percentColors[i - 1] || percentColors[0];
+                        var upper = percentColors[i];
+                        var range = upper.pct - lower.pct;
+                        var rangePct = (pct - lower.pct) / range;
+                        var pctLower = 1 - rangePct;
+                        var pctUpper = rangePct;
+                        var color = {
+                            r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+                            g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+                            b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+                        };
+                        return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+                        // or output as hex if preferred
+                    }
+                }
+            }
+            $(function(){
+                console.log("sdsfdgfdg")
+
+            })
+            $(function(){
+                var countdownColors = [
+                    { pct: 0.0, color: { r: 0x00, g: 0xff, b: 0 } },
+                    { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
+                    { pct: 1.0, color: { r: 0xff, g: 0x00, b: 0 } }
+                ];
+
+                $.each($('.pctTimer'), function() {
+                    var timer = $(this),
+                        pie = timer.find('.pctPie'),
+                        slices = pie.find('.pctSlice'),
+                        spinner = pie.find('.pctSpinner'),
+                        timerValue = 0;
+
+                    setInterval(function() {
+                        spinner.css({
+                            'webkitTransform': 'rotate('+timerValue+'deg)',
+                            'oTransform': 'rotate('+timerValue+'deg)',
+                            'mozTransform': 'rotate('+timerValue+'deg)',
+                            'msTransform': 'rotate('+timerValue+'deg)',
+                            'transform': 'rotate('+timerValue+'deg)'
+                        });
+
+                        if(timer.hasClass('pctCountdown')) {
+                            var color = getColorForPercentage(countdownColors, timerValue/360);
+                            slices.css({
+                                'borderColor': color,
+                                'background': color
+                            });
+
+                            if(timerValue > 180) {
+                                pie.removeClass('pctFull');
+                            }
+                            else {
+                                pie.addClass('pctFull');
+                            }
+                        }
+                        else {
+                            if(timerValue > 180) {
+                                pie.addClass('pctFull');
+                            }
+                            else {
+                                pie.removeClass('pctFull');
+                            }
+                        }
+
+                        if(++timerValue > 360) {
+                            timerValue = 0;
+                        }
+                    }, 15);
+                });
+
+
+
+            });
+        </script>
+  {% endif %}
+{% endblock head %}

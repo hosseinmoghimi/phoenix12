@@ -380,6 +380,15 @@ class CustomerRepo():
         
         if person is not None:
             self.me=Customer.objects.filter(person_account__person_id=person.id).first()
+    def misc_customer(self,title="مشتری متفرقه",*args, **kwargs):
+        misc_customer=Customer.objects.filter(person_account__title=title).first()
+        if misc_customer is None:
+            from accounting.repo import PersonAccountRepo
+            misc_person_account=PersonAccountRepo(request=self.request).misc_person_account(*args, **kwargs)
+            misc_customer=Customer()
+            misc_customer.person_account=misc_person_account
+            misc_customer.save()
+        return misc_customer
 
     def list(self,*args, **kwargs):
         objects=self.objects
@@ -723,7 +732,7 @@ class SupplierRepo():
             search_for=kwargs["search_for"]
 
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=pure_code ) )
-        return objects.all()
+        return objects.all() 
     
 
     def supplier(self,*args, **kwargs):

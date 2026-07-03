@@ -46,8 +46,15 @@
 {% block script %}
 
 <script>
-  let category_id=parseInt("{{category.id}} ")
+  let category_id=0
 </script>
+
+{% if category %}
+  
+<script>
+  category_id=parseInt("{{category.id}} ")
+</script>
+{% endif %}
 
 {% include "market/includes/categories-app/script.html" %}
 

@@ -3,6 +3,9 @@
 
 {% block content %}
 <div class="row rtl farsi">
+    <div class="col-md-12">
+        {% include "accounting/includes/bank-account-app/card-full.html" %}
+    </div>
     <div class="col-md-4">
         {% include "accounting/includes/bank-account-app/card.html" %}
     </div>
@@ -12,9 +15,6 @@
     </div>
 
  
-    <div class="col-md-4">
-        {% include "accounting/includes/set-account-parent-app/template.html" %}
-    </div>
     <div class="col-md-4">
         {% include "accounting/includes/bank-app/card.html" %}
     </div>
@@ -48,6 +48,13 @@
     </div>
   
     {% endif %}
+
+
+    
+    <div class="col-md-12">
+        {% include "accounting/includes/set-account-parent-app/template.html" %}
+    </div>
+
 
 </div>
 {% endblock content %}

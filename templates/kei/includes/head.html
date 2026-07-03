@@ -1,0 +1,780 @@
+<head>
+  
+{% load static %}
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>window.TEMPLATE_SC = "index";</script>
+<script>window.ENV_SC = true;</script>
+
+    
+    {% if farsi_font_name %}
+    <link href="{{STATIC_URL}}leo/css/font-farsi-{{farsi_font_name}}.css" rel="stylesheet">
+    {% else %}
+    <link href="{% static 'leo/css/font-farsi.css' %}" rel="stylesheet">
+    {% endif %}
+
+
+    
+    <link href="{% static 'leo/css/style.css' %}" rel="stylesheet">
+    
+<meta name="facebook-domain-verification" content="6cdlsub2sqwtm6glvu4340jr5hafjl" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#ffffff"><link rel="canonical" href="https:{% static 'kei/en' %}"><link rel="preconnect" 
+  href="{% static 'kei/cdnshopifycom' %}">
+  <link rel="preconnect" href="https://fonts.shopifycdn.com">
+  <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+  <link rel="dns-prefetch" href="https://ajax.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.googleapis.com">
+  <link rel="dns-prefetch" href="https://maps.gstatic.com"><link rel="shortcut icon" href="{% static 'kei/cdn/shop/files/FAVICON_-_Tkei_32x32.png' %}" type="image/png" />
+  
+  <title>Cafe Rocce
+</title>
+<meta name="description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:site_name" content="RESTAURANT KEI">
+  <meta property="og:url" content="https:{% static 'kei/en' %}">
+  <meta property="og:title" content="Kei Kobayashi restaurant">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!"><meta property="og:image" content="{% static 'kei/cdn/shop/files/Logo_Kei_-_noir.png' %}">
+    <meta property="og:image:secure_url" content="{% static 'kei/cdn/shop/files/Logo_Kei_-_noir.png' %}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="628"><meta name="twitter:site" content="@">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kei Kobayashi restaurant">
+<meta name="twitter:description" content="The gourmet restaurant Kei Kobayashi of chef Kei Kobayashi Kei located in the 1st arrondissement of Paris opens its doors to you. Discover her shop, her gift cards, his exceptional products and more. The gourmet meeting!">
+<style data-shopify>@font-face {
+  font-family: "EB Garamond";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("{% static 'kei/cdn/fonts/ebgaramond/ebgaramond_n4.f03b4ad40330b0ec2af5bb96f169ce0df8a12bc0.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/ebgaramond/ebgaramond_n4.73939a8b7fe7c6b6b560b459d64db062f2ba1a29.woff' %}") format("woff");
+}
+
+  @font-face {
+  font-family: Lato;
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("{% static 'kei/cdn/fonts/lato/lato_n3.a7080ececf6191f1dd5b0cb021691ca9b855c876.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_n3.61e34b2ff7341f66543eb08e8c47eef9e1cde558.woff' %}") format("woff");
+}
+
+
+  @font-face {
+  font-family: Lato;
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("{% static 'kei/cdn/fonts/lato/lato_n5.b2fec044fbe05725e71d90882e5f3b21dae2efbd.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_n5.f25a9a5c73ff9372e69074488f99e8ac702b5447.woff' %}") format("woff");
+}
+
+  @font-face {
+  font-family: Lato;
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url("{% static 'kei/cdn/fonts/lato/lato_i3.d6f478a3beb94baebd09d08550010692d0969f6e.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_i3.881ba892942c15b0c0c25c0b311d6481b5311015.woff' %}") format("woff");
+}
+
+  @font-face {
+  font-family: Lato;
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("{% static 'kei/cdn/fonts/lato/lato_i5.9501f9e8a9e09e142687495e156dec167f6a3ea3.woff2' %}") format("woff2"),
+       url("{% static 'kei/cdn/fonts/lato/lato_i5.eca6cbf1aa9c70cc6dbfed0353a2f57e5065c864.woff' %}") format("woff");
+}
+
+</style><link href="{% static 'kei/cdn/shop/t/2/assets/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
+<style data-shopify>:root {
+    --typeHeaderPrimary: "EB Garamond";
+    --typeHeaderFallback: serif;
+    --typeHeaderSize: 30px;
+    --typeHeaderWeight: 400;
+    --typeHeaderLineHeight: 1.2;
+    --typeHeaderSpacing: 0.0em;
+
+    --typeBasePrimary:Lato;
+    --typeBaseFallback:sans-serif;
+    --typeBaseSize: 15px;
+    --typeBaseWeight: 300;
+    --typeBaseLineHeight: 1.6;
+    --typeBaseSpacing: 0.025em;
+
+    --iconWeight: 4px;
+    --iconLinecaps: miter;
+  --colorBtnPrimary:#ffffff;
+  --colorBtnPrimaryDim:#f2f2f2;
+  --colorBtnPrimaryDark:#000000;
+  --colorBtnPrimaryText:#000000;
+  --colorCartDot:#ff4f33;
+
+  --colorError:#d02e2e;
+  --colorLink:#ffffff;
+
+  --colorTextBody:#ffffff;
+  --colorProductDescription:#1c1d1d;
+  --colorSalePrice:#ffffff;
+  --colorSaleTag:#ffffff;
+  --colorSaleTagText:#ffffff;
+
+  --colorBody:#000000;
+  --colorBodyDim:#000000;
+  --colorInputBg:#000000;
+  --colorInputBgDim:#000000;
+  --colorInputBgDark:#000000;
+  --colorInputText:#ffffff;
+
+  --colorFooter:#ffffff;
+  --colorFooterText:#ffffff;
+
+  --colorBorder:#000000;
+
+  --colorNav:rgba(0,0,0,0);
+  --colorNavText:#ffffff;
+  --colorAnnouncement:#ffffff;
+  --colorAnnouncementText:#000000;
+
+  --colorHeroText:#ffffff;
+
+  --colorModalBg:#000000;
+
+  --colorSmallImageBg:#ffffff;
+  --colorLargeImageBg:#000000;
+
+  --colorDrawers:#000000;
+  --colorDrawersDim:#000000;
+  --colorDrawerBorder:#ffffff;
+  --colorDrawerText:#000000;
+  --colorDrawerTextDarken:#000000;
+  --colorDrawerButton:#ffffff;
+  --colorDrawerButtonText:#000000;
+  --color-body-text:#ffffff;
+  --color-body:#000000;
+  --color-bg:#000000;
+
+  --colorTextDescriptionQR: #a5a2a2;
+  }
+
+  
+.collection-hero__content:before,
+  .hero__image-wrapper:before,
+  .hero__media:before {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 0%, rgba(0, 0, 0, 0.0) 40%, rgba(0, 0, 0, 0.62) 100%);
+  }
+
+  .skrim__item-content .skrim__overlay:after {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 30%, rgba(0, 0, 0, 0.62) 100%);
+  }
+
+  .placeholder-content {
+    background-image: linear-gradient(100deg, #ffffff 40%, #f7f7f7 63%, #ffffff 79%);
+  }</style>
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+    window.theme = window.theme || {};
+    theme.routes = {
+      home: "/en",
+      cart: "/en/cart.js",
+      cartPage: "/en/cart",
+      cartAdd: "/en/cart/add.js",
+      cartChange: "/en/cart/change.js"
+    };
+    theme.strings = {
+      soldOut: "Exhausted",
+      unavailable: "Not available",
+      stockLabel: "[count] in stock",
+      willNotShipUntil: "Will be shipped after [date]",
+      willBeInStockAfter: "Will be in stock from [date]",
+      waitingForStock: "Inventory on the way",
+      cartSavings: "You save [savings]",
+      cartEmpty: "Your basket is empty.",
+      cartTermsConfirmation: "You must accept the terms and conditions of sale to verify",
+      searchCollections: "Collections:",
+      searchPages: "Pages:",
+      searchArticles: "Articles:"
+    };
+    theme.settings = {
+      dynamicVariantsEnable: true,
+      dynamicVariantType: "button",
+      cartType: "drawer",
+      isCustomerTemplate: false,
+      moneyFormat: "{{amount_with_comma_separator}}€",
+      predictiveSearch: true,
+      predictiveSearchType: "product,article,page,collection",
+      inventoryThreshold: 10,
+      quickView: true,
+      themeName: 'Tiptoque',
+      themeVersion: "1.6.9"
+    };
+  </script>
+
+  <script>window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.start');</script><meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/85060649288/digital_wallets/dialog">
+<meta name="shopify-checkout-api-token" content="d6455c25b4583fa0102271504c1b5ab4">
+<meta id="in-context-paypal-metadata" data-shop-id="85060649288" data-venmo-supported="false" data-environment="production" data-locale="en_US" data-paypal-v4="true" data-currency="EUR">
+<link rel="alternate" hreflang="x-default" href="https:{% static 'kei/' %}">
+<link rel="alternate" hreflang="fr" href="https:{% static 'kei/' %}">
+<link rel="alternate" hreflang="ja" href="https:{% static 'kei/ja' %}">
+<link rel="alternate" hreflang="en" href="https:{% static 'kei/en' %}">
+<script async="async" src="{% static 'kei/checkouts/internal/preloads.js?locale=en-FR' %}"></script>
+<link rel="preconnect" href="https://shop.app" crossorigin="anonymous">
+<script async="async" src="{% static 'kei/checkouts/internal/preloads.js' %}" crossorigin="anonymous"></script>
+<script id="apple-pay-shop-capabilities" type="application/json">{"shopId":85060649288,"countryCode":"FR","currencyCode":"EUR","merchantCapabilities":["supports3DS"],"merchantId":"gid:\/\/shopify\/Shop\/85060649288","merchantName":"RESTAURANT KEI","requiredBillingContactFields":["postalAddress","email","phone"],"requiredShippingContactFields":["postalAddress","email","phone"],"shippingType":"shipping","supportedNetworks":["visa","masterCard","amex","maestro"],"total":{"type":"pending","label":"RESTAURANT KEI","amount":"1.00"},"shopifyPaymentsEnabled":true,"supportsSubscriptions":true}</script>
+<script id="shopify-features" type="application/json">{"accessToken":"d6455c25b4583fa0102271504c1b5ab4","betas":["rich-media-storefront-analytics"],"domain":"restaurant-kei.fr","predictiveSearch":true,"shopId":85060649288,"locale":"en"}</script>
+<script>var Shopify = Shopify || {};
+Shopify.shop = "restaurant-kei.myshopify.com";
+Shopify.locale = "en";
+Shopify.currency = {"active":"EUR","rate":"1.0"};
+Shopify.country = "FR";
+Shopify.theme = {"name":"PROD","id":165510971720,"schema_name":"Tiptoque Theme","schema_version":"1.10.0","theme_store_id":887,"role":"main"};
+Shopify.theme.handle = "null";
+Shopify.theme.style = {"id":null,"handle":null};
+Shopify.cdnHost = "restaurant-kei.fr/cdn";
+Shopify.routes = Shopify.routes || {};
+Shopify.routes.root = "/en/";
+Shopify.shopJsCdnBaseUrl = "{% static 'kei/cdnshopifycom/shopifycloud/shop-js' %}";
+Shopify.SignInWithShop = Shopify.SignInWithShop || {};
+Shopify.SignInWithShop.User = Shopify.SignInWithShop.User || {};
+Shopify.SignInWithShop.User.recognized = false;</script>
+<script type="module">!function(o){(o.Shopify=o.Shopify||{}).modules=!0}(window);</script>
+<script>!function(o){function n(){var o=[];function n(){o.push(Array.prototype.slice.apply(arguments))}return n.q=o,n}var t=o.Shopify=o.Shopify||{};t.loadFeatures=n(),t.autoloadFeatures=n()}(window);</script>
+<script>
+  window.ShopifyPay = window.ShopifyPay || {};
+  window.ShopifyPay.apiHost = "shop.app\/pay";
+  window.ShopifyPay.redirectState = "pending";
+</script>
+<script>
+  window.Shopify = window.Shopify || {};
+  window.Shopify.SignInWithShop = window.Shopify.SignInWithShop || {};
+  window.Shopify.SignInWithShop.assetMetrics = { sampleRate: 0.01 };
+  window.Shopify.SignInWithShop.eligible = true;
+</script>
+<script id="shop-js-analytics" type="application/json">{"pageType":"index"}</script>
+<script defer="defer" async type="module" src="{% static 'kei/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js' %}"></script>
+<script type="module">
+  await import("{% static 'kei/cdn/shopifycloud/shop-js/modules/v2/loader.init-shop-cart-sync.en.esm.js' %}");
+
+  window.Shopify.SignInWithShop?.initShopCartSync?.({"fedCMEnabled":true,"windoidEnabled":true,"transferSessionEnabled":true});
+
+</script>
+<script>
+  window.Shopify = window.Shopify || {};
+  if (!window.Shopify.featureAssets) window.Shopify.featureAssets = {};
+  window.Shopify.featureAssets['shop-js'] = {"listener":["modules/v2/loader.listener.en.esm.js"],"shop-cash-offers":["modules/v2/loader.shop-cash-offers.en.esm.js"],"shop-toast-manager":["modules/v2/loader.shop-toast-manager.en.esm.js"],"shop-button":["modules/v2/loader.shop-button.en.esm.js"],"init-fed-cm":["modules/v2/loader.init-fed-cm.en.esm.js"],"init-windoid":["modules/v2/loader.init-windoid.en.esm.js"],"init-shop-user-recognition":["modules/v2/loader.init-shop-user-recognition.en.esm.js"],"avatar":["modules/v2/loader.avatar.en.esm.js"],"init-shop-email-lookup-coordinator":["modules/v2/loader.init-shop-email-lookup-coordinator.en.esm.js"],"init-shop-cart-sync":["modules/v2/loader.init-shop-cart-sync.en.esm.js"],"shop-login-button":["modules/v2/loader.shop-login-button.en.esm.js"],"checkout-modal":["modules/v2/loader.checkout-modal.en.esm.js"],"init-customer-accounts-sign-up":["modules/v2/loader.init-customer-accounts-sign-up.en.esm.js"],"init-shop-for-new-customer-accounts":["modules/v2/loader.init-shop-for-new-customer-accounts.en.esm.js"],"pay-button":["modules/v2/loader.pay-button.en.esm.js"],"init-customer-accounts":["modules/v2/loader.init-customer-accounts.en.esm.js"],"shop-user-recognition":["modules/v2/loader.shop-user-recognition.en.esm.js"],"shop-follow-button":["modules/v2/loader.shop-follow-button.en.esm.js"],"shop-cart-sync":["modules/v2/loader.shop-cart-sync.en.esm.js"],"shop-login":["modules/v2/loader.shop-login.en.esm.js"],"lead-capture":["modules/v2/loader.lead-capture.en.esm.js"],"payment-terms":["modules/v2/loader.payment-terms.en.esm.js"]};
+</script>
+<script>(function() {
+  var isLoaded = false;
+  function asyncLoad() {
+    if (isLoaded) return;
+    isLoaded = true;
+    var urls = ["https:\/\/cdn.nfcube.com\/instafeed-2b892363e44110f857e4feb2c9ae5872.js?shop=restaurant-kei.myshopify.com"];
+    for (var i = 0; i < urls.length; i++) {
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = urls[i];
+      var x = document.getElementsByTagName('script')[0];
+      x.parentNode.insertBefore(s, x);
+    }
+  };
+  if(window.attachEvent) {
+    window.attachEvent('onload', asyncLoad);
+  } else {
+    window.addEventListener('load', asyncLoad, false);
+  }
+})();</script>
+<script id="__st">var __st={"a":85060649288,"offset":7200,"reqid":"364d1cc0-fd15-4d39-a52b-705a2aee145d-1781820614","pageurl":"restaurant-kei.fr\/en","u":"d37412b982fd","p":"home"};</script>
+<script>window.ShopifyPaypalV4VisibilityTracking = true;</script>
+<script id="captcha-bootstrap">!function(){'use strict';const t='contact',e='account',n='new_comment',o=[[t,t],['blogs',n],['comments',n],[t,'customer']],c=[[e,'customer_login'],[e,'guest_login'],[e,'recover_customer_password'],[e,'create_customer']],r=t=>t.map((([t,e])=>`form[action*='/${t}']:not([data-nocaptcha='true']) input[name='form_type'][value='${e}']`)).join(','),a=t=>()=>t?[...document.querySelectorAll(t)].map((t=>t.form)):[];function s(){const t=[...o],e=r(t);return a(e)}const i='password',u='form_key',d=['recaptcha-v3-token','g-recaptcha-response','h-captcha-response',i],f=()=>{try{return window.sessionStorage}catch{return}},m='__shopify_v',_=t=>t.elements[u];function p(t,e,n=!1){try{const o=window.sessionStorage,c=JSON.parse(o.getItem(e)),{data:r}=function(t){const{data:e,action:n}=t;return t[m]||n?{data:e,action:n}:{data:t,action:n}}(c);for(const[e,n]of Object.entries(r))t.elements[e]&&(t.elements[e].value=n);n&&o.removeItem(e)}catch(o){console.error('form repopulation failed',{error:o})}}const l='form_type',E='cptcha';function T(t){t.dataset[E]=!0}const w=window,h=w.document,L='Shopify',v='ce_forms',y='captcha';let A=!1;((t,e)=>{const n=(g='f06e6c50-85a8-45c8-87d0-21a2b65856fe',I='{% static 'kei/cdnshopifycom/shopifycloud/storefront-forms-hcaptcha/ce_storefront_forms_captcha_hcaptcha.v1.5.2.iife.js' %}',D={infoText:'Protected by hCaptcha',privacyText:'Privacy',termsText:'Terms'},(t,e,n)=>{const o=w[L][v],c=o.bindForm;if(c)return c(t,g,e,D).then(n);var r;o.q.push([[t,g,e,D],n]),r=I,A||(h.body.append(Object.assign(h.createElement('script'),{id:'captcha-provider',async:!0,src:r})),A=!0)});var g,I,D;w[L]=w[L]||{},w[L][v]=w[L][v]||{},w[L][v].q=[],w[L][y]=w[L][y]||{},w[L][y].protect=function(t,e){n(t,void 0,e),T(t)},Object.freeze(w[L][y]),function(t,e,n,w,h,L){const[v,y,A,g]=function(t,e,n){const i=e?o:[],u=t?c:[],d=[...i,...u],f=r(d),m=r(i),_=r(d.filter((([t,e])=>n.includes(e))));return[a(f),a(m),a(_),s()]}(w,h,L),I=t=>{const e=t.target;return e instanceof HTMLFormElement?e:e&&e.form},D=t=>v().includes(t);t.addEventListener('submit',(t=>{const e=I(t);if(!e)return;const n=D(e)&&!e.dataset.hcaptchaBound&&!e.dataset.recaptchaBound,o=_(e),c=g().includes(e)&&(!o||!o.value);(n||c)&&t.preventDefault(),c&&!n&&(function(t){try{if(!f())return;!function(t){const e=f();if(!e)return;const n=_(t);if(!n)return;const o=n.value;o&&e.removeItem(o)}(t);const e=Array.from(Array(32),(()=>Math.random().toString(36)[2])).join('');!function(t,e){_(t)||t.append(Object.assign(document.createElement('input'),{type:'hidden',name:u})),t.elements[u].value=e}(t,e),function(t,e){const n=f();if(!n)return;const o=[...t.querySelectorAll(`input[type='${i}']`)].map((({name:t})=>t)),c=[...d,...o],r={};for(const[a,s]of new FormData(t).entries())c.includes(a)||(r[a]=s);n.setItem(e,JSON.stringify({[m]:1,action:t.action,data:r}))}(t,e)}catch(e){console.error('failed to persist form',e)}}(e),e.submit())}));const S=(t,e)=>{t&&!t.dataset[E]&&(n(t,e.some((e=>e===t))),T(t))};for(const o of['focusin','change'])t.addEventListener(o,(t=>{const e=I(t);D(e)&&S(e,y())}));const B=e.get('form_key'),M=e.get(l),P=B&&M;t.addEventListener('DOMContentLoaded',(()=>{const t=y();if(P)for(const e of t)e.elements[l].value===M&&p(e,B);[...new Set([...A(),...v().filter((t=>'true'===t.dataset.shopifyCaptcha))])].forEach((e=>S(e,t)))}))}(h,new URLSearchParams(w.location.search),n,t,e,['guest_login'])})(!0,!0)}();</script>
+<script integrity="sha256-JjoPp5ZfB1sSAs5SQaol1x1GgvveM+BgmRzyDexInEQ=" data-source-attribution="shopify.loadfeatures" defer="defer" src="{% static 'kei/cdn/shopifycloud/storefront/assets/storefront/load_feature-1bd60354.js' %}" crossorigin="anonymous"></script>
+<script crossorigin="anonymous" defer="defer" src="{% static 'kei/cdn/shopifycloud/storefront/assets/shopify_pay/storefront-bf1cdb70.js' %}"></script>
+<script id="shopify-origin-trials" async="async" integrity="sha256-MrpR+SbfwphjsvuxKsSWA5xxY07P36eahsNLLXSgEwo=" src="{% static 'kei/cdnshopifycom/shopifycloud/storefront/assets/storefront/origin_trials-c173577b.js' %}" crossorigin="anonymous" onload="window.__shopifyOriginTrialsDone = true" onerror="window.__shopifyOriginTrialsDone = true"></script>
+<script data-source-attribution="shopify.dynamic_checkout.dynamic.init">var Shopify=Shopify||{};Shopify.PaymentButton=Shopify.PaymentButton||{isStorefrontPortableWallets:!0,init:function(){window.Shopify.PaymentButton.init=function(){};var t=document.createElement("script");t.src="https:{% static 'kei/cdn/shopifycloud/portable-wallets/latest/portable-wallets.en.js' %}",t.type="module",document.head.appendChild(t)}};
+</script>
+<script data-source-attribution="shopify.dynamic_checkout.buyer_consent">
+  function portableWalletsHideBuyerConsent(e){var t=document.getElementById("shopify-buyer-consent"),n=document.getElementById("shopify-subscription-policy-button");t&&n&&(t.classList.add("hidden"),t.setAttribute("aria-hidden","true"),n.removeEventListener("click",e))}function portableWalletsShowBuyerConsent(e){var t=document.getElementById("shopify-buyer-consent"),n=document.getElementById("shopify-subscription-policy-button");t&&n&&(t.classList.remove("hidden"),t.removeAttribute("aria-hidden"),n.addEventListener("click",e))}window.Shopify?.PaymentButton&&(window.Shopify.PaymentButton.hideBuyerConsent=portableWalletsHideBuyerConsent,window.Shopify.PaymentButton.showBuyerConsent=portableWalletsShowBuyerConsent);
+</script>
+<script data-source-attribution="shopify.dynamic_checkout.cart.bootstrap">document.addEventListener("DOMContentLoaded",(function(){function t(){return document.querySelector("shopify-accelerated-checkout-cart, shopify-accelerated-checkout")}if(t())Shopify.PaymentButton.init();else{new MutationObserver((function(e,n){t()&&(Shopify.PaymentButton.init(),n.disconnect())})).observe(document.body,{childList:!0,subtree:!0})}}));
+</script>
+<link id="shopify-accelerated-checkout-styles" rel="stylesheet" media="screen" href="{% static 'kei/cdn/shopifycloud/portable-wallets/latest/accelerated-checkout-backwards-compat.css' %}" crossorigin="anonymous">
+<style id="shopify-accelerated-checkout-cart">
+        #shopify-buyer-consent {
+  margin-top: 1em;
+  display: inline-block;
+  width: 100%;
+}
+
+#shopify-buyer-consent.hidden {
+  display: none;
+}
+
+#shopify-subscription-policy-button {
+  background: none;
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+#shopify-subscription-policy-button::before {
+  box-shadow: none;
+}
+
+      </style>
+
+<script id="shopify-cfh-end">window.performance && window.performance.mark && window.performance.mark('shopify.content_for_header.end');</script>
+
+  <script src="{% static 'kei/cdn/shop/t/2/assets/vendor-scripts-v12.js' %}" ></script>
+  
+    <link rel="stylesheet" href="{% static 'kei/cdnjsdelivrnet/npm/aos@2.3.4/dist/aos.css' %}">
+    <script src="{% static 'kei/cdnjsdelivrnet/npm/aos@2.3.4/dist/aos.js' %}"></script>
+    <script>
+      AOS.init();
+    </script>
+  
+<script src="{% static 'kei/cdn/shop/t/2/assets/theme.js' %}" defer="defer"></script><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="{% static 'kei/cdn/shop/t/2/assets/LIB.lodash.js' %}" type="text/javascript"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'kei/cdn/shop/t/2/assets/COMMON.tools.js' %}" type="text/javascript"></script>
+    <!-- CART JS Libraries -->
+    <script src="{% static 'kei/cdn/shop/t/2/assets/LIB.rivets-cart.js' %}" type="text/javascript"></script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5VNDFLT');</script>
+    <!-- End Google Tag Manager -->
+<script src="{% static 'kei/cdnshopifycom/extensions/019eda5c-8d9d-71d0-bf1a-2fe4f4cad17e/lb-upsell-398/assets/lb-selleasy.js' %}" type="text/javascript" defer="defer"></script>
+<link href="https://monorail-edge.shopifysvc.com" rel="dns-prefetch">
+<script>(function(){if ("sendBeacon" in navigator && "performance" in window) {try {var session_token_from_headers = performance.getEntriesByType('navigation')[0].serverTiming.find(x => x.name == '_s').description;} catch {var session_token_from_headers = undefined;}var session_cookie_matches = document.cookie.match(/_shopify_s=([^;]*)/);var session_token_from_cookie = session_cookie_matches && session_cookie_matches.length === 2 ? session_cookie_matches[1] : "";var session_token = session_token_from_headers || session_token_from_cookie || "";function handle_abandonment_event(e) {var entries = performance.getEntries().filter(function(entry) {return /monorail-edge.shopifysvc.com/.test(entry.name);});if (!window.abandonment_tracked && entries.length === 0) {window.abandonment_tracked = true;var currentMs = Date.now();var navigation_start = performance.timing.navigationStart;var payload = {shop_id: 85060649288,url: window.location.href,navigation_start,duration: currentMs - navigation_start,session_token,page_type: "index"};window.navigator.sendBeacon("https://monorail-edge.shopifysvc.com/v1/produce", JSON.stringify({schema_id: "online_store_buyer_site_abandonment/1.1",payload: payload,metadata: {event_created_at_ms: currentMs,event_sent_at_ms: currentMs}}));}}window.addEventListener('pagehide', handle_abandonment_event);}}());</script>
+<script>
+  window.__TREKKIE_SHIM_QUEUE = window.__TREKKIE_SHIM_QUEUE || [];
+</script>
+<script id="web-pixels-manager-setup">(function(){var wpmLoader=function(){"use strict";return function(e,d,r,n){var o=arguments.length>4&&void 0!==arguments[4]?arguments[4]:{};if(!Boolean(null==(i=null==(a=window.Shopify)?void 0:a.analytics)?void 0:i.replayQueue)){var a,i;window.Shopify=window.Shopify||{};var t=window.Shopify;t.analytics=t.analytics||{};var s=t.analytics;s.replayQueue=[],s.publish=function(e,d,r){return s.replayQueue.push([e,d,r]),!0};try{self.performance.mark("wpm:start")}catch(e){}var l,u,c,m,p,f,h,g,y,w,v,b,S,P=(u=(l={modern:/Edge?\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Firefox\/(1{2}[4-9]|1[2-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Chrom(ium|e)\/(9{2}|\d{3,})\.\d+(\.\d+|)|(Maci|X1{2}).+ Version\/(15\.\d+|(1[6-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(9{2}|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(15[._]\d+|(1[6-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|SamsungBrowser\/([2-9]\d|\d{3,})\.\d+/,legacy:/Edge?\/(1[6-9]|[2-9]\d|\d{3,})\.\d+(\.\d+|)|Firefox\/(5[4-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)|Chrom(ium|e)\/(5[1-9]|[6-9]\d|\d{3,})\.\d+(\.\d+|)([\d.]+$|.*Safari\/(?![\d.]+ Edge\/[\d.]+$))|(Maci|X1{2}).+ Version\/(10\.\d+|(1[1-9]|[2-9]\d|\d{3,})\.\d+)([,.]\d+|)( \(\w+\)|)( Mobile\/\w+|) Safari\/|Chrome.+OPR\/(3[89]|[4-9]\d|\d{3,})\.\d+\.\d+|(CPU[ +]OS|iPhone[ +]OS|CPU[ +]iPhone|CPU IPhone OS|CPU iPad OS)[ +]+(10[._]\d+|(1[1-9]|[2-9]\d|\d{3,})[._]\d+)([._]\d+|)|Android:?[ /-](13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})(\.\d+|)(\.\d+|)|Mobile Safari.+OPR\/([89]\d|\d{3,})\.\d+\.\d+|Android.+Firefox\/(13[5-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+Chrom(ium|e)\/(13[3-9]|1[4-9]\d|[2-9]\d{2}|\d{4,})\.\d+(\.\d+|)|Android.+(UC? ?Browser|UCWEB|U3)[ /]?(15\.([5-9]|\d{2,})|(1[6-9]|[2-9]\d|\d{3,})\.\d+)\.\d+|SamsungBrowser\/(5\.\d+|([6-9]|\d{2,})\.\d+)|Android.+MQ{2}Browser\/(14(\.(9|\d{2,})|)|(1[5-9]|[2-9]\d|\d{3,})(\.\d+|))(\.\d+|)|K[Aa][Ii]OS\/(3\.\d+|([4-9]|\d{2,})\.\d+)(\.\d+|)/}).modern,c=l.legacy,(m=navigator.userAgent).match(u)?"modern":m.match(c)?"legacy":"unknown"),C="modern"===P?"modern":"legacy",_=(null!=n?n:{modern:"",legacy:""})[C],O=[(p={baseUrl:d,hashVersion:r,buildTarget:C}).baseUrl,"/wpm","/b",p.hashVersion,"modern"===p.buildTarget?"m":"l",".js"].join(""),U=(f={version:r,bundleTarget:P,surface:e.surface,pageUrl:self.location.href,monorailEndpoint:e.monorailEndpoint},h=f.version,g=f.bundleTarget,y=f.surface,w=f.pageUrl,v=f.monorailEndpoint,{emit:function(e){var d=e.status,r=e.errorMsg,n=(new Date).getTime(),o=JSON.stringify({metadata:{event_sent_at_ms:n},events:[{schema_id:"web_pixels_manager_load/3.1",payload:{version:h,bundle_target:g,page_url:w,status:d,surface:y,error_msg:r},metadata:{event_created_at_ms:n}}]});if(!v)return console&&console.warn&&console.warn("[Web Pixels Manager] No Monorail endpoint provided, skipping logging."),!1;try{return self.navigator.sendBeacon.bind(self.navigator)(v,o)}catch(e){}var a=new XMLHttpRequest;try{return a.open("POST",v,!0),a.setRequestHeader("Content-Type","text/plain"),a.send(o),!0}catch(e){return console&&console.warn&&console.warn("[Web Pixels Manager] Got an unhandled error while logging to Monorail."),!1}}});try{o.browserTarget=P,function(e){var d=e.src,r=e.async,n=void 0===r||r,o=e.onload,a=e.onerror,i=e.sri,t=e.scriptDataAttributes,s=void 0===t?{}:t,l=document.createElement("script"),u=document.querySelector("head"),c=document.querySelector("body");if(l.async=n,l.src=d,i&&(l.integrity=i,l.crossOrigin="anonymous"),s)for(var m in s)if(Object.prototype.hasOwnProperty.call(s,m))try{l.dataset[m]=s[m]}catch(e){}if(o&&l.addEventListener("load",o),a&&l.addEventListener("error",a),u)u.appendChild(l);else{if(!c)throw new Error("Did not find a head or body element to append the script");c.appendChild(l)}}({src:O,async:!0,onload:function(){if(!function(){var e,d;return Boolean(null==(d=null==(e=window.Shopify)?void 0:e.analytics)?void 0:d.initialized)}()){var d=window.webPixelsManager.init(e)||void 0;if(d){var r=window.Shopify.analytics;r.replayQueue.forEach(function(e){var r=e[0],n=e[1],o=e[2];d.publishCustomEvent(r,n,o)}),r.replayQueue=[],r.publish=d.publishCustomEvent,r.visitor=d.visitor,r.initialized=!0}}},onerror:function(){return U.emit({status:"failed",errorMsg:"".concat(O," has failed to load")})},sri:(b=_,S=/^sha384-[A-Za-z0-9+/=]+$/,"string"==typeof b&&S.test(b)?_:""),scriptDataAttributes:o}),U.emit({status:"loading"})}catch(e){U.emit({status:"failed",errorMsg:(null==e?void 0:e.message)||"Unknown error"})}}}}();wpmLoader({shopId: 85060649288,storefrontBaseUrl: "https://restaurant-kei.fr",extensionsBaseUrl: "https://extensions.shopifycdn.com/cdn/shopifycloud/web-pixels-manager",monorailEndpoint: "https://monorail-edge.shopifysvc.com/unstable/produce_batch",surface: "storefront-renderer",enabledBetaFlags: ["d5bdd5d0","2b8f910e"],webPixelsConfigList: [{"id":"2827583816","configuration":"{\"accountID\":\"selleasy-metrics-track\"}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"130e47e04701969c8470d0150e978250","type":"APP","apiClientId":5519923,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_email","read_customer_name","read_customer_personal_data"],"dataSharingControls":["share_all_events"]},"dataSharingState":"unrestricted"},{"id":"1007812936","configuration":"{\"config\":\"{\\\"google_tag_ids\\\":[\\\"G-HDT22VMR0K\\\"],\\\"gtag_events\\\":[{\\\"type\\\":\\\"begin_checkout\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"search\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"view_item\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"purchase\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"page_view\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_payment_info\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"},{\\\"type\\\":\\\"add_to_cart\\\",\\\"action_label\\\":\\\"G-HDT22VMR0K\\\"}],\\\"enable_monitoring_mode\\\":false}\"}","eventPayloadVersion":"v1","runtimeContext":"OPEN","scriptVersion":"20a1a395175a780fd37f04940f5b4db5","type":"APP","apiClientId":1780363,"privacyPurposes":[],"dataSharingAdjustments":{"protectedCustomerApprovalScopes":["read_customer_address","read_customer_email","read_customer_name","read_customer_personal_data","read_customer_phone"],"dataSharingControls":["share_all_events"]},"dataSharingState":"optimized","enabledFlags":["9a3ed68a"]},{"id":"shopify-app-pixel","configuration":"{}","eventPayloadVersion":"v1","runtimeContext":"STRICT","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"APP","privacyPurposes":["ANALYTICS","MARKETING"]},{"id":"shopify-custom-pixel","eventPayloadVersion":"v1","runtimeContext":"LAX","scriptVersion":"0460","apiClientId":"shopify-pixel","type":"CUSTOM","privacyPurposes":["ANALYTICS","MARKETING"]}],isMerchantRequest: false,initData: {"shop":{"name":"RESTAURANT KEI","paymentSettings":{"currencyCode":"EUR"},"myshopifyDomain":"restaurant-kei.myshopify.com","countryCode":"FR","storefrontUrl":"https:\/\/restaurant-kei.fr\/en"},"customer":null,"cart":null,"checkout":null,"productVariants":[],"products":[{"id":"9168265740616","handle":"livraison","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218956067144","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276160840","handle":"jeudi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008627016","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168278192456","handle":"jeudi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219019342152","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168270164296","handle":"lundi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218981036360","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168280387912","handle":"lundi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219026846024","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273604936","handle":"mardi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995880264","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279994696","handle":"mardi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219025961288","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276029768","handle":"mercredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219006857544","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168279568712","handle":"mercredi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219024781640","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168273441096","handle":"samedi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49218995192136","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168281043272","handle":"samedi-1","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219031761224","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168276259144","handle":"vendredi","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219008725320","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]},{"id":"9168277274952","handle":"vendredi-copie","title":"","vendor":"","type":null,"untranslatedTitle":null,"url":null,"remoteShopId":null,"variants":[{"id":"49219014656328","price":{"amount":0.0,"currencyCode":"EUR"},"image":null,"sku":null,"title":null,"untranslatedTitle":null}]}],"purchasingCompany":null,"page":{"pageType":"home","resourceId":null}},},"https:{% static 'kei/cdn' %}","bf1e3d2ew26dbbaaapfd680b2dm57e27560",{"modern":"","legacy":""},{"trekkieShim":true,"apiClientId":"580111","themeId":"165510971720","themeStoreId":"887","pageType":"home","shopId":"85060649288","storefrontBaseUrl":"https:\/\/restaurant-kei.fr","extensionBaseUrl":"https:\/\/extensions.shopifycdn.com\/cdn\/shopifycloud\/web-pixels-manager","surface":"storefront-renderer","enabledBetaFlags":"[\"d5bdd5d0\", \"2b8f910e\"]","isMerchantRequest":"false","hashVersion":"bf1e3d2ew26dbbaaapfd680b2dm57e27560","publish":"custom","events":"[[\"page_viewed\",{}]]"});})();</script><script>
+  window.ShopifyAnalytics = window.ShopifyAnalytics || {};
+  window.ShopifyAnalytics.meta = window.ShopifyAnalytics.meta || {};
+  window.ShopifyAnalytics.meta.currency = 'EUR';
+  var meta = {"page":{"pageType":"home","requestId":"364d1cc0-fd15-4d39-a52b-705a2aee145d-1781820614"}};
+  for (var attr in meta) {
+    window.ShopifyAnalytics.meta[attr] = meta[attr];
+  }
+</script>
+<script class="analytics">
+  (function () {
+    var customDocumentWrite = function(content) {
+      var jquery = null;
+
+      if (window.jQuery) {
+        jquery = window.jQuery;
+      } else if (window.Checkout && window.Checkout.$) {
+        jquery = window.Checkout.$;
+      }
+
+      if (jquery) {
+        jquery('body').append(content);
+      }
+    };
+
+    var hasLoggedConversion = function(token) {
+      if (token) {
+        return document.cookie.indexOf('loggedConversion=' + token) !== -1;
+      }
+      return false;
+    }
+
+    var setCookieIfConversion = function(token) {
+      if (token) {
+        var twoMonthsFromNow = new Date(Date.now());
+        twoMonthsFromNow.setMonth(twoMonthsFromNow.getMonth() + 2);
+
+        document.cookie = 'loggedConversion=' + token + '; expires=' + twoMonthsFromNow;
+      }
+    }
+
+    var trekkie = window.ShopifyAnalytics.lib = window.trekkie = window.trekkie || [];
+    window.ShopifyAnalytics.lib.trekkie = window.trekkie;
+    if (trekkie.integrations) {
+      return;
+    }
+    trekkie.methods = [
+      'identify',
+      'page',
+      'ready',
+      'track',
+      'trackForm',
+      'trackLink'
+    ];
+    trekkie.factory = function(method) {
+      return function() {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift(method);
+        trekkie.push(args);
+        if (window.__TREKKIE_SHIM_QUEUE && (method == 'track' || method == 'page')) {
+          try {
+            window.__TREKKIE_SHIM_QUEUE.push({
+              from: 'trekkie-stub',
+              method: method,
+              args: args.slice(1)
+            });
+          } catch (e) {
+            // no-op
+          }
+        }
+        return trekkie;
+      };
+    };
+    for (var i = 0; i < trekkie.methods.length; i++) {
+      var key = trekkie.methods[i];
+      trekkie[key] = trekkie.factory(key);
+    }
+    trekkie.load = function(config) {
+      trekkie.config = config || {};
+      trekkie.config.initialDocumentCookie = document.cookie;
+      var first = document.getElementsByTagName('script')[0];
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.onerror = function(e) {
+  var scriptFallback = document.createElement('script');
+  scriptFallback.type = 'text/javascript';
+  scriptFallback.onerror = function(error) {
+          var Monorail = {
+      produce: function produce(monorailDomain, schemaId, payload) {
+        var currentMs = new Date().getTime();
+        var event = {
+          schema_id: schemaId,
+          payload: payload,
+          metadata: {
+            event_created_at_ms: currentMs,
+            event_sent_at_ms: currentMs
+          }
+        };
+        return Monorail.sendRequest("https://" + monorailDomain + "/v1/produce", JSON.stringify(event));
+      },
+      sendRequest: function sendRequest(endpointUrl, payload) {
+        // Try the sendBeacon API
+        if (window && window.navigator && typeof window.navigator.sendBeacon === 'function' && typeof window.Blob === 'function' && !Monorail.isIos12()) {
+          var blobData = new window.Blob([payload], {
+            type: 'text/plain'
+          });
+
+          if (window.navigator.sendBeacon(endpointUrl, blobData)) {
+            return true;
+          } // sendBeacon was not successful
+
+        } // XHR beacon
+
+        var xhr = new XMLHttpRequest();
+
+        try {
+          xhr.open('POST', endpointUrl);
+          xhr.setRequestHeader('Content-Type', 'text/plain');
+          xhr.send(payload);
+        } catch (e) {
+          console.log(e);
+        }
+
+        return false;
+      },
+      isIos12: function isIos12() {
+        return window.navigator.userAgent.lastIndexOf('iPhone; CPU iPhone OS 12_') !== -1 || window.navigator.userAgent.lastIndexOf('iPad; CPU OS 12_') !== -1;
+      }
+    };
+    Monorail.produce('monorail-edge.shopifysvc.com',
+      'trekkie_storefront_load_errors/1.1',
+      {shop_id: 85060649288,
+      theme_id: 165510971720,
+      app_name: "storefront",
+      context_url: window.location.href,
+      source_url: "{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}"});
+
+  };
+  scriptFallback.async = true;
+  scriptFallback.src = '{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}';
+  first.parentNode.insertBefore(scriptFallback, first);
+};
+script.async = true;
+script.src = '{% static 'kei/cdn/s/trekkie.storefront.370ef8ffef154dc56bb5a814fea4666724353464.min.js' %}';
+first.parentNode.insertBefore(script, first);
+
+    };
+    trekkie.load(
+      {"Trekkie":{"appName":"storefront","development":false,"defaultAttributes":{"shopId":85060649288,"isMerchantRequest":null,"themeId":165510971720,"themeCityHash":"9036218070438510383","contentLanguage":"en","currency":"EUR","eventMetadataId":"4b0d93a2-0f13-45d3-bb51-9544ec05d7de"},"isServerSideCookieWritingEnabled":true,"monorailRegion":"shop_domain","enabledBetaFlags":["b5387b81","d5bdd5d0"]},"Session Attribution":{},"S2S":{"facebookCapiEnabled":false,"source":"trekkie-storefront-renderer","apiClientId":580111}}
+    );
+
+    var loaded = false;
+    trekkie.ready(function() {
+      if (loaded) return;
+      loaded = true;
+
+      window.ShopifyAnalytics.lib = window.trekkie;
+
+      var originalDocumentWrite = document.write;
+      document.write = customDocumentWrite;
+      try { window.ShopifyAnalytics.merchantGoogleAnalytics.call(this); } catch(error) {};
+      document.write = originalDocumentWrite;
+
+      window.ShopifyAnalytics.lib.page(null,{"pageType":"home","requestId":"364d1cc0-fd15-4d39-a52b-705a2aee145d-1781820614","shopifyEmitted":true});
+
+      var match = window.location.pathname.match(/checkouts\/(.+)\/(thank_you|post_purchase)/)
+      var token = match? match[1]: undefined;
+      if (!hasLoggedConversion(token)) {
+        setCookieIfConversion(token);
+        
+      }
+    });
+
+    var eventsListenerScript = document.createElement('script');
+    eventsListenerScript.async = true;
+    eventsListenerScript.src = "{% static 'kei/cdn/shopifycloud/storefront/assets/shop_events_listener-4e26a9ce.js";
+    document.getElementsByTagName('head')[0].appendChild(eventsListenerScript);
+})();</script>
+<script
+  defer
+  src="https:{% static 'kei/cdn/shopifycloud/perf-kit/shopify-perf-kit-3.5.2.min.js' %}"
+  data-application="storefront-renderer"
+  data-shop-id="85060649288"
+  data-render-region="gcp-europe-west4"
+  data-page-type="index"
+  data-theme-instance-id="165510971720"
+  data-theme-name="Tiptoque Theme"
+  data-theme-version="1.10.0"
+  data-monorail-region="shop_domain"
+  data-resource-timing-sampling-rate="10"
+  data-shs="true"
+  data-shs-beacon="true"
+  data-shs-export-with-fetch="true"
+  data-shs-logs-sample-rate="1"
+  data-shs-beacon-endpoint="https:{% static 'kei/api/collect' %}"
+></script>
+
+<style>
+    @media only screen and (max-width: 589px) {
+        .drawer {
+            top: 80px!important;
+        }
+    }
+    
+    
+        
+        .drawer__title {color: #ffffff!important;}
+        .cart__items-box-title{color: #ffffff!important;}
+        .drawer, .drawer__fixed-header {background-color: #000000!important;}
+        .drawer a{color:#ffffff!important;}
+
+        .cart-link__bubble--visible{
+            width: 22px;
+            height: 22px;
+        }
+        .drawer__close-button,.drawer__close-button:active{
+            color:#ffffff!important;
+            background-color:transparent!important;
+        }
+        .cart__item {
+            border-bottom: 1px solid #ffffff!important;
+        }
+        .drawer .cart__checkout{
+            background-color: #ffffff!important;
+            color:  #000000!important;
+        }
+        .cart__item-sub{
+            color:#000000!important;
+            background-color:#ffffff!important;
+        }
+
+        .cart__items-box{
+            background-color: #000000!important;
+            color:  #ffffff!important;
+        }
+        .cart__items-box-footer{
+            background-color: #000000!important;
+            color:  #ffffff!important;
+        }
+        .cart__qty-adjust{
+            background-color: #000000!important;
+            fill: #ffffff!important;
+        }
+        .js-qty__num{
+            color:  #ffffff!important;
+            background-color:  #000000!important;
+            border-color:  rgba(0,0,0,0)!important;
+        }
+
+     
+.HeaderInformationSlide {
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+  background-color: #000000;
+  opacity:0.9;
+  display: flex;
+  transition: transform .3s;
+}
+.HeaderInformationSlide.is-hidden {
+  transform: translateX(100%);
+}
+.HeaderInformationSlide .btn {
+  position: fixed;
+  right: 105px;
+  top: 84px;
+  z-index: 100000;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+}
+.HeaderInformationSlide .btn span {
+  display: block;
+  box-shadow: 0 2px 10px 0 rgba(0,0,0,.3);
+  border-radius: 3px;
+  height: 1px;
+  background: #ffffff;
+  transition: all .3s;
+  position: relative;
+  width: 50px;
+}
+.HeaderInformationSlide .btn span:first-child {
+  top: 22px;
+  transform: rotate(45deg);
+}
+.HeaderInformationSlide .btn span:nth-child(2) {
+  bottom: -22px;
+  transform: rotate(135deg);
+}
+.HeaderInformationSlide .infos {
+  font-size: 14px;
+  white-space: break-spaces;
+  color: #fff;
+  text-transform: none;
+  font-style: italic;
+  text-align: center;
+}
+
+.HeaderInformationContainer, .HeaderInformationContainer p {
+  width: 100%;
+  text-align: center;
+  line-height: 2;
+}
+
+.HeaderInformationSlide .HeaderInformationContainer section {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.HeaderInformationSlide .HeaderInformationContainer section .text {
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.HeaderInformationSlide .HeaderInformationContainer a {
+  position: relative;
+  margin: 40px 0 15px;
+  font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+  display: inline-block;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+  .is-light .site-nav__link , .is-light a.btn-second{
+    opacity:50%;
+  }
+
+  .site-nav__link, .site-nav__dropdown-link,.megamenu__link-label { font-size: 14px; }
+  .cart-link__bubble--visible{
+  
+    background-color:#000000 ;
+  
+  
+    color:#ffffff ;
+  
+  
+    border-color:#000000 ;
+  
+  }
+
+  @media all and (min-width: 589px){
+    .site-header__logo img {
+      opacity:1 !important;
+      /* width: 130px !important; */
+      max-width: 130px !important;
+    }
+
+    .btn_annexe_first_button{
+      display:none;width: 90px;
+        min-width: auto;
+        padding: 8px 0px;}
+
+    .btn_annexe_second_button{
+      display:inline-block;width: 120px;
+        min-width: auto;
+        padding: 8px 0px;}
+  }
+  .btn-second{
+      border-radius:100px !important;
+  }
+.HeaderInformationContainer .btn {
+  border: none !important;
+}
+  @media all and (max-width: 589px){
+    .HeaderInformationContainer .btn {
+      right: 0;
+      top: 30px;
+    }
+    .site-header__logo img {
+      opacity:1 !important;
+      
+      /* width: 70px !important; */
+      max-width: 70px !important;
+    }
+  
+    .btn_annexe_first_button{
+      display:none;width: 80px;
+        min-width: auto;
+        padding: 8px 0;}
+
+    .btn_annexe_second_button{
+      display:inline-block;width: 100px;
+        min-width: auto;
+        padding: 8px 0px;}
+
+  }/* Offset first hero's text to make room for overlaid navigation */
+  .shopify-section:first-child .hero__text-content.vertical-center {padding-top: 110px;}
+  @media screen and (max-width: 768px) {
+    .shopify-section:first-child .hero__text-content.vertical-center {padding-top: 70px;}
+  }.site-nav__dropdown{
+  
+    /*  #fff9f5 - 1.0 */
+    background-color: #fff9f5!important;
+  }
+
+  #HeaderWrapper .btn-second{
+      color: #ffffff;
+      background: rgba(0,0,0,0);
+      border: 1px solid #ffffff;
+    }
+  #HeaderWrapper .btn-second:hover{
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 1px solid #ffffff !important;
+  }
+  
+</style>
+</head>

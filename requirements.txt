@@ -3,3 +3,10 @@ django-tinymce
 djangorestframework
 django-cleanup 
 pillow
+django_social_share
+persiantools
+pusher
+khayyam
+python-telegram-bot   
+qrcode
+openpyxl

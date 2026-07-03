@@ -704,6 +704,19 @@ class PersonAccountRepo(Repo):
             objects=objects.filter(Q(person_id=person_id)   )
         return objects.all()
   
+
+
+    def misc_person_account(self,title="مشتری متفرقه",*args, **kwargs):
+        misc_person_account=PersonAccount.objects.filter(title=title).first()
+        if misc_person_account is None: 
+            misc_person_account=PersonAccount()
+            misc_person_account.title=title
+            misc_person_account.person=PersonRepo(request=self.request).misc_person(*args, **kwargs)
+            misc_person_account.person_category=PersonCategoryRepo(request=self.request).misc_person_category(*args, **kwargs)
+            misc_person_account.save()
+        return misc_person_account
+
+
     def add_person_account(self,*args, **kwargs):
         result,message,person_account=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_personaccount"):
@@ -941,9 +954,21 @@ class PersonCategoryRepo():
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
 
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for) | Q(pure_code=pure_code ) )
+            objects=objects.filter(Q(title__contains=search_for)   )
         return objects.all()
-     
+    
+
+
+    def misc_person_category(self,title="متفرقه",*args, **kwargs):
+        misc_person_category=PersonCategory.objects.filter(title=title).first()
+        if misc_person_category is None: 
+            misc_person_category=PersonCategory()
+            misc_person_category.title=title
+            misc_person_category.account_id=Account.objects.first().id 
+            misc_person_category.save()
+        return misc_person_category
+
+
     def edit_person_category(self,*args, **kwargs):
         result,message,person_category=FAILED,'',None
         if not self.request.user.has_perm(APP_NAME+".change_personcategory"):

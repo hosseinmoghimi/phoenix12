@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- This site was created in Webflow. https://webflow.com -->
+
+<!-- Last Published: Wed Mar 11 2026 15:19:08 GMT+0000 (Coordinated Universal Time) -->
+<html
+  data-wf-domain="robotflowtemplate.webflow.io"
+  data-wf-page="69728f733ddc20a49fd77add"
+  data-wf-site="697240ea3992ad9c5a02a0d9"
+  lang="en"
+>
+  {% load static %}
+  <head>
+    {% include "robot/includes/head.html" %}
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div
+        data-w-id="5572ee73-8791-09f5-45f4-fd1833f2cdba"
+        data-animation="default"
+        data-collapse="medium"
+        data-duration="400"
+        data-easing="ease"
+        data-easing2="ease"
+        role="banner"
+        class="header-wrapper w-nav"
+      >
+        <div class="container-default w-container">
+            {% include "robot/includes/navbar.html" %}
+        </div>
+      </div>
+      
+      {% block content %}
+        
+      {% endblock content %}
+       
+    {% include "robot/includes/footer.html" %}
+
+    </div>
+   
+    {% block alert %}
+      
+    {% endblock alert %}
+    {% include "robot/includes/script.html" %}
+  </body>
+</html>

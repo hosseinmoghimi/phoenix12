@@ -87,9 +87,7 @@ class Project(Event,LinkHelper,DateHelper):
                 invoice_ids.append(inv.id)
         from accounting.models import InvoiceLine
         return InvoiceLine.objects.filter(invoice_id__in=invoice_ids)
-  
-    def get_status_color(self):
-        return StatusColor(self)
+   
     
     @property
     def all_remote_clients(self):
@@ -148,6 +146,7 @@ class Ticket(models.Model,DateTimeHelper,LinkHelper):
             result=SUCCEED
             message='تیکت با موفقیت ثبت شد.'
         return result,message,ticket
+
 
 class RemoteClient(models.Model,LinkHelper):
    
@@ -210,17 +209,50 @@ class RemoteClient(models.Model,LinkHelper):
         return self.name 
 
 
+class Issue(models.Model,LinkHelper,DateTimeHelper):
+    project=models.ForeignKey("project", verbose_name=_("project"), on_delete=models.CASCADE)
+    title=models.CharField(_("title"), max_length=200)
+    description=HTMLField(verbose_name='description',blank=True,null=True,max_length=5000)
+    status=models.CharField(_("status"),choices=IssueStatusEnum.choices,default=IssueStatusEnum.INITIAL, max_length=50)
+    percentage_completed=models.IntegerField(_("درصد پیشرفت"),default=0)
+    start_datetime = models.DateTimeField(_("start_datetime"),null=True,blank=True, auto_now=False, auto_now_add=False)
+    end_datetime = models.DateTimeField(_("end_datetime"),null=True,blank=True, auto_now=False, auto_now_add=False)
+    creator=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.CASCADE)
+
+    class_name="issue"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
+
+    def __str__(self):
+        return self.title
+ 
+
+    def get_status_color(self):
+        color="primary"
+        if self.status==IssueStatusEnum.INITIAL:
+            color="secondary"
+        if self.status==IssueStatusEnum.PLANNED:
+            color="info"
+        if self.status==IssueStatusEnum.COMPLETED:
+            color="danger" 
+        return color
 
 
 
 
 
-
-
-
-
-
-
+    def save(self,*args, **kwargs):
+        result,message,issue=FAILED,'',None
+        print(self.title)
+        super(Issue,self).save()
+        if self.id is not None and self.id>0:
+            issue=self
+            result=SUCCEED
+            message='ایشو با موفقیت ثبت شد.'
+        return result,message,issue
 
 
 

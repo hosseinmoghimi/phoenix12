@@ -1,0 +1,76 @@
+{% load static %} {% load to_persian_date %} {% load to_price %} {% load account_code_seperator %} {% load to_price_color_btn %}
+
+<div class="card rtl text-right">
+  <div class="card-header">
+    <h5 class="text-center">حساب بانکی</h5>
+  </div>
+  <div class="card-body">
+    <div class="text-center">
+      <img src="{{account.thumbnail}}" width="64" alt="" />
+    </div>
+
+    <h5 class="text-center mt-2">
+      {{account.name}}
+      <span class="badge badge-{{account.color}}">{{account.type}}</span>
+    </h5>
+
+    <div>
+      <small class="text-muted">شخص : </small>
+      <a href="{{bank_account.person.get_absolute_url}}">
+        <img src="{{bank_account.person.image}}" width="64" alt="" />
+        {{bank_account.person.full_name}}
+      </a>
+    </div>
+
+
+    <div>
+      <small class="text-muted">مانده : </small>
+      {{account.balance }}
+    </div>
+
+     
+    
+    <div>
+      <small class="text-muted">کد : </small>
+      {{account.code}}
+    </div>
+
+
+    
+    <div>
+      <small class="text-muted">سطح : </small>
+      {{account.level}}
+    </div>
+
+
+    <div>
+      <small class="text-muted">نوع : </small>
+      {{account.type}}
+    </div>
+    <div>
+      <small class="text-muted">ماهیت : </small>
+      {{account.nature}}
+    </div>
+
+    {% if account_no %}
+
+    <div>شماره حساب : {{bank_account.account_no}}</div>
+    {% endif %} {% if bank_account.card_no %}
+
+    <div>کارت : 
+        
+        <span class="rtl">
+
+            {{bank_account.card_no|card_no_seperator|safe}}
+        </span>
+    
+    </div>
+
+    <div>کارت : {{bank_account.card_no}}</div>
+    {% endif %} {% if bank_account.shaba_no %}
+
+    <div>شبا : {{bank_account.shaba_no|card_no_seperator|safe}}</div>
+    <div>شبا : {{bank_account.shaba_no}}</div>
+    {% endif %}
+  </div>
+</div>

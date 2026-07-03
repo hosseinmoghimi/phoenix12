@@ -1,0 +1,27 @@
+
+{% extends "academy/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_course_form %}
+      <div class="col-md-12">
+          {% include "academy/includes/add-course-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "academy/includes/courses-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "academy/includes/courses-app/script.html" %}
+{% if add_course_form %}
+{% include "academy/includes/add-course-app/script.html" %}
+{% endif %}
+{% endblock script %}

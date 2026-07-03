@@ -15,6 +15,15 @@ class AddTicketForm(forms.Form):
     person_id=forms.IntegerField(required=True)
     description=forms.CharField(max_length=5000,required=False)
     
+class AddIssueForm(forms.Form):
+    title=forms.CharField(max_length=50,required=True)
+    project_id=forms.IntegerField(required=True)
+    description=forms.CharField(max_length=5000,required=False)
+    title=forms.CharField(max_length=200,required=False)
+    status=forms.CharField(max_length=50,required=False)
+    start_datetime=forms.CharField(max_length=50,required=False)
+    end_datetime=forms.CharField(max_length=50,required=False)
+    
 class SelectProjectForm(forms.Form):
     project_id=forms.IntegerField(required=True)
  

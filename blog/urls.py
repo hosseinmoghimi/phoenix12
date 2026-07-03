@@ -8,6 +8,9 @@ urlpatterns = [
     
     path('',login_required(views.IndexView.as_view()),name="index"),  
 
+    path('fa/', (views.IndexView.as_view()),name="fa"),  
+    path('en/', (views.IndexEnView.as_view()),name="en"),  
+    path('template-pages/styles-and-components/', (views.StylesAndComponentsView.as_view()),name="styles-and-components"),  
     path('admin/',login_required(views.AdminView.as_view()),name="admin"),  
     path('blogs/',login_required(views.BlogsView.as_view()),name="blogs"),  
     path('add-blog/',login_required(apis.AddBlogApi.as_view()),name="add_blog"),

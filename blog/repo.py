@@ -18,7 +18,14 @@ class AboutUsRepo(Repo):
         super(AboutUsRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
         self.objects=AboutUs.objects
     def get(self):
-        return AboutUs.objects.filter(pk=1).first()
+        about_us= AboutUs.objects.filter(pk=1).first()
+        if about_us is None:
+            about_us=AboutUs()
+            about_us.id=1
+            about_us.about='درباره ما'
+            about_us.save()
+        return about_us
+
     
     def set(self,new_value):
         if self.request.user.has_perm(APP_NAME+".change_aboutus"):

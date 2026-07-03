@@ -1,0 +1,131 @@
+{% extends 'transport/layout.html' %} {% block content %}
+  {% load to_price %}
+  <div class="row rtl farsi">
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h4>تعمیر و نگهداری
+
+         
+
+          </h4>
+        </div>
+        <div class="card-body">
+          <img src="{{page.thumbnail}}" width="64" alt="">
+          <h5>
+
+            {{ maintenance.title }}
+          </h5>
+          <div>
+               
+          <span>
+
+            {% if perms.transport.change_maintenance %}
+            <a target="_blank" title="ویرایش" class="text-warning" href="{{ maintenance.get_edit_url }}"><i class="fa fa-edit text-warning"></i></a>
+            {% endif %}
+            
+            {% if perms.transport.delete_maintenance %}
+            <a target="_blank" title="حذف" class="text-danger" href="{{ maintenance.get_delete_url }}"><i class="fa fa-trash text-danger"></i></a>
+            {% endif %}
+          </span>
+          </div>
+          <h5>
+            <small class="text-muted">برآورد :</small>
+            {{ maintenance.sum|to_price }}
+            {{ CURRENCY }}
+          </h5>
+
+
+           <h5>
+            <small class="text-muted">وسیله :</small>
+            <a href="{{maintenance.vehicle.get_absolute_url}}">
+            {{maintenance.vehicle}}
+
+            </a>
+          </h5>
+
+
+           <h5>
+            <small class="text-muted">کیلومتر :</small>
+            {{maintenance.kilometer|to_price}}
+
+          </h5>
+
+
+           <h5>
+            <small class="text-muted">نوع :</small>
+            {{maintenance.maintenance_type}}
+
+          </h5>
+
+            <small class="text-muted">تعمیرکار :</small>
+            <a href="{{maintenance.service_man.get_absolute_url}}">
+            {{maintenance.service_man}}
+
+            </a>
+          </h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="row rtl">
+        <div class="col-md-12"></div>
+        {% if add_invoice_form %}
+          <div class="col-md-12">
+            {% include 'transport/includes/add-invoice-app/template.html' %}
+          </div>
+        {% endif %}
+        {% if add_invoice_to_maintenance_form %}
+          <div class="col-md-12">
+            {% include 'transport/includes/add-invoice-to-maintenance-app/template.html' %}
+          </div>
+        {% endif %}
+
+        <div class="col-md-12">
+          {% include 'accounting/includes/invoices-app/template.html' %}
+        </div>
+        <div class="col-md-12">
+          {% include 'accounting/includes/invoice-lines-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/locations-app/template.html' %}
+        </div>
+
+        <div class="col-md-4">
+          {% include 'attachments/includes/downloads-app/template.html' %}
+        </div>
+        <div class="col-md-4">
+          {% include 'attachments/includes/links-app/template.html' %}
+        </div>
+        <div class="col-md-4">
+          {% include 'attachments/includes/tags-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/comments-app/template.html' %}
+        </div>
+        <div class="col-md-12">
+          {% include 'core/includes/page-related-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/images-app/template.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %} {% block script %}
+  {% if add_invoice_form %}
+    {% include 'transport/includes/add-invoice-app/script.html' %}
+  {% endif %}
+  {% include 'accounting/includes/invoices-app/script.html' %}
+
+  {% include 'accounting/includes/invoice-lines-app/script.html' %}
+  {% include 'core/includes/page-app/script.html' %}
+
+  {% if add_invoice_to_maintenance_form %}
+    {% include 'transport/includes/add-invoice-to-maintenance-app/script.html' %}
+  {% endif %}
+{% endblock %}

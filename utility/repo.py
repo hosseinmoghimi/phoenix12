@@ -61,7 +61,7 @@ class PictureRepo(Repo):
         return self.picture(*args, **kwargs)
 
 class ParameterRepo(Repo):    
-    def __init__(self,request,*args, **kwargs):
+    def __init__(self,request=None,*args, **kwargs):
         super(ParameterRepo,self).__init__(request,*args, **kwargs)
 
         self.request=request

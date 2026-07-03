@@ -1,0 +1,85 @@
+
+      <nav
+        class="navbar-responsive-navitems navbar-expand navbar-light bg-body-emphasis justify-content-between"
+      >
+        <div
+          class="container-small d-flex flex-between-center"
+          data-navbar="data-navbar"
+        >
+          <div class="dropdown feather-icon-wait">
+            <button
+              class="btn text-body ps-0 pe-5 text-nowrap dropdown-toggle dropdown-caret-none"
+              data-category-btn="data-category-btn"
+              data-bs-toggle="dropdown"
+            >
+              <span class="fas fa-bars me-2"></span>
+              <span class="farsi">
+                دسته بندی ها
+              </span>
+            </button>
+            <div
+              class="dropdown-menu border border-translucent py-0 category-dropdown-menu"
+            >
+              <div class="card border-0 scrollbar" style="max-height: 657px">
+                <div class="card-body p-6 pb-3">
+                  <div class="row gx-7 gy-5 mb-5">
+                    {% for category in root_categories %}
+                      
+                    <div class="col-12 col-sm-6 col-md-4">
+                      <div class="d-flex align-items-center mb-3">
+                        <span
+                          class="text-primary me-2"
+                          data-feather="pocket"
+                          style="stroke-width: 3"
+                        ></span>
+                        <h6 class="text-body-highlight mb-0 text-nowrap farsi">
+                          <a style=" " href="{{category.get_market_absolute_url}}">
+
+                            {{category.title}}
+                          </a>
+                        </h6>
+                      </div>
+                      <div class="ms-n2">
+                        {% for category in category.primary_childs %}
+                          
+                        <a class="text-body-emphasis d-block mb-1 text-decoration-none bg-body-highlight-hover px-2 py-1 rounded-2" href="{{category.get_market_absolute_url}}">
+                          <span class="farsi">
+                            {{category.title}}
+                          </span>
+                        </a>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                     
+                  </div>
+                  <div class="text-center border-top border-translucent pt-3">
+                    <a class="farsi fw-bold" href="#!"
+                      >
+                      
+                      نمایش همه دسته بندی ها
+                    <span
+                        class="fas fa-angle-left ms-1"
+                        data-fa-transform="down-1"
+                      ></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul class="navbar-nav justify-content-end align-items-center">
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="farsi nav-link ps-0 active" href="{% url 'market:home' %}">خانه</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/landing/favourite-stores.html">My Favourite Stores</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/landing/products-filter.html">Products</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/landing/wishlist.html">Wishlist</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/landing/shipping-info.html">Shipping Info</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/admin/add-product.html">Be a vendor</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link" href="../../../apps/e-commerce/landing/order-tracking.html">Track order</a></li>
+            <li class="nav-item invisible" data-nav-item="data-nav-item"><a class="nav-link pe-0" href="../../../apps/e-commerce/landing/checkout.html">Checkout</a></li>
+            <li class="nav-item dropdown" data-nav-item="data-nav-item" data-more-item="data-more-item"><a class="nav-link dropdown-toggle dropdown-caret-none fw-bold pe-0" href="javascript: void(0)" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-boundary="window" data-bs-reference="parent"> More<span class="fas fa-angle-down ms-2"></span></a>
+              <div class="dropdown-menu dropdown-menu-end category-list" aria-labelledby="navbarDropdown" data-category-list="data-category-list"></div>
+            </li>
+          </ul> 
+        </div>
+      </nav>

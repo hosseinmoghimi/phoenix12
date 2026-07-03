@@ -1,0 +1,162 @@
+
+<script>
+  let cart_items = []
+
+</script>
+{% if cart_items_s %}
+  
+<script>
+  cart_items = JSON.parse(`{{cart_items_s|escapejs}}`);
+    
+</script>
+{% endif %}
+
+
+<script>
+  let url_change_cart_item = "{% url 'market:change_cart_item' %}";
+  let cart_item_component_template = `{% include 'phoenix-theme/includes/cart-app/component.html' %}`;
+  let cart_item_component = Vue.component("cart-item-component", {
+    data: function () {
+      return {
+        confirm_delete: false,
+      };
+    },
+    methods: {
+      plus:function(){
+        this.cart_item.quantity++
+      },
+      minus:function(){
+        this.cart_item.quantity--
+      },
+      to_price: (vv) => to_price(vv),
+      change_quantity: function (quantity) {
+        console.log(quantity)
+        if(quantity<0){
+            return
+        }
+        if(quantity>this.cart_item.shop.available){
+            return
+        }
+        this.cart_item.quantity=quantity
+        // let url = url_delete_comment;
+        // let payload = {
+        //   comment_id: comment_id,
+        //   csrfmiddlewaretoken: csrfmiddlewaretoken,
+        // };
+        // let posting = $.post(url, payload);
+        // posting.done(function (data) {
+        //   if (data.result === "SUCCEED") {
+        //     comments_app.comments = comments_app.comments.filter((comment) => {
+        //       return comment.id != comment_id;
+        //     });
+        //     comment_component.confirm_delete = false;
+        //   }
+        // });
+      },
+    },
+    props: ["cart_item"],
+    template: cart_item_component_template,
+  });
+
+  let cart_app = new Vue({
+    el: "#cart-app",
+    data: {
+      address: `{% if customer.person_account.person.address %}{{customer.person_account.person.address}}{% endif %}`,
+      postal_code: `{% if customer.person_account.person.postal_code %}{{customer.person_account.person.postal_code}}{% endif %}`,
+      description:"",
+      message: { show: false },
+      waiting: false,
+      cart_items: cart_items,
+    },
+    components: {
+      cart_item_component,
+    },
+    methods: {
+      cart_total:function(){
+        let sum=0
+        this.cart_items.forEach(cart_item => {
+          sum+=cart_item.quantity*cart_item.shop.unit_price*(100-cart_item.shop.discount_percentage)/100
+          
+        });
+        return this.to_price(sum)
+      },
+
+      discount_total:function(){
+        let sum=0
+        this.cart_items.forEach(cart_item => {
+          sum+=cart_item.quantity*cart_item.shop.unit_price*(cart_item.shop.discount_percentage)/100
+          
+        });
+        return to_price(sum)
+      },
+      add_to_cart:function(shop,step){
+
+        let done=false
+        cart_app.cart_items.forEach(cart_item => {
+            
+            if(cart_item.shop.id==shop.id){
+              if(cart_item.quantity+step>-1){
+                
+                cart_item.quantity=cart_item.quantity+step
+              }
+              
+              done=true
+            }
+            
+          });
+          if(!done && step>0){
+          cart_app.cart_items.push({
+            shop:shop,
+            quantity:step
+          })
+
+        }
+      },
+      to_price: (vv) => to_price(vv),
+      checkout_cart: function () {
+        console.log("sadaetrrdyg dreytfdrytryrte5y rrfy rty ")
+        let cart_items=[]
+        this.cart_items.forEach(cart_item => {
+            cart_items.push({
+                shop_id:cart_item.shop.id,
+                quantity:cart_item.quantity,
+            })
+        });
+        cart_items=JSON.stringify(cart_items)
+        let payload = {
+          customer_id: parseInt("{{customer.id}}"),
+          address: this.address,
+          postal_code: this.postal_code,
+          description: this.description,
+          cart_items: (cart_items),
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        let url = "{% url 'market:checkout_cart' %}";
+        $.post(url, payload).done((data) => {
+          console.log(data)
+          if (data.result === "SUCCEED") {
+            show_message(
+              cart_app,
+              "موفق",
+              data.message,
+              "success",
+              2000
+            );
+            if(data.invoices.length==1){
+
+              location.href = "/accounting/invoice/print/"+data.invoices[0].id+"/"
+            }
+          } else {
+            show_message(
+              cart_app,
+              "خطا",
+              data.message,
+              "danger",
+              3000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

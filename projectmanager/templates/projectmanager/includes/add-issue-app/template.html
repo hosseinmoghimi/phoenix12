@@ -1,0 +1,119 @@
+<div id="accordion-add-issue" class="rtl text-right farsi">
+  <div class="card" id="add-issue-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-issue"
+          aria-expanded="true"
+          aria-controls="collapse-add-issue"
+        >
+          افزودن ایشو
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-issue"
+      class="collapse"
+      aria-labelledby="heading-add-issue"
+      data-parent="#accordion-add-issue"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_issue()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input v-model="title" type="text" class="form-control" />
+              </div>
+            </div>
+
+            
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">توضیحات</label>
+                <input v-model="description" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">وضعیت</label>
+                <select v-model="status" type="text" class="form-control" >
+                  {% for status_i in statuses_for_add_issue %}
+                  <option value="{{status_i}}">{{status_i}}</option>
+                    
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+           
+
+            
+             
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">شروع</label>
+                <date-picker v-model="start_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="start_date"
+                />
+                <label for="exampleInputDate">زمان</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="start_time"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">پایان</label>
+                <date-picker v-model="end_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="end_date"
+                />
+                <label for="exampleInputDate">زمان</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="end_time"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div v-if="message.show">
+                <div :class="'my-2 alert alert-'+message.color">
+                  <h5 v-text="message.title"></h5>
+                  <div v-html="message.body"></div>
+                </div>
+              </div>
+
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

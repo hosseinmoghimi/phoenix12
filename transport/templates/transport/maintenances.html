@@ -1,0 +1,20 @@
+{% extends "transport/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  {% if add_maintenance_form %}
+  <div class="col-md-12">
+    {% include "transport/includes/add-maintenance-app/template.html" %}
+  </div>
+  {% endif %}
+
+  <div class="col-md-12">
+    {% include "transport/includes/maintenances-app/template.html" %}
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+
+{% include "transport/includes/maintenances-app/script.html" %} 
+{% if add_maintenance_form %}
+ {% include "transport/includes/add-maintenance-app/script.html" %} 
+ {% endif %} 
+ {% endblock script %}

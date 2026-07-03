@@ -1,0 +1,174 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-maintenances" class="rtl text-right farsi">
+
+
+
+    <div class="card" id="maintenances-app">
+        <div class="card-header" id="heading-maintenances">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-maintenances"
+                    aria-expanded="true" aria-controls="collapse-maintenances">
+
+                     تعمیر و نگهداری
+ها
+                    <span v-if="maintenances.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="maintenances.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+         
+        </div>
+        <div id="collapse-maintenances" class="collapse {% if expands_maintenances %} show {% endif %}"
+            aria-labelledby="heading-maintenances" data-parent="#accordion-maintenances">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prinvoice="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                عنوان
+                            </th>
+                            {% if not vehicle %}
+                                 <th>
+                                وسیله نقلیه
+                            </th>
+                            {% endif %}
+                            {% if not service_man %}
+                              
+                            <th>
+                                تعمیرکار
+                            </th>
+                            {% endif %}
+                         
+
+                            <th>
+                                کیلومتر
+                            </th>
+                            <th>
+                                تاریخ
+                            </th>
+                            
+                            <th>
+                                برآورد
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="maintenance in maintenances">
+                                <td>
+                                    <a :href="maintenance.get_absolute_url">
+                                        <span v-text="maintenance.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% if not vehicle %}
+                               <td>
+                                    <a :href="maintenance.vehicle.get_absolute_url">
+                                        <span v-text="maintenance.vehicle.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            {% if not service_man %}
+                               <td>
+                                    <a :href="maintenance.service_man.get_absolute_url">
+                                        <span v-text="maintenance.service_man.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% endif %}
+
+
+                                <td>
+                                    <span v-text="separate(maintenance.kilometer)">
+
+                                    </span>
+                                </td>
+                              
+
+                                <td>
+                                    <span v-text="maintenance.persian_event_datetime">
+
+                                    </span>
+                                </td>
+                              
+
+                                <td>
+                                   <span v-text="to_price(maintenance.sum)"></span>
+
+ 
+
+                                    {{CURRENCY}}
+
+                                </td>
+
+                                <td>
+{% if perms.transport.change_maintenance %}
+  <a target="_blank" title="ویرایش" class="btn btn-link text-warning"  :href="maintenance.get_edit_url">
+    <i class="fa fa-edit text-warning"></i>
+  </a>
+{% endif %}
+
+{% if perms.transport.delete_maintenance %}
+    <a target="_blank" title="حذف" class="btn btn-link text-danger"  :href="maintenance.get_delete_url">
+    <i class="fa fa-trash text-danger"></i>
+  </a>
+{% endif %}
+
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <th></th>
+                            {% if not vehicle %}
+                            <th></th>
+                              
+                            {% endif %}
+                            {% if not service_man %}
+                            <th></th>
+                              
+                            {% endif %}
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

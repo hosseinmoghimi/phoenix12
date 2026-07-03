@@ -1,5 +1,23 @@
 {% extends "cafe/layout.html" %} {% load static %} {% block content %}
 <div class="row rtl farsi">
+  {% if table_customer %}
+    
+  <div class="col-md-12 ">
+    <div class="card">
+      <div class="card-header">
+        <h4>مشتری</h4>
+      </div>
+      <div class="card-body"> 
+        {{customer.title}}
+
+ 
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  
   <div class="col-md-4 col-lg-3 text-center my-3">
     <div class="card">
       <div class="card-header">
@@ -22,12 +40,13 @@
             </a>
             </h6>
 
-             <h6 class="text-center">لاگین 
-            <a href="{% url 'cafe:table_login' table.code %}">
+             <div class=""> 
+               
+            <a href="">
             
               {{table.title}}
             </a>
-            </h6>
+            </div>
 
           <h6 class="text-center">شماره {{table.table_no}}</h6>
           
@@ -43,6 +62,10 @@
       </div>
     </div>
   </div>
+
+  <div class="col-md-8">
+    {% include "cafe/includes/orders-app/template.html" %}
+  </div>
 </div>
 {% endblock content %} {% block script %}
 <script>
@@ -50,4 +73,6 @@
   console.log("name2: {{name2}}");
   console.log("name3: {{name3}}");
 </script>
+    {% include "cafe/includes/orders-app/script.html" %}
+
 {% endblock script %}

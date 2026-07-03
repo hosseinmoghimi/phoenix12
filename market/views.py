@@ -6,9 +6,7 @@ from .serializers import CartItemSerializer,ShopPackageSerializer,ProductSeriali
 from .repo import CartItemRepo,ShopPackageRepo,SupplierRepo,ShopRepo,CustomerRepo,ShipperRepo,ShipRepo,PackageRepo
 from .forms import *
 from .apps import APP_NAME
-
 from accounting.views import InvoiceLineItemContext,ProductSpecificationSerializer,PageContext
-
 from .serializers import ShipperSerializer,ProductWithPriceSerializer,CustomerGroupSerializer
 from .repo import ShipperRepo,CustomerGroupRepo
 from phoenix.server_apps import phoenix_apps
@@ -22,16 +20,51 @@ from authentication.views import PersonRepo,PersonSerializer,AddPersonContext
 from utility.views import RegionRepo
 from .serializers import CustomerSerializer
 from utility.views import MessageView
-LAYOUT_PARENT='market/layout.html'
-TEMPLATE_ROOT='market/'
+from utility.repo import ParameterRepo,PictureRepo
+
+TEMPLATE_ROOT_ADMIN="market/"
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
-        
+TEMPLATE_ROOT='phoenix-theme/'
+LAYOUT_PARENT='phoenix-theme/layout.html'
+
+LAYOUT_PARENT='market/layout.html'
+TEMPLATE_ROOT='market/'
+
+DASHBOARD_LAYOUT_PARENT='phoenix-dashboard/layout.html'
+DASHBOARD_TEMPLATE_ROOT='phoenix-dashboard/'
+
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+    global TEMPLATE_ROOT
+    global DASHBOARD_TEMPLATE_ROOT
     context[WIDE_LAYOUT]=True 
     context['NO_FILTER']=True
+
+    from utility.repo import ParameterRepo,PictureRepo
+    param_repo=ParameterRepo(request=request,app_name=APP_NAME)
+        
+    DASHBOARD_LAYOUT_PARENT=param_repo.parameter(name="DASHBOARD_LAYOUT_PARENT",default='phoenix-dashboard/layout.html').value
+    DASHBOARD_TEMPLATE_ROOT=param_repo.parameter(name="DASHBOARD_TEMPLATE_ROOT",default='phoenix-dashboard/').value
+        
+    LAYOUT_PARENT=param_repo.parameter(name="LAYOUT_PARENT",default='market/layout.html').value
+    TEMPLATE_ROOT=param_repo.parameter(name="TEMPLATE_ROOT",default='market/').value
+    
+    param_repo=ParameterRepo(request=request,app_name=APP_NAME)
+    pic_repo=PictureRepo(request=request,app_name=APP_NAME)
+    market_site_title=param_repo.parameter(name="عنوان سایت فروشگاه",default="فونیکس")
+    market_site_description=param_repo.parameter(name="درباره سایت فروشگاه",default="فونیکس")
+    market_site_logo=pic_repo.picture(name="لوگوی سایت فروشگاه")
+    context['market_site_title']=market_site_title.value
+    context['market_site_description']=market_site_description.value
+    context['market_site_logo']=market_site_logo.image
+    
+    
+    root_categories=CategoryRepo(request=request).list(for_home=True)
+    context['root_categories']=root_categories  
+
+
     me_supplier=SupplierRepo(request=request).me
     me_customer=CustomerRepo(request=request).me
     context['market_navbar']=False
@@ -41,12 +74,14 @@ def getContext(request,*args, **kwargs):
     if me_customer is not None:
         context['market_navbar']=True
         context['me_customer']=me_customer
+        items_in_cart_count=0
+        items_in_cart_count=me_customer.items_in_cart_count
+        context['items_in_cart_count']=items_in_cart_count
         context.update(CartItemContext(request=request,customer=me_customer))
     tuman_view=False
     from utility.repo import ParameterRepo
-    from phoenix.server_settings import CURRENCY,CURRENCY_TUMAN
-    p_repo=ParameterRepo(request=request,app_name=APP_NAME)
-    param=p_repo.parameter(name="واحد پولی برای نمایش ( "+CURRENCY+" , "+CURRENCY_TUMAN+" )",default=CURRENCY)
+    from phoenix.server_settings import CURRENCY,CURRENCY_TUMAN 
+    param=param_repo.parameter(name="واحد پولی برای نمایش ( "+CURRENCY+" , "+CURRENCY_TUMAN+" )",default=CURRENCY)
     if param.value==CURRENCY_TUMAN:
         context['SHOW_TUMAN']=True
     context['LAYOUT_PARENT']=LAYOUT_PARENT
@@ -206,15 +241,16 @@ class HomeView(View):
                 product.unit_name=primary_shop.unit_name
                 product.unit_price=primary_shop.unit_price*(100-primary_shop.discount_percentage)/100
            
+        categories=CategoryRepo(request=request).list(for_home=True)
+        context['categories']=categories  
+
+
+        categories_s=json.dumps(CategorySerializer(categories,many=True).data)
+        context['categories_s']=categories_s
+           
         context['products']=products
         products_s=json.dumps(ProductWithPriceSerializer(products,many=True).data)
         context['products_s']=products_s
-
-
-        categories=CategoryRepo(request=request).list(for_home=True)
-        context['categories']=categories
-        categories_s=json.dumps(CategorySerializer(categories,many=True).data)
-        context['categories_s']=categories_s
 
 
         return render(request,TEMPLATE_ROOT+"home.html",context) 
@@ -224,7 +260,7 @@ class LinksView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
         if request.user.is_authenticated and request.user.has_perm(APP_NAME+".add_supplier"):
-            return render(request,TEMPLATE_ROOT+"links.html",context)
+            return render(request,"market/links.html",context)
         else: 
             mv=MessageView()
             context={}
@@ -538,42 +574,12 @@ class SuppliersView(View):
         suppliers_s=json.dumps(SupplierSerializer(suppliers,many=True).data)
         context['suppliers']=suppliers
         context['suppliers_s']=suppliers_s
+        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
         
+        context['SUPPLIERS_ACTIVE_LINK']=True
         if request.user.has_perm(APP_NAME+".add_supplier"):
             context.update(AddSupplierContext(request=request))
-        return render(request,TEMPLATE_ROOT+"suppliers.html",context) 
-
-
-class ShopPackagesView(View):
-    def get(self,request,*args,**kwargs):
-        context=getContext(request=request)
-        shop_packages=ShopPackageRepo(request=request).list(*args,**kwargs)
-        shop_packages_s=json.dumps(ShopPackageSerializer(shop_packages,many=True).data)
-        context['shop_packages']=shop_packages
-        context['shop_packages_s']=shop_packages_s
-        
-        if request.user.has_perm(APP_NAME+".add_shoppackage"):
-            context.update(AddShopPackageContext(request=request))
-        return render(request,TEMPLATE_ROOT+"shop-packages.html",context) 
-
-
-class ShopPackageView(View):
-    def get(self,request,*args,**kwargs):
-        context=getContext(request=request)
-        shop_package=ShopPackageRepo(request=request).shop_package(*args,**kwargs)
-        shop_package_s=json.dumps(ShopPackageSerializer(shop_package).data)
-        context['shop_package']=shop_package
-        context['shop_package_s']=shop_package_s
-
-
-        shops=shop_package.shops.all()
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
-        context['shops']=shops
-        context['shops_s']=shops_s
-
-        if 'me_supplier' in kwargs and context['me_supplier'] is not None:
-            context.update(AddShopContext(request=request))
-        return render(request,TEMPLATE_ROOT+"shop-package.html",context) 
+        return render(request,DASHBOARD_TEMPLATE_ROOT+"suppliers.html",context) 
 
         
 class SupplierView(View):
@@ -617,6 +623,38 @@ class SupplierView(View):
         return render(request,TEMPLATE_ROOT+"supplier.html",context) 
 
     
+class ShopPackagesView(View):
+    def get(self,request,*args,**kwargs):
+        context=getContext(request=request)
+        shop_packages=ShopPackageRepo(request=request).list(*args,**kwargs)
+        shop_packages_s=json.dumps(ShopPackageSerializer(shop_packages,many=True).data)
+        context['shop_packages']=shop_packages
+        context['shop_packages_s']=shop_packages_s
+        
+        if request.user.has_perm(APP_NAME+".add_shoppackage"):
+            context.update(AddShopPackageContext(request=request))
+        return render(request,TEMPLATE_ROOT+"shop-packages.html",context) 
+
+
+class ShopPackageView(View):
+    def get(self,request,*args,**kwargs):
+        context=getContext(request=request)
+        shop_package=ShopPackageRepo(request=request).shop_package(*args,**kwargs)
+        shop_package_s=json.dumps(ShopPackageSerializer(shop_package).data)
+        context['shop_package']=shop_package
+        context['shop_package_s']=shop_package_s
+
+
+        shops=shop_package.shops.all()
+        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
+        context['shops']=shops
+        context['shops_s']=shops_s
+
+        if 'me_supplier' in kwargs and context['me_supplier'] is not None:
+            context.update(AddShopContext(request=request))
+        return render(request,TEMPLATE_ROOT+"shop-package.html",context) 
+
+
 class ShippersView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -665,7 +703,7 @@ class CustomerView(View):
 
  
  
-        return render(request,TEMPLATE_ROOT+"customer.html",context) 
+        return render(request,TEMPLATE_ROOT_ADMIN+"customer.html",context) 
      
 
 class CustomerGroupView(View):
@@ -697,13 +735,14 @@ class CustomersView(View):
         context=getContext(request=request)
         customers =CustomerRepo(request=request).list(*args, **kwargs)
         context['customers']=customers
-        
+        context['CUSTOMERS_ACTIVE_LINK']=True
         customers_s=json.dumps(CustomerSerializer(customers,many=True).data)
         context['customers_s']=customers_s
         if request.user.has_perm(APP_NAME+'.add_customer'):
             context.update(AddCustomerContext(request=request))
  
-        return render(request,TEMPLATE_ROOT+"customers.html",context) 
+        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
+        return render(request,DASHBOARD_TEMPLATE_ROOT+"customers.html",context) 
 
 
 class CartView(View):
@@ -713,10 +752,10 @@ class CartView(View):
         context['customer']=customer
         if customer is None:
             msg={}
-            msg['title']='خطا'
-            msg['body']='خریداری پیدا نشد.'
+            title='خطا'
+            body='خریداری پیدا نشد.'
             mv=MessageView(**msg)
-            return mv.get(request=request)   
+            return mv.get(request=request,title=title,body=body)   
         customer_s=json.dumps(CustomerSerializer(customer,many=False).data)
         context['customer_s']=customer_s
  
