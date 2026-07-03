@@ -24,9 +24,11 @@ TEMPLATE_ROOT='robot/'
 LAYOUT_PARENT='robot/layout.html'
 TEMPLATE_ROOT='blog/'
 LAYOUT_PARENT='mostudio/layout.html'
-LAYOUT_PARENT='phoenix-theme/layout.html'
-LAYOUT_PARENT='phoenix-theme/layout.html'
-TEMPLATE_ROOT='phoenix-theme/'
+# LAYOUT_PARENT='phoenix-theme/layout.html'
+# LAYOUT_PARENT='phoenix-theme/layout.html'
+# TEMPLATE_ROOT='phoenix-theme/'
+TEMPLATE_ROOT='lounge/'
+LAYOUT_PARENT='lounge/layout.html'
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
