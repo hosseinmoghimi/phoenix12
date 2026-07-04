@@ -365,6 +365,11 @@ class ProjectsView(View):
         context['projects']=projects
         context['PROJECTS_NAV_ACTIVE']=True
 
+        from utility.repo import ParameterRepo
+        parameter_repo=ParameterRepo(request=request,app_name=APP_NAME)
+        param1=parameter_repo.parameter(name="تعداد پروژه برای هر صفحه از لیست",default=5)
+        context['projects_per_page']=param1.int_value
+        
         projects_s=json.dumps(ProjectSerializer(projects,many=True).data)
         context['projects_s']=projects_s
         if request.user.has_perm(APP_NAME+".add_project"):
