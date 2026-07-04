@@ -1,0 +1,40 @@
+{% extends 'projectmanager/layout.html' %}
+{% load static %}
+{% block content %}
+  <div class="row rtl farsi">
+    <div class="col-md-12">
+      {% include 'projectmanager/includes/ticket-app/card.html' %}
+    </div>
+    <div class="col-md-12">
+      <div class="card" id="tickets-app">
+        <div class="card-body">
+            {% for  ticket in tickets  %}
+            <div class="my-2">
+
+                {% include 'projectmanager/includes/ticket-app/media-simple.html' %}
+            </div>
+            {% endfor %}
+          <div v-for="ticket in tickets">
+            {% include 'projectmanager/includes/ticket-app/media.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if add_ticket_form %}
+      <div class="col-md-12">
+        {% include 'projectmanager/includes/add-ticket-app/template.html' %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+    let ticket_id = parseInt('{{ticket.id}}')
+  </script>
+  {% include 'projectmanager/includes/tickets-app/script.html' %}
+  {% include 'projectmanager/includes/ticket-app/script.html' %}
+  {% if add_ticket_form %}
+    {% include 'projectmanager/includes/add-ticket-app/script.html' %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,167 @@
+{% load static %}
+
+<script src="{% static 'persian/moment.js' %}"></script>
+<script src="{% static 'persian/moment-jalaali.js' %}"></script>
+<script src="{% static 'persian/vue-persian-datetime-picker-browser.js' %}"></script>
+<script>
+  let super_project = { id: 0, title: "بدون والد", get_absolute_url: "#" };
+</script>
+{% if project.parent %}
+<script>
+  super_project = {
+    id: parseInt("{{project.parent_id}}"),
+    title: "{{project.parent.title}}",
+    get_absolute_url: "{{project.parent.get_absolute_url}}",
+  };
+</script>
+{% endif %}
+<script></script>
+<script>
+  let status = "{{project.status}}";
+  let color = "{{project.color}}";
+  let weight = parseInt("{{project.weight}}");
+  let url_edit_project = "{% url 'projectmanager:edit_project' %}";
+  let url_normalize_project = "{% url 'projectmanager:normalize_project' %}";
+  let employer_id = 0;
+  try {
+    employer_id = parseInt("{{project.employer.id}}");
+  } catch (error) {}
+  let contractor_id = 0;
+  try {
+    contractor_id = parseInt("{{project.contractor.id}}");
+  } catch (error) {}
+  let title = "{{project.title}}";
+  let project_app = new Vue({
+    el: "#project-edit-app",
+    data: {
+      start_datetime: "{{project.persian_start_datetime}}",
+      end_datetime: "{{project.persian_end_datetime}}",
+      percentage_completed: parseInt("{{project.percentage_completed}}"),
+      status: status,
+      waiting: false,
+      color: color,
+      priority: parseInt("{{project.priority}}"),
+      employer_id: employer_id,
+      contractor_id: contractor_id,
+      SUCCEED: false,
+      archive: false,
+      title: title,
+      weight: weight,
+      message:{show:false},
+      super_project: super_project,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      normalize: function () {
+          project_app.waiting = true;
+
+        let payload = {
+          project_id: parseInt("{{project.id}}"),
+
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        console.log(payload);
+
+        var posting = $.post(url_normalize_project, payload);
+        posting.done((data) => {
+          project_app.waiting = false;
+
+          console.log(data);
+          
+          if(data.result==='SUCCEED'){
+            show_message(project_app,'موفق',data.message,'success',5000)
+          }
+          if(data.result==='FAILED'){
+            show_message(project_app,'خطا',data.message,'danger',5000)
+          }
+        });
+      },
+      edit_project: function () {
+        project_app.waiting = true;
+        let payload = {
+          project_id: parseInt("{{project.id}}"),
+          percentage_completed: parseInt(this.percentage_completed),
+          start_datetime: this.start_datetime,
+          end_datetime: this.end_datetime,
+          priority: parseInt(this.priority),
+          parent_id: this.super_project.id,
+          status: this.status,
+          color: this.color,
+          archive: this.archive,
+          employer_id: parseInt(this.employer_id),
+          title: this.title,
+          contractor_id: parseInt(this.contractor_id),
+          weight: parseInt(this.weight),
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        console.log(payload);
+
+        var posting = $.post(url_edit_project, payload);
+        posting.fail(function (xhr, status, error) {
+          project_app.waiting = false;
+          showNotification(
+            "top",
+            "center",
+            "settings",
+            "danger",
+            "خطا در ارتباط" + error,
+          );
+        });
+        // Put the results in a div
+        posting.done(function (data) {
+          project_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            // project_timing_app.services.push(data.service)
+            // project_timing_app.add_service_form_title = ""
+            project_app.SUCCEED = true;
+
+            setTimeout(() => {
+              project_app.SUCCEED = false;
+            }, 3000);
+          } else {
+          }
+        });
+      },
+
+      get_super_project: function () {
+        project_app.waiting = true;
+        let payload = {
+          parent_id: parseInt(this.super_project.id),
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+        };
+        console.log(payload);
+
+        url_get_project =
+          "{% url 'projectmanager:project_null' %}" +
+          this.super_project.id +
+          "/";
+        var posting = $.post(url_get_project, payload);
+        posting.fail(function (xhr, status, error) {
+          project_app.waiting = false;
+          showNotification(
+            "top",
+            "center",
+            "settings",
+            "danger",
+            "خطا در ارتباط" + error,
+          );
+        });
+        // Put the results in a div
+        posting.done(function (data) {
+          console.log(data);
+          project_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            // project_timing_app.services.push(data.service)
+            // project_timing_app.add_service_form_title = ""
+            project_app.super_project = data.project;
+          } else {
+            project_app.super_project.title = "والدی ندارد.";
+            project_app.super_project.get_absolute_url = "#";
+          }
+        });
+      },
+    },
+  });
+</script>

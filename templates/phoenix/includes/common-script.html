@@ -1,4 +1,5 @@
 {% load static %}
+
 <!-- Option 1: Bootstrap Bundle with Popper -->
 <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
@@ -49,6 +50,8 @@
     }
   }
 </script>
+{% if me_person %}
+  
 <script>
   var csrfmiddlewaretoken = "";
   $(document).ready(function () {
@@ -58,6 +61,7 @@
     $(".notification-divider:last").addClass("d-none");
   });
 </script>
+{% endif %}
 <script>
   url_add_clipboard_item = "{% url 'authentication:add_clipboard_item'  %}";
   url_clear_all_clipboard_item =

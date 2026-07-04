@@ -257,6 +257,9 @@ class ProjectRepo():
             project.contractor_id=kwargs["contractor_id"]
         if 'type' in kwargs:
             project.type=kwargs["type"]
+        if 'status' in kwargs:
+            if kwargs['status']:
+                project.status=kwargs["status"]
         if 'weight' in kwargs:
             project.weight=kwargs["weight"]
         if 'percentage_completed' in kwargs:

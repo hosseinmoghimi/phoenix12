@@ -50,9 +50,13 @@ class Project(Event,LinkHelper,DateHelper):
             self.class_name="project"
         if self.app_name is None or self.app_name=="":
             self.app_name=APP_NAME
-        super(Project,self).save()
-        result=SUCCEED
-        message="پروژه با موفقیت اضافه شد."
+        try:
+            super(Project,self).save()
+            result=SUCCEED
+            message="پروژه با موفقیت اضافه شد."
+        except:
+            message="خطا در ذخیره سازی"
+
         return (result,message,project)
     @property
     def parent_project(self):
@@ -88,7 +92,41 @@ class Project(Event,LinkHelper,DateHelper):
         from accounting.models import InvoiceLine
         return InvoiceLine.objects.filter(invoice_id__in=invoice_ids)
    
-    
+    def get_status_color(self):
+        color="primary"
+        if self.status==ProjectStatusEnum.DRAFT:
+            color="secondary"
+        if self.status==ProjectStatusEnum.IN_PROGRESS:
+            color="success"
+        if self.status==ProjectStatusEnum.SUSPENDED:
+            color="danger"
+        if self.status==ProjectStatusEnum.FINISHED:
+            color="secondary"
+        if self.status==ProjectStatusEnum.STARTED:
+            color="warning" 
+        return color
+    def get_percentage_completed_color(self):
+        if self.percentage_completed==100:
+            return "success" 
+        if self.percentage_completed>90:
+            return "primary" 
+        if self.percentage_completed>80:
+            return "info" 
+        if self.percentage_completed>70:
+            return "warning" 
+        if self.percentage_completed>60:
+            return "secondary" 
+        if self.percentage_completed>50:
+            return "secondary" 
+        if self.percentage_completed>40:
+            return "secondary" 
+        if self.percentage_completed>30:
+            return "danger" 
+        if self.percentage_completed>20:
+            return "danger" 
+        if self.percentage_completed>10:
+            return "danger" 
+        return 'danger'
     @property
     def all_remote_clients(self):
         ids=[]

@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card-header">
+        <h5>
+            تیکت
+        </h5>
+    </div>
+    <div class="card-body">
+        <h5>
+            <small class="text-muted">
+                پروژه
+            </small>
+            <a href="{{ticket.project.get_absolute_url}}">
+                {{ticket.project.title}}
+            </a>
+        </h5>
+        <h5>
+            
+            <small class="text-muted">
+                عنوان
+            </small>
+            <a href="{{ticket.get_absolute_url}}">
+                {{ticket.title}}
+            </a>
+        </h5>
+
+        <p>
+             <small class="text-muted">
+                توضیحات
+            </small>
+                {{ticket.description|safe}}
+
+        </p>
+
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="media">
+  <a :href="project.get_absolute_url">
+    <img :src="project.thumbnail" width="32" class="rounded" alt="" />
+  </a>
+  <div class="media-body mr-2">
+    <div>
+      <a :href="project.get_absolute_url">
+        <span v-text="project.title"></span>
+      </a>
+    </div>
+  </div>
+</div>

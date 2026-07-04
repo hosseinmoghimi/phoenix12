@@ -4,6 +4,8 @@
 <!-- ===============================================-->
 <!--    JavaScripts-->
 <!-- ===============================================-->
+<script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+
 <script src="{{STATIC_URL}}phoenix-theme/vendors/popper/popper.min.js"></script>
 <script src="{{STATIC_URL}}phoenix-theme/vendors/bootstrap/bootstrap.min.js"></script>
 <script src="{{STATIC_URL}}phoenix-theme/vendors/anchorjs/anchor.min.js"></script>
@@ -21,8 +23,7 @@
 <script src="{{STATIC_URL}}phoenix-theme/assets/js/dashboards/ecommerce-dashboard.js"></script>
 
 
-
-<script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+ 
 <script src="{% static 'utility/js/utility.js' %}"></script>
 <script src="{% static 'utility/js/message.js' %}"></script>
 <script>
@@ -59,6 +60,9 @@
     }
   }
 </script>
+
+{% if me_person %}
+
 <script>
   var csrfmiddlewaretoken = "";
   $(document).ready(function () {
@@ -74,5 +78,20 @@
         
         notification_devider.addClass("d-none");
     }
+
+    
+    $('div').addClass(' farsi ')
+    $('button').addClass(' farsi ')
+    $('.form-control').addClass(' farsi ')
+    $('.form-select').addClass(' farsi ')
+    $('label').addClass(' farsi ')
   });
 </script>
+
+
+ 
+
+<script>
+  let me_person = JSON.parse(`{{me_person_s|escapejs}}`);
+</script>
+{% endif %}

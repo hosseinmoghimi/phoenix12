@@ -16,7 +16,9 @@ urlpatterns = [
 
     path('project/add/sub/',login_required(apis.AddSubProjectApi.as_view()),name="add_sub_project"),  
     path('project/add/',login_required(apis.AddProjectApi.as_view()),name="add_project"),  
+    path('project/new/',login_required(views.NewProjectView.as_view()),name="new_project"),  
     path('projects/',login_required(views.ProjectsView.as_view()),name="projects"),  
+    path('projects-card/',login_required(views.ProjectsCardView.as_view()),name="projects_card"),  
     path('project/<int:pk>/',login_required(views.ProjectView.as_view()),name="project"),  
     path('project/show/<int:pk>/',login_required(views.ProjectShowView.as_view()),name="project_show"),  
     path("project_guantt/<int:pk>/",login_required(views.ProjectGuanttView.as_view()),name="project_guantt"),

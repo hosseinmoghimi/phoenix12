@@ -1,0 +1,116 @@
+<div id="accordion-issues" class="rtl text-right farsi">
+  <div class="card" id="issues-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-issues"
+          aria-expanded="true"
+          aria-controls="collapse-issues"
+        >
+          ایشو ها
+          <span v-if="issues.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="issues.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-issues"
+      class="collapse {% if expand_issues %} show {% endif %}"
+      aria-labelledby="heading-issues"
+      data-parent="#accordion-issues"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>عنوان ایشو</th>
+              <th>وضعیت</th>
+              {% if not project %}
+
+              <th>پروژه</th>
+              {% endif %}
+              <th>شخص</th>
+              <th>تاریخ</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="issue in issues">
+                <td>
+                  <a :href="issue.get_absolute_url">
+                    <span class=" " v-text="issue.title"></span>
+                  </a>
+                </td>
+
+                <td>
+                  <span
+                    :class="'badge badge-'+issue.get_status_color"
+                    v-text="issue.status"
+                  ></span>
+                </td>
+
+                {% if not project %}
+                <td>
+                  <div v-for="project in [issue.project]">
+                    <div v-if="project">
+                      {% include "projectmanager/includes/project-app/media.html" %}
+                    </div>
+                  </div>
+
+                </td>
+                {% endif %}
+
+                <td>
+                  <div v-for="person in [issue.creator]">
+                    <div v-if="person">
+                      {% include "authentication/includes/person-app/media.html" %}
+                    </div>
+                  </div>
+                </td>
+
+                <td>
+                  <div>
+                    <small>
+                      <span v-text="issue.persian_start_datetime"></span>
+                    </small>
+                  </div>
+                  <div>
+                    <small>
+                      <span v-text="issue.persian_end_datetime"></span>
+                    </small>
+                  </div>
+                </td>
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="issue.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="issue.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

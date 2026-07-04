@@ -7,11 +7,11 @@
           <!-- parent pages-->
           <div class="nav-item-wrapper">
             <a
-              class="nav-link dropdown-indicator label-1"
+              class="nav-link dropdown-indicator label-1 collapsed"
               href="#nv-home"
               role="button"
               data-bs-toggle="collapse"
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls="nv-home"
             >
               <div class="d-flex align-items-center">
@@ -477,7 +477,7 @@
                 </div>
                 <span class="nav-link-icon"
                   ><span data-feather="clipboard"></span></span
-                ><span class="nav-link-text">Project management</span>
+                ><span class="nav-link-text farsi"> مدیریت پروژه</span>
               </div>
             </a>
             <div class="parent-wrapper label-1">
@@ -486,36 +486,36 @@
                 data-bs-parent="#navbarVerticalCollapse"
                 id="nv-project-management"
               >
-                <li class="collapsed-nav-item-title d-none">
-                  Project management
+                <li class="{% if not NEW_PROJECT_NAV_ACTIVE %}collapsed-{% else %}{% endif %}nav-item-title d-none farsi">
+                 پروژه ها
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link"
-                    href="apps/project-management/create-new.html"
+                    class="nav-link {% if NEW_PROJECT_NAV_ACTIVE %} active{% endif %}"
+                    href="{% url 'projectmanager:new_project' %}"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="nav-link-text">Create new</span>
+                      <span class="nav-link-text">ایجاد پروژه جدید</span>
                     </div> </a
                   ><!-- more inner pages-->
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link"
-                    href="apps/project-management/project-list-view.html"
+                    class="nav-link {% if PROJECTS_NAV_ACTIVE %} active{% endif %}"
+                    href="{% url 'projectmanager:projects' %}"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="nav-link-text">Project list view</span>
+                      <span class="nav-link-text">پروژه ها</span>
                     </div> </a
                   ><!-- more inner pages-->
                 </li>
                 <li class="nav-item">
                   <a
-                    class="nav-link"
-                    href="apps/project-management/project-card-view.html"
+                    class="nav-link {% if PROJECTS_CARD_NAV_ACTIVE %} active{% endif %}"
+                    href="{% url 'projectmanager:projects_card' %}"
                   >
                     <div class="d-flex align-items-center">
-                      <span class="nav-link-text">Project card view</span>
+                      <span class="nav-link-text">نمایش کارتی پروژه ها</span>
                     </div> </a
                   ><!-- more inner pages-->
                 </li>

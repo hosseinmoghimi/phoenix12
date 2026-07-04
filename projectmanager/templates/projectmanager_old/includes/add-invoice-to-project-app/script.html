@@ -1,0 +1,68 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_invoice_to_project_app = new Vue({
+    el: "#add-invoice-to-project-app",
+    data: { 
+      invoice_id: 0, 
+      waiting: false,
+      message: { show: false },
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+ 
+      add_invoice_to_project: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_id: parseInt( add_invoice_to_project_app.invoice_id),
+          project_id: parseInt("{{project.id}}"),
+        };
+
+        console.log(payload);
+        let url = "{% url 'projectmanager:add_invoice_to_project' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          console.log(data.invocie);
+
+          if (data.result === "SUCCEED") {
+            add_invoice_to_project_app.invoice_id = "";
+            show_message(
+              add_invoice_to_project_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+            if (typeof invoices_app != "undefined") {
+              invoices_app.invoices.push(data.invoice);
+            }
+          } else {
+            show_message(add_invoice_to_project_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>

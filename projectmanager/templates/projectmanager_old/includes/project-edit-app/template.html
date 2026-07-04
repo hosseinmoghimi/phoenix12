@@ -1,0 +1,240 @@
+{% if edit_project_form %} 
+{% load static %}
+<div id="accordion-project-edit">
+  <div class="card" id="project-edit-app">
+    <div class="card-header" id="heading-project-edit">
+      <h5 class="card-title text-center farsi">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-project-edit"
+          aria-expanded="true"
+          aria-controls="collapse-project-edit"
+        >
+          مشخصات و ویژگی های پروژه
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-project-edit"
+      class="collapse"
+      aria-labelledby="heading-project-edit"
+      data-parent="#accordion-project-edit"
+    >
+      <div class="card-body">
+        
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="">عنوان پروژه</label>
+
+                <input
+                  type="text"
+                  v-model="title"
+                  class="form-control"
+                  required
+                  placeholder="عنوان پروژه"
+                />
+              </div>
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> شروع پروژه </span>
+              <date-picker v-model="start_datetime"></date-picker>
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> پایان پروژه </span>
+              <date-picker v-model="end_datetime"></date-picker>
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> درصد پیشرفت پروژه </span>
+
+              <input
+                required
+                type="number"
+                class="form-control"
+                v-model="percentage_completed"
+              />
+            </div>
+
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> کارفرما </span>
+              <select
+                required
+                name=""
+                id=""
+                class="form-control"
+                v-model="employer_id"
+              >
+                {% for organizational_unit in all_organizational_units %}
+                <option value="{{organizational_unit.id}}">
+                  {{organizational_unit.title}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> پیمانکار </span>
+              <select
+                required
+                name=""
+                id=""
+                class="form-control"
+                v-model="contractor_id"
+              >
+                {% for organizational_unit in all_organizational_units %}
+                <option value="{{organizational_unit.id}}">{{organizational_unit.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> وزن پروژه </span>
+
+              <input
+                required
+                type="number"
+                class="form-control"
+                v-model="weight"
+              />
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> ترتیب </span>
+
+              <input
+                required
+                type="number"
+                class="form-control"
+                v-model="priority"
+              />
+            </div>
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> وضعیت </span>
+              <select
+                required
+                name=""
+                id=""
+                class="form-control"
+                v-model="status"
+              >
+                {% for project_status in project_status_enum %}
+                <option value="{{project_status}}">{{project_status}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> رنگ </span>
+              <select
+                required
+                name=""
+                id=""
+                class="form-control"
+                v-model="color"
+              >
+                {% for project_color in colors_for_change_project %}
+                <option value="{{project_color}}">{{project_color}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-4 text-right mb-3">
+              <span class="farsi text-right"> شناسه ی سوپر پروژه </span>
+              <input
+                required
+                @input="get_super_project()"
+                type="number"
+                class="d-inline form-control"
+                v-model="super_project.id"
+              />
+              <a
+                class="btn btn-link d-inline"
+                target="_blank"
+                :href="super_project.get_absolute_url"
+              >
+                <span v-text="super_project.title"></span>
+              </a>
+            </div>
+
+            <div class="col-4 text-right mb-3 farsi">
+              <span class="text-right"> سوپر پروژه </span>
+
+              <div>
+                <a
+                  class="btn btn-info"
+                  target="_blank"
+                  :href="super_project.get_absolute_url"
+                >
+                  <span v-text="super_project.title"></span>
+                </a>
+              </div>
+            </div>
+
+            <div class="col-4 text-right mb-3">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  v-model="archive"
+                  type="checkbox"
+                  id="flexCheckDefault34"
+                />
+                <label class="form-check-label mx-3" for="flexCheckDefault34">
+                  بایگانی شود؟
+                </label>
+              </div>
+            </div>
+
+            <div class="col-md-12 text-right">
+            </div>
+            <div class="col-md-4 text-right">
+              <img
+                v-if="waiting"
+                width="32"
+                src="{% static 'leo/img/loading.gif' %}"
+                alt=""
+              /> 
+              <button
+                v-if="!waiting"
+                class="btn btn-success btn-block"
+                @click="edit_project()"
+              >
+                <i class="material-icons"> check_circle_outline </i>
+                <span class="farsi"> ذخیره تغییرات </span>
+              </button>
+
+
+
+               <button
+                v-if="!waiting"
+                class="btn btn-warning btn-block"
+                @click="normalize()"
+              >
+                <i class="material-icons"> check_circle_outline </i>
+                <span class="farsi"> نرمال سازی </span>
+              </button>
+
+            </div>
+            <div v-if="SUCCEED" class="col-12">
+              <div class="alert alert-success my-3 farsi text-right">
+                <p class="farsi text-right rtl">
+                  پروژه {{project.title}} با موفقیت ویرایش شد.
+                  <br />
+                  صفحه را Refresh کنید.
+                </p>
+              </div>
+            </div>
+            <div class="col-12 my-3">
+              {% include "utility/includes/message.html" %}
+            </div>
+          </div>
+         
+      </div>
+      <!-- <div class="card-footer ">
+                
+                
+
+                
+            </div> -->
+    </div>
+  </div>
+</div>
+{% endif %}
