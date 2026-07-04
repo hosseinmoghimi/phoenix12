@@ -311,7 +311,7 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           parent_id: parseInt(parent_id),
-          title: this.title,
+          title: (this.title.toLowerCase()),
         };
 
         let url = "{% url 'academy:add_word' %}";
