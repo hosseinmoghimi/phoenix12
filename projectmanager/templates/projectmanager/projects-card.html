@@ -220,7 +220,7 @@
         <div class="d-flex align-items-center">
           <h4 class="mb-2 line-clamp-1 lh-sm flex-1 me-5">
               
-            <a class="text-dark" href="{{project.get_absolute_url}}">
+            <a  href="{{project.get_absolute_url}}">
             {{project.title}}
             </a>
           </h4>
@@ -249,9 +249,15 @@
             </button>
           </div>
         </div>
-        <span class="badge badge-phoenix fs-10 mb-4 badge-phoenix-success"
-          >completed</span
-        >
+        
+
+         <span class="farsi badge badge-phoenix fs-10 mb-4 badge-phoenix-{{project.get_status_color}}"
+                >
+                {{project.status}}
+                </span
+              >
+
+
         <div class="d-flex align-items-center mb-2">
           <svg
             class="svg-inline--fa fa-user fs-9 fw-extra-bold me-2 text-body-tertiary"

@@ -4,13 +4,14 @@
   <ol class="breadcrumb mb-0">
     <li class="breadcrumb-item"><a href="#!">Page 1</a></li>
     <li class="breadcrumb-item"><a href="#!">Page 2</a></li>
+    <li class="breadcrumb-item"><a href="#!">Page 3</a></li>
     <li class="breadcrumb-item active">Default</li>
   </ol>
 </nav>
 <div class="mb-9">
   <div
     id="projectSummary"
-    data-list='{"valueNames":["projectName","assignees","start","contractor","employer","task","projectprogress","status","action"],"page":6,"pagination":true}'
+    data-list='{"valueNames":["projectName","assignees","start","contractor","employer","task","projectprogress","status","action"],"page":2,"pagination":true}'
   >
     <div class="row mb-4 gx-6 gy-3 align-items-center">
       <div class="col-auto">
@@ -209,7 +210,7 @@
         </div>
       </div>
     </div>
-    <div class="table-responsive scrollbar">
+    <div class="table-responsive scrollbar rtl">
       <table class="table fs-9 mb-0 border-top border-translucent farsi">
         <thead>
           <tr>
@@ -217,7 +218,7 @@
               class="sort white-space-nowrap align-middle ps-0"
               scope="col"
               data-sort="projectThumbnail"
-              style=" "
+              
             >
               IMG
             </th>
@@ -428,8 +429,8 @@
         >
           1 to 6 <span class="text-body-tertiary"> Items of </span>7
         </p>
-        <a class="fw-semibold" href="#!" data-list-view="*"
-          >View all<svg
+        <a class="farsi fw-semibold" href="#!" data-list-view="*"
+          >نمایش همه<svg
             class="svg-inline--fa fa-angle-right ms-1"
             data-fa-transform="down-1"
             aria-hidden="true"
@@ -484,6 +485,30 @@
           data-list-pagination="prev"
           disabled=""
         >
+         <svg
+            class="svg-inline--fa fa-chevron-right"
+            aria-hidden="true"
+            focusable="false"
+            data-prefix="fas"
+            data-icon="chevron-right"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 320 512"
+            data-fa-i2svg=""
+          >
+            <path
+              fill="currentColor"
+              d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+            ></path></svg
+          > 
+           
+        </button>
+        <ul class="mb-0 pagination">
+          
+          
+        </ul>
+        <button class="page-link pe-0" data-list-pagination="next">
+         
           <svg
             class="svg-inline--fa fa-chevron-left"
             aria-hidden="true"
@@ -499,37 +524,7 @@
               fill="currentColor"
               d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
             ></path></svg
-          ><!-- <span class="fas fa-chevron-left"></span> Font Awesome fontawesome.com -->
-        </button>
-        <ul class="mb-0 pagination">
-          <li class="active">
-            <button class="page" type="button" data-i="1" data-page="6">
-              1
-            </button>
-          </li>
-          <li>
-            <button class="page" type="button" data-i="2" data-page="6">
-              2
-            </button>
-          </li>
-        </ul>
-        <button class="page-link pe-0" data-list-pagination="next">
-          <svg
-            class="svg-inline--fa fa-chevron-right"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="chevron-right"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 320 512"
-            data-fa-i2svg=""
           >
-            <path
-              fill="currentColor"
-              d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
-            ></path></svg
-          ><!-- <span class="fas fa-chevron-right"></span> Font Awesome fontawesome.com -->
         </button>
       </div>
     </div>

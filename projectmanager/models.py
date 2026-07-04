@@ -111,15 +111,15 @@ class Project(Event,LinkHelper,DateHelper):
         if self.percentage_completed>90:
             return "primary" 
         if self.percentage_completed>80:
-            return "info" 
+            return "primary" 
         if self.percentage_completed>70:
-            return "warning" 
+            return "info" 
         if self.percentage_completed>60:
-            return "secondary" 
+            return "info" 
         if self.percentage_completed>50:
-            return "secondary" 
+            return "warning" 
         if self.percentage_completed>40:
-            return "secondary" 
+            return "warning" 
         if self.percentage_completed>30:
             return "danger" 
         if self.percentage_completed>20:
