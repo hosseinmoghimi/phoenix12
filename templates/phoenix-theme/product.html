@@ -77,7 +77,15 @@
                     <p class="text-primary fw-semibold mb-2">6548 People rated and reviewed </p>
                 </div>
                 <h3 class="mb-3 lh-sm farsi" >
-                    {{product.title}}
+                    {% if perms.accounting.change_product %}
+                      <a href="{% url 'accounting:product' pk=product.id%}">
+                          {{product.title}}
+                          
+                        </a>
+                        {% else %}
+                        {{product.title}}
+
+                    {% endif %}
                 </h3>
                 <div class="d-flex flex-wrap align-items-start mb-3"><span class="badge text-bg-success fs-9 rounded-pill me-2 fw-semibold">#1 Best seller</span><a  data-bs-toggle="tooltip" data-bs-placement="top" title="{{primary_shop.supplier.grade}}" class="farsi fw-semibold" href="{{primary_shop.supplier.get_absolute_url}}">{{primary_shop.supplier.title}}</a></div>
                 <div class="d-flex flex-wrap align-items-center">

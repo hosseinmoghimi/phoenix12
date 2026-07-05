@@ -28,8 +28,10 @@
     <!-- ===============================================-->
     <!--    End of Main Content-->
     <!-- ===============================================-->
-
+    
+    {% if CUSTOMIZER %}
     {% include "phoenix-theme/includes/customizer.html" %} 
+    {% endif %}
     {% include "phoenix-theme/includes/script.html" %}
     {% block script %}
       
