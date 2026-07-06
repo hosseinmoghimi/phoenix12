@@ -22,31 +22,29 @@ from .serializers import CustomerSerializer
 from utility.views import MessageView
 from utility.repo import ParameterRepo,PictureRepo
 
-TEMPLATE_ROOT_ADMIN="market/"
+TEMPLATE_ROOT="market/"
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
 NO_NAVBAR="NO_NAVBAR"
-TEMPLATE_ROOT='phoenix-theme/'
-LAYOUT_PARENT='phoenix-theme/layout.html'
+
 
 LAYOUT_PARENT='market/layout.html'
 TEMPLATE_ROOT='market/'
 
-DASHBOARD_LAYOUT_PARENT='phoenix-dashboard/layout.html'
-DASHBOARD_TEMPLATE_ROOT='phoenix-dashboard/'
+
 
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
     global TEMPLATE_ROOT
     global DASHBOARD_TEMPLATE_ROOT
-    context[WIDE_LAYOUT]=True 
+    # context[WIDE_LAYOUT]=True 
     context['NO_FILTER']=True
 
     from utility.repo import ParameterRepo,PictureRepo
     param_repo=ParameterRepo(request=request,app_name=APP_NAME)
         
-    DASHBOARD_LAYOUT_PARENT=param_repo.parameter(name="DASHBOARD_LAYOUT_PARENT",default='phoenix-dashboard/layout.html').value
-    DASHBOARD_TEMPLATE_ROOT=param_repo.parameter(name="DASHBOARD_TEMPLATE_ROOT",default='phoenix-dashboard/').value
+    DASHBOARD_LAYOUT_PARENT=param_repo.parameter(name="DASHBOARD_LAYOUT_PARENT",default='market/layout.html').value
+    DASHBOARD_TEMPLATE_ROOT=param_repo.parameter(name="DASHBOARD_TEMPLATE_ROOT",default='market/').value
         
     LAYOUT_PARENT=param_repo.parameter(name="LAYOUT_PARENT",default='market/layout.html').value
     TEMPLATE_ROOT=param_repo.parameter(name="TEMPLATE_ROOT",default='market/').value
