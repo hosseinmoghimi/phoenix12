@@ -208,9 +208,12 @@ def checkout_cart(request,*args, **kwargs):
         supplier=supplier_repo.supplier(pk=supplier_id)
         from django.utils import timezone
         invoice_data={}
+        title=" خرید از "+supplier.title+" "+table.title
+        if 'title' in kwargs and kwargs['title']:
+            title=kwargs['title']
+        invoice_data['title']=title
         invoice_data['bedehkar_id']=customer.person_account.id
         invoice_data['bestankar_id']=supplier.person_account.id
-        invoice_data['title']=" خرید از "+supplier.title+" "+table.title
         invoice_data['amount']=0
         invoice_data['description']="میز : "+table.title+'<br>'+description
          

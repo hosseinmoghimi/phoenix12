@@ -659,7 +659,11 @@ class CartItemRepo():
             invoice_data={}
             invoice_data['bedehkar_id']=customer.person_account.id
             invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور خرید از فروشگاه"
+            title="فاکتور خرید از فروشگاه"
+            if 'title' in kwargs:
+                if kwargs['title']:
+                    title=kwargs['title']
+            invoice_data['title']=title
             invoice_data['amount']=0
             invoice_data['description']=description
             if 'address' in kwargs:
