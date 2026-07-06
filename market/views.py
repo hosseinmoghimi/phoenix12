@@ -714,7 +714,7 @@ class CustomerView(View):
 
  
  
-        return render(request,TEMPLATE_ROOT_ADMIN+"customer.html",context) 
+        return render(request,TEMPLATE_ROOT+"customer.html",context) 
      
 
 class CustomerGroupView(View):
