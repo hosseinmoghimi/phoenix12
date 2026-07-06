@@ -135,25 +135,42 @@ class WordRepo():
         
         return result,message,word
  
+    def delete_all_words(self,*args, **kwargs):
+        if self.request.user.has_perm(APP_NAME+".delete_word"):
+            Word.objects.all().delete()
+            return SUCCEED,"با موفقیت حذف شد."
+        return FAILED,"..."
     def import_from_json(self,*args, **kwargs):
         json_file=kwargs['json_file']
         import json
         json_data=json.load(json_file) 
         words=[]
-        for json_word in json_data['words']:
-            new={}
-            new['id']=json_word['id']
-            new['parent_id']=json_word['parent_id'] 
-            new['title']=json_word['title'] 
-            new['app_name']=APP_NAME
-            new['class_name']='word'
-            new['thumbnail_origin']=json_word['thumbnail_origin']
-            word=Word(**new)
-            word.save()
-            words.append(word)
+
+        words = json_data['words']
+        add_from_json(words,None,None)
              
-        leolog(words_length=len(words),words=words)
+              
         return SUCCEED,'با موفقیت بازیابی شد.',words
     
+def add_from_json(words=[],parent_id=None,new_parent_id=None): 
+    if len(words)<1:
+        return
+    for word in words: 
+        word['id']=int(word['id'])
+        if word['parent_id'] is not None:
+            word['parent_id']=int(word['parent_id'])
+        
+        if word['parent_id']==parent_id:
+            new_word=Word()
+            new_word.parent_id=new_parent_id
+            new_word.title=word['title'] 
+            new_word.app_name=APP_NAME
+            new_word.class_name='word'
+            new_word.thumbnail_origin=word['thumbnail_origin']
+            new_word.save()
+            # words.remove(word)
+            
+            add_from_json(words=words,parent_id=int(word['id']),new_parent_id=new_word.id)
+
 
      

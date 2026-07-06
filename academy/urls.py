@@ -13,6 +13,7 @@ urlpatterns = [
     path('settings/',login_required(views.SettingsView.as_view()),name='settings'),
     path('get-json-backup/',login_required(views.GetJsonBackupView.as_view()),name='get_json_backup'),
     path('import_from_json/',login_required(apis.ImportFromJsonApi.as_view()),name='import_from_json'),
+    path('delete_all_words/',login_required(apis.DeleteAllWordsApi.as_view()),name='delete_all_words'),
 
     path('courses/',login_required(views.CoursesView.as_view()),name="courses"),
     path('course/<int:pk>/',login_required(views.CourseView.as_view()),name="course"),

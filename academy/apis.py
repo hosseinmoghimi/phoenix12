@@ -50,10 +50,32 @@ class ImportFromJsonApi(APIView):
                 json_file = request.FILES['file1']
                 cd=import_from_excel_form.cleaned_data
                 cd['json_file']=json_file
-                leolog(cd=cd)
                 result,message,words=WordRepo(request=request).import_from_json(**cd)
                 if words is not None:
                     context['words']=WordSerializer(words,many=True).data
+                  
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)        
+    
+    
+class DeleteAllWordsApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+       
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            delete_all_words_form=DeleteAllWordsForm(request.POST,request.FILES)
+            if delete_all_words_form.is_valid():
+                log=333
+                
+                cd=delete_all_words_form.cleaned_data
+                result,message=WordRepo(request=request).delete_all_words(**cd) 
                   
         context['message']=message
         context['result']=result

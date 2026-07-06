@@ -82,7 +82,42 @@
                   </button>
                 </div>
 
-                <div class="col-md-12 my-2">
+                
+              </div>
+            </form>
+
+
+
+             <form
+              id="import-data-from-json-form"
+              @submit.prevent="delete_all_words()"
+            >
+              <div class="row">
+                
+                
+
+                <div class="col-12">
+                  <img
+                    src="{% static 'leo/img/loading.gif' %}"
+                    width="32"
+                    v-if="waiting"
+                    alt=""
+                  />
+
+                  <button
+                    class="farsi btn btn-danger btn-block"
+                    v-if="!waiting"
+                    type="submit"
+                  >
+                    <i class="fa fa-plus mx-1"></i>
+                    حذف همه کلمه ها
+                  </button>
+                </div>
+
+               
+            </form>
+
+            <div> 
                   <div
                     :class="'alert alert-'+message.color"
                     v-if="message.show"
@@ -92,9 +127,9 @@
                       <div v-html="message.body" class="my-2"></div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </form>
+                </div> 
+
+            </div>
           </div> 
       </div>
     </div>
@@ -148,6 +183,27 @@
                 });
 
             },
+
+            
+            delete_all_words: function () {
+                import_from_json_app.waiting = true
+                $.post("{% url 'academy:delete_all_words' %}",{csrfmiddlewaretoken:csrfmiddlewaretoken}).done(data=>{
+                    import_from_json_app.waiting = false
+                    if(data.result==="SUCCEED"){
+                                show_message(import_from_json_app,"موفقیت آمیز",data.message,"success",10000)   
+
+                    }
+
+                     if(data.result!="SUCCEED"){
+                                show_message(import_from_json_app,"خطا",data.message,"danger",10000)   
+
+                    }
+
+                })
+
+            },
+
+        
 
         }
     })
