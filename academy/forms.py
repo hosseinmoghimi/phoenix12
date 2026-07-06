@@ -16,3 +16,5 @@ class AddWordForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
      
  
+class ImportFromJsonForm(forms.Form):
+    count=forms.IntegerField(required=True)

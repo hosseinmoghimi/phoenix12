@@ -135,3 +135,25 @@ class WordRepo():
         
         return result,message,word
  
+    def import_from_json(self,*args, **kwargs):
+        json_file=kwargs['json_file']
+        import json
+        json_data=json.load(json_file) 
+        words=[]
+        for json_word in json_data['words']:
+            new={}
+            new['id']=json_word['id']
+            new['parent_id']=json_word['parent_id'] 
+            new['title']=json_word['title'] 
+            new['app_name']=APP_NAME
+            new['class_name']='word'
+            new['thumbnail_origin']=json_word['thumbnail_origin']
+            word=Word(**new)
+            word.save()
+            words.append(word)
+             
+        leolog(words_length=len(words),words=words)
+        return SUCCEED,'با موفقیت بازیابی شد.',words
+    
+
+     

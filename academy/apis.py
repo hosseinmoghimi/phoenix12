@@ -32,7 +32,33 @@ class AddCourseApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
-         
+ 
+class ImportFromJsonApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+       
+        log=111
+        context['result']=FAILED
+        if request.method=='POST':
+            log=222
+            import_from_excel_form=ImportFromJsonForm(request.POST,request.FILES)
+            if import_from_excel_form.is_valid():
+                log=333
+                
+                json_file = request.FILES['file1']
+                cd=import_from_excel_form.cleaned_data
+                cd['json_file']=json_file
+                leolog(cd=cd)
+                result,message,words=WordRepo(request=request).import_from_json(**cd)
+                if words is not None:
+                    context['words']=WordSerializer(words,many=True).data
+                  
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)        
     
     
 class AddWordApi(APIView):

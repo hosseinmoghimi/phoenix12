@@ -52,6 +52,22 @@ class SearchView(View):
         return render(request,TEMPLATE_ROOT+"search.html",context)
 
  
+class GetJsonBackupView(View):
+    def get(self,request,*args, **kwargs):
+        from django.http import JsonResponse
+        origin_words=WordRepo(request=request).list()
+        json_data={'words':[]}
+        for word in origin_words:
+            data={} 
+            data['id']=word.id
+            data['title']=word.title
+            data['parent_id']=word.parent_id
+            data['thumbnail_origin']=str(word.thumbnail_origin)
+            json_data['words'].append(data)
+
+
+        return JsonResponse(json_data,safe=False)
+ 
 
 class CoursesView(View):
     def get(self,request,*args, **kwargs):
@@ -68,6 +84,24 @@ class CoursesView(View):
             suppliers=SupplierRepo(request=request).list()
             context['suppliers']=suppliers
         return render(request,TEMPLATE_ROOT+"courses.html",context) 
+ 
+
+
+class SettingsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        courses =CourseRepo(request=request).list(*args, **kwargs)
+        context['courses']=courses
+        courses_s=json.dumps(CourseSerializer(courses,many=True).data)
+        context['courses_s']=courses_s
+ 
+        context[WIDE_LAYOUT]=True
+        if request.user.has_perm(APP_NAME+".add_course"):
+            context['add_course_form']=AddCourseForm()
+            from market.views import SupplierRepo
+            suppliers=SupplierRepo(request=request).list()
+            context['suppliers']=suppliers
+        return render(request,TEMPLATE_ROOT+"settings.html",context) 
  
 
 class CourseView(View):
