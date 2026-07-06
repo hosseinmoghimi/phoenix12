@@ -220,6 +220,9 @@ class ShopRepo(Repo):
         if 'unit_price' in kwargs:
             if kwargs["unit_price"]>0:
                 shop.unit_price=kwargs["unit_price"]
+        if 'coef' in kwargs:
+            shop.coef=kwargs["coef"]
+            
         if 'unit_name' in kwargs:
             shop.unit_name=kwargs["unit_name"]
          

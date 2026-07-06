@@ -36,15 +36,13 @@ TEMPLATE_ROOT='market/'
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
     global TEMPLATE_ROOT
-    global DASHBOARD_TEMPLATE_ROOT
+    
     # context[WIDE_LAYOUT]=True 
     context['NO_FILTER']=True
 
     from utility.repo import ParameterRepo,PictureRepo
     param_repo=ParameterRepo(request=request,app_name=APP_NAME)
         
-    DASHBOARD_LAYOUT_PARENT=param_repo.parameter(name="DASHBOARD_LAYOUT_PARENT",default='market/layout.html').value
-    DASHBOARD_TEMPLATE_ROOT=param_repo.parameter(name="DASHBOARD_TEMPLATE_ROOT",default='market/').value
         
     LAYOUT_PARENT=param_repo.parameter(name="LAYOUT_PARENT",default='market/layout.html').value
     TEMPLATE_ROOT=param_repo.parameter(name="TEMPLATE_ROOT",default='market/').value
@@ -459,6 +457,21 @@ class ShopsView(View):
         return render(request,TEMPLATE_ROOT+"shops.html",context) 
      
 
+class InvoicesView(View):
+   def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        from accounting.views import InvoiceRepo,InvoiceSerializer
+        invoices =InvoiceRepo(request=request).list(*args, **kwargs).order_by('-event_datetime')
+        context['invoices']=invoices
+         
+
+        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['invoices_s']=invoices_s
+ 
+
+        return render(request,TEMPLATE_ROOT+"invoices.html",context) 
+     
 class ExportShopsToExcelView(View):
     def post(self,request,*args, **kwargs):
         context={}
@@ -572,12 +585,12 @@ class SuppliersView(View):
         suppliers_s=json.dumps(SupplierSerializer(suppliers,many=True).data)
         context['suppliers']=suppliers
         context['suppliers_s']=suppliers_s
-        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
+        context['LAYOUT_PARENT']=LAYOUT_PARENT
         
         context['SUPPLIERS_ACTIVE_LINK']=True
         if request.user.has_perm(APP_NAME+".add_supplier"):
             context.update(AddSupplierContext(request=request))
-        return render(request,DASHBOARD_TEMPLATE_ROOT+"suppliers.html",context) 
+        return render(request,TEMPLATE_ROOT+"suppliers.html",context) 
 
         
 class SupplierView(View):
@@ -738,9 +751,8 @@ class CustomersView(View):
         context['customers_s']=customers_s
         if request.user.has_perm(APP_NAME+'.add_customer'):
             context.update(AddCustomerContext(request=request))
- 
-        context['LAYOUT_PARENT']=DASHBOARD_LAYOUT_PARENT
-        return render(request,DASHBOARD_TEMPLATE_ROOT+"customers.html",context) 
+  
+        return render(request,TEMPLATE_ROOT+"customers.html",context) 
 
 
 class CartView(View):

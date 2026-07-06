@@ -23,6 +23,7 @@ urlpatterns = [
     path('customer/<int:pk>/',login_required(views.CustomerView.as_view()),name="customer"),
     path("add-shop/",login_required(apis.AddShopApi.as_view()),name="add_shop"),
     path("add-customer/",login_required(apis.AddCustomerApi.as_view()),name="add_customer"),
+    path("invoices/",login_required(views.InvoicesView.as_view()),name="invoices"),
     path("add-shipper/",login_required(apis.AddShipperApi.as_view()),name="add_shipper"),
     path('shop/<int:pk>/',login_required(views.ProductView.as_view()),name="shop"),
     path('select-category/',login_required(apis.SelectCategoryApi.as_view()),name="select_category"),

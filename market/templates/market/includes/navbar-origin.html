@@ -23,8 +23,15 @@
       </li>
       {% endif %}
 
-      
-
+      {% if me_customer %}
+        
+      <li class="nav-item">
+        <a title="سبد خرید" class="nav-link text-right" href="{% url 'market:cart' customer_id=me_customer.id %}">
+          <i class="fa fa-shopping-cart"></i>
+          <!-- سبد خرید -->
+        </a>
+      </li>
+      {% endif %}
       
        
 
