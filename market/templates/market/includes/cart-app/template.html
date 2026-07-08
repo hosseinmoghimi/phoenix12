@@ -9,14 +9,27 @@
         {{customer.person_account.title}}
       </a>
     </h6>
+
+    <h6 class="text-center">
+      <a href="{% url 'market:invoices' %}">فاکتور های خرید های قبل</a>
+    </h6>
+
+    <div v-if="cart_items.length==0">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="text-center">سبد خرید شما خالی می باشد.</h5>
+
+        </div>
+      </div>
+       
+    </div>
   </div>
 
-    
   {% endif %}
-  <div class="col-md-12">
+  <div class="col-md-12" v-if="cart_items.length>0">
     <div class="card">
       <div class="card-body">
-        <div  v-if="cart_total()!='0 '" class="table-responsive">
+        <div v-if="cart_total()!='0 '" class="table-responsive">
           <table class="table rtl">
             <thead>
               <th>ردیف</th>
@@ -37,20 +50,14 @@
             </tbody>
             <tfoot>
               <th colspan="3">
- <h6 class="text-left">
-                  <small class="text-muted">
-
-                   تخفیف:
-                  </small>
+                <h6 class="text-left">
+                  <small class="text-muted"> تخفیف: </small>
                   <span class="text-success" v-text="discount_total()"></span>
                 </h6>
               </th>
               <th>
                 <h6 class="text-left">
-                  <small class="text-muted">
-
-                    جمع کل :
-                  </small>
+                  <small class="text-muted"> جمع کل : </small>
                 </h6>
               </th>
 
@@ -61,37 +68,28 @@
             </tfoot>
           </table>
         </div>
-        <div v-else>
-          <h5>سبد خرید شما خالی می باشد.</h5>
-        </div>
       </div>
     </div>
   </div>
   {% if customer %}
-    
-  <div class="col-md-4" v-if="waiting">
-    </div>
-    
-  <div class="col-md-4" v-if="waiting">
+
+  <div class="col-md-4" v-if="waiting"></div>
+
+  <div class="col-md-4" v-if="waiting" v-if="cart_items.length>0">
     <div class="text-center">
-{% load static %}
-      <img src="{% static 'leo/img/loading.gif' %}" alt="">
+      {% load static %}
+      <img src="{% static 'leo/img/loading.gif' %}" alt="" />
     </div>
-    </div>
-    
-  <div class="col-md-4" v-if="waiting">
-    </div>
-  <div class="col-md-12" v-if="cart_items.length>0">
-    <div class="card"  v-show="can_checkout">
+  </div>
+
+  <div class="col-md-4" v-if="waiting"></div>
+  <div class="col-md-12">
+    <div class="card" v-show="can_checkout && cart_items.length>0">
       <div class="card-header">
-        <h5>
-          اطلاعات تکمیلی
-        </h5>
+        <h5>اطلاعات تکمیلی</h5>
       </div>
       <div class="card-body">
         <div class="row rtl">
-          
-
           <div class="col-md-12">
             <div class="form-group">
               <label for="">عنوان فاکتور</label>
@@ -113,20 +111,22 @@
             </div>
           </div>
 
-            <div class="col-md-12">
+          <div class="col-md-12">
             <div class="form-group">
               <label for="">توضیحات</label>
               <input type="text" class="form-control" v-model="description" />
             </div>
           </div>
-
         </div>
         <div class="col-md-12">
           {% include "utility/includes/message-app/alert.html" %}
         </div>
-        <button @click="checkout_cart()" class="btn btn-info">تایید  و صدور فاکتور</button>
+        <button @click="checkout_cart()" class="btn btn-info">
+          تایید و صدور فاکتور
+        </button>
       </div>
     </div>
   </div>
+
   {% endif %}
 </div>
