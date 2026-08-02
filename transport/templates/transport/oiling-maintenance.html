@@ -121,10 +121,16 @@
         <div class="col-md-12">
           {% include 'attachments/includes/images-app/template.html' %}
         </div>
+        <div class="col-md-12">
+            {% include 'transport/includes/oiling-maintenance-details-app/template.html' %}
+        </div>
       </div>
     </div>
   </div>
 {% endblock %} {% block script %}
+    {% include 'transport/includes/oiling-maintenance-details-app/script.html' %}
+
+
   {% if add_invoice_form %}
     {% include 'transport/includes/add-invoice-app/script.html' %}
   {% endif %}

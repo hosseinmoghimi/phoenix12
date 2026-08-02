@@ -39,12 +39,35 @@ class ServiceMan(models.Model,LinkHelper):
         return SUCCEED,message,self
 
 
+class Driver(models.Model,LinkHelper):
+    person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
+    class_name='driver'
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("Driver")
+        verbose_name_plural = _("Drivers")
+    @property
+    def title(self):
+        return self.person_account.person.full_name
+    def __str__(self):
+        return str(self.title)
+    def save(self,*args, **kwargs):
+        result,message,driver=FAILED,'',None
+        if self.title is None or self.title=="":
+            self.title=self.account.title
+        super(Driver,self).save(*args, **kwargs)
+        message='سرویس کار با موفقیت اضافه شد.'
+        return SUCCEED,message,self
+
+
 class Maintenance(Event):
-    kilometer=models.IntegerField(_("کیلومتر"),default=0)
-    service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
-    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
     maintenance_type=models.CharField(_("سرویس"),choices=MaintenanceTypesEnum.choices, max_length=100)
-    
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
+    service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
+    driver=models.ForeignKey("driver", verbose_name=_("driver"),blank=True,null=True, on_delete=models.PROTECT)
+    hour=models.IntegerField(_("hour"),default=0)
+    kilometer=models.IntegerField(_("کیلومتر"),default=0)
     invoices=models.ManyToManyField("accounting.invoice",blank=True, verbose_name=_("invoice"))
     
     class_name='maintenance'
@@ -85,7 +108,49 @@ class Maintenance(Event):
         return InvoiceLine.objects.filter(invoice_id__in=invoice_ids).order_by('invoice_id')
 
 
+class OilingMaintenance(Maintenance):
+    oil_type=models.CharField(_("oil type"),choices=OilTypeEnum.choices, max_length=50)
+    oil_liter=models.FloatField(_("oil liter")) 
+    fuel_liter=models.FloatField(_("fuel liter")) 
+    replace_oil=models.BooleanField(_("replace oil"))
+    over_load_oil=models.BooleanField(_("over load oil"))
+
+
+    class_name='oilingmaintenance'
+    app_name=APP_NAME
+    class Meta:
+        verbose_name = _("OilingMaintenance")
+        verbose_name_plural = _("OilingMaintenances")
+ 
+    def save(self, *args, **kwargs):
+        
+        if self.app_name is None or self.app_name=="":
+            self.app_name = APP_NAME
+        if self.class_name is None or self.class_name=="":
+            self.class_name = "oilingmaintenance"
+        return super(Maintenance, self).save(*args, **kwargs)
+
+
+class OilingMaintenanceDetail(models.Model,LinkHelper):
+    oiling_maintenance=models.ForeignKey("oilingmaintenance", verbose_name=_("oiling_maintenance"), on_delete=models.CASCADE)
+    filter_type=models.CharField(_("filter type"),choices=FilterTypeEnum.choices, max_length=50)
+    filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
+    count=models.IntegerField(_("count"),default=1)
+    cost=models.IntegerField(_("cost"),default=0)
+    
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+
+    class_name='oilingmaintenancedetail'
+    app_name=APP_NAME
+    class Meta:
+        verbose_name = _("OilingMaintenanceDetail")
+        verbose_name_plural = _("OilingMaintenanceDetails")
+
+    def __str__(self):
+        return f'{self.pk} - {self.oiling_maintenance} / {self.filter_action} {self.count} {self.filter_type} '
+ 
 class MaintenanceInvoice(Invoice):
+    hour=models.IntegerField(_("hour"),default=0)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)
     service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
@@ -112,6 +177,7 @@ class MaintenanceInvoice(Invoice):
   
 class Vehicle(Asset):
     vehicle_type=models.CharField(_("نوع وسیله "),choices=VehicleTypeEnum.choices,default=VehicleTypeEnum.SEDAN, max_length=50)
+    vehicle_code=models.CharField(_("کد وسیله "), null=True,blank=True,max_length=50)
     brand_name=models.CharField(_("برند"),choices=VehicleBrandEnum.choices,default=VehicleBrandEnum.IRAN_KHODRO, max_length=50)
     model_name=models.CharField(_("مدل"),null=True,blank=True, max_length=50)
     plaque=models.CharField(_("پلاک"),null=True,blank=True, max_length=50)

@@ -2,8 +2,31 @@ from core import enums as CoreEnums
 from django.db.models import TextChoices
 from django.utils.translation import gettext as _
 from utility.enums import WeightUnitEnum
-
     
+class OilTypeEnum(TextChoices):
+    w15_40="15 W 40",_("15 W 40")
+    w20_40="20 W 40",_("20 W 40")
+    w25_40="25 W 40",_("25 W 40")
+
+class FilterActionEnum(TextChoices):
+    REPLACE="تعویض",_("تعویض")
+    BADGIRI='بادگیری',_("بادگیری")
+    
+class FilterTypeEnum(TextChoices):
+    OIL="فیلتر روغن",_("فیلتر روغن")
+    GASOIL="فیلتر گازوئیل",_("فیلتر گازوئیل")
+    HYDROLIC="فیلتر هیدرولیک",_("فیلتر هیدرولیک")
+    NANO="فیلتر نانو",_("فیلتر نانو")
+    AB_GIR="فیلتر آبگیر",_("فیلتر آبگیر")
+    TANK="فیلتر تانک",_("فیلتر تانک")
+    BOKHAR_KESH="فیلتر بخارکش",_("فیلتر بخارکش")
+    MAGNETIC="فیلتر مغناطیسی",_("فیلتر مغناطیسی")
+    DAKHELI="فیلتر داخلی",_("فیلتر داخلی")
+    BIRUNI="فیلتر بیرونی",_("فیلتر بیرونی")
+    CABIN="فیلتر کابین",_("فیلتر کابین")
+    SELECTOR="فیلتر سلکتور",_("فیلتر سلکتور")
+
+
 class TripStatusEnum(TextChoices):
     REQUESTED="درخواست شده",_("درخواست شده")
     APPROVED="تأیید شده",_("تأیید شده")

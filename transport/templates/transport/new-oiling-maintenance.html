@@ -1,0 +1,16 @@
+{% extends "transport/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  {% if add_oiling_form %}
+  <div class="col-md-12">
+    {% include "transport/includes/add-oiling-maintenance-app/template.html" %}
+  </div>
+  {% endif %}
+ 
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+ 
+{% if add_oiling_form %}
+ {% include "transport/includes/add-oiling-maintenance-app/script.html" %} 
+ {% endif %} 
+ {% endblock script %}

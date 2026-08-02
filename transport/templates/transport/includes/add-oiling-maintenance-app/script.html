@@ -1,6 +1,6 @@
 <script>
-  let add_maintenance_app = new Vue({
-    el: "#add-maintenance-app",
+  let add_oiling_app = new Vue({
+    el: "#add-oiling-app",
     data: {
       title: "",
       kilometer: 0,
@@ -12,6 +12,18 @@
       event_date: current_date,
       event_time: current_time,
       event_datetime: current_datetime,
+ 
+      oil_type: '',
+      oil_liter: 0,
+      oil_filter: false,
+      gasoil_filter: false,
+      Hydrolic_filter: false,
+      nano_filter: false,
+      abgir_filter: false,
+      tank_filter: false,
+      bokharkesh_filter: false,
+      lajangir_filter: false,
+
       waiting: false,
       message: { show: false },
     },
@@ -44,36 +56,49 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
-          vehicle_id: this.vehicle_id,
-          service_man_id: this.service_man_id,
+          vehicle_id: parseInt(this.vehicle_id),
+          service_man_id: parseInt(this.service_man_id),
           maintenance_type: this.maintenance_type,
           description: this.description,
-          hour: this.hour,
-          kilometer: this.kilometer,
+          hour: parseInt(this.hour),
+
+          
+          oil_type: this.oil_type,
+          oil_liter: this.oil_liter,
+          oil_filter: this.oil_filter,
+          gasoil_filter: this.gasoil_filter,
+          Hydrolic_filter: this.Hydrolic_filter,
+          nano_filter: this.nano_filter,
+          abgir_filter: this.abgir_filter,
+          tank_filter: this.tank_filter,
+          bokharkesh_filter: this.bokharkesh_filter,
+          lajangir_filter: this.lajangir_filter,
+
+          kilometer: parseInt(this.kilometer),
           event_datetime: this.event_date + " " + this.event_time,
         };
 
         console.log(payload);
-        let url = "{% url 'transport:add_maintenance' %}";
+        let url = "{% url 'transport:add_oiling' %}";
         let posting = $.post(url, payload);
         posting.done((data) => {
           console.log(data);
 
           if (data.result === "SUCCEED") {
-            add_maintenance_app.title = "";
+            add_oiling_app.title = "";
             show_message(
-              add_maintenance_app,
+              add_oiling_app,
               "موفق",
               data.message,
               "success",
               5000
             );
-            if (typeof maintenances_app != "undefined") {
-              maintenances_app.maintenances.push(data.maintenance);
+            if (typeof oilings_app != "undefined") {
+              oilings_app.oilings.push(data.oiling);
             }
           } else {
             show_message(
-              add_maintenance_app,
+              add_oiling_app,
               "خطا",
               data.message,
               "danger",

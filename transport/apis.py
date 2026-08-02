@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -97,6 +97,30 @@ class AddMaintenanceApi(APIView):
             result,message,maintenance=MaintenanceRepo(request=request).add_maintenance(**cd)
             if maintenance is not None:
                 context['maintenance']=MaintenanceSerializer(maintenance).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+    
+
+
+class AddOilingMaintenanceApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_oiling_form=AddOilingForm(request.POST)
+        if add_oiling_form.is_valid():
+            log=333
+            cd=add_oiling_form.cleaned_data
+            result,message,oiling=OilingRepo(request=request).add_oiling(**cd)
+            if oiling is not None:
+                context['oiling']=OilingSerializer(oiling).data
         context['message']=message
         context['result']=result
         context['log']=log

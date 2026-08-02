@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -10,7 +10,7 @@ import json
 from django.views import View
 from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
-from .enums import MaintenanceTypesEnum
+from .enums import MaintenanceTypesEnum,OilTypeEnum
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='transport/'
 WIDE_LAYOUT="WIDE_LAYOUT"
@@ -96,9 +96,20 @@ class VehicleView(View):
         return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
     
 
+    
+class NewOilingMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        if request.user.has_perm(APP_NAME+'.add_maintenance'):
+            context.update(AddMaintenanceContext(request=request))
+            context['add_oiling_form']=AddOilingForm()
+            context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        return render(request,TEMPLATE_ROOT+"new-oiling-maintenance.html",context) 
+    
 class MaintenanceInvoicesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        
         maintenance_invoices =MaintenanceInvoiceRepo(request=request).list(*args, **kwargs)
         context['maintenance_invoices']=maintenance_invoices
         maintenance_invoices_s=json.dumps(MaintenanceInvoiceSerializer(maintenance_invoices,many=True).data)
@@ -171,6 +182,66 @@ class MaintenanceView(View):
             context.update(AddInvoiceContext(request=request))
 
         return render(request,TEMPLATE_ROOT+"maintenance.html",context) 
+    
+
+
+class OilingMaintenancesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        maintenances =MaintenanceRepo(request=request).list(*args, **kwargs)
+        context['maintenances']=maintenances
+        maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
+        context['maintenances_s']=maintenances_s
+ 
+        context[WIDE_LAYOUT]=False
+        if request.user.has_perm(APP_NAME+'.add_maintenance'):
+            context.update(AddMaintenanceContext(request=request))
+        return render(request,TEMPLATE_ROOT+"maintenances.html",context) 
+    
+    
+class OilingMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        oiling_maintenance =OilingMaintenanceRepo(request=request).oiling_maintenance(*args, **kwargs)
+        if oiling_maintenance is None:
+            from core.views import MessageView
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
+        context[WIDE_LAYOUT]=True
+        context['oiling_maintenance']=oiling_maintenance 
+        maintenance=oiling_maintenance
+        context['maintenance']=maintenance 
+        maintenance_s=json.dumps(MaintenanceSerializer(maintenance,many=False).data)
+        context['maintenance_s']=maintenance_s 
+        context.update(PageContext(request=request,page=maintenance))
+
+
+        
+        invoices=maintenance.invoices.order_by('-event_datetime')
+        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['invoices_s']=invoices_s
+
+
+
+
+        
+        invoice_lines=maintenance.all_invocie_lines().order_by('invoice_line_item__title')
+        invoice_lines_s=json.dumps(InvoiceLineWithInvoiceSerializer(invoice_lines,many=True).data)
+        context['invoice_lines']=invoice_lines
+        context['invoice_lines_s']=invoice_lines_s
+        
+        oiling_maintenance_details=oiling_maintenance.oilingmaintenancedetail_set.all()
+        oiling_maintenance_details_s=json.dumps(OilingMaintenanceDetailSerializer(oiling_maintenance_details,many=True).data)
+        context['oiling_maintenance_details']=oiling_maintenance_details
+        context['oiling_maintenance_details_s']=oiling_maintenance_details_s
+
+        if request.user.has_perm('accounting.add_invoice'):
+            context['add_invoice_to_maintenance_form']=AddInvoiceToMaintenanceForm()
+            context['add_invoice_form']=AddInvoiceForm()
+            context.update(AddInvoiceContext(request=request))
+
+        return render(request,TEMPLATE_ROOT+"oiling-maintenance.html",context) 
     
 
 class ServiceMansView(View):

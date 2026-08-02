@@ -1,0 +1,27 @@
+<script>
+    let oiling_maintenance_details_for_oiling_maintenance_details_app = JSON.parse(`{{oiling_maintenance_details_s|escapejs}}`)
+    let oiling_maintenance_details_app = new Vue({
+        el: "#oiling_maintenance_details-app",
+        data: {
+            oiling_maintenance_details: oiling_maintenance_details_for_oiling_maintenance_details_app,
+            search_for: '',
+            waiting: false,
+
+        },
+        methods: {
+            separate:vall=>to_price(vall,""),
+           
+            to_price: function (vall) {
+                return to_price(vall, " ")
+            },
+            sum_total: function () {
+                let su=0
+                oiling_maintenance_details_for_oiling_maintenance_details_app.forEach(oiling_maintenance_detail => {
+                    su+=oiling_maintenance_detail.cost
+                });
+                return to_price(su)+" {{CURRENCY}}"
+            },
+
+        }
+    })
+</script>

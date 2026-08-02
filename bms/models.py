@@ -8,7 +8,7 @@ IMAGE_FOLDER=APP_NAME+"/images/"
 
 class Feeder(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=50)
-    ip=models.CharField(_("ip"),default="192.168.45.200", max_length=20)
+    ip=models.CharField(_("ip"), max_length=20)
     serial_no=models.CharField(_("serial_no"), max_length=100)
     port=models.CharField(_("port"),default="80", max_length=5)
     color=models.CharField(_("color"),choices=ColorEnum.choices,default=ColorEnum.PRIMARY, max_length=50)

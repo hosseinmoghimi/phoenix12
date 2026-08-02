@@ -1,0 +1,127 @@
+{% load to_persian_date %} {% load to_price %} {% load to_amount_color %} {% load static %}
+<div id="accordion-oiling-maintenance-details" class="rtl text-right farsi">
+  <div class="card" id="oiling_maintenance_details-app">
+    <div class="card-header" id="heading-oiling-maintenance-details">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-oiling-maintenance-details"
+          aria-expanded="true"
+          aria-controls="collapse-oiling-maintenance-details"
+        >
+        جزئیات گریسکاری و روغن کاری
+        <span v-if="oiling_maintenance_details.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="oiling_maintenance_details.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+    <div
+      id="collapse-oiling-maintenance-details"
+      class="collapse {% if expands_maintenances %} show {% endif %}"
+      aria-labelledby="heading-oiling-maintenance-details"
+      data-parent="#accordion-oiling-maintenance-details"
+    >
+      <div class="card-body">
+           <img
+            src="{% static 'leo/img/loading.gif' %}"
+            width="32"
+            v-if="waiting"
+            alt=""
+          />
+
+         
+
+        <div class="table-responsive rtl">
+          <img
+            v-if="false"
+            width="32"
+            src="{% static 'leo/img/loading.gif' %}"
+            alt=""
+          />
+          <h6 v-if="false">
+            <span class="text-muted">در حال بار گذاری ... </span>
+          </h6>
+          <table class="table table-striped rtl">
+            <thead>
+              
+
+              <th>نوع فیلتر</th>
+              <th>نوع سرویس</th>
+              <th>تعداد</th>
+              <th>هزینه </th>
+              <th>توضیحات </th>
+              <th>  </th>
+            </thead>
+            <tbody>
+              <tr v-for="oiling_maintenance_detail in oiling_maintenance_details">
+                <td>
+                    <span v-text="oiling_maintenance_detail.filter_type"> </span>
+                </td>
+               
+
+                <td>
+                  <span v-text="oiling_maintenance_detail.filter_action"> </span>
+                </td>
+
+                <td>
+                  <span v-text="(oiling_maintenance_detail.count)"> </span>
+                </td>
+
+                <td>
+                  <span v-text="to_price(oiling_maintenance_detail.cost)"> </span>
+                  {{CURRENCY}}
+                </td>
+
+                <td>
+                  <span v-text="oiling_maintenance_detail.description"></span>
+   </td>
+
+                <td>
+             
+                  {% if perms.transport.change_oilingmaintenancedetail %}
+                  <a
+                    target="_blank"
+                    title="ویرایش"
+                    class="btn btn-link text-warning"
+                    :href="oiling_maintenance_detail.get_edit_url"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.transport.delete_oilingmaintenancedetail %}
+                  <a
+                    target="_blank"
+                    title="حذف"
+                    class="btn btn-link text-danger"
+                    :href="oiling_maintenance_detail.get_delete_url"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              
+              <th></th>
+              <th></th>
+              <th>
+                <div class="text-left">
+                    جمع
+                </div>
+              </th>
+              <th>
+                <span v-text="sum_total()"></span>
+              </th>
+              <th></th>
+              <th></th>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

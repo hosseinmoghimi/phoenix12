@@ -1,24 +1,24 @@
-<div id="accordion-add-maintenance" class="rtl text-right farsi">
-  <div class="card" id="add-maintenance-app">
+<div id="accordion-add-oiling" class="rtl text-right farsi">
+  <div class="card" id="add-oiling-app">
     <div class="card-header">
       <h5 class="text-center">
         <button
           class="btn btn-link"
           data-toggle="collapse"
-          data-target="#collapse-add-maintenance"
+          data-target="#collapse-add-oiling"
           aria-expanded="true"
-          aria-controls="collapse-add-maintenance"
+          aria-controls="collapse-add-oiling"
         >
-          افزودن تعمیر و نگهداری
+          افزودن سرویس روغن
         </button>
       </h5>
     </div>
 
     <div
-      id="collapse-add-maintenance"
+      id="collapse-add-oiling"
       class="collapse"
-      aria-labelledby="heading-add-maintenance"
-      data-parent="#accordion-add-maintenance"
+      aria-labelledby="heading-add-oiling"
+      data-parent="#accordion-add-oiling"
     >
       <div class="card-body">
         <div class="row">
@@ -47,6 +47,17 @@
             </div>
           </div>
 
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">لیتر روغن  
+                <span v-text="separate(oil_liter)"></span>
+              </label>
+              <input v-model="oil_liter" type="number" class="form-control" />
+            </div>
+          </div>
+
+
 
           <div class="col-md-4">
             <div class="form-group">
@@ -70,6 +81,19 @@
               </select>
             </div>
           </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">نوع روغن</label>
+              <select v-model="oil_type" class="form-control">
+                {% for oil_type in oil_types %}
+                <option value="{{oil_type}}">{{oil_type}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
 
 
           <div class="col-md-4">
@@ -119,6 +143,17 @@
               <input v-model="description" type="text" class="form-control" />
             </div>
           </div>
+
+
+          
+          
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">فیلتر روغن</label>
+              <input v-model="oil_filter" type="checkbox" class="form-control" />
+            </div>
+          </div>
+
 
           <div class="col-md-4"></div>
 
