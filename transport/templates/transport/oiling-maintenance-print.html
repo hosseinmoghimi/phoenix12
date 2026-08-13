@@ -1,20 +1,21 @@
 {% extends 'transport/layout.html' %} {% block content %}
   {% load to_price %}
   <div class="row rtl farsi">
-    <div class="col-md-3">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <h4>
-                  سرویس روغن کاری
+            سرویس روغن کاری
 
           </h4>
-          <a href="{% url 'transport:oiling_maintenance_print' pk=oiling_maintenance.id %}">
+          <a href="{% url 'transport:oilingmaintenance' pk=oiling_maintenance.id %}">
 
             <h5>
-              چاپ 
+              ویرایش 
               
             </h5>
           </a>
+
         </div>
         <div class="card-body">
           <img src="{{page.thumbnail}}" width="64" alt="">
@@ -82,25 +83,17 @@
       </div>
     </div>
 
-    <div class="col-md-9">
-      <div class="row rtl">
-         <div class="col-md-12">
-            {% include 'transport/includes/oiling-maintenance-details-app/template.html' %}
+    <div class="col-md-12">
+      <div class="row rtl"> 
+        <div class="col-md-12">
+            {% include 'transport/includes/oiling-maintenance-details-app/print.html' %}
         </div>
         <div class="col-md-12"></div>
-        {% if add_invoice_form %}
-          <div class="col-md-12">
-            {% include 'transport/includes/add-invoice-app/template.html' %}
-          </div>
-        {% endif %}
-        {% if add_invoice_to_maintenance_form %}
-          <div class="col-md-12">
-            {% include 'transport/includes/add-invoice-to-maintenance-app/template.html' %}
-          </div>
-        {% endif %}
+        
+      
 
         <div class="col-md-12">
-          {% include 'accounting/includes/invoices-app/template.html' %}
+          {% include 'accounting/includes/invoices-app/print.html' %}
         </div>
         <div class="col-md-12">
           {% include 'accounting/includes/invoice-lines-app/template.html' %}

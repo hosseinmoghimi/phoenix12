@@ -1,30 +1,21 @@
 {% load to_persian_date %} {% load to_price %} {% load to_amount_color %} {% load static %}
-<div id="accordion-oiling-maintenance-details" class="rtl text-right farsi">
-  <div class="card" id="oiling_maintenance_details-app">
+ 
+{% if oiling_maintenance_details %}
+ <div class="card" id="oiling_maintenance_details-app">
     <div class="card-header" id="heading-oiling-maintenance-details">
       <h5 class="text-center">
-        <button
-          class="btn btn-link"
-          data-toggle="collapse"
-          data-target="#collapse-oiling-maintenance-details"
-          aria-expanded="true"
-          aria-controls="collapse-oiling-maintenance-details"
-        >
+     
           جزئیات گریسکاری و روغن کاری
           <span v-if="oiling_maintenance_details.length>0">
             <small class="text-danger mx-2">
               <span v-text="oiling_maintenance_details.length"></span>
             </small>
           </span>
-        </button>
+          
+
       </h5>
     </div>
-    <div
-      id="collapse-oiling-maintenance-details"
-      class="collapse {% if expand_oiling_maintenance_details %} show {% endif %}"
-      aria-labelledby="heading-oiling-maintenance-details"
-      data-parent="#accordion-oiling-maintenance-details"
-    >
+   
       <div class="card-body">
         <img
           src="{% static 'leo/img/loading.gif' %}"
@@ -48,9 +39,7 @@
               <th>نوع فیلتر</th>
               <th>نوع سرویس</th>
               <th>تعداد</th>
-              <th>هزینه</th>
-              <th>توضیحات</th>
-              <th></th>
+              <th>هزینه</th> 
             </thead>
             <tbody>
               <tr
@@ -58,6 +47,15 @@
               >
                 <td>
                   <span v-text="oiling_maintenance_detail.filter_type"> </span>
+                  <div>
+
+                      <small class="text-muted">
+                          
+                          <span v-text="oiling_maintenance_detail.description"></span>
+                        </small>
+                    </div>
+
+
                 </td>
 
                 <td>
@@ -75,31 +73,9 @@
                   {{CURRENCY}}
                 </td>
 
-                <td>
-                  <span v-text="oiling_maintenance_detail.description"></span>
-                </td>
+              
 
-                <td>
-                  {% if perms.transport.change_oilingmaintenancedetail %}
-                  <a
-                    target="_blank"
-                    title="ویرایش"
-                    class="btn btn-link text-warning"
-                    :href="oiling_maintenance_detail.get_edit_url"
-                  >
-                    <i class="fa fa-edit text-warning"></i>
-                  </a>
-                  {% endif %} {% if perms.transport.delete_oilingmaintenancedetail %}
-                  <a
-                    target="_blank"
-                    title="حذف"
-                    class="btn btn-link text-danger"
-                    :href="oiling_maintenance_detail.get_delete_url"
-                  >
-                    <i class="fa fa-trash text-danger"></i>
-                  </a>
-                  {% endif %}
-                </td>
+               
               </tr>
             </tbody>
             <tfoot>
@@ -110,18 +86,19 @@
               </th>
               <th>
                 <span v-text="sum_total()"></span>
-              </th>
-              <th></th>
-              <th></th>
+              </th> 
             </tfoot>
           </table>
         </div>
       </div>
       <div class="card-footer">
-        {% if add_oiling_maintenance_detail_form %}
-            {% include "transport/includes/oiling-maintenance-details-app/form.html" %}
-        {% endif %}
+        
       </div>
     </div>
-  </div>
+{% else %}
+<div class="alert alert-secondary">
+    <h5 class="text-center">
+        جزییاتی ثبت نشده است.
+    </h5>
 </div>
+{% endif %}

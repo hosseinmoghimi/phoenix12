@@ -6,9 +6,41 @@
             oiling_maintenance_details: oiling_maintenance_details_for_oiling_maintenance_details_app,
             search_for: '',
             waiting: false,
+            show_form:false,
+            message:{show:false},
+            filter_action:"",
+            filter_type:"",
+            cost:0,
+            count:1,
+            description:"",
 
         },
         methods: {
+            add_oiling_maintenance_detail:function(){
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    count:parseInt(oiling_maintenance_details_app.count),
+                    cost:parseInt(oiling_maintenance_details_app.cost),
+                    description:oiling_maintenance_details_app.description,
+                    filter_action:oiling_maintenance_details_app.filter_action,
+                    filter_type:oiling_maintenance_details_app.filter_type,
+                    oiling_maintenance_id:parseInt("{{oiling_maintenance.id}}")
+                }
+                console.log(payload)
+                let url="{% url 'transport:add_oiling_maintenance_detail' %}"
+                $.post(url,payload).done(data=>{
+                    console.log(data)
+                    if(data.result==="SUCCEED"){
+                        oiling_maintenance_details_app.oiling_maintenance_details.push(data.oiling_maintenance_detail)
+                        show_message(oiling_maintenance_details_app,'موفق',data.message,'success',5000)
+                    }
+                    else{
+                        show_message(oiling_maintenance_details_app,'خطا',data.message,'danger',5000)
+
+                    }
+                })
+
+            },
             separate:vall=>to_price(vall,""),
            
             to_price: function (vall) {

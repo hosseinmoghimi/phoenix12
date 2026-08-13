@@ -128,7 +128,7 @@ class OilingMaintenance(Maintenance):
             self.app_name = APP_NAME
         if self.class_name is None or self.class_name=="":
             self.class_name = "oilingmaintenance"
-        return super(Maintenance, self).save(*args, **kwargs)
+        return super(OilingMaintenance, self).save(*args, **kwargs)
 
 
 class OilingMaintenanceDetail(models.Model,LinkHelper):
@@ -149,6 +149,18 @@ class OilingMaintenanceDetail(models.Model,LinkHelper):
     def __str__(self):
         return f'{self.pk} - {self.oiling_maintenance} / {self.filter_action} {self.count} {self.filter_type} '
  
+    def save(self,*args, **kwargs): 
+         (result,message,oiling_maintenance_detail)=FAILED,'',self
+         if self.class_name is None or self.class_name=="":
+             self.class_name="oiling_maintenance_detail"
+         if self.app_name is None or self.app_name=="":
+             self.app_name=APP_NAME
+         super(OilingMaintenanceDetail,self).save()   
+         result=SUCCEED
+         message="جزئیات روغن کاری با موفقیت اضافه شد."
+         return (result,message,oiling_maintenance_detail)
+
+    
 class MaintenanceInvoice(Invoice):
     hour=models.IntegerField(_("hour"),default=0)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)

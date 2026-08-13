@@ -1,0 +1,32 @@
+<script>
+    let oiling_maintenances_for_oiling_maintenances_app = JSON.parse(`{{oiling_maintenances_s|escapejs}}`)
+    let oiling_maintenances_app = new Vue({
+        el: "#oiling-maintenances-app",
+        data: {
+            oiling_maintenances: oiling_maintenances_for_oiling_maintenances_app,
+            search_for: '',
+            waiting: false,
+
+        },
+        methods: {
+            separate:vall=>to_price(vall,""),
+            filter: function () {
+                this.oiling_maintenances = oiling_maintenances_for_oiling_maintenances_app.filter(function (oiling_maintenances) {
+
+                    if (oiling_maintenances.title.indexOf(this.search_for) > -1)
+                        return true
+                    if (oiling_maintenances.bedehkar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    if (oiling_maintenances.bestankar.full_name.indexOf(this.search_for) > -1)
+                        return true
+                    return false
+
+                })
+            },
+            to_price: function (vall) {
+                return to_price(vall, " ")
+            },
+
+        }
+    })
+</script>

@@ -22,7 +22,12 @@ urlpatterns = [
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
     path('oiling-maintenances/',login_required(views.OilingMaintenancesView.as_view()),name="oiling_maintenances"),
+    path('add-oiling-maintenance-detail/',login_required(apis.AddOilingMaintenanceDetailApi.as_view()),name="add_oiling_maintenance_detail"),
+    path('oiling-maintenance-details/',login_required(views.OilingMaintenanceDetailsView.as_view()),name="oiling_maintenance_details"),
     path('oiling-maintenance/<int:pk>/',login_required(views.OilingMaintenanceView.as_view()),name="oilingmaintenance"),
+    path('oiling-maintenance/print/<int:pk>/',login_required(views.OilingMaintenancePrintView.as_view()),name="oiling_maintenance_print"),
+    
+
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oilingmaintenance"),
 
     path('service-mans/',login_required(views.ServiceMansView.as_view()),name="service_mans"),

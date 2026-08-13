@@ -1,0 +1,187 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-oiling-maintenances" class="rtl text-right farsi">
+
+
+
+    <div class="card" id="oiling-maintenances-app">
+        <div class="card-header" id="heading-oiling-maintenances">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-oiling-maintenances"
+                    aria-expanded="true" aria-controls="collapse-oiling-maintenances">
+
+سرویس های روغن
+                    <span v-if="oiling_maintenances.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="oiling_maintenances.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+         
+        </div>
+        <div id="collapse-oiling-maintenances" class="collapse {% if expands_oiling_maintenances %} show {% endif %}"
+            aria-labelledby="heading-oiling-maintenances" data-parent="#accordion-oiling-maintenances">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prinvoice="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped rtl">
+                        <thead>
+                            <th>
+                                عنوان
+                            </th>
+                            {% if not vehicle %}
+                                 <th>
+                                وسیله نقلیه
+                            </th>
+                            {% endif %}
+                            {% if not service_man %}
+                              
+                            <th>
+                                تعمیرکار
+                            </th>
+                            {% endif %}
+                         
+
+                            <th>
+                                کیلومتر
+                            </th>
+
+                             <th>
+                                ساعت
+                            </th>
+
+                            <th>
+                                تاریخ
+                            </th>
+                            
+                            <th>
+                                برآورد
+                            </th>
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="oiling_maintenance in oiling_maintenances">
+                                <td>
+                                    <a :href="oiling_maintenance.get_absolute_url">
+                                        <span v-text="oiling_maintenance.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% if not vehicle %}
+                               <td>
+                                    <a :href="oiling_maintenance.vehicle.get_absolute_url">
+                                        <span v-text="oiling_maintenance.vehicle.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% endif %}
+                            {% if not service_man %}
+                               <td>
+                                    <a :href="oiling_maintenance.service_man.get_absolute_url">
+                                        <span v-text="oiling_maintenance.service_man.title">
+
+                                        </span>
+                                    </a>
+                                </td>
+                            {% endif %}
+
+
+                                <td>
+                                    <span v-text="separate(oiling_maintenance.kilometer)">
+
+                                    </span>
+                                </td>
+                              
+
+                                
+                                <td>
+                                    <span v-text="separate(oiling_maintenance.hour)">
+
+                                    </span>
+                                </td>
+                              
+
+
+                                <td>
+                                    <span v-text="oiling_maintenance.persian_event_datetime">
+
+                                    </span>
+                                </td>
+                              
+
+                                <td>
+                                   <span v-text="to_price(oiling_maintenance.sum)"></span>
+
+ 
+
+                                    {{CURRENCY}}
+
+                                </td>
+
+                                <td>
+{% if perms.transport.change_oiling_maintenance %}
+  <a target="_blank" title="ویرایش" class="btn btn-link text-warning"  :href="oiling_maintenance.get_edit_url">
+    <i class="fa fa-edit text-warning"></i>
+  </a>
+{% endif %}
+
+{% if perms.transport.delete_oiling_maintenance %}
+    <a target="_blank" title="حذف" class="btn btn-link text-danger"  :href="oiling_maintenance.get_delete_url">
+    <i class="fa fa-trash text-danger"></i>
+  </a>
+{% endif %}
+
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <th></th>
+                            {% if not vehicle %}
+                            <th></th>
+                              
+                            {% endif %}
+                            {% if not service_man %}
+                            <th></th>
+                              
+                            {% endif %}
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

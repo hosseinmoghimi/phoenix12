@@ -332,9 +332,24 @@ class OilingMaintenanceRepo():
             message="دسترسی غیر مجاز"
             return result,message,oiling_maintenance
 
-        oiling_maintenance=Oiling()
+        oiling_maintenance=OilingMaintenance()
         if 'title' in kwargs:
             oiling_maintenance.title=kwargs["title"]
+            
+        if 'oil_type' in kwargs:
+            oiling_maintenance.oil_type=kwargs["oil_type"]
+            
+        if 'oil_liter' in kwargs:
+            oiling_maintenance.oil_liter=kwargs["oil_liter"]
+            
+        if 'fuel_liter' in kwargs:
+            oiling_maintenance.fuel_liter=kwargs["fuel_liter"]
+            
+        if 'replace_oil' in kwargs:
+            oiling_maintenance.replace_oil=kwargs["replace_oil"]
+            
+        if 'over_load_oil' in kwargs:
+            oiling_maintenance.over_load_oil=kwargs["over_load_oil"]
             
         if 'hour' in kwargs:
             oiling_maintenance.hour=kwargs["hour"]
@@ -434,3 +449,66 @@ class ServiceManRepo():
         (result,message,service_man)=service_man.save()
         return result,message,service_man
  
+class OilingMaintenanceDetailRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=OilingMaintenanceDetail.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_oilingmaintenancedetail"):
+                self.objects=OilingMaintenanceDetail.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id)  
+        if "service_man_id" in kwargs:
+            service_man_id=kwargs["service_man_id"]
+            objects=objects.filter(service_man_id=service_man_id)
+        return objects.all()
+        
+    def oiling_maintenance_detail(self,*args, **kwargs):
+        if "oiling_maintenance_detail_id" in kwargs and kwargs["oiling_maintenance_detail_id"] is not None:
+            return self.objects.filter(pk=kwargs['oiling_maintenance_detail_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+    
+        
+    def add_oiling_maintenance_detail(self,*args,**kwargs):
+        result,message,oiling_maintenance_detail=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_oilingmaintenancedetail"):
+            message="دسترسی غیر مجاز"
+            return result,message,oiling_maintenance_detail
+
+        oiling_maintenance_detail=OilingMaintenanceDetail()
+        if 'oiling_maintenance_id' in kwargs:
+            oiling_maintenance_detail.oiling_maintenance_id=kwargs["oiling_maintenance_id"]
+        if 'filter_type' in kwargs:
+            oiling_maintenance_detail.filter_type=kwargs["filter_type"]
+            
+        if 'filter_action' in kwargs:
+            oiling_maintenance_detail.filter_action=kwargs["filter_action"]
+            
+        if 'count' in kwargs:
+            oiling_maintenance_detail.count=kwargs["count"]
+            
+        if 'cost' in kwargs:
+            oiling_maintenance_detail.cost=kwargs["cost"]
+            
+        if 'description' in kwargs:
+            oiling_maintenance_detail.description=kwargs["description"]
+        
+        (result,message,oiling_maintenance_detail)=oiling_maintenance_detail.save()
+        return result,message,oiling_maintenance_detail
+

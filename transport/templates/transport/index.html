@@ -48,10 +48,35 @@
         class="mb-2"
         alt=""
       />
-      <h6 class="text-center">تعمیر و نگهداری</h6>
+      <h6 class="text-center">تعمیر و نگهداری ها</h6>
     </a>
   </div>
 
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:oiling_maintenances' %}">
+      <img
+        src="{% static 'transport/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">سرویس های روغن</h6>
+    </a>
+  </div>
+
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:oiling_maintenance_details' %}">
+      <img
+        src="{% static 'transport/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">جزئیات سرویس های روغن</h6>
+    </a>
+  </div>
 
 </div>
 {% endblock content %} {% block script %}

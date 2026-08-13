@@ -1,0 +1,93 @@
+<button class="btn btn-success" @click="show_form=true" v-show="!show_form">
+  جدید
+</button>
+<button class="btn btn-secondary" @click="show_form=false" v-show="show_form">
+  انصراف
+</button>
+<div class="row rtl" v-show="show_form"> 
+
+  <div class="col-md-4">
+    <div class="form-grou">
+      <label for="jhigtyrtyfhug">نوع فیلتر</label>
+      <select
+        name=""
+        id="jhigtyrtyfhug"
+        class="form-control"
+        v-model="filter_type"
+      >
+      
+      {% for filter_type in filter_types %}
+      <option value="{{filter_type}}">{{filter_type}}</option>
+          
+        {% endfor %}
+ 
+      </select>
+    </div>
+  </div>
+
+  
+  <div class="col-md-4">
+    <div class="form-grou">
+      <label for="njhjjjjj">نوع سرویس</label>
+      <select
+        name=""
+        id="njhjjjjj"
+        class="form-control"
+        v-model="filter_action"
+      >
+      {% for filter_action in filter_actions %}
+      <option value="{{filter_action}}">{{filter_action}}</option>
+          
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+
+  
+  <div class="col-md-4">
+    <div class="form-grou">
+      <label for="ssssssss">تعداد</label>
+      <input type="number" id="ssssssss" class="form-control" v-model="count">
+    </div>
+  </div>
+
+  
+  <div class="col-md-4">
+    <div class="form-grou">
+      <label for="ghgykuhj">هزینه 
+
+        <span class="mx-2" v-text="to_price(cost)"></span>
+        {{CURRENCY}}
+      </label>
+      <input type="number" id="ghgykuhj" class="form-control" v-model="cost">
+    </div>
+  </div>
+
+  
+  <div class="col-md-12">
+    <div class="form-grou">
+      <label for="ghgykuhj">توضیحات</label>
+      <input type="text" id="ghgykuhj" class="form-control" v-model="description">
+    </div>
+  </div>
+
+  
+  
+  <div class="col-md-12 my-3">
+    {% include "utility/includes/message-app/alert.html" %}
+    <button class="btn btn-success" @click="add_oiling_maintenance_detail()">
+        <i class="fa fa-plus mx-2" ></i>
+        افزودن
+    
+    </button>
+  </div>
+
+
+
+
+
+
+
+
+</div>
