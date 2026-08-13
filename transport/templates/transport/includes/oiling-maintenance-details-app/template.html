@@ -118,6 +118,19 @@
         </div>
       </div>
       <div class="card-footer">
+        <div class="my-2">
+
+          <form method="POST" action="{% url 'transport:oiling_maintenance_details_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="oiling_maintenance_id" value="{{oiling_maintenance.id}}">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              اکسل
+              
+            </button>
+          </form>
+        </div>
+       
         {% if add_oiling_maintenance_detail_form %}
             {% include "transport/includes/oiling-maintenance-details-app/form.html" %}
         {% endif %}

@@ -18,6 +18,7 @@ urlpatterns = [
     path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
   
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
+    path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 

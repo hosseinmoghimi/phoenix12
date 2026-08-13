@@ -334,6 +334,79 @@ class ServiceMansView(View):
             context['add_service_man_form']=AddServiceManForm()
         return render(request,TEMPLATE_ROOT+"service-mans.html",context) 
  
+class OilingMaintenanceDetailsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        oiling_maintenance_details_excel_form=OilingMaintenanceDetailsExcelForm(request.POST)
+        if oiling_maintenance_details_excel_form.is_valid():
+            log=333
+            cd=oiling_maintenance_details_excel_form.cleaned_data
+
+            oiling_maintenance_details=OilingMaintenanceDetailRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,oiling_maintenance_detail in enumerate(oiling_maintenance_details,start=1):
+            line={
+                'row':i,
+                'filter_type':oiling_maintenance_detail.filter_type,      
+                'filter_action':oiling_maintenance_detail.filter_action,      
+                'count':oiling_maintenance_detail.count,      
+                'cost':oiling_maintenance_detail.cost,      
+                'description':oiling_maintenance_detail.description,      
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'فیلتر',
+                 'سرویس',
+                 'تعداد', 
+                 'برآورد هزینه',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'Invoice.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='OilingMaintenanceDetails',
+        )
+            
+        file_name=f"""Phoenix OilingMaintenanceDetails {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
     
 class ServiceManView(View):
     def get(self,request,*args, **kwargs):

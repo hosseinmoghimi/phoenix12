@@ -33,6 +33,10 @@ class AddOilingMaintenanceForm(AddMaintenanceForm):
 class AddServiceManForm(forms.Form):
     person_account_id=forms.IntegerField(required=True)
      
+class OilingMaintenanceDetailsExcelForm(forms.Form):
+    oiling_maintenance_id=forms.IntegerField(required=False) 
+
+
 
 class AddOilingMaintenanceDetailForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=True)
