@@ -35,6 +35,9 @@
               </div>
             </div>
 
+           
+
+
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">مالک</label>
@@ -46,11 +49,7 @@
                   @input="select_owner()"
                 />
               </div>
-            </div>
-
-            <div class="col-6 mt-3">
-              <hr />
-              <a :href="owner.get_absolute_url" v-if="owner.name">
+               <a :href="owner.get_absolute_url" v-if="owner.name">
                 <div class="media">
                   <img :src="owner.thumbnail" width="64" alt="" />
                   <div class="mr-2 media-body">
@@ -69,8 +68,102 @@
                   </div>
                 </div>
               </a>
+               
               <div v-if="!owner.full_name">
                 <h5 class="text-danger">مالک انتخاب نشده است.</h5>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+            
+                <div class="form-group">
+                <label for="">نوع</label>
+                <select v-model="vehicle_type" class="form-control">
+                  {% for vehicle_type in vehicle_types %}
+                    
+                  <option value="{{vehicle_type}}">{{vehicle_type}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+              <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="">رنگ</label>
+                <select v-model="vehicle_color" class="form-control">
+                  {% for vehicle_color in vehicle_colors %}
+                    
+                  <option value="{{vehicle_color}}">{{vehicle_color}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+            </div>
+              <div class="col-md-6">
+              <div class="form-group">
+                <label for="">کد</label>
+                <input
+                  required
+                  v-model="vehicle_code"
+                  type="text"
+                  class="form-control"
+                  
+                />
+              </div>
+
+            </div>
+            <div class="col-6 mt-3">
+             
+            
+            </div>
+ <div class="col-md-6">
+              <div class="form-group">
+                <label for="">پلاک</label>
+                <input
+                  required
+                  v-model="plaque"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            
+ <div class="col-md-6">
+              <div class="form-group">
+                <label for="">سال</label>
+                <input
+                  required
+                  v-model="year"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+ <div class="col-md-6">
+
+              <div class="form-group">
+                <label for="">برند</label>
+                <select v-model="brand_name" class="form-control">
+                  {% for brand_name in brand_names %}
+                    
+                  <option value="{{brand_name}}">{{brand_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+            </div> 
+
+            
+ <div class="col-md-6">
+              <div class="form-group">
+                <label for="">مدل</label>
+                <input
+                  required
+                  v-model="model_name"
+                  type="text"
+                  class="form-control"
+                />
               </div>
             </div>
 

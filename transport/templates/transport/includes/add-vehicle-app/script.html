@@ -5,6 +5,14 @@
     data: {
       title: "",
       owner_code:"",
+      vehicle_type:"",
+      vehicle_code:"158",
+      brand_name:"",
+      model_name:"",
+      plaque:"",
+      driver_id:0,
+      year:2000,
+      vehicle_color:"",
       owner: { },
       message:{show:false},
       waiting:false,
@@ -32,6 +40,13 @@
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
           owner_id: this.owner.id,
+          vehicle_code: this.vehicle_code,
+          vehicle_type: this.vehicle_type,
+          vehicle_color: this.vehicle_color,
+          brand_name: this.brand_name,
+          model_name: this.model_name,
+          plaque: this.plaque,
+          year: this.year,
         };
 
         console.log(payload);

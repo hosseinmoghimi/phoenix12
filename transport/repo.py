@@ -54,6 +54,20 @@ class VehicleRepo():
                 return FAILED,message,None
         if 'owner_id' in kwargs:
             vehicle.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            vehicle.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            vehicle.model_name=kwargs["model_name"]
+        if 'vehicle_type' in kwargs:
+            vehicle.vehicle_type=kwargs["vehicle_type"]
+        if 'vehicle_color' in kwargs:
+            vehicle.vehicle_color=kwargs["vehicle_color"]
+        if 'vehicle_code' in kwargs:
+            vehicle.vehicle_code=kwargs["vehicle_code"]
+        if 'plaque' in kwargs:
+            vehicle.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            vehicle.year=kwargs["year"]
           
         (result,message,vehicle)=vehicle.save()
         return result,message,vehicle

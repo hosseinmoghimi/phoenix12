@@ -2,8 +2,15 @@ from accounting.forms import forms,AddInvoiceForm,AddEventForm
  
  
 class AddVehicleForm(forms.Form):
-    title=forms.CharField( max_length=100, required=True)
     owner_id=forms.IntegerField(required=True)
+    title=forms.CharField( max_length=100, required=False)
+    vehicle_color=forms.CharField( max_length=100, required=False)
+    vehicle_code=forms.CharField( max_length=100, required=False)
+    vehicle_type=forms.CharField( max_length=100, required=False)
+    model_name=forms.CharField( max_length=100, required=False)
+    brand_name=forms.CharField( max_length=100, required=False)
+    year=forms.CharField( max_length=100, required=False)
+    plaque=forms.CharField( max_length=100, required=False)
 
 class AddInvoiceToMaintenanceForm(forms.Form):
     invoice_id=forms.IntegerField(required=True)

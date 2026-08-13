@@ -85,6 +85,10 @@ class VehiclesView(View):
         context[WIDE_LAYOUT]=False
         if request.user.has_perm(APP_NAME+'.add_vehicle'):
             context['add_vehicle_form']=AddVehicleForm()
+            from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
+            context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
+            context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
+            context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
         return render(request,TEMPLATE_ROOT+"vehicles.html",context) 
     
     
