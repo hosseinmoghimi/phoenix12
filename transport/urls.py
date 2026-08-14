@@ -36,5 +36,6 @@ urlpatterns = [
     path('add-service-man/',login_required(apis.AddServiceManApi.as_view()),name="add_service_man"),
 
 
+    path('karkerd/<int:pk>/',login_required(views.ServiceManView.as_view()),name="karkerd"),
 
 ]

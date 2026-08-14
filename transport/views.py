@@ -1,3 +1,4 @@
+from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,DriverSerializer
@@ -419,7 +420,10 @@ class ServiceManView(View):
         service_man =ServiceManRepo(request=request).service_man(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['service_man']=service_man
+        if service_man is None:
 
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
 
         maintenances =MaintenanceRepo(request=request).list(service_man_id=service_man.id)
         context['maintenances']=maintenances

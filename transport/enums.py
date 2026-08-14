@@ -110,3 +110,10 @@ class VehicleTypeEnum(TextChoices):
     TAXI='تاکسی',_('تاکسی')
     CONTAINER='کانتینر',_('کانتینر')
     SEPERATOR='سپراتور',_('سپراتور')
+
+    
+
+class TavaghofCauseEnum(TextChoices):
+    DEFAULT='نامعلوم',_('نامعلوم')
+    DAMAGED='خرابی',_('خرابی')
+    SERVICE='سرویس',_('سرویس')

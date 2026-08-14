@@ -202,7 +202,7 @@ class Vehicle(Asset):
         (result,message,vehicle)=FAILED,'',self
         if vehicle.title is None or vehicle.title=="":
                     vehicle.title=f'{vehicle.vehicle_type}  {vehicle.brand_name}  {vehicle.model_name} - کد {vehicle.vehicle_code}'
-                    
+
         if self.class_name is None or self.class_name=="":
             self.class_name="vehicle"
         if self.app_name is None or self.app_name=="":
@@ -240,5 +240,89 @@ class Vehicle(Asset):
             pic='grader.jpg'
         return f'{STATIC_URL}{APP_NAME}/images/thumbnail/{pic}/' 
 
+class VehicleEvent(Event):
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
+    driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.SET_NULL)
+    project_name=models.CharField(_("project_name"), max_length=50,null=True,blank=True)
+    area_name=models.CharField(_("area_name"), max_length=50,null=True,blank=True)
+    
+    # project=models.ForeignKey("projectmanager.project",related_name="ssssdsd", verbose_name=_("project"), on_delete=models.PROTECT)
+    # area=models.ForeignKey("attachments.area",related_name="weewgdfg", verbose_name=_("area"),null=True,blank=True, on_delete=models.SET_NULL)
+    
 
+
+    class Meta:
+        verbose_name = _("VehicleEvent")
+        verbose_name_plural = _("VehicleEvents")
+ 
+ 
+    def save(self,*args, **kwargs): 
+         (result,message,vehicle_event)=FAILED,'',self
+          
+ 
+         if self.class_name is None or self.class_name=="":
+             self.class_name="vehicleevent"
+         if self.app_name is None or self.app_name=="":
+             self.app_name=APP_NAME
+         super(VehicleEvent,self).save()   
+         result=SUCCEED
+         message="رویداد وسیله نقلیه با موفقیت ذخیره شد."
+         return (result,message,vehicle_event)
+
+
+
+class Karkerd(VehicleEvent):
+    start_hour=models.FloatField(_("ساعت شروع"))
+    end_hour=models.FloatField(_("ساعت پایان"))
+
+    start_kilometer=models.FloatField(_("کیلومتر شروع"),null=True,blank=True)
+    end_kilometer=models.FloatField(_("کیلومتر پایان"),null=True,blank=True)
+
+    load=models.CharField(_("load"),null=True,blank=True, max_length=50)
+    count=models.IntegerField(_("count"),default=0)
+
+
+    class Meta:
+        verbose_name = _("Karkerd")
+        verbose_name_plural = _("Karkerds")
+ 
+    def save(self,*args, **kwargs): 
+          (result,message,karkerd)=FAILED,'',self
+           
+  
+          if self.class_name is None or self.class_name=="":
+              self.class_name="karkerd"
+          if self.app_name is None or self.app_name=="":
+              self.app_name=APP_NAME
+          super(Karkerd,self).save()   
+          result=SUCCEED
+          message="کارکرد وسیله نقلیه با موفقیت ذخیره شد."
+          return (result,message,karkerd)
+
+
+ 
+
+class Tavaghof(VehicleEvent):
+    cause=models.CharField(_("علت"), max_length=50)
+    
+
+    class Meta:
+        verbose_name = _("Tavaghof")
+        verbose_name_plural = _("Tavaghofs")
+ 
+    def save(self,*args, **kwargs): 
+          (result,message,tavaghof)=FAILED,'',self
+           
+  
+          if self.class_name is None or self.class_name=="":
+              self.class_name="tavaghof"
+          if self.app_name is None or self.app_name=="":
+              self.app_name=APP_NAME
+          super(Tavaghof,self).save()   
+          result=SUCCEED
+          message="توقف وسیله نقلیه با موفقیت ذخیره شد."
+          return (result,message,tavaghof)
+
+ 
+ 
  
