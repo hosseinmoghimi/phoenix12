@@ -7,11 +7,14 @@
       owner_code:"",
       vehicle_type:"",
       vehicle_code:"158",
+      driver_id:0,
       brand_name:"",
       model_name:"",
       plaque:"",
+      kilometer:0,
       driver_id:0,
       year:2000,
+      price:0,
       vehicle_color:"",
       owner: { },
       message:{show:false},
@@ -32,7 +35,7 @@
       },
 
       to_price: function (vall) {
-        return to_price(vall) + " {{CURRENCY}}";
+        return to_price(vall) + " ";
       },
 
       add_vehicle: function () {
@@ -45,6 +48,9 @@
           vehicle_color: this.vehicle_color,
           brand_name: this.brand_name,
           model_name: this.model_name,
+          kilometer: this.kilometer,
+          driver_id: this.driver_id,
+          price: this.price,
           plaque: this.plaque,
           year: this.year,
         };

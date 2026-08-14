@@ -27,16 +27,13 @@
               <div class="form-group">
                 <label for="">عنوان</label>
                 <input
-                  required
+                   
                   v-model="title"
                   type="text"
                   class="form-control"
                 />
               </div>
             </div>
-
-           
-
 
             <div class="col-md-6">
               <div class="form-group">
@@ -49,7 +46,7 @@
                   @input="select_owner()"
                 />
               </div>
-               <a :href="owner.get_absolute_url" v-if="owner.name">
+              <a :href="owner.get_absolute_url" v-if="owner.name">
                 <div class="media">
                   <img :src="owner.thumbnail" width="64" alt="" />
                   <div class="mr-2 media-body">
@@ -60,46 +57,54 @@
                       <span v-text="owner.code"></span>
                     </h6>
 
-                    
-
                     <h6>
                       <small v-text="owner.full_name"></small>
                     </h6>
                   </div>
                 </div>
               </a>
-               
+
               <div v-if="!owner.full_name">
                 <h5 class="text-danger">مالک انتخاب نشده است.</h5>
               </div>
-
             </div>
             <div class="col-md-6">
-            
-                <div class="form-group">
+              <div class="form-group">
                 <label for="">نوع</label>
                 <select v-model="vehicle_type" class="form-control">
                   {% for vehicle_type in vehicle_types %}
-                    
+
                   <option value="{{vehicle_type}}">{{vehicle_type}}</option>
                   {% endfor %}
                 </select>
               </div>
             </div>
-              <div class="col-md-6">
 
+             <div class="col-md-6">
+              <div class="form-group">
+                <label for="">راننده</label>
+                <select v-model="driver_id" class="form-control">
+                  <option value="0">بدون راننده</option>
+                  {% for driver in drivers %}
+
+                  <option value="{{driver.id}}">{{driver}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">رنگ</label>
                 <select v-model="vehicle_color" class="form-control">
                   {% for vehicle_color in vehicle_colors %}
-                    
+
                   <option value="{{vehicle_color}}">{{vehicle_color}}</option>
                   {% endfor %}
                 </select>
               </div>
-
             </div>
-              <div class="col-md-6">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">کد</label>
                 <input
@@ -107,16 +112,11 @@
                   v-model="vehicle_code"
                   type="text"
                   class="form-control"
-                  
                 />
               </div>
-
             </div>
-            <div class="col-6 mt-3">
-             
-            
-            </div>
- <div class="col-md-6">
+            <div class="col-6 mt-3"></div>
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">پلاک</label>
                 <input
@@ -128,8 +128,7 @@
               </div>
             </div>
 
-            
- <div class="col-md-6">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">سال</label>
                 <input
@@ -140,22 +139,47 @@
                 />
               </div>
             </div>
- <div class="col-md-6">
 
+
+             <div class="col-md-6">
+              <div class="form-group">
+                <label for="">کیلومتر</label>
+                <input
+                  required
+                  v-model="kilometer"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+              <div class="col-md-6">
+              <div class="form-group">
+                <label for="">قیمت</label>
+                <span v-text="to_price(price)"></span> {{CURRENCY}}
+                <input
+                  required
+                  v-model="price"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">برند</label>
                 <select v-model="brand_name" class="form-control">
                   {% for brand_name in brand_names %}
-                    
+
                   <option value="{{brand_name}}">{{brand_name}}</option>
                   {% endfor %}
                 </select>
               </div>
+            </div>
 
-            </div> 
-
-            
- <div class="col-md-6">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">مدل</label>
                 <input
@@ -174,19 +198,12 @@
               </button>
             </div>
 
-
-             <div class="col-md-12" v-if="message.show">
-           <div :class="'alert alert-' + message.color">
-            <h5 v-text="message.title">
-
-            </h5>
-            <div v-html="message.body">
-
+            <div class="col-md-12" v-if="message.show">
+              <div :class="'alert alert-' + message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
             </div>
-           </div>
-          </div>
-
-          
           </div>
         </form>
       </div>

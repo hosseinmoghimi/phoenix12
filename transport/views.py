@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,DriverSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,DriverRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -89,6 +89,7 @@ class VehiclesView(View):
             context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
             context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
             context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
+            context['drivers']=DriverRepo(request=request).list()
         return render(request,TEMPLATE_ROOT+"vehicles.html",context) 
     
     

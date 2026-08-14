@@ -11,6 +11,9 @@ class AddVehicleForm(forms.Form):
     brand_name=forms.CharField( max_length=100, required=False)
     year=forms.CharField( max_length=100, required=False)
     plaque=forms.CharField( max_length=100, required=False)
+    kilometer=forms.IntegerField(required=False)
+    driver_id=forms.IntegerField(required=False)
+    price=forms.IntegerField(required=False)
 
 class AddInvoiceToMaintenanceForm(forms.Form):
     invoice_id=forms.IntegerField(required=True)

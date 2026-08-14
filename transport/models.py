@@ -200,6 +200,9 @@ class Vehicle(Asset):
  
     def save(self,*args, **kwargs): 
         (result,message,vehicle)=FAILED,'',self
+        if vehicle.title is None or vehicle.title=="":
+                    vehicle.title=f'{vehicle.vehicle_type}  {vehicle.brand_name}  {vehicle.model_name} - کد {vehicle.vehicle_code}'
+                    
         if self.class_name is None or self.class_name=="":
             self.class_name="vehicle"
         if self.app_name is None or self.app_name=="":

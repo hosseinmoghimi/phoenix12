@@ -1,4 +1,4 @@
-from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail
+from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
 
 from .apps import APP_NAME
 from .enums import *
@@ -29,6 +29,9 @@ class VehicleRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
         return objects.all()
         
     def vehicle(self,*args, **kwargs):
@@ -68,9 +71,90 @@ class VehicleRepo():
             vehicle.plaque=kwargs["plaque"]
         if 'year' in kwargs:
             vehicle.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            vehicle.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            if driver_id is not None and driver_id>0:
+                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
+                if driver is not None:
+                    vehicle.driver=driver.person_account.person.full_name
           
+        if 'price' in kwargs:
+            vehicle.price=kwargs["price"]
+        
         (result,message,vehicle)=vehicle.save()
         return result,message,vehicle
+
+class DriverRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Driver.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=Driver.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
+        return objects.all()
+        
+    def driver(self,*args, **kwargs):
+        if "driver_id" in kwargs and kwargs["driver_id"] is not None:
+            return self.objects.filter(pk=kwargs['driver_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_driver(self,*args,**kwargs):
+        result,message,driver=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_driver"):
+            message="دسترسی غیر مجاز"
+            return result,message,driver
+
+        driver=Driver()
+        if 'title' in kwargs:
+            driver.title=kwargs["title"]
+            if len(Driver.objects.filter(title=driver.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            driver.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            driver.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            driver.model_name=kwargs["model_name"]
+        if 'driver_type' in kwargs:
+            driver.driver_type=kwargs["driver_type"]
+        if 'driver_color' in kwargs:
+            driver.driver_color=kwargs["driver_color"]
+        if 'driver_code' in kwargs:
+            driver.driver_code=kwargs["driver_code"]
+        if 'plaque' in kwargs:
+            driver.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            driver.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            driver.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            if kwargs['driver_id']>0:
+                driver.driver_id=kwargs["driver_id"]
+          
+        (result,message,driver)=driver.save()
+        return result,message,driver
 
 
   
