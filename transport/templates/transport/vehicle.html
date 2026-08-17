@@ -18,6 +18,10 @@
             </div>
 
             <div class="col-md-12">
+    
+                    {% include "transport/includes/vehicle-statuses-app/template.html" %}
+            </div>
+            <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
 
             </div>
@@ -79,5 +83,6 @@
 {% block script %}
 {% include "transport/includes/vehicle-app/script.html" %}
 {% include "transport/includes/maintenances-app/script.html" %}
+{% include "transport/includes/vehicle-statuses-app/script.html" %}
 
 {% endblock script %}

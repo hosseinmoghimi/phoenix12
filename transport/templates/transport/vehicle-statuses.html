@@ -1,0 +1,11 @@
+{% extends "transport/layout.html" %} 
+{% block content %}
+<div class="row rtl">
+  <div class="col-md-12">
+    {% include "transport/includes/vehicle-statuses-app/template.html" %}
+  </div>
+</div>
+{% endblock content %}
+{% block script %} 
+{% include "transport/includes/vehicle-statuses-app/script.html" %} 
+{% endblock script %}

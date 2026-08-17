@@ -18,3 +18,4 @@ class PageBriefSerializer(serializers.ModelSerializer):
         model=Page
         fields=['id','title','app_name','class_title','get_edit_url','get_delete_url', 'thumbnail','get_absolute_url' ]
  
+

@@ -1,0 +1,15 @@
+<script>
+    
+    let vehicle_statuses_for_vehicle_statuses_app=JSON.parse("{{vehicle_statuses_s|escapejs}}")
+    let vehicle_statuses_app = new Vue({
+        el: "#vehicle-statuses-app",
+        data: {
+            vehicle_statuses: vehicle_statuses_for_vehicle_statuses_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

@@ -1,3 +1,4 @@
+from tinymce.models import HTMLField
 from django.db import models
 from utility.models import LinkHelper,DateTimeHelper,DateHelper
 from accounting.models import UnitNameEnum,CorePage,FAILED,SUCCEED
@@ -201,15 +202,16 @@ class Vehicle(Asset):
     def save(self,*args, **kwargs): 
         (result,message,vehicle)=FAILED,'',self
         if vehicle.title is None or vehicle.title=="":
-                    vehicle.title=f'{vehicle.vehicle_type}  {vehicle.brand_name}  {vehicle.model_name} - کد {vehicle.vehicle_code}'
+                    vehicle.title=f'{vehicle.vehicle_type if vehicle.vehicle_type else ""}{  " "+vehicle.brand_name if vehicle.brand_name else "" }{ " "+vehicle.model_name if vehicle.model_name else ""}{ " - کد  "+vehicle.vehicle_code}'
 
+        self.title=self.title.replace('  ',' ')
         if self.class_name is None or self.class_name=="":
             self.class_name="vehicle"
         if self.app_name is None or self.app_name=="":
             self.app_name=APP_NAME
         super(Vehicle,self).save()   
         result=SUCCEED
-        message="وسیله نقلیه با موفقیت اضافه شد."
+        message="وسیله نقلیه با موفقیت  ذخیره شد."
         return (result,message,vehicle)
     
     class Meta:
@@ -240,6 +242,7 @@ class Vehicle(Asset):
             pic='grader.jpg'
         return f'{STATIC_URL}{APP_NAME}/images/thumbnail/{pic}/' 
 
+
 class VehicleEvent(Event):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
     driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.SET_NULL)
@@ -268,7 +271,6 @@ class VehicleEvent(Event):
          result=SUCCEED
          message="رویداد وسیله نقلیه با موفقیت ذخیره شد."
          return (result,message,vehicle_event)
-
 
 
 class Karkerd(VehicleEvent):
@@ -301,7 +303,6 @@ class Karkerd(VehicleEvent):
 
 
  
-
 class Tavaghof(VehicleEvent):
     cause=models.CharField(_("علت"), max_length=50)
     
@@ -323,6 +324,36 @@ class Tavaghof(VehicleEvent):
           message="توقف وسیله نقلیه با موفقیت ذخیره شد."
           return (result,message,tavaghof)
 
- 
- 
- 
+
+class VehicleStatus(models.Model,LinkHelper):
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
+    status_datetime = models.DateTimeField(_("status_datetime"), auto_now=False, auto_now_add=False)
+    locaion=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
+    kilometer=models.IntegerField(_("kilometer"))
+    hour=models.IntegerField(_("hour"))
+    motor=models.CharField(_("motor"),null=True,blank=True, max_length=500)
+    gear_box=models.CharField(_("gear_box"),null=True,blank=True, max_length=500)
+    ziroband=models.CharField(_("ziroband"),null=True,blank=True, max_length=500)
+    cabin=models.CharField(_("cabin"),null=True,blank=True, max_length=500)
+    cooler=models.CharField(_("cooler"),null=True,blank=True, max_length=500)
+    heater=models.CharField(_("heater"),null=True,blank=True, max_length=500)
+    wiring=models.CharField(_("wiring"),null=True,blank=True, max_length=500)
+    light=models.CharField(_("light"),null=True,blank=True, max_length=500)
+    hydrolic=models.CharField(_("hydrolic"),null=True,blank=True, max_length=500)
+    pakat=models.CharField(_("pakat"),null=True,blank=True, max_length=500)
+    compress=models.CharField(_("compress"),null=True,blank=True, max_length=500)
+    description=HTMLField(_("توضیحات کامل"),null=True,blank=True, max_length=5000)
+    class_name="vehiclestatus"
+    app_name=APP_NAME
+    class Meta:
+        verbose_name = _("VehicleStatus")
+        verbose_name_plural = _("VehicleStatuses")
+
+    def __str__(self):
+        return f'{self.vehicle} @ {PersianCalendar().from_gregorian(self.status_datetime)}'
+
+    def persian_status_datetime(self):
+        return PersianCalendar().from_gregorian(self.status_datetime)
+    def short_desc(self):
+        from utility.num import separate
+        return f"""<span class="mr-2">کیلومتر</span><strong class="mx-2">{separate(self.kilometer)}</strong><span class="mr-2">ساعت</span><strong class="mx-1">{separate(self.hour)} </strong>"""

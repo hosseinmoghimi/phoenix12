@@ -1,4 +1,4 @@
-from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
+from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,VehicleStatus,OilingMaintenanceDetail,Driver
 
 from .apps import APP_NAME
 from .enums import *
@@ -9,6 +9,77 @@ from authentication.repo import PersonRepo
 from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
+
+class VehicleStatusRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=VehicleStatus.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=VehicleStatus.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
+        return objects.all()
+        
+    def vehicle_status(self,*args, **kwargs):
+        if "vehicle_status_id" in kwargs and kwargs["vehicle_status_id"] is not None:
+            return self.objects.filter(pk=kwargs['vehicle_status_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_vehicle_status(self,*args,**kwargs):
+        result,message,vehicle_status=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
+            message="دسترسی غیر مجاز"
+            return result,message,vehicle_status
+
+        vehicle_status=VehicleStatus()
+        if 'title' in kwargs:
+            vehicle_status.title=kwargs["title"]
+            if len(Vehicle.objects.filter(title=vehicle_status.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            vehicle_status.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            vehicle_status.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            vehicle_status.model_name=kwargs["model_name"]
+        if 'plaque' in kwargs:
+            vehicle_status.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            vehicle_status.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            vehicle_status.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            if driver_id is not None and driver_id>0:
+                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
+                if driver is not None:
+                    vehicle_status.driver=driver.person_account.person.full_name
+          
+        if 'price' in kwargs:
+            vehicle_status.price=kwargs["price"]
+        
+        (result,message,vehicle_status)=vehicle_status.save()
+        return result,message,vehicle_status
+
 
 class VehicleRepo():
     def __init__(self,request,*args, **kwargs):
@@ -86,6 +157,7 @@ class VehicleRepo():
         (result,message,vehicle)=vehicle.save()
         return result,message,vehicle
 
+
 class DriverRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -156,8 +228,6 @@ class DriverRepo():
         (result,message,driver)=driver.save()
         return result,message,driver
 
-
-  
 
 class MaintenanceRepo():
     def __init__(self,request,*args, **kwargs):
@@ -546,6 +616,7 @@ class ServiceManRepo():
           
         (result,message,service_man)=service_man.save()
         return result,message,service_man
+
  
 class OilingMaintenanceDetailRepo():
     def __init__(self,request,*args, **kwargs):

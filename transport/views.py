@@ -1,8 +1,8 @@
 from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,DriverSerializer
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,DriverRepo
+from .serializers import VehicleStatusSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,DriverSerializer
+from .repo import VehicleRepo,VehicleStatusRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,DriverRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -36,7 +36,6 @@ def AddMaintenanceContext(request):
     context['maintenance_types']=maintenance_types
     return context
  
-
 def AddOilingMaintenanceContext(request):
     context=AddMaintenanceContext(request=request)
     context['oil_types']=(i[0] for i in OilTypeEnum.choices)
@@ -62,6 +61,13 @@ def VehicleContext(request,vehicle,*args, **kwargs):
 
     return context 
 
+def AddOilingMaintenanceDetailContext(request):
+    context={}
+    context['add_oiling_maintenance_detail_form']=AddOilingMaintenanceDetailForm()
+    from .enums import FilterActionEnum,FilterTypeEnum
+    context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+    context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+    return context
  
 class IndexView(View):
     def get(self,request,*args, **kwargs):
@@ -105,9 +111,26 @@ class VehicleView(View):
         context['maintenances']=maintenances
         maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
         context['maintenances_s']=maintenances_s
-        return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
-    
 
+        vehicle_statuses=vehicle.vehiclestatus_set.all().order_by('status_datetime')
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+        return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
+  
+    
+class VehicleStatusesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
+        context[WIDE_LAYOUT]=False 
+
+        vehicle_statuses=VehicleStatusRepo(request=request).list()
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+        return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
+  
     
 class NewOilingMaintenanceView(View):
     def get(self,request,*args, **kwargs):
@@ -117,6 +140,7 @@ class NewOilingMaintenanceView(View):
             context['add_oiling_maintenance_form']=AddOilingMaintenanceForm()
             context['oil_types']=(i[0] for i in OilTypeEnum.choices)
         return render(request,TEMPLATE_ROOT+"new-oiling-maintenance.html",context) 
+
     
 class MaintenanceInvoicesView(View):
     def get(self,request,*args, **kwargs):
@@ -194,7 +218,6 @@ class MaintenanceView(View):
             context.update(AddInvoiceContext(request=request))
 
         return render(request,TEMPLATE_ROOT+"maintenance.html",context) 
-    
 
     
 class OilingMaintenanceDetailsView(View):
@@ -274,6 +297,7 @@ class OilingMaintenanceView(View):
         if request.user.has_perm('accounting.add_oilingmaintenancedetail'):
             context.update(AddOilingMaintenanceDetailContext(request=request))
         return render(request,TEMPLATE_ROOT+"oiling-maintenance.html",context) 
+
     
 class OilingMaintenancePrintView(View):
     def get(self,request,*args, **kwargs):
@@ -320,13 +344,7 @@ class OilingMaintenancePrintView(View):
             context.update(AddOilingMaintenanceDetailContext(request=request))
         return render(request,TEMPLATE_ROOT+"oiling-maintenance-print.html",context) 
             
-def AddOilingMaintenanceDetailContext(request):
-    context={}
-    context['add_oiling_maintenance_detail_form']=AddOilingMaintenanceDetailForm()
-    from .enums import FilterActionEnum,FilterTypeEnum
-    context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
-    context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
-    return context
+
 class ServiceMansView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -339,6 +357,7 @@ class ServiceMansView(View):
         if request.user.has_perm(APP_NAME+'.add_serviceman'):
             context['add_service_man_form']=AddServiceManForm()
         return render(request,TEMPLATE_ROOT+"service-mans.html",context) 
+
  
 class OilingMaintenanceDetailsExcelView(View):
     def post(self,request,*args, **kwargs):
@@ -413,6 +432,7 @@ class OilingMaintenanceDetailsExcelView(View):
         report_work_book.work_book.save(response)
         report_work_book.work_book.close()
         return response
+
     
 class ServiceManView(View):
     def get(self,request,*args, **kwargs):

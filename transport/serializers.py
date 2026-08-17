@@ -1,5 +1,5 @@
 from core.serializers import serializers
-from .models import Vehicle,MaintenanceInvoice,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
+from .models import Vehicle,MaintenanceInvoice,VehicleStatus,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 
 
@@ -20,6 +20,12 @@ class VehicleSerializer(serializers.ModelSerializer):
   
  
 
+class VehicleStatusSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=VehicleStatus
+        fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_edit_url','get_delete_url' ]
+ 
 class ServiceManSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:

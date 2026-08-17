@@ -1,0 +1,113 @@
+<div id="accordion-vehicle-statuses" class="rtl text-right farsi">
+  <div class="card" id="vehicle-statuses-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-vehicle-statuses"
+          aria-expanded="true"
+          aria-controls="collapse-vehicle-statuses"
+        >
+          وضعیت وسایل نقلیه
+          <span v-if="vehicle_statuses.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="vehicle_statuses.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-vehicle-statuses"
+      class="collapse {% if expand_vehicle_statuses %} show {% endif %}"
+      aria-labelledby="heading-vehicle-statuses"
+      data-parent="#accordion-vehicle-statuses"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              {% if not vehicle %}
+
+              <th>وسیله نقلیه</th>
+              {% endif %}
+              <th>تاریخ</th>
+              <th>کیلومتر</th>
+              <th>ساعت</th>
+              <th>شرح کوتاه</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="vehicle_status in vehicle_statuses">
+                {% if not vehicle %}
+
+                <td>
+                  <div class="media">
+                    <a :href="vehicle_status.vehicle.get_absolute_url">
+                      <img
+                        :src="vehicle_status.vehicle.thumbnail"
+                        width="32"
+                        class="rounded-circle"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="vehicle_status.vehicle.get_absolute_url">
+                        <span v-text="vehicle_status.vehicle.title"></span>
+                      </a>
+                    </div>
+                  </div>
+                </td>
+                {% endif %}
+
+                <td>
+                  <span v-text="vehicle_status.persian_status_datetime"></span>
+                </td>
+
+                <td>
+                  <span v-html="to_price(vehicle_status.kilometer)"></span>
+                </td>
+
+                
+                <td>
+                  <span v-html="to_price(vehicle_status.hour)"></span>
+                </td>
+
+                
+                <td>
+                  <span v-html="vehicle_status.short_desc"></span>
+                </td>
+
+                <td>
+                  {% if perms.transport.change_vehiclestatus %}
+                  <a
+                    target="_blank"
+                    :href="vehicle_status.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  {% endif %} {% if perms.transport.delete_vehiclestatus %}
+                  <a
+                    target="_blank"
+                    :href="vehicle_status.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

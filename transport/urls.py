@@ -37,5 +37,6 @@ urlpatterns = [
 
 
     path('karkerd/<int:pk>/',login_required(views.ServiceManView.as_view()),name="karkerd"),
+    path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
 
 ]
