@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,KarkerdRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,KarkerdSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -51,6 +51,31 @@ class AddVehicleApi(APIView):
             result,message,vehicle=VehicleRepo(request=request).add_vehicle(**cd)
             if vehicle is not None:
                 context['vehicle']=VehicleSerializer(vehicle).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+class AddKarkerdApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_karkerd_form=AddKarkerdForm(request.POST)
+        if add_karkerd_form.is_valid():
+            log=333
+            cd=add_karkerd_form.cleaned_data
+            
+            result,message,karkerd=KarkerdRepo(request=request).add_karkerd(**cd)
+            if karkerd is not None:
+                context['karkerd']=KarkerdSerializer(karkerd).data
         context['message']=message
         context['result']=result
         context['log']=log

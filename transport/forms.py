@@ -15,9 +15,11 @@ class AddVehicleForm(forms.Form):
     driver_id=forms.IntegerField(required=False)
     price=forms.IntegerField(required=False)
 
+
 class AddInvoiceToMaintenanceForm(forms.Form):
     invoice_id=forms.IntegerField(required=True)
     maintenance_id=forms.IntegerField(required=True)
+
  
 class AddInvoiceForm(AddInvoiceForm):
     maintenance_id=forms.IntegerField(required=True)
@@ -33,6 +35,25 @@ class AddMaintenanceForm(AddEventForm):
     description=forms.CharField(max_length=500, required=False)
 
 
+class AddKarkerdForm(AddEventForm): 
+    driver_id=forms.IntegerField(required=True)
+    vehicle_id=forms.IntegerField(required=True)
+    description=forms.CharField(max_length=500, required=False)
+    start_datetime=forms.CharField(max_length=50, required=False)
+    end_datetime=forms.CharField(max_length=50, required=False)
+    project_name=forms.CharField(max_length=50, required=False)
+    area_name=forms.CharField(max_length=50, required=False)
+
+    start_hour=forms.FloatField(required=False)
+    end_hour=forms.FloatField(required=False)
+    
+    start_kilometer=forms.IntegerField( required=False)
+    end_kilometer=forms.IntegerField( required=False)
+
+    load=forms.CharField( max_length=50,required=False)
+    count=forms.IntegerField( required=False)
+
+    
 class AddOilingMaintenanceForm(AddMaintenanceForm):
     oil_type=forms.CharField(required=False, max_length=50)
     oil_liter=forms.FloatField( required=False)
@@ -43,10 +64,10 @@ class AddOilingMaintenanceForm(AddMaintenanceForm):
     
 class AddServiceManForm(forms.Form):
     person_account_id=forms.IntegerField(required=True)
+
      
 class OilingMaintenanceDetailsExcelForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=False) 
-
 
 
 class AddOilingMaintenanceDetailForm(forms.Form):

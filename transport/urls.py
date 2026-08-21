@@ -28,6 +28,8 @@ urlpatterns = [
     path('oiling-maintenance/<int:pk>/',login_required(views.OilingMaintenanceView.as_view()),name="oilingmaintenance"),
     path('oiling-maintenance/print/<int:pk>/',login_required(views.OilingMaintenancePrintView.as_view()),name="oiling_maintenance_print"),
     
+    path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
+    path('add-karkerd/',login_required(apis.AddKarkerdApi.as_view()),name="add_karkerd"),
 
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oilingmaintenance"),
 

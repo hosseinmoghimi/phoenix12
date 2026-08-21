@@ -1,0 +1,262 @@
+<div id="accordion-add-karkerd" class="rtl text-right farsi">
+  <div class="card" id="add-karkerd-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-karkerd"
+          aria-expanded="true"
+          aria-controls="collapse-add-karkerd"
+        >
+          افزودن کارکرد ماشین آلات
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-karkerd"
+      class="collapse show"
+      aria-labelledby="heading-add-karkerd"
+      data-parent="#accordion-add-karkerd"
+    >
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleInputDate">عنوان</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="title"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">وسیله نقلیه</label>
+              <select v-model="vehicle_id" class="form-control">
+                {% for vehicle in vehicles %}
+                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">پروژه</label>
+              <select v-model="project_name" class="form-control">
+                {% for project in projects %}
+                <option value="{{project.title}}">{{project.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">راننده</label>
+              <select v-model="driver_id" class="form-control">
+                {% for driver in drivers %}
+                <option value="{{driver.id}}">{{driver.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">محدوده</label>
+              <select v-model="area_name" class="form-control">
+                {% for area in areas %}
+                <option value="{{area.title}}">{{area.title}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="dfjvhndsjkhlury48">بار</label>
+
+              <input
+                id="dfjvhndsjkhlury48"
+                type="text"
+                required
+                class="form-control"
+                v-model="load"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تعداد</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="count"
+              />
+            </div>
+          </div>
+          <div class="col-md-12"></div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ شروع</label>
+              <date-picker v-model="start_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="start_date"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputDate">زمان شروع</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="start_time"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12"></div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ پایان</label>
+              <date-picker v-model="end_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="end_date"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="exampleInputDate">زمان پایان</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="end_time"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <hr />
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">ساعت ماشین شروع</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="start_hour"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputDate">ساعت ماشین پایان</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="end_hour"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-4"></div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="setrerhgfhgfh">کیلومتر ماشین شروع</label>
+
+              <input
+                id="setrerhgfhgfh"
+                type="number"
+                required
+                class="form-control"
+                v-model="start_kilometer"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ddddddddd">کیلومتر ماشین پایان</label>
+
+              <input
+                id="ddddddddd"
+                type="number"
+                required
+                class="form-control"
+                v-model="end_kilometer"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <hr />
+          </div>
+
+          <div class="col-md-8">
+            <div class="form-group">
+              <label for="dsfsdfsdf">توضیحات</label>
+
+              <input
+                id="dsfsdfsdf"
+                type="text"
+                required
+                class="form-control"
+                v-model="description"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div v-if="message.show">
+              <div :class="'my-2 alert alert-'+message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click="add_karkerd()"
+              v-if="!waiting"
+              type="submit"
+            >
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

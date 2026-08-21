@@ -277,8 +277,8 @@ class Karkerd(VehicleEvent):
     start_hour=models.FloatField(_("ساعت شروع"))
     end_hour=models.FloatField(_("ساعت پایان"))
 
-    start_kilometer=models.FloatField(_("کیلومتر شروع"),null=True,blank=True)
-    end_kilometer=models.FloatField(_("کیلومتر پایان"),null=True,blank=True)
+    start_kilometer=models.IntegerField(_("کیلومتر شروع"),null=True,blank=True)
+    end_kilometer=models.IntegerField(_("کیلومتر پایان"),null=True,blank=True)
 
     load=models.CharField(_("load"),null=True,blank=True, max_length=50)
     count=models.IntegerField(_("count"),default=0)

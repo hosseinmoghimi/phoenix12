@@ -1,0 +1,16 @@
+{% extends "transport/layout.html" %} {% block content %}
+<div class="row rtl farsi">
+  {% if add_karkerd_form %}
+  <div class="col-md-12">
+    {% include "transport/includes/add-karkerd-app/template.html" %}
+  </div>
+  {% endif %}
+ 
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+ 
+{% if add_karkerd_form %}
+ {% include "transport/includes/add-karkerd-app/script.html" %} 
+ {% endif %} 
+ {% endblock script %}

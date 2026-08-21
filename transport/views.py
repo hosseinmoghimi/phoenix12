@@ -151,7 +151,6 @@ class VehicleStatusesView(View):
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
   
 
-
 class VehicleStatusView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -172,7 +171,6 @@ class VehicleStatusView(View):
         return render(request,TEMPLATE_ROOT+"vehicle-status.html",context) 
   
 
-    
 class VehicleEventsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -507,3 +505,33 @@ class ServiceManView(View):
  
 
         return render(request,TEMPLATE_ROOT+"service-man.html",context) 
+
+    
+class NewKarkerdView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        if not request.user.has_perm(APP_NAME+".add_karkerd"):
+            
+            mv=MessageView()
+            return mv.get(request=request,title="دسترسی غیر مجاز")
+
+        context['add_karkerd_form']=AddKarkerdForm()
+
+        vehicles =VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
+        from attachments.repo import AreaRepo
+        areas=AreaRepo(request=request).list()
+        context['areas']=areas
+
+        from projectmanager.views import ProjectRepo
+        projects=ProjectRepo(request=request).list()
+        context['projects']=projects
+ 
+        drivers=DriverRepo(request=request).list()
+        context['drivers']=drivers
+
+        return render(request,TEMPLATE_ROOT+"new-karkerd.html",context) 
+

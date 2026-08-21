@@ -823,13 +823,60 @@ class KarkerdRepo():
         result,message,karkerd=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_karkerd"):
             message="دسترسی غیر مجاز"
-            return result,message,karkerd
-        if len(Karkerd.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
-            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
-            return FAILED,message,None
+            return result,message,karkerd 
         karkerd=Karkerd() 
-        if 'person_account_id' in kwargs:
-            karkerd.person_account_id=kwargs["person_account_id"]
+        if 'vehicle_id' in kwargs:
+            karkerd.vehicle_id=kwargs["vehicle_id"]
+
+        if 'driver_id' in kwargs:
+            karkerd.driver_id=kwargs["driver_id"]
+
+        if 'start_hour' in kwargs:
+            karkerd.start_hour=kwargs["start_hour"]
+
+        if 'end_hour' in kwargs:
+            karkerd.end_hour=kwargs["end_hour"]
+
+        if 'title' in kwargs:
+            karkerd.title=kwargs["title"]
+
+        if 'project_name' in kwargs:
+            karkerd.project_name=kwargs["project_name"]
+
+        if 'area_name' in kwargs:
+            karkerd.area_name=kwargs["area_name"]
+
+        if 'description' in kwargs:
+            karkerd.description=kwargs["description"]
+
+        if 'start_datetime' in kwargs:
+            year=kwargs['start_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])             
+            karkerd.start_datetime=kwargs["start_datetime"]
+
+        if 'end_datetime' in kwargs:
+            year=kwargs['end_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])   
+            karkerd.end_datetime=kwargs["end_datetime"]
+
+        if 'start_kilometer' in kwargs:
+            karkerd.start_kilometer=kwargs["start_kilometer"]
+
+        if 'end_kilometer' in kwargs:
+            karkerd.end_kilometer=kwargs["end_kilometer"]
+
+        if 'description' in kwargs:
+            karkerd.description=kwargs["description"]
+
+        if 'load' in kwargs:
+            karkerd.load=kwargs["load"]
+
+
+        if 'count' in kwargs:
+            karkerd.count=kwargs["count"]
+
           
         (result,message,karkerd)=karkerd.save()
         return result,message,karkerd

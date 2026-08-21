@@ -440,7 +440,7 @@ class Location(models.Model,LinkHelper):
  
  
 class Area(models.Model,LinkHelper):
-    page=models.ForeignKey("core.page", verbose_name=_("page"), on_delete=models.CASCADE)
+    page=models.ForeignKey("core.page", verbose_name=_("page"),null=True,blank=True, on_delete=models.CASCADE)
     title=models.CharField(_("title"), max_length=50)
     code=models.CharField(_("code"), max_length=50)
     area = models.CharField(_("area"),blank=True,null=True, max_length=1000)
