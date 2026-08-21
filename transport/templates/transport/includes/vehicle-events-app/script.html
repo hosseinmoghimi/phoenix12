@@ -1,0 +1,25 @@
+<script>
+    let vehicle_events_for_vehicle_events_app = JSON.parse("{{vehicle_events_s|escapejs}}")
+    // let links=JSON.parse(`{{links_s|escapejs}}`)
+    let vehicle_events_app = new Vue({
+        el: "#vehicle-events-app",
+        data: {
+            vehicle_events: vehicle_events_for_vehicle_events_app,
+        },
+        methods: {
+            to_price:vall=>to_price(vall),
+            badge_color:function(event_type){
+                if(event_type==='کارکرد')
+                    return 'success'
+                return 'danger'
+            },
+            bg_color:function(event_type){
+                if(event_type==='کارکرد')
+                    return 'karkerd'
+                return 'tavaghof'
+            },
+            
+              
+        }
+    })
+</script>

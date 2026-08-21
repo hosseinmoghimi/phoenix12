@@ -2,6 +2,8 @@ from core.serializers import serializers
 from .models import Vehicle,MaintenanceInvoice,VehicleStatus,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 
+from .models import VehicleEvent,Tavaghof,Karkerd
+
 
 class DriverSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
@@ -9,8 +11,6 @@ class DriverSerializer(serializers.ModelSerializer):
         model=Driver
         fields=['id','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
   
- 
-
 
 class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
@@ -19,13 +19,34 @@ class VehicleSerializer(serializers.ModelSerializer):
         fields=['id','owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
   
  
-
 class VehicleStatusSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
         model=VehicleStatus
-        fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_edit_url','get_delete_url' ]
- 
+        fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_absolute_url','get_edit_url','get_delete_url' ]
+  
+  
+class TavaghofSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=Tavaghof
+        fields=['id','vehicle','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+
+     
+class KarkerdSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=Karkerd
+        fields=['id','vehicle','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+
+
+class VehicleEventSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=VehicleEvent
+        fields=['id','vehicle','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+
+        
 class ServiceManSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:
@@ -39,7 +60,6 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Maintenance
         fields=['id', 'title','hour','vehicle','kilometer','sum','service_man','persian_event_datetime','persian_end_datetime','persian_start_datetime','get_absolute_url',  'get_edit_url','get_delete_url']
- 
  
   
 class OilingMaintenanceSerializer(serializers.ModelSerializer):

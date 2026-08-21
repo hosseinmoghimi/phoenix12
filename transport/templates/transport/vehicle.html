@@ -36,6 +36,10 @@
                 {% include "transport/includes/maintenances-app/template.html" %}
 
             </div>
+            <div class="col-md-12">
+                {% include "transport/includes/vehicle-events-app/template.html" %}
+
+            </div>
 
             <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
@@ -81,8 +85,22 @@
 
 
 {% block script %}
+
 {% include "transport/includes/vehicle-app/script.html" %}
 {% include "transport/includes/maintenances-app/script.html" %}
 {% include "transport/includes/vehicle-statuses-app/script.html" %}
+{% include "transport/includes/vehicle-events-app/script.html" %}
 
 {% endblock script %}
+
+
+{% block style %}
+  <style>
+                .tavaghof{
+                  background: #fff0f0;
+                }
+                .karkerd{
+                  background: #eafff3;
+                }
+              </style>
+{% endblock style %}

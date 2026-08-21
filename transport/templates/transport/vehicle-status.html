@@ -1,0 +1,245 @@
+{% extends "transport/layout.html" %} {% block content %} {% load to_persian_date %} {% include "core/includes/page-app/navbar.html" %}
+<div class="row rtl">
+  <div class="col-md-3">
+    {% include "core/includes/page-app/thumbnail-card.html" %} {% include "core/includes/page-app/card.html" %}
+  </div>
+  <div class="col-md-9">
+    <div class="row rtl">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <tr>
+                <td class="field_name">ماشین</td>
+
+                <td class="field_value">
+                  <a href="{{vehicle_status.vehicle.get_absolute_url}}">
+                    {{vehicle_status.vehicle.title}}
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">تاریخ</td>
+                <td class="field_value">
+                  {{vehicle_status.status_datetime|to_persian_datetime|safe}}
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">موقعیت مکانی</td>
+                <td class="field_value">
+                  {% if vehicle_status.locaion %} 
+                  {{vehicle_status.locaion}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">کیلومتر</td>
+                <td class="field_value"> 
+                  {% if vehicle_status.kilometer %} 
+                  {{vehicle_status.kilometer}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">ساعت</td>
+                <td class="field_value">
+                  {% if vehicle_status.hour %} 
+                  {{vehicle_status.hour}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">موتور</td>
+                <td class="field_value">
+                  {% if vehicle_status.motor %} 
+                  {{vehicle_status.motor}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">گیربکس</td>
+                <td class="field_value">
+                  {% if vehicle_status.gear_box %} 
+                  {{vehicle_status.gear_box}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">زیروبند</td>
+                <td class="field_value">
+                  {% if vehicle_status.ziroband %} 
+                  {{vehicle_status.ziroband}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">کابین</td>
+                <td class="field_value">
+                  {% if vehicle_status.cabin %} 
+                  {{vehicle_status.cabin}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">کولر</td>
+                <td class="field_value">
+                  {% if vehicle_status.cooler %} 
+                  {{vehicle_status.cooler}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">بخاری</td>
+                <td class="field_value">
+                  {% if vehicle_status.heater %} 
+                  {{vehicle_status.heater}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">سیم کشی</td>
+                <td class="field_value">
+                  {% if vehicle_status.wiring %} 
+                  {{vehicle_status.wiring}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">لامپ</td>
+                <td class="field_value">
+                  {% if vehicle_status.light %} 
+                  {{vehicle_status.light}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">هیدرولیک</td>
+                <td class="field_value">
+                  {% if vehicle_status.hydrolic %} 
+                  {{vehicle_status.hydrolic}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">پاکت</td>
+                <td class="field_value">
+                  {% if vehicle_status.pakat %} 
+                  {{vehicle_status.pakat}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">کمپرس</td>
+                <td class="field_value">
+                  {% if vehicle_status.compress %} 
+                  {{vehicle_status.compress}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">توضیحات</td>
+                <td class="field_value"> 
+                  {% if vehicle_status.description %} 
+                  {{vehicle_status.description|safe}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  {% endif %} 
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block script %} {% endblock script %}  

@@ -9,7 +9,7 @@ from authentication.repo import PersonRepo
 from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
-
+from .models import VehicleEvent,Tavaghof,Karkerd,VehicleStatus
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -361,6 +361,9 @@ class MaintenanceRepo():
         if 'vehicle_id' in kwargs:
             maintenance.vehicle_id=kwargs["vehicle_id"]
             
+        if 'driver_id' in kwargs:
+            maintenance.driver_id=kwargs["driver_id"]
+
         if 'kilometer' in kwargs:
             maintenance.kilometer=kwargs["kilometer"]
 
@@ -508,8 +511,11 @@ class OilingMaintenanceRepo():
             oiling_maintenance.oil_type=kwargs["oil_type"]
             
         if 'oil_liter' in kwargs:
-            oiling_maintenance.oil_liter=kwargs["oil_liter"]
-            
+                    oiling_maintenance.oil_liter=kwargs["oil_liter"]
+                    
+        if 'driver_id' in kwargs:
+            oiling_maintenance.driver_id=kwargs["driver_id"]
+                            
         if 'fuel_liter' in kwargs:
             oiling_maintenance.fuel_liter=kwargs["fuel_liter"]
             
@@ -684,3 +690,148 @@ class OilingMaintenanceDetailRepo():
         (result,message,oiling_maintenance_detail)=oiling_maintenance_detail.save()
         return result,message,oiling_maintenance_detail
 
+
+class VehicleEventRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=VehicleEvent.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=VehicleEvent.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id)  
+        return objects.all()
+        
+    def vehicle_event(self,*args, **kwargs):
+        if "vehicle_event_id" in kwargs and kwargs["vehicle_event_id"] is not None:
+            return self.objects.filter(pk=kwargs['vehicle_event_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_vehicle_event(self,*args,**kwargs):
+        result,message,vehicle_event=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_vehicle_event"):
+            message="دسترسی غیر مجاز"
+            return result,message,vehicle_event
+        if len(VehicleEvent.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+            return FAILED,message,None
+        vehicle_event=VehicleEvent() 
+        if 'person_account_id' in kwargs:
+            vehicle_event.person_account_id=kwargs["person_account_id"]
+          
+        (result,message,vehicle_event)=vehicle_event.save()
+        return result,message,vehicle_event
+
+
+class TavaghofRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Tavaghof.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=Tavaghof.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+                    vehicle_id=kwargs["vehicle_id"]
+                    objects=objects.filter(vehicle_id=vehicle_id) 
+        return objects.all()
+        
+    def tavaghof(self,*args, **kwargs):
+        if "tavaghof_id" in kwargs and kwargs["tavaghof_id"] is not None:
+            return self.objects.filter(pk=kwargs['tavaghof_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_tavaghof(self,*args,**kwargs):
+        result,message,tavaghof=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_tavaghof"):
+            message="دسترسی غیر مجاز"
+            return result,message,tavaghof
+        if len(Tavaghof.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+            return FAILED,message,None
+        tavaghof=Tavaghof() 
+        if 'person_account_id' in kwargs:
+            tavaghof.person_account_id=kwargs["person_account_id"]
+          
+        (result,message,tavaghof)=tavaghof.save()
+        return result,message,tavaghof
+
+
+class KarkerdRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Karkerd.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=Karkerd.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+                    vehicle_id=kwargs["vehicle_id"]
+                    objects=objects.filter(vehicle_id=vehicle_id) 
+        return objects.all()
+        
+    def karkerd(self,*args, **kwargs):
+        if "karkerd_id" in kwargs and kwargs["karkerd_id"] is not None:
+            return self.objects.filter(pk=kwargs['karkerd_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_karkerd(self,*args,**kwargs):
+        result,message,karkerd=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_karkerd"):
+            message="دسترسی غیر مجاز"
+            return result,message,karkerd
+        if len(Karkerd.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+            return FAILED,message,None
+        karkerd=Karkerd() 
+        if 'person_account_id' in kwargs:
+            karkerd.person_account_id=kwargs["person_account_id"]
+          
+        (result,message,karkerd)=karkerd.save()
+        return result,message,karkerd
+
+ 

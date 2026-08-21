@@ -1,0 +1,100 @@
+<div id="accordion-vehicle-events">
+  <div class="card" id="vehicle-events-app">
+    <div class="card-header" id="heading-vehicle-events">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-vehicle-events"
+          aria-expanded="true"
+          aria-controls="collapse-vehicle-events"
+        >
+          رویداد های ماشین آلات ها
+
+          <span v-if="vehicle_events.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="vehicle_events.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-vehicle-events"
+      class="collapse {% if expand_vehicle_events %} show{% endif %}"
+      aria-labelledby="heading-vehicle-events"
+      data-parent="#accordion-vehicle-events"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped1 rtl">
+            <thead>
+              <th>رویداد</th>
+              <th>عنوان</th>
+              <th>ماشین آلات</th>
+              <th>تاریخ</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr
+                v-for="vehicle_event in vehicle_events"
+                :class="bg_color(vehicle_event.vehicle_event_type)"
+              >
+                <td>
+                  <span
+                    :class="'badge badge-'+badge_color(vehicle_event.vehicle_event_type)"
+                  >
+                    <span v-text="vehicle_event.vehicle_event_type"></span>
+                  </span>
+                </td>
+                <td>
+                  <a :href="vehicle_event.get_absolute_url">
+                    <span v-text="vehicle_event.title"></span>
+                  </a>
+                </td>
+
+                <td>
+                  <a :href="vehicle_event.vehicle.get_absolute_url">
+                    <h6 v-text="vehicle_event.vehicle.title"></h6>
+                  </a>
+                </td>
+
+                <td>
+                  <div>
+                    <small
+                      v-text="vehicle_event.persian_start_datetime"
+                    ></small>
+                  </div>
+                  <div>
+                    <small class="text-muted" v-text="vehicle_event.persian_end_datetime"></small>
+                  </div>
+                </td>
+
+                <td>
+                  {% if perms.market.change_vehicle_event %}
+                  <a
+                    target="_blank"
+                    :href="vehicle_event.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_vehicle_event %}
+                  <a
+                    target="_blank"
+                    :href="vehicle_event.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

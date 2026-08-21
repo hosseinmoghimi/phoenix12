@@ -12,6 +12,8 @@ from django.views import View
 from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
 from .enums import MaintenanceTypesEnum,OilTypeEnum
+from .serializers import VehicleEventSerializer,TavaghofSerializer,KarkerdSerializer
+from .repo import VehicleEventRepo,KarkerdRepo,TavaghofRepo
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='transport/'
 WIDE_LAYOUT="WIDE_LAYOUT"
@@ -32,6 +34,8 @@ def AddMaintenanceContext(request):
     service_mans=ServiceManRepo(request=request).list()
     context['vehicles']=vehicles
     context['service_mans']=service_mans
+    drivers=DriverRepo(request=request).list()
+    context['drivers']=drivers
     maintenance_types=(i[0] for i in MaintenanceTypesEnum.choices)
     context['maintenance_types']=maintenance_types
     return context
@@ -106,6 +110,12 @@ class VehicleView(View):
         vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['vehicle']=vehicle 
+
+        if vehicle is None:
+                    from core.views import MessageView
+                    mv=MessageView()
+                    return mv.get(request=request,title="پیدا نشد")
+        
         context.update(VehicleContext(request=request,vehicle=vehicle))
         maintenances=MaintenanceRepo(request=request).list(vehicle_id=vehicle.id)
         context['maintenances']=maintenances
@@ -116,6 +126,15 @@ class VehicleView(View):
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
+
+
+        
+
+        vehicle_events=VehicleEventRepo(request=request).list(vehicle_id=vehicle.id)
+        context['vehicle_events']=vehicle_events
+        vehicle_events_s=json.dumps(VehicleEventSerializer(vehicle_events,many=True).data)
+        context['vehicle_events_s']=vehicle_events_s
+
         return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
   
     
@@ -131,6 +150,28 @@ class VehicleStatusesView(View):
         context['vehicle_statuses_s']=vehicle_statuses_s
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
   
+
+
+class VehicleStatusView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+        vehicle_status=VehicleStatusRepo(request=request).vehicle_status(*args, **kwargs)
+        if vehicle_status is None:
+            from core.views import MessageView
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
+
+        
+        vehicle=vehicle_status.vehicle
+        context.update(PageContext(request=request,page=vehicle))
+        context['vehicle']=vehicle
+        context['vehicle_status']=vehicle_status
+        vehicle_status_s=json.dumps(VehicleStatusSerializer(vehicle_status,many=False).data)
+        context['vehicle_status_s']=vehicle_status_s
+        return render(request,TEMPLATE_ROOT+"vehicle-status.html",context) 
+  
+
     
 class NewOilingMaintenanceView(View):
     def get(self,request,*args, **kwargs):

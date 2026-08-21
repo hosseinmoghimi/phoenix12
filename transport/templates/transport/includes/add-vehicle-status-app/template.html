@@ -1,13 +1,13 @@
-<div id="accordion-add-oiling-maintenance" class="rtl text-right farsi">
-  <div class="card" id="add-oiling-maintenance-app">
+<div id="accordion-add-oiling" class="rtl text-right farsi">
+  <div class="card" id="add-oiling-app">
     <div class="card-header">
       <h5 class="text-center">
         <button
           class="btn btn-link"
           data-toggle="collapse"
-          data-target="#collapse-add-oiling-maintenance"
+          data-target="#collapse-add-oiling"
           aria-expanded="true"
-          aria-controls="collapse-add-oiling-maintenance"
+          aria-controls="collapse-add-oiling"
         >
           افزودن سرویس روغن
         </button>
@@ -15,10 +15,10 @@
     </div>
 
     <div
-      id="collapse-add-oiling-maintenance"
+      id="collapse-add-oiling"
       class="collapse"
-      aria-labelledby="heading-add-oiling-maintenance"
-      data-parent="#accordion-add-oiling-maintenance"
+      aria-labelledby="heading-add-oiling"
+      data-parent="#accordion-add-oiling"
     >
       <div class="card-body">
         <div class="row">
@@ -123,19 +123,6 @@
 
           <div class="col-md-4">
             <div class="form-group">
-              <label for="">راننده</label>
-              <select name="" v-model="driver_id" class="form-control">
-                {% for driver in drivers %}
-                <option value="{{driver.id}}">
-                  {{driver}}
-                </option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="form-group">
               <label for="exampleInputDate">تاریخ</label>
               <date-picker v-model="event_date"></date-picker>
 
@@ -192,7 +179,7 @@
 
             <button
               class="btn btn-success"
-              @click="add_oiling_maintenance()"
+              @click="add_maintenance()"
               v-if="!waiting"
               type="submit"
             >

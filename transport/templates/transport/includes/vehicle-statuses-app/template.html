@@ -29,6 +29,7 @@
         <div class="table-responsive">
           <table class="table table-striped">
             <thead>
+              <th>وضعیت</th>
               {% if not vehicle %}
 
               <th>وسیله نقلیه</th>
@@ -41,6 +42,19 @@
             </thead>
             <tbody>
               <tr v-for="vehicle_status in vehicle_statuses">
+                 <td>
+                   <a
+                    target="_blank"
+                    :href="vehicle_status.get_absolute_url"
+                    title="نمایش"
+                    class="text-info mx-2"
+                  > 
+                     
+                    نمایش
+                  </a>
+                  
+                </td>
+
                 {% if not vehicle %}
 
                 <td>

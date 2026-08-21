@@ -9,8 +9,8 @@ urlpatterns = [
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
     path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
-    path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling"),
-    path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling"),
+    path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
+    path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),
 
     path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
 
@@ -37,6 +37,12 @@ urlpatterns = [
 
 
     path('karkerd/<int:pk>/',login_required(views.ServiceManView.as_view()),name="karkerd"),
+    path('tavaghof/<int:pk>/',login_required(views.ServiceManView.as_view()),name="tavaghof"),
+
+
     path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
+    path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
+
+
 
 ]

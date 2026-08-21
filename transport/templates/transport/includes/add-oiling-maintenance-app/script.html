@@ -1,9 +1,10 @@
 <script>
-  let add_oiling_app = new Vue({
-    el: "#add-oiling-app",
+  let add_oiling_maintenance_app = new Vue({
+    el: "#add-oiling-maintenance-app",
     data: {
       title: "",
       kilometer: 0,
+      driver_id: 0,
       vehicle_id: 0,
       service_man_id: 0,
       hour: 0,
@@ -15,15 +16,7 @@
  
       oil_type: '',
       oil_liter: 0,
-      fuel_liter: 0,
-      oil_filter: false,
-      gasoil_filter: false,
-      Hydrolic_filter: false,
-      nano_filter: false,
-      abgir_filter: false,
-      tank_filter: false,
-      bokharkesh_filter: false,
-      lajangir_filter: false,
+      fuel_liter: 0, 
 
       waiting: false,
       message: { show: false },
@@ -53,43 +46,37 @@
         return to_price(vall) + " {{CURRENCY}}";
       },
 
-      add_maintenance: function () {
+      add_oiling_maintenance: function () {
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
+          driver_id: parseInt(this.driver_id),
           vehicle_id: parseInt(this.vehicle_id),
           service_man_id: parseInt(this.service_man_id),
           maintenance_type: this.maintenance_type,
           description: this.description,
+          kilometer: parseInt(this.kilometer),
           hour: parseInt(this.hour),
           fuel_liter:this.fuel_liter,
+          oil_liter: this.oil_liter,
+          oil_type: this.oil_type,
 
           
-          oil_type: this.oil_type,
-          oil_liter: this.oil_liter,
-          oil_filter: this.oil_filter,
-          gasoil_filter: this.gasoil_filter,
-          Hydrolic_filter: this.Hydrolic_filter,
-          nano_filter: this.nano_filter,
-          abgir_filter: this.abgir_filter,
-          tank_filter: this.tank_filter,
-          bokharkesh_filter: this.bokharkesh_filter,
-          lajangir_filter: this.lajangir_filter,
+ 
 
-          kilometer: parseInt(this.kilometer),
           event_datetime: this.event_date + " " + this.event_time,
         };
 
         console.log(payload);
-        let url = "{% url 'transport:add_oiling' %}";
+        let url = "{% url 'transport:add_oiling_maintenance' %}";
         let posting = $.post(url, payload);
         posting.done((data) => {
           console.log(data);
 
           if (data.result === "SUCCEED") {
-            add_oiling_app.title = "";
+            add_oiling_maintenance_app.title = "";
             show_message(
-              add_oiling_app,
+              add_oiling_maintenance_app,
               "موفق",
               data.message,
               "success",
@@ -100,7 +87,7 @@
             }
           } else {
             show_message(
-              add_oiling_app,
+              add_oiling_maintenance_app,
               "خطا",
               data.message,
               "danger",

@@ -248,7 +248,7 @@ class VehicleEvent(Event):
     driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.SET_NULL)
     project_name=models.CharField(_("project_name"), max_length=50,null=True,blank=True)
     area_name=models.CharField(_("area_name"), max_length=50,null=True,blank=True)
-    
+    vehicle_event_type=models.CharField(_("vehicle_event_type"), max_length=50)
     # project=models.ForeignKey("projectmanager.project",related_name="ssssdsd", verbose_name=_("project"), on_delete=models.PROTECT)
     # area=models.ForeignKey("attachments.area",related_name="weewgdfg", verbose_name=_("area"),null=True,blank=True, on_delete=models.SET_NULL)
     
@@ -289,40 +289,40 @@ class Karkerd(VehicleEvent):
         verbose_name_plural = _("Karkerds")
  
     def save(self,*args, **kwargs): 
-          (result,message,karkerd)=FAILED,'',self
-           
-  
-          if self.class_name is None or self.class_name=="":
-              self.class_name="karkerd"
-          if self.app_name is None or self.app_name=="":
-              self.app_name=APP_NAME
-          super(Karkerd,self).save()   
-          result=SUCCEED
-          message="کارکرد وسیله نقلیه با موفقیت ذخیره شد."
-          return (result,message,karkerd)
+        self.vehicle_event_type="کارکرد"
+        (result,message,karkerd)=FAILED,'',self
+        
 
+        if self.class_name is None or self.class_name=="":
+            self.class_name="karkerd"
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        super(Karkerd,self).save()   
+        result=SUCCEED
+        message="کارکرد وسیله نقلیه با موفقیت ذخیره شد."
+        return (result,message,karkerd)
 
  
 class Tavaghof(VehicleEvent):
     cause=models.CharField(_("علت"), max_length=50)
-    
 
     class Meta:
         verbose_name = _("Tavaghof")
         verbose_name_plural = _("Tavaghofs")
  
     def save(self,*args, **kwargs): 
-          (result,message,tavaghof)=FAILED,'',self
-           
-  
-          if self.class_name is None or self.class_name=="":
-              self.class_name="tavaghof"
-          if self.app_name is None or self.app_name=="":
-              self.app_name=APP_NAME
-          super(Tavaghof,self).save()   
-          result=SUCCEED
-          message="توقف وسیله نقلیه با موفقیت ذخیره شد."
-          return (result,message,tavaghof)
+        self.vehicle_event_type="توقف"
+        (result,message,tavaghof)=FAILED,'',self
+        
+
+        if self.class_name is None or self.class_name=="":
+            self.class_name="tavaghof"
+        if self.app_name is None or self.app_name=="":
+            self.app_name=APP_NAME
+        super(Tavaghof,self).save()   
+        result=SUCCEED
+        message="توقف وسیله نقلیه با موفقیت ذخیره شد."
+        return (result,message,tavaghof)
 
 
 class VehicleStatus(models.Model,LinkHelper):
