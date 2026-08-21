@@ -85,6 +85,9 @@
             if (typeof oiling_maintenances_app != "undefined") {
               oiling_maintenances_app.oiling_maintenances.push(data.oiling_maintenance);
             }
+            else{
+              location.href = data.oiling_maintenance.get_absolute_url
+            }
           } else {
             show_message(
               add_oiling_maintenance_app,

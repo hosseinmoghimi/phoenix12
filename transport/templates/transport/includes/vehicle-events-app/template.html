@@ -30,9 +30,14 @@
         <div class="table-responsive">
           <table class="table table-striped1 rtl">
             <thead>
-              <th>رویداد</th>
               <th>عنوان</th>
-              <th>ماشین آلات</th>
+              {% if not vehicle %}
+                
+              <th>ماشین </th>
+              {% endif %} 
+              
+              <th>پروژه </th>
+              <th>موقعیت </th>
               <th>تاریخ</th>
               <th></th>
             </thead>
@@ -40,24 +45,43 @@
               <tr
                 v-for="vehicle_event in vehicle_events"
                 :class="bg_color(vehicle_event.vehicle_event_type)"
-              >
+              > 
                 <td>
-                  <span
+               <span
                     :class="'badge badge-'+badge_color(vehicle_event.vehicle_event_type)"
                   >
                     <span v-text="vehicle_event.vehicle_event_type"></span>
                   </span>
-                </td>
-                <td>
                   <a :href="vehicle_event.get_absolute_url">
                     <span v-text="vehicle_event.title"></span>
                   </a>
+                  
                 </td>
 
-                <td>
-                  <a :href="vehicle_event.vehicle.get_absolute_url">
-                    <h6 v-text="vehicle_event.vehicle.title"></h6>
-                  </a>
+              {% if not vehicle %}
+                
+              <td>
+                <a :href="vehicle_event.vehicle.get_absolute_url">
+                  <h6 v-text="vehicle_event.vehicle.title"></h6>
+                </a>
+              </td>
+              
+              {% endif %}
+                 <td>
+                  
+                    <span
+                      v-text="vehicle_event.project_name"
+                    ></span>
+                 
+                </td>
+
+                
+                 <td>
+                  
+                    <span
+                      v-text="vehicle_event.area_name"
+                    ></span>
+                 
                 </td>
 
                 <td>

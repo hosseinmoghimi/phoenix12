@@ -30,21 +30,21 @@ class TavaghofSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
         model=Tavaghof
-        fields=['id','vehicle','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
 
      
 class KarkerdSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
         model=Karkerd
-        fields=['id','vehicle','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
 
 
 class VehicleEventSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
         model=VehicleEvent
-        fields=['id','vehicle','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
 
         
 class ServiceManSerializer(serializers.ModelSerializer):

@@ -173,6 +173,19 @@ class VehicleStatusView(View):
   
 
     
+class VehicleEventsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        context[WIDE_LAYOUT]=True 
+
+        vehicle_events=VehicleEventRepo(request=request).list()
+        context['vehicle_events']=vehicle_events
+        vehicle_events_s=json.dumps(VehicleEventSerializer(vehicle_events,many=True).data)
+        context['vehicle_events_s']=vehicle_events_s
+
+        return render(request,TEMPLATE_ROOT+"vehicle-events.html",context) 
+  
+    
 class NewOilingMaintenanceView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -303,6 +316,7 @@ class OilingMaintenanceView(View):
             return mv.get(request=request,title="پیدا نشد")
         context[WIDE_LAYOUT]=True
         context['oiling_maintenance']=oiling_maintenance 
+        context['expand_oiling_maintenance_details']=True 
         maintenance=oiling_maintenance
         context['maintenance']=maintenance 
         maintenance_s=json.dumps(MaintenanceSerializer(maintenance,many=False).data)

@@ -1,0 +1,38 @@
+{% extends "transport/layout.html" %}
+
+{% block content %}
+{% include "core/includes/page-app/navbar.html" %}
+<div class="row rtl"> 
+
+           
+            <div class="col-md-12">
+                {% include "transport/includes/vehicle-events-app/template.html" %}
+
+            </div>
+ 
+
+ 
+
+
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+ 
+{% include "transport/includes/vehicle-events-app/script.html" %}
+
+{% endblock script %}
+
+
+{% block style %}
+  <style>
+                .tavaghof{
+                  background: #fff0f0;
+                }
+                .karkerd{
+                  background: #eafff3;
+                }
+              </style>
+{% endblock style %}
