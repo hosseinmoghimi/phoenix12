@@ -122,6 +122,24 @@
           </table>
         </div>
       </div>
+
+      <div class="card-footer">
+        <div class="my-2">
+
+          <form method="POST" action="{% url 'transport:vehicle_statuses_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="vehicle_id" value="{{vehicle.id}}">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              اکسل
+              
+            </button>
+          </form>
+        </div>
+       
+       
+      </div>
+
     </div>
   </div>
 </div>

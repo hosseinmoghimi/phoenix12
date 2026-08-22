@@ -141,15 +141,113 @@ class VehicleView(View):
 class VehicleStatusesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
-        vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
-        context[WIDE_LAYOUT]=False 
+        context[WIDE_LAYOUT]=True 
 
-        vehicle_statuses=VehicleStatusRepo(request=request).list()
+        vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(*args, **kwargs)
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
-  
+
+ 
+class VehicleStatusesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        vehicle_statuses_excel_form=VehicleStatusesExcelForm(request.POST)
+        if vehicle_statuses_excel_form.is_valid():
+            log=333
+            cd=vehicle_statuses_excel_form.cleaned_data
+            vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,vehicle_status in enumerate(vehicle_statuses,start=1):
+            line={
+                'row':i,
+                'vehicle':vehicle_status.vehicle.title,      
+                'datetime':PersianCalendar().from_gregorian(vehicle_status.status_datetime)[:10],      
+                'location':vehicle_status.location.title,   
+                'kilometer':vehicle_status.kilometer,   
+                'hour':vehicle_status.hour,   
+                'motor':vehicle_status.motor,   
+                'ziroband':vehicle_status.ziroband,   
+                'cabin':vehicle_status.cabin,   
+                'compress':vehicle_status.compress,   
+                'hydrolic':vehicle_status.hydrolic,   
+                'pakat':vehicle_status.pakat,   
+                'cooler':vehicle_status.cooler,   
+                'heater':vehicle_status.heater,   
+                'gear_box':vehicle_status.gear_box,   
+                'wiring':vehicle_status.wiring,   
+                'light':vehicle_status.light,   
+                'description':vehicle_status.description,      
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'ماشین',
+                 'تاریخ',
+                 'مکان',
+                 'کیلومتر',
+                 'ساعت',
+                 'موتور',
+                 'زیروبند',
+                 'کابین',
+                 'کمپرس',
+                 'هیدرولیک',
+                 'پاکت',
+                 'کولر',
+                 'بخاری',
+                 'گیربکس',
+                 'سیم کشی', 
+                 'لامپ',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='Statuses',
+        )
+            
+        file_name=f"""Phoenix Transport Statuses {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      
 
 class VehicleStatusView(View):
     def get(self,request,*args, **kwargs):

@@ -164,6 +164,7 @@ class OilingMaintenanceDetail(models.Model,LinkHelper):
     @property
     def vehicle(self):
         return self.oiling_maintenance.vehicle
+
     
 class MaintenanceInvoice(Invoice):
     hour=models.IntegerField(_("hour"),default=0)
@@ -331,7 +332,7 @@ class Tavaghof(VehicleEvent):
 class VehicleStatus(models.Model,LinkHelper):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
     status_datetime = models.DateTimeField(_("status_datetime"), auto_now=False, auto_now_add=False)
-    locaion=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
+    location=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
     kilometer=models.IntegerField(_("kilometer"))
     hour=models.IntegerField(_("hour"))
     motor=models.CharField(_("motor"),null=True,blank=True, max_length=500)

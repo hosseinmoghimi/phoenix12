@@ -10,6 +10,8 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
 from .models import VehicleEvent,Tavaghof,Karkerd,VehicleStatus
+
+
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -29,9 +31,9 @@ class VehicleStatusRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        if "owner_id" in kwargs:
-            owner_id=kwargs["owner_id"]
-            objects=objects.filter(owner_id=owner_id)  
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id)  
         return objects.all()
         
     def vehicle_status(self,*args, **kwargs):
@@ -80,7 +82,9 @@ class VehicleStatusRepo():
         (result,message,vehicle_status)=vehicle_status.save()
         return result,message,vehicle_status
 
-
+    def last_statuses(self,*args, **kwargs):
+        return self.list(*args, **kwargs)
+    
 class VehicleRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None

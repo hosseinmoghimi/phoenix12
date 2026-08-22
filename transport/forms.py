@@ -68,7 +68,9 @@ class AddServiceManForm(forms.Form):
      
 class OilingMaintenanceDetailsExcelForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=False) 
-
+    
+class VehicleStatusesExcelForm(forms.Form):
+    vehicle_id=forms.IntegerField(required=False) 
 
 class AddOilingMaintenanceDetailForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=True)
