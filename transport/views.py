@@ -427,7 +427,7 @@ class OilingMaintenanceDetailsExcelView(View):
         if oiling_maintenance_details_excel_form.is_valid():
             log=333
             cd=oiling_maintenance_details_excel_form.cleaned_data
-
+            leolog(cd=cd)
             oiling_maintenance_details=OilingMaintenanceDetailRepo(request=request).list(**cd)
  
         now=PersianCalendar().date
@@ -438,6 +438,9 @@ class OilingMaintenanceDetailsExcelView(View):
         for i,oiling_maintenance_detail in enumerate(oiling_maintenance_details,start=1):
             line={
                 'row':i,
+                'vehicle':oiling_maintenance_detail.vehicle.title,      
+                'datetime':oiling_maintenance_detail.oiling_maintenance.persian_event_datetime()[:10],      
+                'service_man':oiling_maintenance_detail.oiling_maintenance.service_man.person_account.person.full_name,      
                 'filter_type':oiling_maintenance_detail.filter_type,      
                 'filter_action':oiling_maintenance_detail.filter_action,      
                 'count':oiling_maintenance_detail.count,      
@@ -446,6 +449,9 @@ class OilingMaintenanceDetailsExcelView(View):
             }
             lines.append(line)
         headers=['ردیف',
+                 'ماشین',
+                 'تاریخ',
+                 'سرویسکار',
                  'فیلتر',
                  'سرویس',
                  'تعداد', 
@@ -454,7 +460,7 @@ class OilingMaintenanceDetailsExcelView(View):
         ]
                 
         from utility.excel import ReportWorkBook,get_style
-        report_work_book=ReportWorkBook(origin_file_name=f'Invoice.xlsx')
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
         style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
         # sheet1=ReportSheet(
         #     data=lines,

@@ -650,7 +650,8 @@ class OilingMaintenanceDetailRepo():
             objects=objects.filter(service_man_id=service_man_id)
         if "oiling_maintenance_id" in kwargs:
             oiling_maintenance_id=kwargs["oiling_maintenance_id"]
-            objects=objects.filter(oiling_maintenance_id=oiling_maintenance_id)
+            if oiling_maintenance_id:
+                objects=objects.filter(oiling_maintenance_id=oiling_maintenance_id)
         return objects.all()
         
     def oiling_maintenance_detail(self,*args, **kwargs):

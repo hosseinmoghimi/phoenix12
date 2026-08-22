@@ -18,6 +18,11 @@ class VehicleSerializer(serializers.ModelSerializer):
         model=Vehicle
         fields=['id','owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
   
+class VehicleSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model=Vehicle
+        fields=['id',  'title', 'get_absolute_url']
+  
  
 class VehicleStatusSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
@@ -25,7 +30,7 @@ class VehicleStatusSerializer(serializers.ModelSerializer):
         model=VehicleStatus
         fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_absolute_url','get_edit_url','get_delete_url' ]
   
-  
+ 
 class TavaghofSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
@@ -71,8 +76,9 @@ class OilingMaintenanceSerializer(serializers.ModelSerializer):
  
  
 class OilingMaintenanceDetailSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer2()
     class Meta:
         model=OilingMaintenanceDetail
-        fields=['id', 'filter_type','filter_action','count','description','cost', 'get_edit_url','get_delete_url']
+        fields=['id','vehicle', 'filter_type','filter_action','count','description','cost', 'get_edit_url','get_delete_url']
  
  

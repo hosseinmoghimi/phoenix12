@@ -45,6 +45,10 @@
           </h6>
           <table class="table table-striped rtl">
             <thead>
+              {% if not vehicle %}
+              <th>ماشین</th>
+                
+              {% endif %}
               <th>نوع فیلتر</th>
               <th>نوع سرویس</th>
               <th>تعداد</th>
@@ -56,6 +60,14 @@
               <tr
                 v-for="oiling_maintenance_detail in oiling_maintenance_details"
               >
+              {% if not vehicle %}
+                 <td>
+                  <a :href="oiling_maintenance_detail.vehicle.get_absolute_url">
+
+                    <span v-text="oiling_maintenance_detail.vehicle.title"> </span>
+                  </a>
+                </td>
+              {% endif %}
                 <td>
                   <span v-text="oiling_maintenance_detail.filter_type"> </span>
                 </td>

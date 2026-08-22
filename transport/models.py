@@ -161,6 +161,9 @@ class OilingMaintenanceDetail(models.Model,LinkHelper):
          message="جزئیات روغن کاری با موفقیت اضافه شد."
          return (result,message,oiling_maintenance_detail)
 
+    @property
+    def vehicle(self):
+        return self.oiling_maintenance.vehicle
     
 class MaintenanceInvoice(Invoice):
     hour=models.IntegerField(_("hour"),default=0)
