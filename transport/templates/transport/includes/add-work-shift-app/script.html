@@ -13,8 +13,7 @@
       start_hour: 0,
       end_hour: 0,
 
-      driver_id: 0,
-      driver_code: "",
+      driver_id: 0, 
 
       location: "",
       description: "",
@@ -23,6 +22,7 @@
       oil_liter: 0,
       gasoil_liter: 0,
       vehicle_hour: 0,
+      oil_service: "",
 
       filter_type: "",
       filter_action: "تعویض",
@@ -49,7 +49,7 @@
       sum_filter_count:()=>{
         let s=0
         add_work_shift_app.filters.forEach(filter => {
-          s+=filter.count
+          s+=parseInt(filter.count)
           
         });
         return s
@@ -99,7 +99,29 @@
       add_work_shift: function () {
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
-          person_account_id: this.person_account.id,
+          vehicle_id: (this.vehicle_id),
+          title: this.title,
+          oil_service: this.oil_service,
+          vehicle_code: this.vehicle_code,
+          shift_date: this.shift_date,
+          shift: this.shift,
+          start_hour: (this.start_hour),
+          end_hour: (this.end_hour),
+          driver_id: (this.driver_id), 
+          location: this.location,
+          oil_type: this.oil_type,
+          oil_liter: (this.oil_liter),
+          gasoil_liter: (this.gasoil_liter),
+          vehicle_hour: (this.vehicle_hour),
+          filters: JSON.stringify(this.filters),
+          description: this.description,
+          tavaghof_cause: this.tavaghof_cause,
+          tavaghof_duration: (this.tavaghof_duration),
+          tavaghof_description: this.tavaghof_description,
+          kharabi_duration: (this.kharabi_duration),
+          kharabi_description: this.kharabi_description,
+         
+
         };
 
         console.log(payload);

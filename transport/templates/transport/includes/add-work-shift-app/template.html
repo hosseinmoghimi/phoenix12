@@ -1,4 +1,5 @@
 <div id="add-work-shift-app">
+
   <div class="card">
     <div class="card-header">
       <h5 class="text-center">گزارش شیفت کاری</h5>
@@ -161,8 +162,17 @@
             </select>
           </div>
         </div>
-
         <div class="col-md-3">
+          <div class="form-group">
+            <label for="">نوع سرویس</label>
+            <select v-model="oil_service" type="text" class="form-control">
+              <option value="تعویض">تعویض</option>
+              <option value="سرریز">سرریز</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-2">
           <div class="form-group">
             <label for="exampleInputDate">لیتراژ روغن</label>
 
@@ -175,7 +185,7 @@
           </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <div class="form-group">
             <label for="exampleInputDate">لیتراژ گازوئیل</label>
 
@@ -188,7 +198,7 @@
           </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
           <div class="form-group">
             <label for="exampleInputDate">ساعت دستگاه</label>
 
@@ -205,6 +215,7 @@
       </div>
     </div>
   </div>
+
   <div class="card">
     <div class="card-body">
       <div class="row rtl">
@@ -303,8 +314,7 @@
               خیر
             </button>
           </div>
-
-          {% include "utility/includes/message-app/alert.html" %}
+ 
         </div>
         <div class="col-md-9 mt-3">
           <table v-if="filters.length>0" class="table table-striped">
@@ -354,6 +364,7 @@
       </div>
     </div>
   </div>
+
   <div class="card">
     <div class="card-header">
       <h5 class="text-center">گزارش توقفات</h5>
@@ -361,7 +372,7 @@
 
     <div class="card-body">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-group">
             <label for="">علت</label>
             <select v-model="tavaghof_cause" type="text" class="form-control">
@@ -370,8 +381,7 @@
               {% endfor %}
             </select>
           </div>
-        </div>
-        <div class="col-md-6">
+        
           <div class="form-group">
             <label for="exampleInputDate">مدت به ساعت</label>
 
@@ -384,13 +394,14 @@
           </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-9">
           <div class="form-group">
             <label for="exampleInputDate">توضیحات</label>
 
             <input
+            
               type="text"
-              required
+              
               class="form-control"
               v-model="tavaghof_description"
             />
@@ -433,20 +444,27 @@
           </div>
         </div>
 
-        <div class="col-md-12">
-          <button class="btn btn-success" type="submit">
-            <i class="fa fa-plus"></i>
-            افزودن
-          </button>
-        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
 
-        <div class="col-md-12" v-if="message.show">
+       
+
+        <div   v-if="message.show" class="mx-3 my-3">
           <div :class="'alert alert-' + message.color">
             <h5 v-text="message.title"></h5>
             <div v-html="message.body"></div>
           </div>
+        </div> 
+        <div  >
+          <button class="btn btn-success" @click="add_work_shift">
+            <i class="fa fa-plus"></i>
+            افزودن
+          </button>
         </div>
-      </div>
     </div>
   </div>
+
 </div>
