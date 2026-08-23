@@ -12,6 +12,8 @@ from django.views import View
 from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
 from .enums import MaintenanceTypesEnum,OilTypeEnum
+from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
+
 from .serializers import VehicleEventSerializer,TavaghofSerializer,KarkerdSerializer
 from .repo import VehicleEventRepo,KarkerdRepo,TavaghofRepo
 LAYOUT_PARENT='phoenix/layout.html'
@@ -638,4 +640,28 @@ class NewKarkerdView(View):
         context['drivers']=drivers
 
         return render(request,TEMPLATE_ROOT+"new-karkerd.html",context) 
+
+
+class NewWorkShiftView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        if not request.user.has_perm(APP_NAME+".add_workshift"):
+            mv=MessageView()
+            return mv.get(request=request,title="دسترسی غیر مجاز")
+
+        context['add_work_shift_form']=AddKarkerdForm()
+ 
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+
+        
+ 
+        drivers =DriverRepo(request=request).list(*args, **kwargs)
+        context['drivers']=drivers
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+
+        return render(request,TEMPLATE_ROOT+"new-work-shift.html",context) 
 

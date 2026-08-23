@@ -58,6 +58,31 @@ class AddVehicleApi(APIView):
 
 
 
+
+class AddWorkShiftApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_work_shift_form=AddWorkShiftForm(request.POST)
+        if add_work_shift_form.is_valid():
+            log=333
+            cd=add_work_shift_form.cleaned_data
+            result,message,work_shift=WorkShiftRepo(request=request).add_work_shift(**cd)
+            if work_shift is not None:
+                context['work_shift']=VehicleSerializer(work_shift).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
 class AddKarkerdApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

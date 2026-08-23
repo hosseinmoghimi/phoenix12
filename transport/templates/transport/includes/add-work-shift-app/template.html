@@ -1,0 +1,399 @@
+<div id="add-work-shift-app">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="text-center">گزارش شیفت کاری</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">دستگاه</label>
+            <select v-model="vehicle_id" type="text" class="form-control">
+              {% for vehicle in vehicles %}
+              <option value="{{vehicle.id}}">{{vehicle.title}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">کد دستگاه</label>
+
+            <input
+              type="text"
+              required
+              class="form-control"
+              v-model="vehicle_code"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">تاریخ</label>
+            <date-picker v-model="shift_date"></date-picker>
+
+            <input
+              type="text"
+              required
+              class="form-control"
+              v-model="shift_date"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">شیفت</label>
+            <select v-model="shift" type="text" class="form-control">
+              <option value="روز">روز</option>
+              <option value="شب">شب</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate"
+              >ساعت کارکرد دستگاه
+              <span>
+                <small class="text-muted">(</small>
+                کارکرد مفید
+                <span
+                  class="text-success"
+                  v-if="end_hour>start_hour"
+                  v-text="end_hour-start_hour"
+                ></span>
+                <span
+                  class="text-danger"
+                  v-else
+                  v-text="end_hour-start_hour"
+                ></span>
+                ساعت
+                <small class="text-muted">)</small>
+              </span>
+            </label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="start_hour"
+            />
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="end_hour"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate"
+              >ساعت کارکرد دستگاه
+              <span>
+                <small class="text-muted">(</small>
+                کارکرد مفید
+                <span
+                  class="text-success"
+                  v-if="end_hour>start_hour"
+                  v-text="end_hour-start_hour"
+                ></span>
+                <span
+                  class="text-danger"
+                  v-else
+                  v-text="end_hour-start_hour"
+                ></span>
+                ساعت
+                <small class="text-muted">)</small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">راننده</label>
+            <select v-model="driver_id" type="text" class="form-control">
+              {% for driver in drivers %}
+              <option value="{{driver.id}}">{{driver}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">محل فعالیت</label>
+            <input v-model="location" type="text" class="form-control" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">توضیحات</label>
+            <input v-model="description" type="text" class="form-control" />
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h5 class="text-center">گزارش سرویس کاری</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="">نوع روغن</label>
+            <select v-model="oil_type" type="text" class="form-control">
+              {% for oil_type in oil_types %}
+              <option value="{{oil_type}}">{{oil_type}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputDate">لیتراژ روغن</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="oil_liter"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputDate">لیتراژ گازوئیل</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="gasoil_liter"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputDate">ساعت دستگاه</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="vehicle_hour"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <hr>
+          <div class="row rtl"  >
+            <div class="col-md-3">
+              <div class="form-grou">
+                <label for="jhigtyrtyfhug">نوع فیلتر</label>
+                <select
+                  name=""
+                  id="jhigtyrtyfhug"
+                  class="form-control"
+                  v-model="filter_type"
+                >
+                  {% for filter_type in filter_types %}
+                  <option value="{{filter_type}}">{{filter_type}}</option>
+
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-grou">
+                <label for="njhjjjjj">نوع سرویس</label>
+                <select
+                  name=""
+                  id="njhjjjjj"
+                  class="form-control"
+                  v-model="filter_action"
+                >
+                  {% for filter_action in filter_actions %}
+                  <option value="{{filter_action}}">{{filter_action}}</option>
+
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-grou">
+                <label for="ssssssss">تعداد</label>
+                <input
+                  type="number"
+                  id="ssssssss"
+                  class="form-control"
+                  v-model="count"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-grou">
+                <label for="ghgykuhj"
+                  >هزینه
+
+                  <span class="mx-2" v-text="to_price(cost)"></span>
+                  {{CURRENCY}}
+                </label>
+                <input
+                  type="number"
+                  id="ghgykuhj"
+                  class="form-control"
+                  v-model="cost"
+                />
+              </div>
+            </div>
+
+           
+
+            <div class="col-md-12 my-3">
+              {% include "utility/includes/message-app/alert.html" %}
+              <button
+                class="btn btn-success"
+                @click="add_oiling_maintenance_detail()"
+              >
+                <i class="fa fa-plus mx-2"></i>
+                اضافه کن
+              </button>
+            </div>
+          </div>
+        </div>
+
+       
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="card">
+    <div class="card-header">
+      <h5 class="text-center">گزارش توقفات</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="">علت</label>
+            <select v-model="tavaghof_cause" type="text" class="form-control">
+              {% for tavaghof_cause in tavaghof_causes %}
+              <option value="{{tavaghof_cause}}">{{tavaghof_cause}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="exampleInputDate">مدت به ساعت</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="tavaghof_duration"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleInputDate">توضیحات</label>
+
+            <input
+              type="text"
+              required
+              class="form-control"
+              v-model="tavaghof_description"
+            />
+          </div>
+        </div>
+ 
+     
+
+        
+
+        
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div class="card">
+    <div class="card-header">
+      <h5 class="text-center">گزارش خرابی ها</h5>
+    </div>
+
+    <div class="card-body">
+       <div class="row">
+        
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputDate">مدت به ساعت</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="kharabi_duration"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="form-group">
+            <label for="exampleInputDate">توضیحات</label>
+
+            <input
+              type="text"
+              required
+              class="form-control"
+              v-model="kharabi_description"
+            />
+          </div>
+        </div>
+ 
+      <div class="col-md-12">
+          <button class="btn btn-success" type="submit">
+            <i class="fa fa-plus"></i>
+            افزودن
+          </button>
+        </div>
+
+        <div class="col-md-12" v-if="message.show">
+          <div :class="'alert alert-' + message.color">
+            <h5 v-text="message.title"></h5>
+            <div v-html="message.body"></div>
+          </div>
+        </div>
+
+        
+
+        
+      </div>
+    </div>
+  </div>
+
+</div>

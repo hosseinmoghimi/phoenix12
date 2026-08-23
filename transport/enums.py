@@ -7,10 +7,18 @@ class OilTypeEnum(TextChoices):
     w15_40="15 W 40",_("15 W 40")
     w20_40="20 W 40",_("20 W 40")
     w25_40="25 W 40",_("25 W 40")
+    w20_50="20 W 50",_("20 W 50")
 
 class FilterActionEnum(TextChoices):
     REPLACE="تعویض",_("تعویض")
     BADGIRI='بادگیری',_("بادگیری")
+    
+class TavaghofCausesEnum(TextChoices):
+    JEB="عدم جبهه کاری",_("عدم جبهه کاری")
+    TAV='توقف کارگاه',_("توقف کارگاه")
+    RAN="نبود راننده",_("نبود راننده")
+    SUKHT='نبود سوخت',_("نبود سوخت")
+    
     
 class FilterTypeEnum(TextChoices):
     OIL="فیلتر روغن",_("فیلتر روغن")

@@ -68,11 +68,21 @@ class AddServiceManForm(forms.Form):
      
 class OilingMaintenanceDetailsExcelForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=False) 
-    
+
 class VehicleStatusesExcelForm(forms.Form):
     vehicle_id=forms.IntegerField(required=False) 
 
 class AddOilingMaintenanceDetailForm(forms.Form):
+    oiling_maintenance_id=forms.IntegerField(required=True)
+    count=forms.IntegerField(required=True)
+    cost=forms.IntegerField(required=False) 
+    filter_action=forms.CharField(required=True, max_length=50)
+    filter_type=forms.CharField(required=True, max_length=50)
+    description=forms.CharField(required=False, max_length=500)
+     
+
+
+class AddWorkShiftForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=True)
     count=forms.IntegerField(required=True)
     cost=forms.IntegerField(required=False) 

@@ -23,6 +23,8 @@ urlpatterns = [
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
+    path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),
+    path('add-work-shift/',login_required(apis.AddWorkShiftApi.as_view()),name="add_work_shift"),
     path('oiling-maintenances/',login_required(views.OilingMaintenancesView.as_view()),name="oiling_maintenances"),
     path('add-oiling-maintenance-detail/',login_required(apis.AddOilingMaintenanceDetailApi.as_view()),name="add_oiling_maintenance_detail"),
     path('oiling-maintenance-details/',login_required(views.OilingMaintenanceDetailsView.as_view()),name="oiling_maintenance_details"),
