@@ -1,5 +1,5 @@
 from core.serializers import serializers
-from .models import Vehicle,MaintenanceInvoice,VehicleStatus,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
+from .models import Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 
 from .models import VehicleEvent,Tavaghof,Karkerd
@@ -80,5 +80,11 @@ class OilingMaintenanceDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model=OilingMaintenanceDetail
         fields=['id','vehicle', 'filter_type','filter_action','count','description','cost', 'get_edit_url','get_delete_url']
- 
- 
+
+
+class WorkShiftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=WorkShift
+        fields=['id','vehicle','title','get_absolute_url', 'get_edit_url','get_delete_url']
+
+   

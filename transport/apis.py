@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,KarkerdRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,KarkerdSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,KarkerdRepo,WorkShiftRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,KarkerdSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -73,9 +73,10 @@ class AddWorkShiftApi(APIView):
         if add_work_shift_form.is_valid():
             log=333
             cd=add_work_shift_form.cleaned_data
+            cd['filters']=json.loads(cd['filters'])
             result,message,work_shift=WorkShiftRepo(request=request).add_work_shift(**cd)
             if work_shift is not None:
-                context['work_shift']=VehicleSerializer(work_shift).data
+                context['work_shift']=WorkShiftSerializer(work_shift).data
         context['message']=message
         context['result']=result
         context['log']=log

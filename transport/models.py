@@ -133,7 +133,7 @@ class OilingMaintenance(Maintenance):
 
 
 class OilingMaintenanceDetail(models.Model,LinkHelper):
-    oiling_maintenance=models.ForeignKey("oilingmaintenance", verbose_name=_("oiling_maintenance"), on_delete=models.CASCADE)
+    work_shift=models.ForeignKey("workshift", verbose_name=_("oiling_maintenance"), on_delete=models.CASCADE)
     filter_type=models.CharField(_("filter type"),choices=FilterTypeEnum.choices, max_length=50)
     filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
     count=models.IntegerField(_("count"),default=1)
@@ -148,7 +148,7 @@ class OilingMaintenanceDetail(models.Model,LinkHelper):
         verbose_name_plural = _("OilingMaintenanceDetails")
 
     def __str__(self):
-        return f'{self.pk} - {self.oiling_maintenance} / {self.filter_action} {self.count} {self.filter_type} '
+        return f'{self.pk} - {self.work_shift} / {self.filter_action} {self.count} {self.filter_type} '
  
     def save(self,*args, **kwargs): 
          (result,message,oiling_maintenance_detail)=FAILED,'',self
@@ -328,6 +328,56 @@ class Tavaghof(VehicleEvent):
         message="توقف وسیله نقلیه با موفقیت ذخیره شد."
         return (result,message,tavaghof)
 
+
+class WorkShift(models.Model,LinkHelper): 
+    class_name="workshift"
+    app_name=APP_NAME
+     
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
+    driver=models.ForeignKey("driver", verbose_name=_("driver"), on_delete=models.PROTECT)
+    shift_date=models.DateField(_("shift_date"), auto_now=False, auto_now_add=False)
+    shift=models.CharField(_("shift"), max_length=50)
+    start_hour=models.IntegerField(_("start_hour"), default=0)
+    end_hour=models.IntegerField(_("end_hour"), default=0)
+    
+    location=models.CharField(_("location"), max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+
+
+
+    oil_type=models.CharField(_("oil_type"), max_length=50)
+    oil_liter=models.IntegerField(_("oil_liter"), default=0)
+    gasoil_liter=models.IntegerField(_("gasoil_liter"), default=0)
+    vehicle_hour=models.IntegerField(_("vehicle_hour"), default=0)
+    
+    oil_service=models.CharField(_("oil_service"), max_length=50)
+
+    tavaghof_cause=models.CharField(_("tavaghof_cause"),null=True,blank=True, max_length=50)
+    tavaghof_duration=models.IntegerField(_("tavaghof_duration"), default=0)
+    tavaghof_description=models.CharField(_("tavaghof_description"),null=True,blank=True, max_length=500)
+
+  
+    kharabi_duration=models.IntegerField(_("kharabi_duration"), default=0)
+    kharabi_description=models.CharField(_("kharabi_description"),null=True,blank=True, max_length=500)
+ 
+    class Meta:
+        verbose_name = _("WorkShift")
+        verbose_name_plural = _("WorkShifts")
+
+    def __str__(self):
+        return f'{self.vehicle.vehicle_code}  {self.vehicle}  {PersianCalendar().from_gregorian(self.shift_date)} {self.shift}'
+    @property
+    def title(self):
+        return self.__str__()
+    def save(self,*args, **kwargs): 
+        
+        (result,message,workshift)=FAILED,'',self
+         
+        super(WorkShift,self).save()   
+        result=SUCCEED
+        message="شیفت کاری دستگاه با موفقیت ذخیره شد."
+        return (result,message,workshift)
+ 
 
 class VehicleStatus(models.Model,LinkHelper):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     

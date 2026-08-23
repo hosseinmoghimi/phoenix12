@@ -1,4 +1,4 @@
-from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,VehicleStatus,OilingMaintenanceDetail,Driver
+from .models import Vehicle,ServiceMan,Maintenance,OilingMaintenance,VehicleStatus,OilingMaintenanceDetail,WorkShift,Driver
 
 from .apps import APP_NAME
 from .enums import *
@@ -84,6 +84,121 @@ class VehicleStatusRepo():
 
     def last_statuses(self,*args, **kwargs):
         return self.list(*args, **kwargs)
+
+
+    
+class WorkShiftRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=WorkShift.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=WorkShift.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id)  
+        return objects.all()
+        
+    def work_shift(self,*args, **kwargs):
+        if "work_shift_id" in kwargs and kwargs["work_shift_id"] is not None:
+            return self.objects.filter(pk=kwargs['work_shift_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_work_shift(self,*args,**kwargs):
+        result,message,work_shift=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
+            message="دسترسی غیر مجاز"
+            return result,message,work_shift
+
+        work_shift=WorkShift()
+        if 'title' in kwargs:
+            work_shift.title=kwargs["title"]
+            if len(Vehicle.objects.filter(title=work_shift.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'vehicle_id' in kwargs:
+            work_shift.vehicle_id=kwargs["vehicle_id"]
+        if 'driver_id' in kwargs:
+            work_shift.driver_id=kwargs["driver_id"]
+        if 'shift_date' in kwargs:
+
+            
+            year=kwargs['shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
+            work_shift.shift_date=kwargs["shift_date"]
+
+
+
+        if 'shift' in kwargs:
+            work_shift.shift=kwargs["shift"]
+        if 'start_hour' in kwargs:
+            work_shift.start_hour=kwargs["start_hour"]
+        if 'end_hour' in kwargs:
+            work_shift.end_hour=kwargs["end_hour"]
+        if 'location' in kwargs:
+            work_shift.location=kwargs["location"]
+        if 'description' in kwargs:
+            work_shift.description=kwargs["description"]
+        if 'oil_type' in kwargs:
+            work_shift.oil_type=kwargs["oil_type"]
+        if 'oil_liter' in kwargs:
+            work_shift.oil_liter=kwargs["oil_liter"]
+        if 'gasoil_liter' in kwargs:
+            work_shift.gasoil_liter=kwargs["gasoil_liter"]
+        if 'vehicle_hour' in kwargs:
+            work_shift.vehicle_hour=kwargs["vehicle_hour"]
+        if 'oil_service' in kwargs:
+            work_shift.oil_service=kwargs["oil_service"]
+        if 'tavaghof_cause' in kwargs:
+            work_shift.tavaghof_cause=kwargs["tavaghof_cause"]
+        if 'tavaghof_duration' in kwargs:
+            work_shift.tavaghof_duration=kwargs["tavaghof_duration"]
+        if 'tavaghof_description' in kwargs:
+            work_shift.tavaghof_description=kwargs["tavaghof_description"]
+        if 'kharabi_duration' in kwargs:
+            work_shift.kharabi_duration=kwargs["kharabi_duration"]
+        if 'kharabi_description' in kwargs:
+            work_shift.kharabi_description=kwargs["kharabi_description"]
+         
+        if 'price' in kwargs:
+            work_shift.price=kwargs["price"]
+         
+
+        
+        (result,message,work_shift)=work_shift.save()
+        if 'filters' in kwargs and result==SUCCEED:
+            filters=kwargs["filters"] 
+            for filter_ in filters:
+                oiling_maintenance_detail=OilingMaintenanceDetail()
+                oiling_maintenance_detail.filter_type=filter_['filter_type']
+                oiling_maintenance_detail.filter_action=filter_['filter_action']
+                oiling_maintenance_detail.count=filter_['count']
+                oiling_maintenance_detail.cost=filter_['cost']
+                oiling_maintenance_detail.work_shift=work_shift
+                oiling_maintenance_detail.save()
+
+        return result,message,work_shift
+
+    def last_statuses(self,*args, **kwargs):
+        return self.list(*args, **kwargs)
+
     
 class VehicleRepo():
     def __init__(self,request,*args, **kwargs):
