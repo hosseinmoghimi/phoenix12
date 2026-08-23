@@ -2,64 +2,98 @@
   let add_work_shift_app = new Vue({
     el: "#add-work-shift-app",
     data: {
-
       title: "",
-      vehicle_id:0,
-      vehicle_code:"",
+      vehicle_id: 0,
+      vehicle_code: "",
 
       shift_date: current_date,
 
-      shift:"",
+      shift: "",
 
-      start_hour:0,
-      end_hour:0,
+      start_hour: 0,
+      end_hour: 0,
 
-      driver_id:0,
-      driver_code:"",
+      driver_id: 0,
+      driver_code: "",
 
-      location:"",
-      description:"",
+      location: "",
+      description: "",
 
-      oil_type:"",
-      oil_liter:0,
-      gasoil_liter:0,
-      vehicle_hour:0,
+      oil_type: "",
+      oil_liter: 0,
+      gasoil_liter: 0,
+      vehicle_hour: 0,
 
-      filter_type:"",
-      filter_action:"",
-      count:0,
-      cost:0,
+      filter_type: "",
+      filter_action: "تعویض",
+      count: 1,
+      cost: 0,
+      filters: [],
 
-      tavaghof_cause:"",
-      tavaghof_duration:0,
-      tavaghof_description:"",
+      tavaghof_cause: "",
+      tavaghof_duration: 0,
+      tavaghof_description: "",
 
-      kharabi_duration:0,
-      kharabi_description:"",
+      kharabi_duration: 0,
+      kharabi_description: "",
 
-      message:{show:false},
-      waiting:false,
+      message: { show: false },
+      waiting: false,
+      confirm_clear_filters: false,
     },
-    
+
     components: {
       DatePicker: VuePersianDatetimePicker,
     },
     methods: {
+      sum_filter_count:()=>{
+        let s=0
+        add_work_shift_app.filters.forEach(filter => {
+          s+=filter.count
+          
+        });
+        return s
+      },
+      sum_filter_cost:()=>{
+        let s=0
+        add_work_shift_app.filters.forEach(filter => {
+          s+=parseInt(filter.cost)
+          
+        });
+        return to_price(s)
+      },
+      clear_filters: function () {
+        this.filters = [];
+        this.confirm_clear_filters=false
+      },
+      add_filter: function () {
+        if (!(this.filter_type && this.filter_action && this.count>0)) {
+          return;
+        }
+        this.filters.push({
+          filter_type: this.filter_type,
+          filter_action: this.filter_action,
+          count: this.count,
+          cost: this.cost,
+        });
+      },
       select_person_account: function () {
-        select_person_account_by_code(add_person_account_app.person_account_code).done((data) => {
+        select_person_account_by_code(
+          add_person_account_app.person_account_code,
+        ).done((data) => {
           if (data.result === "SUCCEED") {
             leolog(data.person_account);
             add_person_account_app.person_account = data.person_account;
           }
 
           if (data.result === "FAILED") {
-            add_person_account_app.person_account={};
+            add_person_account_app.person_account = {};
           }
         });
       },
 
       to_price: function (vall) {
-        return to_price(vall)  ;
+        return to_price(vall);
       },
 
       add_work_shift: function () {
@@ -77,10 +111,21 @@
             if (typeof work_shifts_app != "undefined") {
               work_shifts_app.work_shifts.push(data.work_shift);
             }
-            show_message(add_work_shift_app,'موفق',data.message,'success',3000)
-          }
-          else{
-            show_message(add_work_shift_app,'خطا',data.message,'danger',3000)
+            show_message(
+              add_work_shift_app,
+              "موفق",
+              data.message,
+              "success",
+              3000,
+            );
+          } else {
+            show_message(
+              add_work_shift_app,
+              "خطا",
+              data.message,
+              "danger",
+              3000,
+            );
           }
         });
       },

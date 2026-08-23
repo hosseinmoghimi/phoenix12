@@ -11,7 +11,9 @@
             <label for="">دستگاه</label>
             <select v-model="vehicle_id" type="text" class="form-control">
               {% for vehicle in vehicles %}
-              <option value="{{vehicle.id}}">{{vehicle.title}}</option>
+              <option value="{{vehicle.id}}">
+                {{vehicle.vehicle_code}} - {{vehicle.title}}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -138,7 +140,6 @@
             <input v-model="description" type="text" class="form-control" />
           </div>
         </div>
- 
       </div>
     </div>
   </div>
@@ -200,93 +201,159 @@
           </div>
         </div>
 
-        <div class="col-md-12">
-          <hr>
-          <div class="row rtl"  >
-            <div class="col-md-3">
-              <div class="form-grou">
-                <label for="jhigtyrtyfhug">نوع فیلتر</label>
-                <select
-                  name=""
-                  id="jhigtyrtyfhug"
-                  class="form-control"
-                  v-model="filter_type"
-                >
-                  {% for filter_type in filter_types %}
-                  <option value="{{filter_type}}">{{filter_type}}</option>
-
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-grou">
-                <label for="njhjjjjj">نوع سرویس</label>
-                <select
-                  name=""
-                  id="njhjjjjj"
-                  class="form-control"
-                  v-model="filter_action"
-                >
-                  {% for filter_action in filter_actions %}
-                  <option value="{{filter_action}}">{{filter_action}}</option>
-
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div class="form-grou">
-                <label for="ssssssss">تعداد</label>
-                <input
-                  type="number"
-                  id="ssssssss"
-                  class="form-control"
-                  v-model="count"
-                />
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <div class="form-grou">
-                <label for="ghgykuhj"
-                  >هزینه
-
-                  <span class="mx-2" v-text="to_price(cost)"></span>
-                  {{CURRENCY}}
-                </label>
-                <input
-                  type="number"
-                  id="ghgykuhj"
-                  class="form-control"
-                  v-model="cost"
-                />
-              </div>
-            </div>
-
-           
-
-            <div class="col-md-12 my-3">
-              {% include "utility/includes/message-app/alert.html" %}
-              <button
-                class="btn btn-success"
-                @click="add_oiling_maintenance_detail()"
-              >
-                <i class="fa fa-plus mx-2"></i>
-                اضافه کن
-              </button>
-            </div>
-          </div>
-        </div>
-
-       
+        <div class="col-md-12"></div>
       </div>
     </div>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row rtl">
+        <div class="col-md-3">
+          <div class="form-grou">
+            <label for="jhigtyrtyfhug">نوع فیلتر</label>
+            <select
+              name=""
+              id="jhigtyrtyfhug"
+              class="form-control"
+              v-model="filter_type"
+            >
+              {% for filter_type in filter_types %}
+              <option value="{{filter_type}}">{{filter_type}}</option>
 
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-grou">
+            <label for="njhjjjjj">نوع سرویس</label>
+            <select
+              name=""
+              id="njhjjjjj"
+              class="form-control"
+              v-model="filter_action"
+            >
+              {% for filter_action in filter_actions %}
+              <option value="{{filter_action}}">{{filter_action}}</option>
 
-  
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-grou">
+            <label for="ssssssss">تعداد</label>
+            <input
+              type="number"
+              id="ssssssss"
+              class="form-control"
+              v-model="count"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-grou">
+            <label for="ghgykuhj"
+              >هزینه
+
+              <span class="mx-2" v-text="to_price(cost)"></span>
+              {{CURRENCY}}
+            </label>
+            <input
+              type="number"
+              id="ghgykuhj"
+              class="form-control"
+              v-model="cost"
+            />
+          </div>
+        </div>
+
+        <div class="col-12"></div>
+
+        <div class="col-md-3 my-3">
+          <div v-if="!confirm_clear_filters">
+            <button class="btn btn-success" @click="add_filter()">
+              <i class="fa fa-plus mx-2"></i>
+              اضافه کن
+            </button>
+          </div>
+
+          <div v-if="!confirm_clear_filters" class="mt-2">
+            <button class="btn btn-danger" @click="confirm_clear_filters=true">
+              <i class="fa fa-plus mx-2"></i>
+              حذف همه
+            </button>
+          </div>
+          <div v-if="confirm_clear_filters">
+            <h5>همه خدمات فیلتر حذف شوند؟</h5>
+            <button class="btn btn-danger" @click="clear_filters()">
+              <i class="fa fa-plus mx-2"></i>
+
+              حذف کن
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              @click="confirm_clear_filters=false"
+            >
+              <i class="fa fa-plus mx-2"></i>
+
+              خیر
+            </button>
+          </div>
+
+          {% include "utility/includes/message-app/alert.html" %}
+        </div>
+        <div class="col-md-9 mt-3">
+          <table v-if="filters.length>0" class="table table-striped">
+            <thead>
+              <th>نوع فیلتر</th>
+              <th>خدمات</th>
+              <th>تعداد</th>
+              <th>هزینه</th>
+            </thead>
+            <tbody>
+              <tr v-for="filter in filters">
+                <td>
+                  <span v-text="filter.filter_type"></span>
+                </td>
+                <td>
+                  <span v-text="filter.filter_action"></span>
+                </td>
+
+                <td>
+                  <span v-text="filter.count"></span>
+                </td>
+                <td>
+                  <span v-text="filter.cost"></span>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <th></th>
+
+              <th></th>
+
+              <th>
+                <span v-text="sum_filter_count()"></span>
+              </th>
+
+              <th>
+                <span v-text="sum_filter_cost()"></span>
+              </th>
+            </tfoot>
+          </table>
+          <div v-else>
+            <div class="alert alert-secondary">
+              <p>خدمات فیلتر انجام نشده است.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="card">
     <div class="card-header">
       <h5 class="text-center">گزارش توقفات</h5>
@@ -329,26 +396,17 @@
             />
           </div>
         </div>
- 
-     
-
-        
-
-        
       </div>
     </div>
   </div>
 
-
-  
   <div class="card">
     <div class="card-header">
       <h5 class="text-center">گزارش خرابی ها</h5>
     </div>
 
     <div class="card-body">
-       <div class="row">
-        
+      <div class="row">
         <div class="col-md-3">
           <div class="form-group">
             <label for="exampleInputDate">مدت به ساعت</label>
@@ -374,8 +432,8 @@
             />
           </div>
         </div>
- 
-      <div class="col-md-12">
+
+        <div class="col-md-12">
           <button class="btn btn-success" type="submit">
             <i class="fa fa-plus"></i>
             افزودن
@@ -388,12 +446,7 @@
             <div v-html="message.body"></div>
           </div>
         </div>
-
-        
-
-        
       </div>
     </div>
   </div>
-
 </div>
