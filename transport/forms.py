@@ -83,28 +83,28 @@ class AddOilingMaintenanceDetailForm(forms.Form):
 
 
 class AddWorkShiftForm(forms.Form):
-    vehicle_id=forms.IntegerField(required=True)
+    vehicle_code=forms.IntegerField(required=True)
     driver_id=forms.IntegerField(required=True)
-    start_hour=forms.IntegerField(required=False) 
-    end_hour=forms.IntegerField(required=False)  
-    oil_liter=forms.IntegerField(required=False) 
-    vehicle_hour=forms.IntegerField(required=False) 
-    gasoil_liter=forms.IntegerField(required=False) 
-    shift=forms.CharField(required=True, max_length=50)
-    oil_service=forms.CharField(required=True, max_length=50)
-    shift_date=forms.CharField(required=True, max_length=50)
-    location=forms.CharField(required=True, max_length=50)
-    oil_type=forms.CharField(required=True, max_length=50)
-    oil_service=forms.CharField(required=True, max_length=50)
-    oil_service=forms.CharField(required=True, max_length=50)
+    location=forms.CharField(required=True, max_length=50) 
+    
+
+    vehicle_start_hour=forms.FloatField(required=False) 
+    vehicle_end_hour=forms.FloatField(required=False)
+
+    
+    shift=forms.CharField(required=True, max_length=50) 
+    shift_date=forms.CharField(required=True, max_length=50) 
+    start_hour=forms.IntegerField(required=True) 
+    end_hour=forms.IntegerField(required=True)  
+
+    gasoil_liter=forms.IntegerField(required=False)
+
     description=forms.CharField(required=False, max_length=500)
-    filters=forms.CharField(required=True, max_length=500)
 
-    tavaghof_cause=forms.CharField(required=False, max_length=500)
-    tavaghof_duration=forms.CharField(required=False, max_length=500)
-    tavaghof_description=forms.CharField(required=False, max_length=500)
+    oils=forms.CharField(required=False, max_length=5000)
+    filters=forms.CharField(required=False, max_length=5000)
+    tavaghofs=forms.CharField(required=False, max_length=5000)
 
-    kharabi_duration=forms.CharField(required=False, max_length=500)
-    kharabi_description=forms.CharField(required=False, max_length=500)
+ 
      
     

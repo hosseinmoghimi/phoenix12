@@ -10,7 +10,7 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
 from .models import VehicleEvent,Tavaghof,Karkerd,VehicleStatus
-
+from .models import FilterService,OilService,Tavaghof
 
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
@@ -176,23 +176,47 @@ class WorkShiftRepo():
             work_shift.kharabi_duration=kwargs["kharabi_duration"]
         if 'kharabi_description' in kwargs:
             work_shift.kharabi_description=kwargs["kharabi_description"]
-         
-        if 'price' in kwargs:
-            work_shift.price=kwargs["price"]
+          
          
 
         
         (result,message,work_shift)=work_shift.save()
+
         if 'filters' in kwargs and result==SUCCEED:
             filters=kwargs["filters"] 
             for filter_ in filters:
-                oiling_maintenance_detail=OilingMaintenanceDetail()
-                oiling_maintenance_detail.filter_type=filter_['filter_type']
-                oiling_maintenance_detail.filter_action=filter_['filter_action']
-                oiling_maintenance_detail.count=filter_['count']
-                oiling_maintenance_detail.cost=filter_['cost']
-                oiling_maintenance_detail.work_shift=work_shift
-                oiling_maintenance_detail.save()
+                filter_service=FilterService()
+                filter_service.filter_type=filter_['filter_type']
+                filter_service.filter_action=filter_['filter_action']
+                filter_service.count=filter_['count']
+                filter_service.cost=filter_['cost']
+                filter_service.work_shift=work_shift
+                filter_service.save()
+
+                
+        if 'oils' in kwargs and result==SUCCEED:
+            oils=kwargs["oils"] 
+            for oil_ in oils:
+                oil_service=OilService()
+                oil_service.oil_type=oil_['oil_type']
+                oil_service.oil_action=oil_['oil_action']
+                oil_service.oil_liter=oil_['oil_liter']
+                oil_service.work_shift=work_shift
+                oil_service.save()
+
+                
+        if 'tavaghofs' in kwargs and result==SUCCEED:
+            tavaghofs=kwargs["tavaghofs"] 
+            for tavaghof_ in tavaghofs:
+                tavaghof=Tavaghof()
+                tavaghof.cause=tavaghof_['cause']
+                tavaghof.duration=tavaghof_['duration']
+                tavaghof.descriptin=tavaghof_['descriptin']
+                tavaghof.vehicle_hour=tavaghof_['vehicle_hour']
+                tavaghof.work_shift=work_shift
+                tavaghof.save()
+ 
+                
 
         return result,message,work_shift
 

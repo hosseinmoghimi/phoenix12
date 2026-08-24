@@ -1145,7 +1145,7 @@ class BankAccount(Account):
 
 class Asset(CorePage):
     price=models.IntegerField(_("price"),default=0)
-    owner=models.ForeignKey("accounting.personaccount", verbose_name=_("owner"), on_delete=models.PROTECT)
+    owner=models.ForeignKey("accounting.personaccount", verbose_name=_("owner"),null=True,blank=True, on_delete=models.PROTECT)
    
     class Meta:
         verbose_name = 'دارایی'

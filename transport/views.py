@@ -713,7 +713,11 @@ class WorkShiftsView(View):
         context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
         context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
         context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
-
+        ssss
+        from attachments.views import LocationRepo
+        locations=LocationRepo(request=request).list()
+        print(locations)
+        context['locations']=LocationRepo(request=request).list()
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
 
 

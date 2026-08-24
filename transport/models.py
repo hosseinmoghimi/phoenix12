@@ -17,7 +17,7 @@ from .apps import APP_NAME
 from .enums import * 
 from accounting.models import Invoice,InvoiceLine
 
-  
+
 class ServiceMan(models.Model,LinkHelper):
     person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
     class_name='serviceman'
@@ -133,7 +133,7 @@ class OilingMaintenance(Maintenance):
 
 
 class OilingMaintenanceDetail(models.Model,LinkHelper):
-    work_shift=models.ForeignKey("workshift", verbose_name=_("oiling_maintenance"), on_delete=models.CASCADE)
+    work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
     filter_type=models.CharField(_("filter type"),choices=FilterTypeEnum.choices, max_length=50)
     filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
     count=models.IntegerField(_("count"),default=1)
@@ -165,7 +165,7 @@ class OilingMaintenanceDetail(models.Model,LinkHelper):
     def vehicle(self):
         return self.oiling_maintenance.vehicle
 
-    
+
 class MaintenanceInvoice(Invoice):
     hour=models.IntegerField(_("hour"),default=0)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)
@@ -190,8 +190,8 @@ class MaintenanceInvoice(Invoice):
     
     def __str__(self):
         return f'{self.service_man} {self.maintenance_type} {self.vehicle}'
- 
-  
+
+
 class Vehicle(Asset):
     vehicle_type=models.CharField(_("نوع وسیله "),choices=VehicleTypeEnum.choices,default=VehicleTypeEnum.SEDAN, max_length=50)
     vehicle_code=models.CharField(_("کد وسیله "), null=True,blank=True,max_length=50)
@@ -306,7 +306,7 @@ class Karkerd(VehicleEvent):
         message="کارکرد وسیله نقلیه با موفقیت ذخیره شد."
         return (result,message,karkerd)
 
- 
+
 class Tavaghof(VehicleEvent):
     cause=models.CharField(_("علت"), max_length=50)
 
@@ -329,6 +329,40 @@ class Tavaghof(VehicleEvent):
         return (result,message,tavaghof)
 
 
+class VehicleStatus(models.Model,LinkHelper):
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
+    status_datetime = models.DateTimeField(_("status_datetime"), auto_now=False, auto_now_add=False)
+    location=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
+    kilometer=models.IntegerField(_("kilometer"))
+    hour=models.IntegerField(_("hour"))
+    motor=models.CharField(_("motor"),null=True,blank=True, max_length=500)
+    gear_box=models.CharField(_("gear_box"),null=True,blank=True, max_length=500)
+    ziroband=models.CharField(_("ziroband"),null=True,blank=True, max_length=500)
+    cabin=models.CharField(_("cabin"),null=True,blank=True, max_length=500)
+    cooler=models.CharField(_("cooler"),null=True,blank=True, max_length=500)
+    heater=models.CharField(_("heater"),null=True,blank=True, max_length=500)
+    wiring=models.CharField(_("wiring"),null=True,blank=True, max_length=500)
+    light=models.CharField(_("light"),null=True,blank=True, max_length=500)
+    hydrolic=models.CharField(_("hydrolic"),null=True,blank=True, max_length=500)
+    pakat=models.CharField(_("pakat"),null=True,blank=True, max_length=500)
+    compress=models.CharField(_("compress"),null=True,blank=True, max_length=500)
+    description=HTMLField(_("توضیحات کامل"),null=True,blank=True, max_length=5000)
+    class_name="vehiclestatus"
+    app_name=APP_NAME
+    class Meta:
+        verbose_name = _("VehicleStatus")
+        verbose_name_plural = _("VehicleStatuses")
+
+    def __str__(self):
+        return f'{self.vehicle} @ {PersianCalendar().from_gregorian(self.status_datetime)}'
+
+    def persian_status_datetime(self):
+        return PersianCalendar().from_gregorian(self.status_datetime)
+    def short_desc(self):
+        from utility.num import separate
+        return f"""<span class="mr-2">کیلومتر</span><strong class="mx-2">{separate(self.kilometer)}</strong><span class="mr-2">ساعت</span><strong class="mx-1">{separate(self.hour)} </strong>"""
+
+
 class WorkShift(models.Model,LinkHelper): 
     class_name="workshift"
     app_name=APP_NAME
@@ -339,6 +373,12 @@ class WorkShift(models.Model,LinkHelper):
     shift=models.CharField(_("shift"), max_length=50)
     start_hour=models.IntegerField(_("start_hour"), default=0)
     end_hour=models.IntegerField(_("end_hour"), default=0)
+
+
+    
+    vehicle_start_hour=models.FloatField(_("vehicle_start_hour"), default=0)
+    vehicle_end_hour=models.FloatField(_("vehicle_end_hour"), default=0)
+
     
     location=models.CharField(_("location"), max_length=50)
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
@@ -377,37 +417,108 @@ class WorkShift(models.Model,LinkHelper):
         result=SUCCEED
         message="شیفت کاری دستگاه با موفقیت ذخیره شد."
         return (result,message,workshift)
- 
 
-class VehicleStatus(models.Model,LinkHelper):
-    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
-    status_datetime = models.DateTimeField(_("status_datetime"), auto_now=False, auto_now_add=False)
-    location=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
-    kilometer=models.IntegerField(_("kilometer"))
-    hour=models.IntegerField(_("hour"))
-    motor=models.CharField(_("motor"),null=True,blank=True, max_length=500)
-    gear_box=models.CharField(_("gear_box"),null=True,blank=True, max_length=500)
-    ziroband=models.CharField(_("ziroband"),null=True,blank=True, max_length=500)
-    cabin=models.CharField(_("cabin"),null=True,blank=True, max_length=500)
-    cooler=models.CharField(_("cooler"),null=True,blank=True, max_length=500)
-    heater=models.CharField(_("heater"),null=True,blank=True, max_length=500)
-    wiring=models.CharField(_("wiring"),null=True,blank=True, max_length=500)
-    light=models.CharField(_("light"),null=True,blank=True, max_length=500)
-    hydrolic=models.CharField(_("hydrolic"),null=True,blank=True, max_length=500)
-    pakat=models.CharField(_("pakat"),null=True,blank=True, max_length=500)
-    compress=models.CharField(_("compress"),null=True,blank=True, max_length=500)
-    description=HTMLField(_("توضیحات کامل"),null=True,blank=True, max_length=5000)
-    class_name="vehiclestatus"
+
+class OilService(models.Model,LinkHelper):
+    class_name="oilservice"
     app_name=APP_NAME
+    work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
+    oil_type=models.CharField(_("oil_type"), max_length=50)
+    oil_action=models.CharField(_("oil_action"),max_length=50)
+    oil_liter=models.FloatField(_("oil_liter"),default=1)
+    vehicle_hour=models.FloatField(_("vehicle_hour"),default=0)
+
     class Meta:
-        verbose_name = _("VehicleStatus")
-        verbose_name_plural = _("VehicleStatuses")
+        verbose_name = _("OilService")
+        verbose_name_plural = _("OilServices")
+ 
+    def __str__(self):
+        return f'{self.work_shift} / {self.oil_type} {self.oil_action} {self.oil_liter} '
+ 
+    def save(self,*args, **kwargs): 
+         (result,message,oiling_maintenance_detail)=FAILED,'',self
+         if self.class_name is None or self.class_name=="":
+             self.class_name="oiling_maintenance_detail"
+         if self.app_name is None or self.app_name=="":
+             self.app_name=APP_NAME
+         super(OilingMaintenanceDetail,self).save()   
+         result=SUCCEED
+         message="جزئیات روغن کاری با موفقیت اضافه شد."
+         return (result,message,oiling_maintenance_detail)
+
+    @property
+    def vehicle(self):
+        return self.work_shift.vehicle
+
+
+class FilterService(models.Model,LinkHelper):
+    class_name='filterservice'
+    app_name=APP_NAME
+    work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
+    filter_type=models.CharField(_("filter type"),choices=FilterTypeEnum.choices, max_length=50)
+    filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
+    count=models.IntegerField(_("count"),default=1)
+    cost=models.IntegerField(_("cost"),default=0)
+    
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+
+
+    class Meta:
+        verbose_name = _("FilterService")
+        verbose_name_plural = _("FilterServices")
 
     def __str__(self):
-        return f'{self.vehicle} @ {PersianCalendar().from_gregorian(self.status_datetime)}'
+        return f'{self.work_shift} / {self.filter_action} {self.count} {self.filter_type} '
+ 
+    def save(self,*args, **kwargs): 
+         (result,message,oiling_maintenance_detail)=FAILED,'',self
+         if self.class_name is None or self.class_name=="":
+             self.class_name="oiling_maintenance_detail"
+         if self.app_name is None or self.app_name=="":
+             self.app_name=APP_NAME
+         super(OilingMaintenanceDetail,self).save()   
+         result=SUCCEED
+         message="جزئیات روغن کاری با موفقیت اضافه شد."
+         return (result,message,oiling_maintenance_detail)
 
-    def persian_status_datetime(self):
-        return PersianCalendar().from_gregorian(self.status_datetime)
-    def short_desc(self):
-        from utility.num import separate
-        return f"""<span class="mr-2">کیلومتر</span><strong class="mx-2">{separate(self.kilometer)}</strong><span class="mr-2">ساعت</span><strong class="mx-1">{separate(self.hour)} </strong>"""
+    @property
+    def vehicle(self):
+        return self.work_shift.vehicle
+
+
+class Tavaghof(models.Model,LinkHelper):
+    class_name="tavaghof"
+    app_name=APP_NAME
+    work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
+    cause=models.CharField(_("cause"), max_length=50)
+    duration=models.FloatField(_("duration"),default=1)
+    descriptin=models.CharField(_("descriptin"),max_length=50)
+    vehicle_hour=models.FloatField(_("vehicle_hour"),default=0)
+
+
+    class Meta:
+        verbose_name = _("Tavaghof")
+        verbose_name_plural = _("Tavaghofs")
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model,LinkHelper):
+    class_name="product"
+    app_name=APP_NAME
+    work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
+    product=models.CharField(_("product"), max_length=50)
+    quantity=models.IntegerField(_("quantity"),default=1)
+    unit_price=models.IntegerField(_("unit_price"),default=0)
+    anbar=models.CharField(_("anbar"),max_length=50)
+    service_man=models.CharField(_("service_man"),max_length=50)
+    description=models.CharField(_("description"),max_length=50)
+
+    class Meta:
+        verbose_name = _("Product")
+        verbose_name_plural = _("Products")
+
+    def __str__(self):
+        return self.name
+ 

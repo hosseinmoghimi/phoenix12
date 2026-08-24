@@ -2,44 +2,69 @@
   let add_work_shift_app = new Vue({
     el: "#add-work-shift-app",
     data: {
-      title: "",
+      
       vehicle_id: 0,
       vehicle_code: "",
-
-      shift_date: current_date,
-
-      shift: "",
-
-      start_hour: 0,
-      end_hour: 0,
-
       driver_id: 0, 
-
       location: "",
       description: "",
 
-      oil_type: "",
-      oil_liter: 0,
+      
+      bar: "",
+      service_count: 0,
+
+      
+      shift: "",
+      shift_date: current_date,
+      start_hour: 0,
+      end_hour: 0,
+
+      vehicle_start_hour: 0,
+      vehicle_end_hour:0,
+
+
+      
       gasoil_liter: 0,
-      vehicle_hour: 0,
-      oil_service: "",
+      
+      oil_type: "",
+      oil_action: "",
+      oil_liter: 0,
+      oil_vehicle_hour: 0,
+      oils:[],
+
+
 
       filter_type: "",
       filter_action: "تعویض",
       count: 1,
-      cost: 0,
-      filters: [],
+      cost: 0, 
+      filters:[],
 
       tavaghof_cause: "",
       tavaghof_duration: 0,
       tavaghof_description: "",
-
-      kharabi_duration: 0,
-      kharabi_description: "",
+      tavaghof_vehicle_hour:0,
+      tavaghofs:[],
 
       message: { show: false },
       waiting: false,
+
+      product_name:"aaaa",
+      product_price:25000000,
+      product_quantity:2,
+      product_anbar:"",
+      product_serviceman:"",
+      product_description:"",
+
+      products:[],
+
+
+
+
+      confirm_clear_products: false,
       confirm_clear_filters: false,
+      confirm_clear_tavaghofs: false,
+      confirm_clear_oils: false,
     },
 
     components: {
@@ -54,6 +79,28 @@
         });
         return s
       },
+
+      
+      sum_product_quantity:()=>{
+        let s=0
+        add_work_shift_app.products.forEach(product => {
+          s+=parseInt(product.quantity)
+          
+        });
+        return s
+      },
+
+      
+      sum_product_price:()=>{
+        let s=0
+        add_work_shift_app.products.forEach(product => {
+          s+=parseInt(product.price*product.quantity)
+          
+        });
+        return s
+      },
+
+
       sum_filter_cost:()=>{
         let s=0
         add_work_shift_app.filters.forEach(filter => {
@@ -62,21 +109,107 @@
         });
         return to_price(s)
       },
+      sum_oil_liter:()=>{
+        let s=0
+        add_work_shift_app.oils.forEach(oil => {
+          s+=parseFloat(oil.oil_liter)
+          
+        });
+        return to_price(s)
+      },
+
+      
+      sum_tavaghof:()=>{
+        let s=0
+        add_work_shift_app.tavaghofs.forEach(tavaghof => {
+          s+=parseFloat(tavaghof.duration)
+          
+        });
+        return to_price(s)
+      },
+
       clear_filters: function () {
         this.filters = [];
         this.confirm_clear_filters=false
       },
+
+
+      
+      clear_products: function () {
+        this.products = [];
+        this.confirm_clear_products=false
+      },
+
+
+      
+      clear_tavaghofs: function () {
+        this.tavaghofs = [];
+        this.confirm_clear_tavaghofs=false
+      },
+
+
+      clear_oils: function () {
+        this.oils = [];
+        this.confirm_clear_oils=false
+      },
+
       add_filter: function () {
         if (!(this.filter_type && this.filter_action && this.count>0)) {
           return;
         }
         this.filters.push({
-          filter_type: this.filter_type,
-          filter_action: this.filter_action,
-          count: this.count,
-          cost: this.cost,
+          filter_type: add_work_shift_app.filter_type,
+          filter_action: add_work_shift_app.filter_action,
+          count: add_work_shift_app.count,
+          cost: add_work_shift_app.cost,
         });
       },
+
+      
+      add_product: function () {
+        if (!(this.product_name && this.count>0)) {
+          return;
+        }
+        this.products.push({
+          name: add_work_shift_app.product_name,
+          quantity: add_work_shift_app.product_quantity,
+          price: add_work_shift_app.product_price,
+          anbar: add_work_shift_app.product_anbar,
+          service_man: add_work_shift_app.product_serviceman,
+          description: add_work_shift_app.product_description,
+        });
+      },
+
+      
+      add_oil: function () {
+        if (!(this.oil_type && this.oil_action && this.oil_liter>0)) {
+          return;
+        }
+        this.oils.push({
+          oil_type: add_work_shift_app.oil_type,
+          oil_action: add_work_shift_app.oil_action,
+          oil_liter: add_work_shift_app.oil_liter,
+          oil_vehicle_hour: add_work_shift_app.oil_vehicle_hour,
+        });
+      },
+
+      
+      add_tavaghof: function () {
+        if (!(this.tavaghof_cause   && this.tavaghof_duration>0)) {
+          return;
+        }
+        let t={
+          cause: add_work_shift_app.tavaghof_cause,
+          duration: parseFloat(add_work_shift_app.tavaghof_duration),
+          description: add_work_shift_app.tavaghof_description,
+          vehicle_hour: add_work_shift_app.tavaghof_vehicle_hour,
+        }
+
+        console.log(t)
+        this.tavaghofs.push(t);
+      },
+
+      
       select_person_account: function () {
         select_person_account_by_code(
           add_person_account_app.person_account_code,
@@ -97,16 +230,25 @@
       },
 
       add_work_shift: function () {
+        console.log(this.tavaghofs)
+        console.log(this.filters)
+        console.log(this.oils)
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           vehicle_id: (this.vehicle_id),
-          title: this.title,
-          oil_service: this.oil_service,
+          
+          oils: this.oils, 
+
           vehicle_code: this.vehicle_code,
           shift_date: this.shift_date,
           shift: this.shift,
           start_hour: (this.start_hour),
           end_hour: (this.end_hour),
+
+          
+          vehicle_start_hour: (this.vehicle_start_hour),
+          vehicle_end_hour: (this.vehicle_end_hour),
+
           driver_id: (this.driver_id), 
           location: this.location,
           oil_type: this.oil_type,
@@ -114,12 +256,13 @@
           gasoil_liter: (this.gasoil_liter),
           vehicle_hour: (this.vehicle_hour),
           filters: JSON.stringify(this.filters),
+          oils: JSON.stringify(this.oils),
+          tavaghofs: JSON.stringify(this.tavaghofs),
+          products: JSON.stringify(this.products),
+          bar: this.bar,
+          service_count: parseInt(this.service_count),
           description: this.description,
-          tavaghof_cause: this.tavaghof_cause,
-          tavaghof_duration: (this.tavaghof_duration),
-          tavaghof_description: this.tavaghof_description,
-          kharabi_duration: (this.kharabi_duration),
-          kharabi_description: this.kharabi_description,
+          
          
 
         };

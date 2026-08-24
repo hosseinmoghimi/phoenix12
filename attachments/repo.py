@@ -358,7 +358,7 @@ class LocationRepo():
         self.person=PersonRepo(*args, **kwargs).me
         self.objects = Location.objects
     def list(self,*args, **kwargs):
-        objects= self.objects
+        objects= Location.objects
         if 'location_id' in kwargs:
             objects=objects.filter(location_id=kwargs['location_id'])
         if 'search_for' in kwargs:
