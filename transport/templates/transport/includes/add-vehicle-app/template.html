@@ -38,8 +38,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">مالک</label>
-                <input
-                  required
+                <input 
                   v-model="owner_code"
                   type="number"
                   class="form-control"
@@ -120,7 +119,7 @@
               <div class="form-group">
                 <label for="">پلاک</label>
                 <input
-                  required
+                   
                   v-model="plaque"
                   type="text"
                   class="form-control"
@@ -132,7 +131,7 @@
               <div class="form-group">
                 <label for="">سال</label>
                 <input
-                  required
+                   
                   v-model="year"
                   type="number"
                   class="form-control"
@@ -145,7 +144,7 @@
               <div class="form-group">
                 <label for="">کیلومتر</label>
                 <input
-                  required
+                   
                   v-model="kilometer"
                   type="number"
                   class="form-control"
@@ -158,7 +157,7 @@
                 <label for="">قیمت</label>
                 <span v-text="to_price(price)"></span> {{CURRENCY}}
                 <input
-                  required
+                   
                   v-model="price"
                   type="number"
                   class="form-control"
@@ -183,7 +182,7 @@
               <div class="form-group">
                 <label for="">مدل</label>
                 <input
-                  required
+                   
                   v-model="model_name"
                   type="text"
                   class="form-control"

@@ -1,5 +1,5 @@
 from core.serializers import serializers
-from .models import Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,OilingMaintenance,OilingMaintenanceDetail,Driver
+from .models import Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 
 from .models import VehicleEvent,Tavaghof,Karkerd
@@ -65,26 +65,13 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Maintenance
         fields=['id', 'title','hour','vehicle','kilometer','sum','service_man','persian_event_datetime','persian_end_datetime','persian_start_datetime','get_absolute_url',  'get_edit_url','get_delete_url']
- 
   
-class OilingMaintenanceSerializer(serializers.ModelSerializer):
-    vehicle=VehicleSerializer()
-    service_man=ServiceManSerializer()
-    class Meta:
-        model=OilingMaintenance
-        fields=['id', 'title','hour','vehicle','kilometer','sum','service_man','persian_event_datetime','persian_end_datetime','persian_start_datetime','get_absolute_url',  'get_edit_url','get_delete_url']
- 
- 
-class OilingMaintenanceDetailSerializer(serializers.ModelSerializer):
-    vehicle=VehicleSerializer2()
-    class Meta:
-        model=OilingMaintenanceDetail
-        fields=['id','vehicle', 'filter_type','filter_action','count','description','cost', 'get_edit_url','get_delete_url']
-
 
 class WorkShiftSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    driver=DriverSerializer()
     class Meta:
         model=WorkShift
-        fields=['id','vehicle','title','get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','vehicle','gasoil_liter','oil_liter','tavaghof','persian_shift_date','driver','get_absolute_url', 'get_edit_url','get_delete_url']
 
    

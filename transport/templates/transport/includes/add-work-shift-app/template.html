@@ -631,6 +631,7 @@
                 <span v-text="sum_tavaghof()"></span>
               </th>
               <th></th>
+              <th></th>
             </tfoot>
           </table>
           <div v-else>
@@ -679,7 +680,7 @@
           <div class="form-group">
             <label for="exampleInputDate">قیمت جزء
 
-              <span v-text="to_price(product_price)+' {{CURRENCY}}'" class="mx-2">
+              <span v-text="to_price(product_unitprice)+' {{CURRENCY}}'" class="mx-2">
 
               </span>
             </label>
@@ -688,7 +689,7 @@
               type="number"
               required
               class="form-control"
-              v-model="product_price"
+              v-model="product_unitprice"
             />
           </div>
         </div>
@@ -701,7 +702,7 @@
               type="text"
               disabled
               class="form-control"
-              v-model="to_price(product_price*product_quantity)"
+              v-model="to_price(product_unitprice*product_quantity)"
             />
           </div>
         </div>
@@ -796,10 +797,10 @@
                 </td>
 
                 <td>
-                  <span v-text="to_price(product.price)"></span>
+                  <span v-text="to_price(product.unit_price)"></span>
                 </td>
                 <td>
-                  <span v-text="to_price(product.price*product.quantity)"></span>
+                  <span v-text="to_price(product.unit_price*product.quantity)"></span>
                 </td>
 
                 <td>

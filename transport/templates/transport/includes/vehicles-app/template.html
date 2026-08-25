@@ -49,7 +49,7 @@
                 </td>
 
                 <td>
-                  <div class="media">
+                  <div class="media" v-if="vehicle.owner">
                     <a :href="vehicle.owner.get_absolute_url">
                       <img :src="vehicle.owner.thumbnail" width="48" class="rounded-circle" alt="">
                     </a>

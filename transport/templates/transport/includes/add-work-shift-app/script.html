@@ -50,7 +50,7 @@
       waiting: false,
 
       product_name:"aaaa",
-      product_price:25000000,
+      product_unitprice:25000000,
       product_quantity:2,
       product_anbar:"",
       product_serviceman:"",
@@ -94,7 +94,7 @@
       sum_product_price:()=>{
         let s=0
         add_work_shift_app.products.forEach(product => {
-          s+=parseInt(product.price*product.quantity)
+          s+=parseInt(product.unit_price*product.quantity)
           
         });
         return s
@@ -173,7 +173,7 @@
         this.products.push({
           name: add_work_shift_app.product_name,
           quantity: add_work_shift_app.product_quantity,
-          price: add_work_shift_app.product_price,
+          unit_price: add_work_shift_app.product_unitprice,
           anbar: add_work_shift_app.product_anbar,
           service_man: add_work_shift_app.product_serviceman,
           description: add_work_shift_app.product_description,
@@ -235,33 +235,33 @@
         console.log(this.oils)
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
-          vehicle_id: (this.vehicle_id),
+
+          vehicle_code: (this.vehicle_code),
+          driver_id: (this.driver_id),
+          location: this.location,
           
           oils: this.oils, 
 
-          vehicle_code: this.vehicle_code,
           shift_date: this.shift_date,
           shift: this.shift,
           start_hour: (this.start_hour),
           end_hour: (this.end_hour),
 
-          
           vehicle_start_hour: (this.vehicle_start_hour),
           vehicle_end_hour: (this.vehicle_end_hour),
-
-          driver_id: (this.driver_id), 
-          location: this.location,
-          oil_type: this.oil_type,
-          oil_liter: (this.oil_liter),
+ 
+          bar: this.bar,
+          service_count: parseInt(this.service_count),
+          
+          description: this.description,
+          
+          
           gasoil_liter: (this.gasoil_liter),
-          vehicle_hour: (this.vehicle_hour),
+          
           filters: JSON.stringify(this.filters),
           oils: JSON.stringify(this.oils),
           tavaghofs: JSON.stringify(this.tavaghofs),
           products: JSON.stringify(this.products),
-          bar: this.bar,
-          service_count: parseInt(this.service_count),
-          description: this.description,
           
          
 

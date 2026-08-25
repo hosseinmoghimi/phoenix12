@@ -2,7 +2,7 @@ from accounting.forms import forms,AddInvoiceForm,AddEventForm
  
  
 class AddVehicleForm(forms.Form):
-    owner_id=forms.IntegerField(required=True)
+    owner_id=forms.IntegerField(required=False)
     title=forms.CharField( max_length=100, required=False)
     vehicle_color=forms.CharField( max_length=100, required=False)
     vehicle_code=forms.CharField( max_length=100, required=False)
@@ -83,27 +83,34 @@ class AddOilingMaintenanceDetailForm(forms.Form):
 
 
 class AddWorkShiftForm(forms.Form):
-    vehicle_code=forms.IntegerField(required=True)
-    driver_id=forms.IntegerField(required=True)
-    location=forms.CharField(required=True, max_length=50) 
+    vehicle_code=forms.CharField(required=True, max_length=50) 
+    driver_id=forms.IntegerField(required=False)
+    location=forms.CharField(required=False, max_length=50) 
     
+
+
+    shift=forms.CharField(required=False, max_length=50) 
+    shift_date=forms.CharField(required=False, max_length=50) 
+    start_hour=forms.IntegerField(required=False) 
+    end_hour=forms.IntegerField(required=False)  
+
 
     vehicle_start_hour=forms.FloatField(required=False) 
     vehicle_end_hour=forms.FloatField(required=False)
 
     
-    shift=forms.CharField(required=True, max_length=50) 
-    shift_date=forms.CharField(required=True, max_length=50) 
-    start_hour=forms.IntegerField(required=True) 
-    end_hour=forms.IntegerField(required=True)  
+    bar=forms.CharField(required=True, max_length=50) 
+    service_count=forms.IntegerField(required=False)
+
+    description=forms.CharField(required=False, max_length=500)
 
     gasoil_liter=forms.IntegerField(required=False)
 
-    description=forms.CharField(required=False, max_length=500)
 
     oils=forms.CharField(required=False, max_length=5000)
     filters=forms.CharField(required=False, max_length=5000)
     tavaghofs=forms.CharField(required=False, max_length=5000)
+    products=forms.CharField(required=False, max_length=5000)
 
  
      

@@ -1,8 +1,8 @@
 from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,OilingMaintenanceSerializer,OilingMaintenanceDetailSerializer,DriverSerializer
-from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,OilingMaintenanceRepo,OilingMaintenanceDetailRepo,DriverRepo
+from .serializers import VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,DriverSerializer
+from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,DriverRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -695,29 +695,14 @@ class WorkShiftView(View):
 
 class WorkShiftsView(View):
     def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        if not request.user.has_perm(APP_NAME+".add_workshift"):
-            mv=MessageView()
-            return mv.get(request=request,title="دسترسی غیر مجاز")
-
-        context['add_work_shift_form']=AddKarkerdForm()
+        context=getContext(request=request) 
  
-        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
-        context['vehicles']=vehicles
+        work_shifts =WorkShiftRepo(request=request).list(*args, **kwargs)
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
 
-        
- 
-        drivers =DriverRepo(request=request).list(*args, **kwargs)
-        context['drivers']=drivers
-        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
-        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
-        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
-        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
-        ssss
-        from attachments.views import LocationRepo
-        locations=LocationRepo(request=request).list()
-        print(locations)
-        context['locations']=LocationRepo(request=request).list()
+         
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
 
 

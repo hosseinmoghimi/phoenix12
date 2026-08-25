@@ -1,0 +1,15 @@
+<script>
+    
+    let work_shifts_for_work_shifts_app=JSON.parse("{{work_shifts_s|escapejs}}")
+    let work_shifts_app = new Vue({
+        el: "#work-shifts-app",
+        data: {
+            work_shifts: work_shifts_for_work_shifts_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

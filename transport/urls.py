@@ -8,6 +8,11 @@ urlpatterns = [
     path('settings/',login_required(views.IndexView.as_view()),name="settings"),
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
+
+    
+    path('drivers/',login_required(views.VehiclesView.as_view()),name="drivers"),
+    path('driver/<int:pk>/',login_required(views.VehicleView.as_view()),name="driver"),
+
     path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
     path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),
@@ -23,16 +28,11 @@ urlpatterns = [
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
+    path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),
     path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),
     path('add-work-shift/',login_required(apis.AddWorkShiftApi.as_view()),name="add_work_shift"),
     path('work-shift/<int:pk>/',login_required(views.WorkShiftView.as_view()),name="workshift"),
-    path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="workshifts"),
 
-    path('oiling-maintenances/',login_required(views.OilingMaintenancesView.as_view()),name="oiling_maintenances"),
-    path('add-oiling-maintenance-detail/',login_required(apis.AddOilingMaintenanceDetailApi.as_view()),name="add_oiling_maintenance_detail"),
-    path('oiling-maintenance-details/',login_required(views.OilingMaintenanceDetailsView.as_view()),name="oiling_maintenance_details"),
-    path('oiling-maintenance/<int:pk>/',login_required(views.OilingMaintenanceView.as_view()),name="oilingmaintenance"),
-    path('oiling-maintenance/print/<int:pk>/',login_required(views.OilingMaintenancePrintView.as_view()),name="oiling_maintenance_print"),
     
     path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
     path('add-karkerd/',login_required(apis.AddKarkerdApi.as_view()),name="add_karkerd"),

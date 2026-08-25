@@ -1,0 +1,111 @@
+<div id="accordion-work-shifts" class="rtl text-right farsi">
+  <div class="card" id="work-shifts-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-work-shifts"
+          aria-expanded="true"
+          aria-controls="collapse-work-shifts"
+        >
+            شیفت های کارکرد ماشین آلات
+        <span v-if="work_shifts.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="work_shifts.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-work-shifts"
+      class="collapse {% if expand_work_shifts %} show {% endif %}"
+      aria-labelledby="heading-work-shifts"
+      data-parent="#accordion-work-shifts"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>تاریخ</th>
+              <th>ماشین</th>
+              <th>راننده</th>
+              <th>لیتراژ گازوئیل</th>
+              <th>لیتراژ روغن</th>
+              <th>توقف</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="work_shift in work_shifts">
+                <td>
+                    <span v-text="work_shift.persian_shift_date"></span>
+                </td>
+                <td>
+                
+                      <a :href="work_shift.vehicle.get_absolute_url">
+                        <span v-text="work_shift.vehicle.title"></span>
+                      </a>
+                     
+                </td>
+
+                <td>
+                   <a :href="work_shift.driver.get_absolute_url">
+                        <span v-text="work_shift.driver.title"></span>
+                      </a>
+                </td>
+                <td>
+                        <span v-text="work_shift.gasoil_liter"></span>
+                </td>
+
+
+                   <td>
+                        <span v-text="work_shift.oil_liter"></span>
+                </td>
+
+                
+                   <td>
+                        <span v-text="work_shift.tavaghof"></span>
+                </td>
+
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="work_shift.get_absolute_url"
+                    title="نمایش"
+                    class="text-info mx-2"
+                  >
+                    <i class="fa fa-edit text-info"> </i>
+                    نمایش
+                  </a>
+
+                     <a
+                    target="_blank"
+                    :href="work_shift.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+
+                  <a
+                    target="_blank"
+                    :href="work_shift.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
