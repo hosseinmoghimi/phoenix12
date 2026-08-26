@@ -1,3 +1,4 @@
+{% load static %}
 <div id="accordion-work-shifts" class="rtl text-right farsi">
   <div class="card" id="work-shifts-app">
     <div class="card-header">
@@ -9,8 +10,8 @@
           aria-expanded="true"
           aria-controls="collapse-work-shifts"
         >
-            شیفت های کارکرد ماشین آلات
-        <span v-if="work_shifts.length>0">
+          شیفت های کارکرد ماشین آلات
+          <span v-if="work_shifts.length>0">
             <small class="text-danger mx-2">
               <span v-text="work_shifts.length"></span>
             </small>
@@ -30,45 +31,160 @@
           <table class="table table-striped">
             <thead>
               <th>تاریخ</th>
-              <th>ماشین</th>
+              {% if not vehicle %}
+
+              <th>دستگاه</th>
+              {% endif %}
               <th>راننده</th>
+              <th>کارکرد ساعت دستگاه</th>
               <th>لیتراژ گازوئیل</th>
               <th>لیتراژ روغن</th>
               <th>توقف</th>
+              <th>بار</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="work_shift in work_shifts">
                 <td>
-                    <span v-text="work_shift.persian_shift_date"></span>
+                  <span v-text="work_shift.persian_shift_date"></span>
+                  <div>
+                    شیفت
+                    <span v-text="work_shift.shift"></span>
+                    <span v-text="work_shift.start_hour"></span>
+                    ~
+                    <span v-text="work_shift.end_hour"></span>
+                  </div>
                 </td>
+                {% if not vehicle %}
+
                 <td>
+                  <a :href="work_shift.vehicle.get_absolute_url">
+                    <div class="media">
+                      <img
+                        :src="work_shift.vehicle.thumbnail"
+                        width="32"
+                        alt=""
+                      />
+                      <div class="media-body mr-2">
+                        <div>
+                          <span v-text="work_shift.vehicle.title"></span>
+                        </div>
+                        <div>
+                          <span v-text="work_shift.vehicle.vehicle_code"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </td>
+                {% endif %}
+
+                <td>
+
+                     <a :href="work_shift.driver.get_absolute_url">
+                    <div class="media">
+                      <img class="rounded-circle"
+                        :src="work_shift.driver.person_account.person.image"
+                        width="32"
+                        alt=""
+                      />
+                      <div class="media-body mr-2">
+                       
+                             <span
+                      v-text="work_shift.driver.person_account.person.full_name"
+                    ></span> 
+                        
+                      </div>
+                    </div>
+                  </a>
+
                 
-                      <a :href="work_shift.vehicle.get_absolute_url">
-                        <span v-text="work_shift.vehicle.title"></span>
-                      </a>
-                     
                 </td>
 
                 <td>
-                   <a :href="work_shift.driver.get_absolute_url">
-                        <span v-text="work_shift.driver.title"></span>
-                      </a>
+                  <div
+                    :title="work_shift.vehicle_karkerd+' ساعت کارکرد مفید' "
+                    v-if="work_shift.vehicle_karkerd"
+                  >
+                    <img
+                      src="{% static 'transport/img/timer.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                    <span v-text="work_shift.vehicle_karkerd"></span>
+                  </div>
+                  <div class="small text-muted">
+                    <span v-if="work_shift.vehicle_start_hour>0">
+                      از
+                      <span v-text="work_shift.vehicle_start_hour"></span>
+                    </span>
+                    <span
+                      v-if="work_shift.vehicle_start_hour>0 && work_shift.vehicle_end_hour>0"
+                    >
+                      ~
+                    </span>
+                    <span v-if="work_shift.vehicle_end_hour>0">
+                      تا
+
+                      <span v-text="work_shift.vehicle_end_hour"></span>
+                    </span>
+                  </div>
+                </td>
+
+                <td>
+                  <div
+                    :title="work_shift.gasoil_liter+' لیتر گازوئیل' "
+                    v-if="work_shift.gasoil_liter"
+                  >
+                    <img
+                      src="{% static 'transport/img/gasoil.png' %}"
+                      width="28"
+                      alt=""
+                    />
+
+                    <span v-text="work_shift.gasoil_liter"></span>
+                  </div>
+                </td>
+
+                <td>
+                  <div
+                    :title="work_shift.oil_liter+' لیتر روغن' "
+                    v-if="work_shift.oil_liter"
+                  >
+                    <img
+                      src="{% static 'transport/img/motor-oil.png' %}"
+                      width="28"
+                      alt=""
+                    />
+
+                    <span v-text="work_shift.oil_liter"></span>
+                  </div>
+                </td>
+
+                <td>
+                  <div
+                    :title="work_shift.tavaghof+' ساعت توقف' "
+                    v-if="work_shift.tavaghof"
+                  >
+                    <img
+                      src="{% static 'transport/img/stop.png' %}"
+                      width="28"
+                      alt=""
+                    />
+
+                    <span v-text="work_shift.tavaghof"></span>
+                  </div>
                 </td>
                 <td>
-                        <span v-text="work_shift.gasoil_liter"></span>
+                  <div>
+                    <small class="text-muted"> محل : </small>
+                    <span v-text="work_shift.location"></span>
+                  </div>
+                  <div v-if="work_shift.bar_count>0">
+                    <span v-text="work_shift.bar_count"></span>
+                    سرویس
+                    <span v-text="work_shift.bar"></span>
+                  </div>
                 </td>
-
-
-                   <td>
-                        <span v-text="work_shift.oil_liter"></span>
-                </td>
-
-                
-                   <td>
-                        <span v-text="work_shift.tavaghof"></span>
-                </td>
-
 
                 <td>
                   <a
@@ -81,7 +197,7 @@
                     نمایش
                   </a>
 
-                     <a
+                  <a
                     target="_blank"
                     :href="work_shift.get_edit_url"
                     title="ویرایش"
@@ -103,6 +219,114 @@
                 </td>
               </tr>
             </tbody>
+            <tfoot>
+              <th>
+                <div>
+                    <span v-text="work_shifts.length"></span>
+                </div>
+                <img
+                      src="{% static 'transport/img/ship.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_shift_hour()"></span> ساعت شیفت کاری
+                </strong>
+
+              </th>
+              
+              <th></th>
+              <th></th>
+              <th>
+                 <div>
+                    <small>
+
+                        مجموع کارکرد دستگاه
+                    </small>
+                </div>
+
+                <img
+                      src="{% static 'transport/img/timer.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_karkerd()"></span>
+                </strong>
+              </th>
+              <th>
+                 <div>
+                    <small>
+
+                        مجموع لیتراژ گازوئیل
+                    </small>
+                </div>
+
+                <img
+                      src="{% static 'transport/img/gasoil.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_gasoil_liter()"></span>
+                </strong>
+              </th>
+              <th>
+                 <div>
+                    <small>
+
+                        مجموع لیتراژ روغن
+                    </small>
+                </div>
+                <img
+                      src="{% static 'transport/img/motor-oil.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_oil_liter()"></span>
+                </strong>
+              </th>
+              <th>
+                 <div>
+                    <small>
+
+                        مجموع توقفات
+                    </small>
+                </div>
+
+                <img
+                      src="{% static 'transport/img/stop.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_tavaghof()"></span>
+                </strong>
+                  
+
+              </th>
+              <th>
+                 <div>
+                    <small>
+
+                        تعداد سرویس ها
+                    </small>
+                </div>
+                 <img
+                      src="{% static 'transport/img/ship.png' %}"
+                      width="28"
+                      alt=""
+                    />
+                <strong>
+                  <span v-text="sum_bar_count()"></span>
+                </strong>
+
+              </th>
+              <th>
+
+              </th>
+            </tfoot>
           </table>
         </div>
       </div>

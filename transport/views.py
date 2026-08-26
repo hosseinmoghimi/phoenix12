@@ -13,9 +13,10 @@ from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
 from .enums import MaintenanceTypesEnum,OilTypeEnum
 from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
+from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer
 
-from .serializers import VehicleEventSerializer,TavaghofSerializer,KarkerdSerializer
-from .repo import VehicleEventRepo,KarkerdRepo,TavaghofRepo
+from .serializers import VehicleEventSerializer
+from .repo import VehicleEventRepo,TavaghofRepo
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='transport/'
 WIDE_LAYOUT="WIDE_LAYOUT"
@@ -130,12 +131,16 @@ class VehicleView(View):
         context['vehicle_statuses_s']=vehicle_statuses_s
 
 
-        
+         
 
-        vehicle_events=VehicleEventRepo(request=request).list(vehicle_id=vehicle.id)
-        context['vehicle_events']=vehicle_events
-        vehicle_events_s=json.dumps(VehicleEventSerializer(vehicle_events,many=True).data)
-        context['vehicle_events_s']=vehicle_events_s
+
+        work_shifts =WorkShiftRepo(request=request).list(vehicle_id=vehicle.id)
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
 
         return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
   
@@ -668,24 +673,46 @@ class NewWorkShiftView(View):
 
 class WorkShiftView(View):
     def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        if not request.user.has_perm(APP_NAME+".add_workshift"):
+        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
+        if work_shift is None:
             mv=MessageView()
-            return mv.get(request=request,title="دسترسی غیر مجاز")
+            return mv.get(request=request,title="وجود ندارد")
 
-        context['add_work_shift_form']=AddKarkerdForm()
  
-        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
-        context['vehicles']=vehicles
+        context=getContext(request=request)
 
         
+
  
-        drivers =DriverRepo(request=request).list(*args, **kwargs)
-        context['drivers']=drivers
-        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
-        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
-        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
-        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+        context['work_shift']=work_shift
+
+        oil_services =work_shift.oilservice_set.all()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =work_shift.filterservice_set.all()
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        products =work_shift.product_set.all()
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
+        context['expand_oil_services']=True
+        context[WIDE_LAYOUT]=True
 
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
@@ -697,12 +724,16 @@ class WorkShiftsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
  
-        work_shifts =WorkShiftRepo(request=request).list(*args, **kwargs)
+        work_shifts =WorkShiftRepo(request=request).list(*args, **kwargs).order_by('-start_hour').order_by('-shift_date')
         context['work_shifts']=work_shifts
         work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
         context['work_shifts_s']=work_shifts_s
 
+
+
          
+        context['expand_work_shifts']=True
+        context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
 
 

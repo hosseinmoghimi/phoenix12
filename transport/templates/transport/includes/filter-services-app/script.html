@@ -1,0 +1,15 @@
+<script>
+    
+    let filter_services_for_filter_services_app=JSON.parse("{{filter_services_s|escapejs}}")
+    let filter_services_app = new Vue({
+        el: "#filter-services-app",
+        data: {
+            filter_services: filter_services_for_filter_services_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

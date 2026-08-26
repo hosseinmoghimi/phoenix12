@@ -1,0 +1,101 @@
+{% load static %}
+<div id="accordion-products" class="rtl text-right farsi">
+  <div class="card" id="products-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-products"
+          aria-expanded="true"
+          aria-controls="collapse-products"
+        >
+            قطعات تحویلی از انبار
+
+            <span v-if="products.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="products.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-products"
+      class="collapse {% if expand_products %} show {% endif %}"
+      aria-labelledby="heading-products"
+      data-parent="#accordion-products"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th>قطعه</th>
+              <th>تعداد</th>
+              <th>قیمت جزء</th>
+              <th>جمع</th>
+              <th>توضیحات</th> 
+            </thead>
+            <tbody>
+              <tr v-for="product in products">
+                <td>
+                 <div class="media">
+                      <img src="{% static 'transport/img/motor-oil.png' %}" width="32" class="rounded-circle" alt="">
+                    <div class="media-body mr-2">
+                        <span v-text="product.name"></span>
+                </div>
+            </div>
+                </td>
+
+                <td>
+                  
+                <h6 v-text="product.quantity"></h6>
+                </td>
+
+
+                 
+                   
+
+                
+                   <td>
+                     <div v-if="product.unit_price" >
+
+                        <span v-text="to_price(product.unit_price)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+                
+                
+                   <td>
+                     <div v-if="product.unit_price" >
+
+                         <img src="{% static 'leo/img/rial.png' %}" width="28" alt="{{CURRENCY}}">   
+                        <span v-text="to_price(product.unit_price*product.quantity)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+
+                 <td>
+                        <h6 v-text="product.description"></h6>
+                </td>
+
+
+
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

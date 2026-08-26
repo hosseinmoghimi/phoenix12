@@ -14,9 +14,13 @@
 
             <div class="col-md-12">
     
-                    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+                    {% include "transport/includes/work-shifts-app/template.html" %}
             </div>
 
+            <div class="col-md-12">
+    
+                    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+            </div>
             <div class="col-md-12">
     
                     {% include "transport/includes/vehicle-statuses-app/template.html" %}
@@ -36,11 +40,7 @@
                 {% include "transport/includes/maintenances-app/template.html" %}
 
             </div>
-            <div class="col-md-12">
-                {% include "transport/includes/vehicle-events-app/template.html" %}
-
-            </div>
-
+           
             <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
 
@@ -89,7 +89,7 @@
 {% include "transport/includes/vehicle-app/script.html" %}
 {% include "transport/includes/maintenances-app/script.html" %}
 {% include "transport/includes/vehicle-statuses-app/script.html" %}
-{% include "transport/includes/vehicle-events-app/script.html" %}
+{% include "transport/includes/work-shifts-app/script.html" %}
 
 {% endblock script %}
 

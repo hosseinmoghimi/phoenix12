@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,KarkerdRepo,WorkShiftRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,KarkerdSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer

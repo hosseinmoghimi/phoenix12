@@ -1,8 +1,8 @@
 from core.serializers import serializers
-from .models import Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
+from .models import OilService,Tavaghof,FilterService,Product,Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 
-from .models import VehicleEvent,Tavaghof,Karkerd
+from .models import VehicleEvent,Tavaghof
 
 
 class DriverSerializer(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 class VehicleSerializer2(serializers.ModelSerializer):
     class Meta:
         model=Vehicle
-        fields=['id',  'title', 'get_absolute_url']
+        fields=['id','vehicle_code','thumbnail',  'title', 'get_absolute_url']
   
  
 class VehicleStatusSerializer(serializers.ModelSerializer):
@@ -37,13 +37,7 @@ class TavaghofSerializer(serializers.ModelSerializer):
         model=Tavaghof
         fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
 
-     
-class KarkerdSerializer(serializers.ModelSerializer):
-    vehicle=VehicleSerializer()
-    class Meta:
-        model=Karkerd
-        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
-
+      
 
 class VehicleEventSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
@@ -68,10 +62,29 @@ class MaintenanceSerializer(serializers.ModelSerializer):
   
 
 class WorkShiftSerializer(serializers.ModelSerializer):
-    vehicle=VehicleSerializer()
+    vehicle=VehicleSerializer2()
     driver=DriverSerializer()
     class Meta:
         model=WorkShift
-        fields=['id','vehicle','gasoil_liter','oil_liter','tavaghof','persian_shift_date','driver','get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','vehicle_karkerd','start_hour','end_hour','vehicle_start_hour','vehicle_end_hour','location','bar','bar_count','shift','vehicle_code','vehicle','title','gasoil_liter','oil_liter','tavaghof','persian_shift_date','driver','get_absolute_url', 'get_edit_url','get_delete_url']
+
+   
+class FilterServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=FilterService
+        fields=['id','cost','count','filter_type','filter_action','description']
+
+
+   
+class OilServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OilService
+        fields=['id','vehicle_hour','oil_action','oil_liter','oil_type','description','cost']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Product
+        fields=['id','name','unit_price','quantity','description']
 
    

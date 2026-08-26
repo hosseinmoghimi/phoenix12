@@ -1,0 +1,299 @@
+{% extends "transport/layout.html" %}
+{% block content %}
+
+{% load static %}
+{% load to_normal_number %}
+{% load to_persian_date %}
+<div class="row rtl farsi">
+    
+   <div class="col-md-4">
+        <h5 class="text-center">
+            
+                شیفت کارکرد ماشین
+
+            
+        </h5>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+             
+            <div class="card-body">
+                
+                {% if work_shift.person_account %}
+                <h6>
+                    <small class="text-muted">
+                    حساب :
+
+                    </small>
+                    <a href="{{work_shift.person_account.get_absolute_url}}">
+                        {{work_shift.person_account.name}}
+                    </a>
+                </h6>
+                {% endif %}
+
+                {% if perms.transport.change_work_shift %}
+                <a href="{{work_shift.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+                    <i class="fa fa-edit text-warning"></i> ویرایش
+                </a>
+                {% endif %}
+
+
+                {% if perms.transport.delete_work_shift %}
+                <a href="{{work_shift.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
+                    <i class="fa fa-trash text-danger"></i> حذف
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                شیفت کارکرد ماشین
+
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+ <table class="table">
+                <tr>
+                    <td class="field_name">
+                        دستگاه
+                    </td>
+
+                    
+                    <td class="field_value">
+                        <a href="{{work_shift.vehicle.get_absolute_url}}">
+                            {{work_shift.vehicle.title}}
+                        </a>
+                    
+                    </td>
+
+                </tr>
+
+                 <tr>
+                    <td class="field_name">
+                        تاریخ
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.shift_date|to_persian_date|safe}}
+                            <small class="mx-2">
+                            {{work_shift.start_hour}}
+                            ~ 
+                            {{work_shift.end_hour}}
+                            <span class="badge badge-{{work_shift.shift_color}}">
+
+                                {{work_shift.shift}}
+                            </span>
+
+                            </small>
+                    
+                    </td>
+
+                </tr>
+
+
+                   <tr>
+                    <td class="field_name">
+                        محل فعالیت
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.location}}
+                    
+                    </td>
+
+                </tr>
+                  
+  
+                 <tr >
+                    <td class="field_name">
+                        بار 
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.bar}}
+                            <small class="mx-2">
+
+                                {{work_shift.bar_count}}
+                                سرویس
+                            </small>
+                            <img src="{% static 'transport/img/ship.png' %}" width="28" alt="">
+                    
+                    </td>
+
+                </tr>
+  
+
+            </table>
+                </div>
+                <div class="col-md-4">
+ <table class="table">
+              
+
+                 
+
+               
+
+                
+ 
+{% if work_shift.gasoil_liter %}
+
+                 <tr>
+                    <td class="field_name">
+                        گازوئیل مصرفی
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.gasoil_liter}}
+                            <img src="{% static 'transport/img/gasoil.png' %}" width="28" alt="">
+                    
+                    </td>
+
+                </tr>
+{% endif %}
+
+{% if work_shift.oil_liter %}
+  
+                 <tr>
+                    <td class="field_name">
+                        روغن مصرفی
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.oil_liter|to_normal_number}}
+                            <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="">
+                    
+                    </td>
+
+                </tr>
+{% endif %}
+
+            </table>
+                </div>
+                <div class="col-md-4">
+                   
+ <table class="table">
+                 
+
+
+                 <tr>
+                    <td class="field_name">
+                        ساعت دستگاه
+                    </td>
+
+                    
+                    <td class="field_value">
+                            {{work_shift.vehicle_start_hour|to_normal_number}}
+                            ~{{work_shift.vehicle_end_hour|to_normal_number}}
+                            
+                    
+                    </td>
+
+                </tr>
+                 {% if work_shift.vehicle_karkerd %}
+                      
+                    
+ <tr>
+                    <td class="field_name">
+                        کارکرد ساعت دستگاه
+                    </td>
+
+                    
+                    <td class="field_value">
+                        {{work_shift.vehicle_karkerd|to_normal_number}}
+                        <img src="{% static 'transport/img/timer.png' %}" width="28" alt="">
+                        ساعت
+                    
+                    </td>
+
+                </tr> 
+                    {% endif %}
+                 {% if work_shift.tavaghof %}
+
+    <tr>
+                    <td class="field_name">
+                        توقف
+                    </td>
+                    <td class="field_value">
+{{work_shift.tavaghof|to_normal_number}}
+<img src="{% static 'transport/img/stop.png' %}" width="28" alt="">
+ساعت
+                    
+                           
+                    
+                    </td>
+
+                </tr>
+                    {% endif %}
+
+                  
+   
+
+            </table>
+                </div>
+                 <div class="col-md-12">
+ <table class="table">
+               
+
+                 <tr>
+                    <td class="field_name">
+                        توضیحات
+                    </td>
+
+                    
+                    <td class="field_value">
+                           {% if work_shift.description %}
+                           {{work_shift.description}}
+                             
+                           {% endif %}
+                             
+                    
+                    </td>
+
+                </tr>
+
+ 
+
+            </table>
+                </div>
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+    <div class="col-md-12 ">
+        {% include "transport/includes/oil-services-app/template.html" %}
+    </div>
+    <div class="col-md-12 ">
+        {% include "transport/includes/filter-services-app/template.html" %}
+    </div>
+    <div class="col-md-12 ">
+        {% include "transport/includes/products-app/template.html" %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    
+   
+    
+
+</script> 
+
+{% include "transport/includes/oil-services-app/script.html" %}
+{% include "transport/includes/filter-services-app/script.html" %}
+{% include "transport/includes/products-app/script.html" %}
+   
+ {% endblock script %}

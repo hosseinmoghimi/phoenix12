@@ -9,7 +9,60 @@
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+            sum_karkerd: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.vehicle_karkerd
+                });
+                return   (s) 
+            }, 
+
+            
+            sum_gasoil_liter: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.gasoil_liter
+                });
+                return  to_price(s) 
+            },
+            
+            sum_shift_hour: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.end_hour-work_shift.start_hour
+                });
+                return  to_price(s) 
+            },
+            
+            
+            sum_bar_count: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.bar_count
+                });
+                return  (s) 
+            },
+
+
+            
+            sum_oil_liter: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.oil_liter
+                });
+                return  to_price(s) 
+            },
+            
+            
+            sum_tavaghof: function( ) { 
+                let s=0
+                this.work_shifts.forEach(work_shift => {
+                    s+=work_shift.tavaghof
+                });
+                return   (s) 
+            },
+
         }
     })
 </script>

@@ -189,7 +189,8 @@ class Vehicle(Asset):
             pic='grader.jpg'
         return f'{STATIC_URL}{APP_NAME}/images/thumbnail/{pic}/' 
 
-
+    def __str__(self):
+        return f'{self.vehicle_code} - {self.title}'
 class VehicleEvent(Event):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
     driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.SET_NULL)
@@ -218,59 +219,7 @@ class VehicleEvent(Event):
          result=SUCCEED
          message="رویداد وسیله نقلیه با موفقیت ذخیره شد."
          return (result,message,vehicle_event)
-
-
-class Karkerd(VehicleEvent):
-    start_hour=models.FloatField(_("ساعت شروع"))
-    end_hour=models.FloatField(_("ساعت پایان"))
-
-    start_kilometer=models.IntegerField(_("کیلومتر شروع"),null=True,blank=True)
-    end_kilometer=models.IntegerField(_("کیلومتر پایان"),null=True,blank=True)
-
-    load=models.CharField(_("load"),null=True,blank=True, max_length=50)
-    count=models.IntegerField(_("count"),default=0)
-
-
-    class Meta:
-        verbose_name = _("Karkerd")
-        verbose_name_plural = _("Karkerds")
  
-    def save(self,*args, **kwargs): 
-        self.vehicle_event_type="کارکرد"
-        (result,message,karkerd)=FAILED,'',self
-        
-
-        if self.class_name is None or self.class_name=="":
-            self.class_name="karkerd"
-        if self.app_name is None or self.app_name=="":
-            self.app_name=APP_NAME
-        super(Karkerd,self).save()   
-        result=SUCCEED
-        message="کارکرد وسیله نقلیه با موفقیت ذخیره شد."
-        return (result,message,karkerd)
-
-
-class Tavaghof(VehicleEvent):
-    cause=models.CharField(_("علت"), max_length=50)
-
-    class Meta:
-        verbose_name = _("Tavaghof")
-        verbose_name_plural = _("Tavaghofs")
- 
-    def save(self,*args, **kwargs): 
-        self.vehicle_event_type="توقف"
-        (result,message,tavaghof)=FAILED,'',self
-        
-
-        if self.class_name is None or self.class_name=="":
-            self.class_name="tavaghof"
-        if self.app_name is None or self.app_name=="":
-            self.app_name=APP_NAME
-        super(Tavaghof,self).save()   
-        result=SUCCEED
-        message="توقف وسیله نقلیه با موفقیت ذخیره شد."
-        return (result,message,tavaghof)
-
 
 class VehicleStatus(models.Model,LinkHelper):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
@@ -324,16 +273,26 @@ class WorkShift(models.Model,LinkHelper):
     vehicle_end_hour=models.FloatField(_("vehicle_end_hour"), default=0)
 
     bar=models.CharField(_("bar"), max_length=50)
-    service_count=models.IntegerField(_("service_count"), default=0)
+    bar_count=models.IntegerField(_("bar_count"), default=0)
     
     gasoil_liter=models.IntegerField(_("gasoil_liter"), default=0)
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
 
+    @property
+    def vehicle_code(self):
+        return self.vehicle.code
     
+    def shift_color(self):
+        if self.shift=="شب":
+            return 'secondary'
+        return 'primary'
+
+
     
-
-
-
+    def vehicle_karkerd(self):
+        if self.vehicle_end_hour>0:
+            return self.vehicle_end_hour-self.vehicle_start_hour
+        return 0
     class Meta:
         verbose_name = _("WorkShift")
         verbose_name_plural = _("WorkShifts")
@@ -366,7 +325,8 @@ class WorkShift(models.Model,LinkHelper):
             s+=tavaghof.duration
         return s
     def persian_shift_date(self):
-        return PersianCalendar().from_gregorian(self.shift_date)
+        return PersianCalendar().from_gregorian(self.shift_date)[0:10]
+
 
 class OilService(models.Model,LinkHelper):
     class_name="oilservice"
@@ -375,7 +335,9 @@ class OilService(models.Model,LinkHelper):
     oil_type=models.CharField(_("oil_type"), max_length=50)
     oil_action=models.CharField(_("oil_action"),max_length=50)
     oil_liter=models.FloatField(_("oil_liter"),default=1)
+    cost=models.IntegerField(_("cost"),default=1)
     vehicle_hour=models.FloatField(_("vehicle_hour"),default=0)
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
 
     class Meta:
         verbose_name = _("OilService")
@@ -408,7 +370,6 @@ class FilterService(models.Model,LinkHelper):
     filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
     count=models.IntegerField(_("count"),default=1)
     cost=models.IntegerField(_("cost"),default=0)
-    
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
 
 
@@ -475,7 +436,9 @@ class Product(models.Model,LinkHelper):
     anbar=models.CharField(_("anbar"),max_length=50)
     service_man=models.CharField(_("service_man"),max_length=50)
     description=models.CharField(_("description"),null=True,blank=True,max_length=50)
-
+    @property
+    def line_total(self):
+        return self.unit_price*self.quantity
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
@@ -493,3 +456,75 @@ class Product(models.Model,LinkHelper):
          result=SUCCEED
          message="قطعه با موفقیت اضافه شد."
          return (result,message,product)
+
+
+class Service(models.Model,LinkHelper):
+    class_name='service'
+    app_name=APP_NAME
+
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
+    driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.PROTECT)
+
+    vehicle_hour=models.FloatField(_("vehicle_hour"),default=0)
+
+    shift_date=models.DateField(_("shift_date"), auto_now=False, auto_now_add=False)
+    shift=models.CharField(_("shift"), max_length=50)
+
+
+    grease=models.FloatField(_("grease"),default=0)
+
+    oil_type=models.CharField(_("oil_type"), max_length=50)
+    oil_liter=models.FloatField(_("oil_liter"),default=0)
+    service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
+
+    filter_type=models.CharField(_("filter type"),choices=FilterTypeEnum.choices, max_length=50)
+    filter_action=models.CharField(_("filter action"), choices=FilterActionEnum.choices,max_length=50)
+    
+    description=models.CharField(_("description"),null=True,blank=True, max_length=500)
+
+
+    class Meta:
+        verbose_name = _("Service")
+        verbose_name_plural = _("Services")
+
+    def __str__(self):
+        return f'{self.vehicle} - {self.shift_date} - {self.shift} '
+
+
+    def save(self,*args, **kwargs): 
+         (result,message,product)=FAILED,'',self
+         
+         super(Service,self).save()   
+         result=SUCCEED
+         message="سرویس و تعمیر با موفقیت اضافه شد."
+         return (result,message,product)
+
+
+class ProductAnbar(models.Model,LinkHelper):
+    class_name="productanbar"
+    app_name=APP_NAME
+    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)
+    name=models.CharField(_("name"), max_length=50)
+    quantity=models.IntegerField(_("quantity"),default=0)
+    unit_price=models.IntegerField(_("unit_price"),default=0)
+    anbar=models.CharField(_("anbar"),max_length=50)
+    description=models.CharField(_("description"),null=True,blank=True,max_length=50)
+    @property
+    def line_total(self):
+        return self.unit_price*self.quantity
+    class Meta:
+        verbose_name = _("ProductAnbar")
+        verbose_name_plural = _("ProductAnbars")
+
+    def __str__(self):
+        return self.name
+  
+    def save(self,*args, **kwargs): 
+         (result,message,product)=FAILED,'',self
+         
+         super(ProductAnbar,self).save()   
+         result=SUCCEED
+         message="خروج قطعه از انبار با موفقیت اضافه شد."
+         return (result,message,product)
+
+

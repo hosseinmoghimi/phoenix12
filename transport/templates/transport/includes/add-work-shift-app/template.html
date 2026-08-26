@@ -169,7 +169,7 @@
               type="number"
               required
               class="form-control"
-              v-model="service_count"
+              v-model="bar_count"
             />
           </div>
         </div>
@@ -194,7 +194,18 @@
           </div>
         </div>
 
-        
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">مجموع لیتراژ گازوئیل</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="gasoil_liter"
+            />
+          </div>
+        </div>
         <div class="col-md-12">
           <hr />
         </div>
@@ -217,23 +228,13 @@
 
     <div class="card-body">
       <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            <label for="exampleInputDate">مجموع لیتراژ گازوئیل</label>
-
-            <input
-              type="number"
-              required
-              class="form-control"
-              v-model="gasoil_liter"
-            />
-          </div>
-        </div>
+        
         <div class="col-md-12">
           <hr />
         </div>
 
         <div class="col-md-4">
+
           <div class="form-group">
             <label for="">نوع روغن</label>
             <select v-model="oil_type" type="text" class="form-control">
@@ -280,6 +281,36 @@
             />
           </div>
         </div>
+        <div class="md-12">
+
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="exampleInputDate">برآورد هزینه</label>
+              <span class="mx-2" v-text="to_price(oil_cost)"></span>
+              {{CURRENCY}}
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="oil_cost"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="form-group">
+            <label for="exampleInputDate">توضیحات</label>
+
+            <input
+              type="text"
+              required
+              class="form-control"
+              v-model="oil_description"
+            />
+          </div>
+        </div>
 
         <div class="col-md-12"></div>
         <div class="col-md-3 my-3">
@@ -312,12 +343,16 @@
           </div>
         </div>
         <div class="col-md-9 mt-3">
-          <table v-if="oils.length>0" class="table table-striped">
+          <div  v-if="oils.length>0" class="table-responsive">
+            
+          <table class="table table-striped">
             <thead>
               <th>نوع روغن</th>
               <th>نوع سرویس</th>
               <th>لیتراژ</th>
               <th>ساعت دستگاه</th>
+              <th>برآورد هزینه</th>
+              <th>توضیحات</th>
             </thead>
             <tbody>
               <tr v-for="oil in oils">
@@ -334,6 +369,14 @@
                 <td>
                   <span v-text="oil.oil_vehicle_hour"></span>
                 </td>
+
+                <td>
+                  <span v-text="oil.cost"></span>
+                </td>
+
+                <td>
+                  <span v-text="oil.description"></span>
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -346,8 +389,15 @@
               </th>
 
               <th></th>
+              
+              <th>
+                <span v-text="sum_oil_cost()"></span>
+              </th>
+
+              <th></th>
             </tfoot>
           </table>
+          </div>
           <div v-else>
             <div class="alert alert-secondary">
               <p>خدمات روغن انجام نشده است.</p>
@@ -405,7 +455,7 @@
               type="number"
               id="ssssssss"
               class="form-control"
-              v-model="count"
+              v-model="bar_count"
             />
           </div>
         </div>
@@ -415,14 +465,30 @@
             <label for="ghgykuhj"
               >هزینه
 
-              <span class="mx-2" v-text="to_price(cost)"></span>
+              <span class="mx-2" v-text="to_price(filter_cost)"></span>
               {{CURRENCY}}
             </label>
             <input
               type="number"
               id="ghgykuhj"
               class="form-control"
-              v-model="cost"
+              v-model="filter_cost"
+            />
+          </div>
+        </div>
+
+         <div class="col-md-12">
+          <div class="form-grou">
+            <label for="ghgykuhj"
+              >توضیحات
+
+              
+            </label>
+            <input
+              type="number"
+              id="ghgykuhj"
+              class="form-control"
+              v-model="filter_description"
             />
           </div>
         </div>
@@ -462,12 +528,15 @@
           </div>
         </div>
         <div class="col-md-9 mt-3">
-          <table v-if="filters.length>0" class="table table-striped">
+          <div  v-if="filters.length>0" class="table-responsive">
+            
+          <table class="table table-striped">
             <thead>
               <th>نوع فیلتر</th>
               <th>خدمات</th>
               <th>تعداد</th>
               <th>هزینه</th>
+              <th>توضیحات</th>
             </thead>
             <tbody>
               <tr v-for="filter in filters">
@@ -483,6 +552,10 @@
                 </td>
                 <td>
                   <span v-text="filter.cost"></span>
+                </td>
+                
+                <td>
+                  <span v-text="filter.description"></span>
                 </td>
               </tr>
             </tbody>
@@ -500,6 +573,7 @@
               </th>
             </tfoot>
           </table>
+          </div>
           <div v-else>
             <div class="alert alert-secondary">
               <p>خدمات فیلتر انجام نشده است.</p>

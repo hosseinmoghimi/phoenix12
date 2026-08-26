@@ -1,0 +1,15 @@
+<script>
+    
+    let oil_services_for_oil_services_app=JSON.parse("{{oil_services_s|escapejs}}")
+    let oil_services_app = new Vue({
+        el: "#oil-services-app",
+        data: {
+            oil_services: oil_services_for_oil_services_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

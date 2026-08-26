@@ -8,7 +8,7 @@ from authentication.repo import PersonRepo
 from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
-from .models import VehicleEvent,Tavaghof,Karkerd,VehicleStatus
+from .models import VehicleEvent,Tavaghof,VehicleStatus
 from .models import FilterService,OilService,Tavaghof,Product
 
 class VehicleStatusRepo():
@@ -191,6 +191,7 @@ class WorkShiftRepo():
                 filter_service.filter_action=filter_['filter_action']
                 filter_service.count=filter_['count']
                 filter_service.cost=filter_['cost']
+                filter_service.description=filter_['description']
                 filter_service.work_shift=work_shift
                 filter_service.save()
 
@@ -202,6 +203,8 @@ class WorkShiftRepo():
                 oil_service.oil_type=oil_['oil_type']
                 oil_service.oil_action=oil_['oil_action']
                 oil_service.oil_liter=oil_['oil_liter']
+                oil_service.cost=oil_['cost']
+                oil_service.description=oil_['description']
                 oil_service.work_shift=work_shift
                 oil_service.save()
 
@@ -680,101 +683,4 @@ class TavaghofRepo():
           
         (result,message,tavaghof)=tavaghof.save()
         return result,message,tavaghof
-
-
-class KarkerdRepo():
-    def __init__(self,request,*args, **kwargs):
-        self.me=None
-        self.my_accounts=[]
-        self.request=request
-        self.objects=Karkerd.objects.filter(id=0)
-        profile=PersonRepo(request=request).me
-        if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_vehicle"):
-                self.objects=Karkerd.objects
-                self.my_accounts=self.objects 
-    def list(self,*args, **kwargs):
-        objects=self.objects
-        if "search_for" in kwargs:
-            search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
-        if "parent_id" in kwargs:
-            parent_id=kwargs["parent_id"]
-            objects=objects.filter(parent_id=parent_id)  
-        if "vehicle_id" in kwargs:
-                    vehicle_id=kwargs["vehicle_id"]
-                    objects=objects.filter(vehicle_id=vehicle_id) 
-        return objects.all()
-        
-    def karkerd(self,*args, **kwargs):
-        if "karkerd_id" in kwargs and kwargs["karkerd_id"] is not None:
-            return self.objects.filter(pk=kwargs['karkerd_id']).first()  
-        if "pk" in kwargs and kwargs["pk"] is not None:
-            return self.objects.filter(pk=kwargs['pk']).first() 
-        if "id" in kwargs and kwargs["id"] is not None:
-            return self.objects.filter(pk=kwargs['id']).first() 
-        
-        
-    def add_karkerd(self,*args,**kwargs):
-        result,message,karkerd=FAILED,"",None
-        if not self.request.user.has_perm(APP_NAME+".add_karkerd"):
-            message="دسترسی غیر مجاز"
-            return result,message,karkerd 
-        karkerd=Karkerd() 
-        if 'vehicle_id' in kwargs:
-            karkerd.vehicle_id=kwargs["vehicle_id"]
-
-        if 'driver_id' in kwargs:
-            karkerd.driver_id=kwargs["driver_id"]
-
-        if 'start_hour' in kwargs:
-            karkerd.start_hour=kwargs["start_hour"]
-
-        if 'end_hour' in kwargs:
-            karkerd.end_hour=kwargs["end_hour"]
-
-        if 'title' in kwargs:
-            karkerd.title=kwargs["title"]
-
-        if 'project_name' in kwargs:
-            karkerd.project_name=kwargs["project_name"]
-
-        if 'area_name' in kwargs:
-            karkerd.area_name=kwargs["area_name"]
-
-        if 'description' in kwargs:
-            karkerd.description=kwargs["description"]
-
-        if 'start_datetime' in kwargs:
-            year=kwargs['start_datetime'][:2]
-            if year=="13" or year=="14":
-                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])             
-            karkerd.start_datetime=kwargs["start_datetime"]
-
-        if 'end_datetime' in kwargs:
-            year=kwargs['end_datetime'][:2]
-            if year=="13" or year=="14":
-                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])   
-            karkerd.end_datetime=kwargs["end_datetime"]
-
-        if 'start_kilometer' in kwargs:
-            karkerd.start_kilometer=kwargs["start_kilometer"]
-
-        if 'end_kilometer' in kwargs:
-            karkerd.end_kilometer=kwargs["end_kilometer"]
-
-        if 'description' in kwargs:
-            karkerd.description=kwargs["description"]
-
-        if 'load' in kwargs:
-            karkerd.load=kwargs["load"]
-
-
-        if 'count' in kwargs:
-            karkerd.count=kwargs["count"]
-
-          
-        (result,message,karkerd)=karkerd.save()
-        return result,message,karkerd
-
  
