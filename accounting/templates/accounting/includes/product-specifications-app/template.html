@@ -56,7 +56,7 @@
                             ویژگی ثبت نشده است.
                         </p>
                         </div>
-                    <table class="table table-striped rtl" v-if="product_specifications.length>0">
+                    <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl" v-if="product_specifications.length>0">
                         <thead>
                             {% if not product %}
 

@@ -37,7 +37,7 @@
 
 
 
-                <table class="table ltr">
+                <table class="table {% if DARK_THEME %}table-dark {% endif %}ltr">
                     {% for project in remote_client.project_set.all %}
 
 

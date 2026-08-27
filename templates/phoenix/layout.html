@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="en">
-
+<html  lang="en">
 <head>
 <style>
         .footer {
@@ -31,9 +30,44 @@
     {% block style %}
 
     {% endblock style %}
+{% if DARK_THEME %}
+<style>
+      body{
+        background-color:#212529 ;
+      }
+       .card-body{
+        background-color:#212529 ;
+      }
+      .card-header{
+       background-color: rgb(70 66 88)
+      }
+      .form-control{
+        background-color:#520606 ;
+        color:#d5e2ef;
+      }
+      .form-control:focus{
+        
+        background-color:#9e5a5a ;
+        color:#d5e2ef;
+      }
+      a{
+        color:#6baff9 ;
+      }
+       a:hover{
+          
+        color:#9cc8f7 ;
+      }
+      h1,h2,h3,h4,h5,h6,p,label{
+        color:#fff
+      }
+       
+        
+    </style>
+{% endif %}
+    
 </head>
 
-<body class="farsi" {% if app_background_image %}
+<body class="farsi " {% if app_background_image %}
     style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('{{app_background_image.image}}');background-size:cover"
     {% endif %}>
     {% if not NOT_NAVBAR %}

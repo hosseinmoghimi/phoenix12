@@ -60,7 +60,7 @@
             <button class="btn btn-info" @click="filter_by_balance(-1)">بدهکار</button>
             <button class="btn btn-info" @click="filter_by_balance(null)">خام</button>
           </div>
-          <table class="table table-striped rtl">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
             <thead>
               <th>عنوان</th>
 

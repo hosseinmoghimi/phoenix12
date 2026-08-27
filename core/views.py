@@ -28,7 +28,6 @@ NO_NAVBAR="NO_NAVBAR"
 def CoreContext(request,*args, **kwargs):
     context={}
 
-    
     context['LAYOUT_PARENT'] = LAYOUT_PARENT
     context['WIDE_LAYOUT_PARENT'] = WIDE_LAYOUT_PARENT
 
@@ -36,6 +35,8 @@ def CoreContext(request,*args, **kwargs):
     app_name='core'
     if 'app_name' in kwargs:
         app_name=kwargs['app_name']
+
+
     context['APP_NAME']=app_name
     context['VUE_VERSION_3']=VUE_VERSION_3
     context['VUE_VERSION_2']=VUE_VERSION_2
@@ -108,6 +109,12 @@ def CoreContext(request,*args, **kwargs):
     if me_person is not None:
         context['me_person']=me_person
     parameter_repo=ParameterRepo(request=request,app_name=app_name)
+
+ 
+    theme=parameter_repo.parameter(app_name=app_name,name=PARAMETER_NAME_ENUM.THEME,default="dark").value
+    leolog(theme=theme)
+    if theme=="dark":
+        context['DARK_THEME']=True
     context['WIDE_LAYOUT']=parameter_repo.parameter(name=PARAMETER_NAME_ENUM.WIDE_LAYOUT,default="0").boolean_value
     context['farsi_font_name']=parameter_repo.parameter(name=PARAMETER_NAME_ENUM.FARSI_FONT,default="Shabnam").value
     parameter_repo.set_parameter(app_name=APP_NAME,name="version",value=VERSION)

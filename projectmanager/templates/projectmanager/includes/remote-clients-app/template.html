@@ -40,7 +40,7 @@
             class="form-control"
             @input="filter()"
           />
-          <table class="table table-striped rtl">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
             <thead>
               <th>نام</th>
               {% if not project %}

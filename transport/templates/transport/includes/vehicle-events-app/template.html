@@ -28,7 +28,7 @@
     >
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped1 rtl">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped1 rtl">
             <thead>
               <th>عنوان</th>
               {% if not vehicle %}

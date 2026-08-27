@@ -20,7 +20,7 @@
             <h5 class="text-canter text-danger">سطری وجود ندارد.</h5>
           </div>
           <div v-show="invoice_lines.length>0">
-            <table class="table table-striped farsi rtl">
+            <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped farsi rtl">
               <thead>
                 <th class="bordered farsi text-right">ردیف</th>
                 {% if not invoice_line_item %}

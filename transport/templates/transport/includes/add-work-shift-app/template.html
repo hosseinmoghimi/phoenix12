@@ -345,7 +345,7 @@
         <div class="col-md-9 mt-3">
           <div  v-if="oils.length>0" class="table-responsive">
             
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>نوع روغن</th>
               <th>نوع سرویس</th>
@@ -530,7 +530,7 @@
         <div class="col-md-9 mt-3">
           <div  v-if="filters.length>0" class="table-responsive">
             
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>نوع فیلتر</th>
               <th>خدمات</th>

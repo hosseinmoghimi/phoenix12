@@ -30,7 +30,7 @@
     <div class="card">
       <div class="card-body">
         <div v-if="cart_total()!='0 '" class="table-responsive">
-          <table class="table rtl">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}rtl">
             <thead>
               <th>ردیف</th>
 

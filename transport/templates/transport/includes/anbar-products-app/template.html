@@ -28,9 +28,9 @@
       aria-labelledby="heading-anbar-products"
       data-parent="#accordion-anbar-products"
     >
-      <div class="card-body">
+      <div class="card-body card-dark">
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped table-dark">
             <thead>
               <th>تاریخ</th>
               {% if not vehicle %}

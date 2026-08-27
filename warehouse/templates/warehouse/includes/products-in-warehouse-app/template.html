@@ -27,7 +27,7 @@
       <div class="card-body">
        
         <div class="table-responsive" v-if="products_in_warehouse.length>0">
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 
 
                 {% if not warehouse %}
