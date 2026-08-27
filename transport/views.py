@@ -971,7 +971,7 @@ class VehiclesExcelView(View):
             table_has_header=False,
             table_headers=headers,
             style=style,
-            sheet_name='vehicles',
+            # sheet_name='vehicles',
         )
             
         file_name=f"""Phoenix Transport vehicles {date.replace('/','').replace(':','')}.xlsx"""

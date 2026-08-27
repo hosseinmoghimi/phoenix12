@@ -13,6 +13,7 @@ urlpatterns = [
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
     path('vehicles_excel/',login_required(views.VehiclesExcelView.as_view()),name="vehicles_excel"),
+    path('import-vehicles-from-excel/',login_required(views.VehiclesExcelView.as_view()),name="import_vehicles_from_excel"),
 
     path('anbar-products',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
     path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
