@@ -42,7 +42,8 @@
                     </a>
                     <div class="media-body mr-2">
                       <a :href="vehicle.get_absolute_url">
-                        <span v-text="vehicle.title"></span>
+                        <div v-text="vehicle.vehicle_code"></div>
+                        <div v-text="vehicle.title"></div>
                       </a>
                     </div>
                   </div>

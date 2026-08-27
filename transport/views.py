@@ -131,8 +131,7 @@ class ReportView(View):
         anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
         context['anbar_products_s']=anbar_products_s
 
- 
-        context[WIDE_LAYOUT]=False
+        context[WIDE_LAYOUT]=True
         if request.user.has_perm(APP_NAME+'.add_vehicle'):
             context['add_vehicle_form']=AddVehicleForm()
             from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum

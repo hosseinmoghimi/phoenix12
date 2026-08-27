@@ -103,11 +103,16 @@ class WorkShiftRepo():
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
          
+        if "shift" in kwargs and kwargs["shift"]:
+            objects=objects.filter(shift=kwargs["shift"])
+
+        if "location" in kwargs and kwargs["location"]:
+            objects=objects.filter(location=kwargs["location"]) 
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
 
-        if "vehicle_code" in kwargs:
+        if "vehicle_code" in kwargs and kwargs['vehicle_code']:
             objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
         if "driver_id" in kwargs and kwargs["driver_id"]:
             objects=objects.filter(driver_id=kwargs["driver_id"])  
@@ -116,12 +121,10 @@ class WorkShiftRepo():
             if year=="13" or year=="14":
                 kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
                 kwargs['shift_date']=kwargs['shift_date'].date()
-                print(kwargs['shift_date'])
-                print(WorkShift.objects.first().shift_date)
             objects=objects.filter(shift_date=kwargs["shift_date"]) 
 
             
-        if "shift" in kwargs:
+        if "shift" in kwargs and kwargs['shift']:
             objects=objects.filter(shift=kwargs["shift"])  
         return objects.all()
         
@@ -768,9 +771,12 @@ class AnbarProductRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        if "vehicle_id" in kwargs:
-                    vehicle_id=kwargs["vehicle_id"]
-                    objects=objects.filter(vehicle_id=vehicle_id) 
+         
+
+        if "vehicle_code" in kwargs and kwargs['vehicle_code']:
+            objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
+        if "driver_id" in kwargs and kwargs["driver_id"]:
+            objects=objects.filter(driver_id=kwargs["driver_id"]) 
         return objects.all()
         
     def anbar_product(self,*args, **kwargs):
