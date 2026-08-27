@@ -9,7 +9,7 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from utility.calendar import PersianCalendar
 from .models import VehicleEvent,Tavaghof,VehicleStatus
-from .models import FilterService,OilService,Tavaghof,Product
+from .models import FilterService,OilService,Tavaghof,Product,AnbarProduct,Service
 
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
@@ -84,8 +84,7 @@ class VehicleStatusRepo():
     def last_statuses(self,*args, **kwargs):
         return self.list(*args, **kwargs)
 
-
-    
+ 
 class WorkShiftRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -683,4 +682,103 @@ class TavaghofRepo():
           
         (result,message,tavaghof)=tavaghof.save()
         return result,message,tavaghof
+
+
+
  
+class ServiceRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Service.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=Service.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+                    vehicle_id=kwargs["vehicle_id"]
+                    objects=objects.filter(vehicle_id=vehicle_id) 
+        return objects.all()
+        
+    def service(self,*args, **kwargs):
+        if "service_id" in kwargs and kwargs["service_id"] is not None:
+            return self.objects.filter(pk=kwargs['service_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_service(self,*args,**kwargs):
+        result,message,service=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_service"):
+            message="دسترسی غیر مجاز"
+            return result,message,service
+        if len(Service.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+            return FAILED,message,None
+        service=Service() 
+        if 'person_account_id' in kwargs:
+            service.person_account_id=kwargs["person_account_id"]
+          
+        (result,message,service)=service.save()
+        return result,message,service
+ 
+class AnbarProductRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=AnbarProduct.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_vehicle"):
+                self.objects=AnbarProduct.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+                    vehicle_id=kwargs["vehicle_id"]
+                    objects=objects.filter(vehicle_id=vehicle_id) 
+        return objects.all()
+        
+    def anbar_product(self,*args, **kwargs):
+        if "anbar_product_id" in kwargs and kwargs["anbar_product_id"] is not None:
+            return self.objects.filter(pk=kwargs['anbar_product_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_anbar_product(self,*args,**kwargs):
+        result,message,anbar_product=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_anbar_product"):
+            message="دسترسی غیر مجاز"
+            return result,message,anbar_product
+        if len(AnbarProduct.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+            return FAILED,message,None
+        anbar_product=AnbarProduct() 
+        if 'person_account_id' in kwargs:
+            anbar_product.person_account_id=kwargs["person_account_id"]
+        
+        (result,message,anbar_product)=anbar_product.save()
+        return result,message,anbar_product
+  

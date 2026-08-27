@@ -6,14 +6,22 @@ app_name=APP_NAME
 urlpatterns = [
     path('',login_required(views.IndexView.as_view()),name="index"),
     path('settings/',login_required(views.IndexView.as_view()),name="settings"),
+
+    path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
+
+    path('anbar-products',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
+    path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
+
+    
+    path('services',login_required(views.ServicesView.as_view()),name="services"),
+    path('service/<int:pk>/',login_required(views.ServiceView.as_view()),name="service"),
 
     
     path('drivers/',login_required(views.VehiclesView.as_view()),name="drivers"),
     path('driver/<int:pk>/',login_required(views.VehicleView.as_view()),name="driver"),
 
-    path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
     path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),
 

@@ -500,9 +500,12 @@ class Service(models.Model,LinkHelper):
          return (result,message,product)
 
 
-class ProductAnbar(models.Model,LinkHelper):
-    class_name="productanbar"
+class AnbarProduct(models.Model,LinkHelper):
+    class_name="anbarproduct"
     app_name=APP_NAME
+    shift_date=models.DateField(_("shift_date"), auto_now=False, auto_now_add=False)
+    shift=models.CharField(_("shift"), max_length=50)
+
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)
     name=models.CharField(_("name"), max_length=50)
     quantity=models.IntegerField(_("quantity"),default=0)
@@ -513,18 +516,20 @@ class ProductAnbar(models.Model,LinkHelper):
     def line_total(self):
         return self.unit_price*self.quantity
     class Meta:
-        verbose_name = _("ProductAnbar")
-        verbose_name_plural = _("ProductAnbars")
+        verbose_name = _("AnbarProduct")
+        verbose_name_plural = _("AnbarProducts")
 
     def __str__(self):
         return self.name
   
     def save(self,*args, **kwargs): 
-         (result,message,product)=FAILED,'',self
+         (result,message,anbar_product)=FAILED,'',self
          
-         super(ProductAnbar,self).save()   
+         super(AnbarProduct,self).save()   
          result=SUCCEED
          message="خروج قطعه از انبار با موفقیت اضافه شد."
-         return (result,message,product)
+         return (result,message,anbar_product)
 
-
+    @property
+    def persian_shift_date(self):
+        return PersianCalendar().from_gregorian(self.shift_date)[:10]

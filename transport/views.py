@@ -2,7 +2,7 @@ from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
 from .serializers import VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,DriverSerializer
-from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,DriverRepo
+from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,DriverRepo,AnbarProductRepo,ServiceRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -13,7 +13,7 @@ from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
 from .enums import MaintenanceTypesEnum,OilTypeEnum
 from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
-from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer
+from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer,ServiceSerializer,AnbarProductSerializer
 
 from .serializers import VehicleEventSerializer
 from .repo import VehicleEventRepo,TavaghofRepo
@@ -735,5 +735,135 @@ class WorkShiftsView(View):
         context['expand_work_shifts']=True
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
+
+
+
+class AnbarProductView(View):
+    def get(self,request,*args, **kwargs):
+        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
+        if work_shift is None:
+            mv=MessageView()
+            return mv.get(request=request,title="وجود ندارد")
+
+ 
+        context=getContext(request=request)
+
+        
+
+ 
+        context['work_shift']=work_shift
+
+        oil_services =work_shift.oilservice_set.all()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =work_shift.filterservice_set.all()
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        products =work_shift.product_set.all()
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
+        context['expand_oil_services']=True
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"anbar-product.html",context) 
+
+
+class AnbarProductsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        anbar_products =AnbarProductRepo(request=request).list(*args, **kwargs) 
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+
+
+
+         
+        context['expand_anbar_products']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"anbar-products.html",context) 
+
+
+
+
+
+class ServiceView(View):
+    def get(self,request,*args, **kwargs):
+        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
+        if work_shift is None:
+            mv=MessageView()
+            return mv.get(request=request,title="وجود ندارد")
+
+ 
+        context=getContext(request=request)
+
+        
+
+ 
+        context['work_shift']=work_shift
+
+        oil_services =work_shift.oilservice_set.all()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =work_shift.filterservice_set.all()
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        products =work_shift.product_set.all()
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
+        context['expand_oil_services']=True
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"service.html",context) 
+
+
+class ServicesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        services =ServiceRepo(request=request).list(*args, **kwargs).order_by('-start_hour').order_by('-shift_date')
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+
+
+         
+        context['expand_services']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"services.html",context) 
 
 

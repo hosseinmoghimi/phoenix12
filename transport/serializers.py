@@ -1,6 +1,7 @@
 from core.serializers import serializers
 from .models import OilService,Tavaghof,FilterService,Product,Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
+from .models import Service,AnbarProduct
 
 from .models import VehicleEvent,Tavaghof
 
@@ -16,7 +17,8 @@ class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
     class Meta:
         model=Vehicle
-        fields=['id','owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','vehicle_code' ,'owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
+
   
 class VehicleSerializer2(serializers.ModelSerializer):
     class Meta:
@@ -36,7 +38,6 @@ class TavaghofSerializer(serializers.ModelSerializer):
     class Meta:
         model=Tavaghof
         fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
-
       
 
 class VehicleEventSerializer(serializers.ModelSerializer):
@@ -74,7 +75,6 @@ class FilterServiceSerializer(serializers.ModelSerializer):
         model=FilterService
         fields=['id','cost','count','filter_type','filter_action','description']
 
-
    
 class OilServiceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,5 +86,18 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
         fields=['id','name','unit_price','quantity','description']
+
+   
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Service
+        fields=['id','name','unit_price','quantity','description']
+
+   
+class AnbarProductSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer2()
+    class Meta:
+        model=AnbarProduct
+        fields=['id','vehicle','shift_date','shift','name','unit_price','persian_shift_date','quantity','description','get_absolute_url',  'get_edit_url','get_delete_url']
 
    
