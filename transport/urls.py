@@ -6,6 +6,8 @@ app_name=APP_NAME
 urlpatterns = [
     path('',login_required(views.IndexView.as_view()),name="index"),
     path('settings/',login_required(views.IndexView.as_view()),name="settings"),
+    path('report/',login_required(views.ReportView.as_view()),name="report"),
+    path('get-report/',login_required(apis.GetReportApiw.as_view()),name="get_report"),
 
     path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),

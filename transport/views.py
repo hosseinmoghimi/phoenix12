@@ -107,6 +107,41 @@ class VehiclesView(View):
         return render(request,TEMPLATE_ROOT+"vehicles.html",context) 
     
     
+class ReportView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
+
+
+        
+        work_shifts =[]
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
+        
+        anbar_products =[]
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+
+ 
+        context[WIDE_LAYOUT]=False
+        if request.user.has_perm(APP_NAME+'.add_vehicle'):
+            context['add_vehicle_form']=AddVehicleForm()
+            from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
+            context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
+            context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
+            context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
+            context['drivers']=DriverRepo(request=request).list()
+        return render(request,TEMPLATE_ROOT+"report.html",context) 
+    
 class VehicleView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

@@ -115,3 +115,9 @@ class AddWorkShiftForm(forms.Form):
  
      
     
+class GetReportForm(forms.Form):
+    vehicle_code=forms.CharField(required=False, max_length=50) 
+    driver_id=forms.IntegerField(required=False)
+    location=forms.CharField(required=False, max_length=50) 
+    shift_date=forms.CharField(required=False, max_length=50) 
+    

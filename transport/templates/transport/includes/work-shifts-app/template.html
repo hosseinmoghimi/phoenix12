@@ -219,11 +219,8 @@
                 </td>
               </tr>
             </tbody>
-            <tfoot>
+            <tfoot class="mt-3">
               <th>
-                <div>
-                    <span v-text="work_shifts.length"></span>
-                </div>
                 <img
                       src="{% static 'transport/img/ship.png' %}"
                       width="28"
@@ -232,18 +229,16 @@
                 <strong>
                   <span v-text="sum_shift_hour()"></span> ساعت شیفت کاری
                 </strong>
+                <div>
+                    <span v-text="work_shifts.length"></span>
+                    مورد
+                </div>
 
               </th>
               
               <th></th>
               <th></th>
               <th>
-                 <div>
-                    <small>
-
-                        مجموع کارکرد دستگاه
-                    </small>
-                </div>
 
                 <img
                       src="{% static 'transport/img/timer.png' %}"
@@ -253,14 +248,16 @@
                 <strong>
                   <span v-text="sum_karkerd()"></span>
                 </strong>
-              </th>
-              <th>
+                
                  <div>
                     <small>
 
-                        مجموع لیتراژ گازوئیل
+                        مجموع کارکرد دستگاه
                     </small>
                 </div>
+              </th>
+              <th>
+                
 
                 <img
                       src="{% static 'transport/img/gasoil.png' %}"
@@ -269,15 +266,16 @@
                     />
                 <strong>
                   <span v-text="sum_gasoil_liter()"></span>
-                </strong>
-              </th>
-              <th>
-                 <div>
+                </strong> 
+                <div>
                     <small>
 
-                        مجموع لیتراژ روغن
+                        مجموع لیتراژ گازوئیل
                     </small>
                 </div>
+              </th>
+              <th>
+                
                 <img
                       src="{% static 'transport/img/motor-oil.png' %}"
                       width="28"
@@ -285,15 +283,16 @@
                     />
                 <strong>
                   <span v-text="sum_oil_liter()"></span>
-                </strong>
-              </th>
-              <th>
-                 <div>
+                </strong> 
+                <div>
                     <small>
 
-                        مجموع توقفات
+                        مجموع لیتراژ روغن
                     </small>
                 </div>
+              </th>
+              <th>
+               
 
                 <img
                       src="{% static 'transport/img/stop.png' %}"
@@ -303,16 +302,16 @@
                 <strong>
                   <span v-text="sum_tavaghof()"></span>
                 </strong>
-                  
+                    <div>
+                    <small>
+
+                        مجموع توقفات
+                    </small>
+                </div>
 
               </th>
               <th>
-                 <div>
-                    <small>
-
-                        تعداد سرویس ها
-                    </small>
-                </div>
+                
                  <img
                       src="{% static 'transport/img/ship.png' %}"
                       width="28"
@@ -321,7 +320,12 @@
                 <strong>
                   <span v-text="sum_bar_count()"></span>
                 </strong>
+ <div>
+                    <small>
 
+                        تعداد سرویس ها
+                    </small>
+                </div>
               </th>
               <th>
 

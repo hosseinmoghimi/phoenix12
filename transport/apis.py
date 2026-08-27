@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer
+from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
+from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -56,6 +56,40 @@ class AddVehicleApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
+
+
+
+class GetReportApiw(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        get_report_form=GetReportForm(request.POST)
+        if get_report_form.is_valid():
+            log=333
+            cd=get_report_form.cleaned_data
+            
+            work_shifts=WorkShiftRepo(request=request).list(**cd)
+            context['work_shifts']=WorkShiftSerializer(work_shifts,many=True).data
+
+            
+            
+            anbar_products=AnbarProductRepo(request=request).list(**cd)
+            context['anbar_products']=AnbarProductSerializer(anbar_products,many=True).data
+            
+            message="گزارش گیری انجام شد."
+
+            result=SUCCEED
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 
 

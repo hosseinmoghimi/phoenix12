@@ -102,12 +102,27 @@ class WorkShiftRepo():
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
-        if "parent_id" in kwargs:
-            parent_id=kwargs["parent_id"]
-            objects=objects.filter(parent_id=parent_id)  
+         
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
+
+        if "vehicle_code" in kwargs:
+            objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
+        if "driver_id" in kwargs and kwargs["driver_id"]:
+            objects=objects.filter(driver_id=kwargs["driver_id"])  
+        if "shift_date" in kwargs:
+            year=kwargs['shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
+                kwargs['shift_date']=kwargs['shift_date'].date()
+                print(kwargs['shift_date'])
+                print(WorkShift.objects.first().shift_date)
+            objects=objects.filter(shift_date=kwargs["shift_date"]) 
+
+            
+        if "shift" in kwargs:
+            objects=objects.filter(shift=kwargs["shift"])  
         return objects.all()
         
     def work_shift(self,*args, **kwargs):

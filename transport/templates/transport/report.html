@@ -1,0 +1,138 @@
+{% extends "transport/layout.html" %} {% block content %}
+<div id="report-app">
+  <div class="card">
+    <div class="card-header">
+      <h5>گزارش گیری</h5>
+    </div>
+    <div class="card-body">
+      <div class="row rtl">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">کد دستگاه</label>
+            <input type="text" v-model="vehicle_code" class="form-control" />
+          </div>
+        </div>
+ 
+         <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ</label>
+              <date-picker v-model="shift_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="shift_date"
+              />
+            </div>
+          </div>
+
+
+          
+         <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">موقعیت</label>
+              
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="location"
+              />
+            </div>
+          </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">شیفت</label>
+            <select   v-model="shift" class="form-control" >
+                <option value="روز">روز</option>
+                <option value="شب">شب</option>
+                <option value="کامل">کامل</option>
+            </select>
+          </div>
+        </div>
+
+
+        
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">راننده</label>
+            <select   v-model="driver_id" class="form-control" >
+                <option value="0">همه</option>
+                {% for driver in drivers %}
+                <option value="{{driver.id}}">{{driver.person_account.person.full_name}}</option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
+
+
+        
+        <div class="col-md-12">
+           <button class="btn btn-info" @click="get_report()">گزارش بگیر</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include "transport/includes/work-shifts-app/template.html" %}
+{% include "transport/includes/anbar-products-app/template.html" %}
+{% endblock content %} {% block script %}
+<script>
+  let report_app = new Vue({
+    el: "#report-app",
+    data: {
+      vehicle_code: "B16",
+      shift_date: current_date,
+      shift:"روز",
+      location:"",
+      driver_id: 0,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods:{
+        get_report:()=>{
+            let payload={
+                csrfmiddlewaretoken:csrfmiddlewaretoken,
+                vehicle_code:report_app.vehicle_code,
+                shift_date:report_app.shift_date,
+                shift:report_app.shift,
+
+                location:report_app.location,
+                
+                driver_id:parseInt(report_app.driver_id),
+
+            }
+            console.log(payload)
+            let url="{% url 'transport:get_report' %}"
+
+            $.post(url,payload).done(data=>{
+                console.log(data)
+                if(data.result==="SUCCEED"){
+                    if(typeof work_shifts_app != 'undefined'){
+                        work_shifts_app.work_shifts=data.work_shifts
+                    }
+
+                    if(typeof anbar_products_app != 'undefined'){
+                        anbar_products_app.anbar_products=data.anbar_products
+                    }
+
+                }
+
+                
+                if(data.result==="FAILED"){
+                    
+                }
+            })
+        },
+    }
+  });
+</script>
+
+{% include "transport/includes/work-shifts-app/script.html" %}
+{% include "transport/includes/anbar-products-app/script.html" %}
+
+
+{% endblock script %}
