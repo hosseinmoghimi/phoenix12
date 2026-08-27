@@ -121,4 +121,8 @@ class GetReportForm(forms.Form):
     location=forms.CharField(required=False, max_length=50) 
     shift_date=forms.CharField(required=False, max_length=50) 
     shift=forms.CharField(required=False, max_length=50) 
+     
+class VehiclesExcelForm(forms.Form):
+    pass
+     
     

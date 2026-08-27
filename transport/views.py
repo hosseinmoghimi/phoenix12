@@ -901,3 +901,86 @@ class ServicesView(View):
         return render(request,TEMPLATE_ROOT+"services.html",context) 
 
 
+
+ 
+class VehiclesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        vehicles_excel_form=VehiclesExcelForm(request.POST)
+        if vehicles_excel_form.is_valid():
+            log=333
+            cd=vehicles_excel_form.cleaned_data
+            vehicles=VehicleRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,vehicle in enumerate(vehicles,start=1):
+            line={
+                'row':i,
+                'vehicle_code':vehicle.vehicle_code,   
+                'vehicle_type':vehicle.vehicle_type,      
+                'title':vehicle.title,   
+                'year':vehicle.year,   
+                'plaque':vehicle.plaque,   
+                'vehicle_color':vehicle.vehicle_color,   
+                'kilometer':vehicle.kilometer,   
+                'description':vehicle.description,      
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'کد',
+                 'نوع',
+                 'ماشین',
+                 'سال',
+                 'پلاک',
+                 'رنگ',
+                 'کیلومتر',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='vehicles',
+        )
+            
+        file_name=f"""Phoenix Transport vehicles {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      

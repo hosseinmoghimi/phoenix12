@@ -191,6 +191,8 @@ class Vehicle(Asset):
 
     def __str__(self):
         return f'{self.vehicle_code} - {self.title}'
+
+
 class VehicleEvent(Event):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
     driver=models.ForeignKey("driver", verbose_name=_("driver"),null=True,blank=True, on_delete=models.SET_NULL)

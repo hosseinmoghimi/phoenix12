@@ -88,6 +88,17 @@
           </table>
         </div>
       </div>
+      <div class="card-footer">
+         <form method="POST" action="{% url 'transport:vehicles_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="oiling_maintenance_id" value="">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              اکسل
+              
+            </button>
+          </form>
+      </div>
     </div>
   </div>
 </div>

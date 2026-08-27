@@ -12,6 +12,7 @@ urlpatterns = [
     path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
+    path('vehicles_excel/',login_required(views.VehiclesExcelView.as_view()),name="vehicles_excel"),
 
     path('anbar-products',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
     path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
@@ -31,7 +32,7 @@ urlpatterns = [
 
     
     path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
-  
+   
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
     path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
     path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
