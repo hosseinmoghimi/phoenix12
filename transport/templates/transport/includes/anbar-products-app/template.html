@@ -29,8 +29,8 @@
       data-parent="#accordion-anbar-products"
     >
       <div class="card-body card-dark">
-        <div class="table-responsive">
-          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped table-dark">
+        <div class="table-responsive" v-if="anbar_products.length>0">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>تاریخ</th>
               {% if not vehicle %}
@@ -136,6 +136,10 @@
             
           </table>
         </div>
+         <h5 class="text-center">
+            برگه انباری وجود ندارد.
+          </h5>
+
       </div>
     </div>
   </div>

@@ -119,13 +119,13 @@
 
                     
                     <td class="field_value">
+                        <img src="{% static 'transport/img/ship.png' %}" width="28" alt="">
                             {{work_shift.bar}}
                             <small class="mx-2">
 
                                 {{work_shift.bar_count}}
                                 سرویس
                             </small>
-                            <img src="{% static 'transport/img/ship.png' %}" width="28" alt="">
                     
                     </td>
 
@@ -152,9 +152,9 @@
                     </td>
 
                     
-                    <td class="field_value">
+                    <td class="field_value ">
+                        <img src="{% static 'transport/img/gasoil.png' %}" width="28" alt="">
                             {{work_shift.gasoil_liter}}
-                            <img src="{% static 'transport/img/gasoil.png' %}" width="28" alt="">
                     
                     </td>
 
@@ -170,8 +170,8 @@
 
                     
                     <td class="field_value">
-                            {{work_shift.oil_liter|to_normal_number}}
-                            <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="">
+                        <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="">
+                        {{work_shift.oil_liter|to_normal_number}}
                     
                     </td>
 
@@ -210,8 +210,8 @@
 
                     
                     <td class="field_value">
-                        {{work_shift.vehicle_karkerd|to_normal_number}}
                         <img src="{% static 'transport/img/timer.png' %}" width="28" alt="">
+                        {{work_shift.vehicle_karkerd|to_normal_number}}
                         ساعت
                     
                     </td>
@@ -225,8 +225,8 @@
                         توقف
                     </td>
                     <td class="field_value">
+                        <img src="{% static 'transport/img/stop.png' %}" width="28" alt="">
 {{work_shift.tavaghof|to_normal_number}}
-<img src="{% static 'transport/img/stop.png' %}" width="28" alt="">
 ساعت
                     
                            

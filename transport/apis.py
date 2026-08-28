@@ -59,6 +59,34 @@ class AddVehicleApi(APIView):
 
 
 
+class ImportVehicleFromExcelApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        import_vehicles_form=ImportVehicleFromExcelForm(request.POST,request.FILES)
+        if import_vehicles_form.is_valid():
+            log=333
+            cd=import_vehicles_form.cleaned_data
+            
+            excel_file = request.FILES['file1']
+            cd['excel_file']=excel_file
+            result,message,vehicles=VehicleRepo(request=request).import_vehicles_from_excel(**cd)
+            if vehicles is not None:
+                context['vehicles']=VehicleSerializer(vehicles,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+
+
 
 class GetReportApiw(APIView):
     def post(self,request,*args, **kwargs):

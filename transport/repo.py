@@ -10,7 +10,7 @@ from utility.log import leolog
 from utility.calendar import PersianCalendar
 from .models import VehicleEvent,Tavaghof,VehicleStatus
 from .models import FilterService,OilService,Tavaghof,Product,AnbarProduct,Service
-
+from .constants import EXCEL_VEHICLES_DATA_START_ROW
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -350,6 +350,110 @@ class VehicleRepo():
         
         (result,message,vehicle)=vehicle.save()
         return result,message,vehicle
+
+    def import_vehicles_from_excel(self,*args,**kwargs):
+        result,message,vehicles=FAILED,"",[]
+        excel_file=kwargs['excel_file']
+         
+        import openpyxl 
+
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['vehicles']
+            
+
+        except:
+            message='فایل شما برگه ماشین آلات ندارد.'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه ماشین آلات ، تعداد ندارد.'
+            return result,message,None 
+
+        vehicles_to_import=[]
+
+        START_ROW=EXCEL_VEHICLES_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            vehicle={}
+            
+            i=str(i) 
+            # product['id']=ws['A'+str(i)].value
+            iiiddd=ws['B'+i].value
+            if iiiddd is not None:
+                id=0
+                try:
+                    id=int(ws['B'+i].value)
+                except:
+                    pass
+
+                vehicle_code=(ws['C'+i].value)
+                vehicle_type=(ws['D'+i].value)
+                title=(ws['E'+i].value)
+                year=(ws['F'+i].value)
+                plaque=(ws['G'+i].value)
+                color=(ws['H'+i].value)
+                kilometer=0
+                
+                try:
+                    kilometer=int(ws['I'+i].value)
+                except:
+                    pass
+
+                vehicle['id']=id
+                description=(ws['J'+i].value)
+                vehicle['vehicle_code']=vehicle_code
+                vehicle['vehicle_type']=vehicle_type
+                vehicle['title']=title
+                vehicle['year']=year
+                vehicle['plaque']=plaque
+                vehicle['color']=color
+                vehicle['kilometer']=kilometer
+                vehicle['description']=description
+                # vehicle['thumbnail_origin']=ws['F'+str(i)].value
+                if vehicle['title'] is not None and not vehicle['title']=="":
+                    if vehicle['vehicle_code'] is not None and not vehicle['vehicle_code']=="":
+                        vehicles_to_import.append(vehicle) 
+        modified=added=0
+
+        for vehicle in vehicles_to_import:
+            old_vehicle=Vehicle.objects.filter(vehicle_code=vehicle["vehicle_code"]).first()
+            if old_vehicle is not None:
+                old_vehicle.vehicle_code=vehicle["vehicle_code"]
+                old_vehicle.vehicle_type=vehicle["vehicle_type"]
+                old_vehicle.title=vehicle["title"]
+                old_vehicle.year=vehicle["year"]
+                old_vehicle.plaque=vehicle["plaque"]
+                old_vehicle.color=vehicle["color"]
+                old_vehicle.kilometer=vehicle["kilometer"]
+                old_vehicle.description=vehicle["description"]
+                old_vehicle.save()
+                modified+=1
+            else:
+                result,message,new_vehicle=self.add_vehicle(**vehicle)
+          
+                if result==SUCCEED:
+                    added+=1
+        result=SUCCEED
+        message=f"""{added} سرویس اضافه شد.
+                    <br>
+                    {modified} سرویس ویرایش شد. """
+        services=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("accounting:services")
+            log_data['title']="بازیابی سرویس ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+        return result,message,services
 
 
 class DriverRepo():
@@ -718,8 +822,6 @@ class TavaghofRepo():
         (result,message,tavaghof)=tavaghof.save()
         return result,message,tavaghof
 
-
-
  
 class ServiceRepo():
     def __init__(self,request,*args, **kwargs):
@@ -768,6 +870,7 @@ class ServiceRepo():
           
         (result,message,service)=service.save()
         return result,message,service
+
  
 class AnbarProductRepo():
     def __init__(self,request,*args, **kwargs):

@@ -128,3 +128,7 @@ class VehiclesExcelForm(forms.Form):
     pass
      
     
+class ImportVehicleFromExcelForm(forms.Form):
+    count=forms.IntegerField( required=False)
+     
+    

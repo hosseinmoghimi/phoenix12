@@ -136,14 +136,14 @@ class MaintenanceInvoice(Invoice):
 
 
 class Vehicle(Asset):
-    vehicle_type=models.CharField(_("نوع وسیله "),choices=VehicleTypeEnum.choices,default=VehicleTypeEnum.SEDAN, max_length=50)
+    vehicle_type=models.CharField(_("نوع وسیله "),null=True,blank=True, max_length=50)
     vehicle_code=models.CharField(_("کد وسیله "), null=True,blank=True,max_length=50)
-    brand_name=models.CharField(_("برند"),choices=VehicleBrandEnum.choices,default=VehicleBrandEnum.IRAN_KHODRO, max_length=50)
+    brand_name=models.CharField(_("برند"),null=True,blank=True, max_length=50)
     model_name=models.CharField(_("مدل"),null=True,blank=True, max_length=50)
     plaque=models.CharField(_("پلاک"),null=True,blank=True, max_length=50)
     driver=models.CharField(_("راننده"), max_length=50,null=True,blank=True)
     year=models.CharField(_("سال"), max_length=50,null=True,blank=True)
-    vehicle_color=models.CharField(_("رنگ"),choices=VehicleColorEnum.choices,default=VehicleColorEnum.SEFID, max_length=50)
+    vehicle_color=models.CharField(_("رنگ"),null=True,blank=True, max_length=50)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)
  
     def save(self,*args, **kwargs): 

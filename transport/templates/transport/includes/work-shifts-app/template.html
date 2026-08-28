@@ -27,8 +27,10 @@
       data-parent="#accordion-work-shifts"
     >
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table {% if DARK_THEME %}table-dark {% endif %} table-striped">
+        <div class="table-responsive" v-if="work_shifts.length>0">
+          <table
+            class="table {% if DARK_THEME %}table-dark {% endif %} table-striped"
+          >
             <thead>
               <th>تاریخ</th>
               {% if not vehicle %}
@@ -79,25 +81,21 @@
                 {% endif %}
 
                 <td>
-
-                     <a :href="work_shift.driver.get_absolute_url">
+                  <a :href="work_shift.driver.get_absolute_url">
                     <div class="media">
-                      <img class="rounded-circle"
+                      <img
+                        class="rounded-circle"
                         :src="work_shift.driver.person_account.person.image"
                         width="32"
                         alt=""
                       />
                       <div class="media-body mr-2">
-                       
-                             <span
-                      v-text="work_shift.driver.person_account.person.full_name"
-                    ></span> 
-                        
+                        <span
+                          v-text="work_shift.driver.person_account.person.full_name"
+                        ></span>
                       </div>
                     </div>
                   </a>
-
-                
                 </td>
 
                 <td>
@@ -120,7 +118,6 @@
                     <span
                       v-if="work_shift.vehicle_start_hour>0 && work_shift.vehicle_end_hour>0"
                     >
-                      ~
                     </span>
                     <span v-if="work_shift.vehicle_end_hour>0">
                       تا
@@ -172,7 +169,17 @@
                     />
 
                     <span v-text="work_shift.tavaghof"></span>
-                  </div>
+                    <span class="badge badge-danger"
+                    v-if="(work_shift.end_hour-work_shift.start_hour)>((work_shift.vehicle_end_hour-work_shift.vehicle_start_hour)+work_shift.tavaghof)"
+                    >
+                    <small    >
+                      <span
+                      v-text="(work_shift.end_hour-work_shift.start_hour)-((work_shift.vehicle_end_hour-work_shift.vehicle_start_hour)+work_shift.tavaghof)"
+                      ></span>
+                      ساعت اختلاف
+                    </small>
+                  </span>
+                </div>
                 </td>
                 <td>
                   <div>
@@ -222,126 +229,104 @@
             <tfoot class="mt-3">
               <th>
                 <img
-                      src="{% static 'transport/img/ship.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                  src="{% static 'transport/img/ship.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_shift_hour()"></span> ساعت شیفت کاری
                 </strong>
                 <div>
-                    <span v-text="work_shifts.length"></span>
-                    مورد
+                  <span v-text="work_shifts.length"></span>
+                  مورد
                 </div>
-
               </th>
-              
+
               <th></th>
               <th></th>
               <th>
-
                 <img
-                      src="{% static 'transport/img/timer.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                  src="{% static 'transport/img/timer.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_karkerd()"></span>
                 </strong>
                 <span class="badge badge-primary">ساعت</span>
 
-                
-                 <div>
-                    <small>
-
-                        مجموع کارکرد دستگاه
-                    </small>
+                <div>
+                  <small> مجموع کارکرد دستگاه </small>
                 </div>
               </th>
               <th>
-                
-
                 <img
-                      src="{% static 'transport/img/gasoil.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                  src="{% static 'transport/img/gasoil.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_gasoil_liter()"></span>
-                </strong> 
+                </strong>
                 <span class="badge badge-primary">لیتر</span>
                 <div>
-                    <small>
-
-                        مجموع لیتراژ گازوئیل
-                    </small>
+                  <small> مجموع لیتراژ گازوئیل </small>
                 </div>
               </th>
               <th>
-                
                 <img
-                      src="{% static 'transport/img/motor-oil.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                  src="{% static 'transport/img/motor-oil.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_oil_liter()"></span>
-                </strong> 
+                </strong>
                 <span class="badge badge-primary">لیتر</span>
 
                 <div>
-                    <small>
-
-                        مجموع لیتراژ روغن
-                    </small>
+                  <small> مجموع لیتراژ روغن </small>
                 </div>
               </th>
               <th>
-               
-
                 <img
-                      src="{% static 'transport/img/stop.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                  src="{% static 'transport/img/stop.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_tavaghof()"></span>
                 </strong>
                 <span class="badge badge-primary">ساعت</span>
 
-                    <div>
-                    <small>
-
-                        مجموع توقفات
-                    </small>
-
+                <div>
+                  <small> مجموع توقفات </small>
                 </div>
-
               </th>
               <th>
-                
-                 <img
-                      src="{% static 'transport/img/ship.png' %}"
-                      width="28"
-                      alt=""
-                    />
+                <img
+                  src="{% static 'transport/img/ship.png' %}"
+                  width="28"
+                  alt=""
+                />
                 <strong>
                   <span v-text="sum_bar_count()"></span>
                 </strong>
- <div>
-                    <small>
-
-                        تعداد سرویس ها
-                    </small>
+                <div>
+                  <small> تعداد سرویس ها </small>
                 </div>
               </th>
-              <th>
-
-              </th>
+              <th></th>
             </tfoot>
           </table>
+
         </div>
-      </div>
+        <div v-else>
+          <h5 class="text-center">
+            شیفت کاری وجود ندارد.
+          </h5>
+        </div>
+      </div> 
     </div>
   </div>
 </div>

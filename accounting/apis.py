@@ -474,9 +474,9 @@ class ImportServicesFromExcelApi(APIView):
             ImportServicesFromExcelForm_=ImportServicesFromExcelForm(request.POST,request.FILES)
             if ImportServicesFromExcelForm_.is_valid():
                 log=333
+                cd=ImportServicesFromExcelForm_.cleaned_data
                 
                 excel_file = request.FILES['file1']
-                cd=ImportServicesFromExcelForm_.cleaned_data
                 cd['excel_file']=excel_file
                 result,message,services=ServiceRepo(request=request).import_services_from_excel(**cd)
                 if services is not None:

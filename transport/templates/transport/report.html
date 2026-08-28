@@ -94,13 +94,14 @@
   </div>
 </div>
 {% include "transport/includes/work-shifts-app/template.html" %}
+{% include "transport/includes/services-app/template.html" %}
 {% include "transport/includes/anbar-products-app/template.html" %}
 {% endblock content %} {% block script %}
 <script>
   let report_app = new Vue({
     el: "#report-app",
     data: {
-      vehicle_code: "B16",
+      vehicle_code: "",
       from_shift_date: current_date,
       to_shift_date: current_date,
       shift:"روز",

@@ -567,7 +567,6 @@ class OilingMaintenanceDetailsExcelView(View):
         if oiling_maintenance_details_excel_form.is_valid():
             log=333
             cd=oiling_maintenance_details_excel_form.cleaned_data
-            leolog(cd=cd)
             oiling_maintenance_details=OilingMaintenanceDetailRepo(request=request).list(**cd)
  
         now=PersianCalendar().date
@@ -920,6 +919,7 @@ class VehiclesExcelView(View):
         for i,vehicle in enumerate(vehicles,start=1):
             line={
                 'row':i,
+                'id':vehicle.id,
                 'vehicle_code':vehicle.vehicle_code,   
                 'vehicle_type':vehicle.vehicle_type,      
                 'title':vehicle.title,   
@@ -932,6 +932,7 @@ class VehiclesExcelView(View):
             lines.append(line)
  
         headers=['ردیف',
+                 'شناسه',
                  'کد',
                  'نوع',
                  'ماشین',

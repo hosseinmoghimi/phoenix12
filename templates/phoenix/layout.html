@@ -32,6 +32,9 @@
     {% endblock style %}
 {% if DARK_THEME %}
 <style>
+      .text-muted{
+        color:#a8b8c6 !important;
+      }
       body{
         background-color:#212529 ;
       }
@@ -42,13 +45,19 @@
        background-color: rgb(70 66 88)
       }
       .form-control{
-        background-color:#520606 ;
+        background-color:#2f436b ;
         color:#d5e2ef;
       }
       .form-control:focus{
         
-        background-color:#9e5a5a ;
+        background-color:#59709e ;
         color:#d5e2ef;
+      }
+      button.btn-link{
+        color:#8ebbf5;
+      } 
+      button.btn-link:hover{
+        color:#ffffff;
       }
       a{
         color:#6baff9 ;
@@ -57,7 +66,7 @@
           
         color:#9cc8f7 ;
       }
-      h1,h2,h3,h4,h5,h6,p,label{
+      h1,h2,h3,h4,h5,h6,p,label,.field_value{
         color:#fff
       }
       .dropdown-menu {

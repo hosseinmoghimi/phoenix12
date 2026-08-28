@@ -98,7 +98,7 @@ class TableRepo():
         if "status" in kwargs:
             status=kwargs["status"]
             orders=Order.objects.filter(status=status)
-            leolog(status=status,orders=orders)
+            
             tables=[]
             for order in orders:
                 tables.append(order.table_id)
