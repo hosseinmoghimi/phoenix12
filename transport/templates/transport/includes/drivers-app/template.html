@@ -1,0 +1,96 @@
+<div id="accordion-drivers">
+  <div class="card" id="drivers-app">
+    <div class="card-header" id="heading-drivers">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-drivers"
+          aria-expanded="true"
+          aria-controls="collapse-drivers"
+        >
+          راننده ها
+
+          <span v-if="drivers.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="drivers.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-drivers"
+      class="collapse {% if expand_drivers %} show{% endif %}"
+      aria-labelledby="heading-drivers"
+      data-parent="#accordion-drivers"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
+            <thead>
+              <th>راننده</th>
+              <th>حساب</th>
+              <th>مانده</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="driver in drivers">
+                <td>
+                  <a :href="driver.get_absolute_url">
+                    <span
+                      v-text="driver.person_account.person.full_name"
+                    ></span>
+                  </a>
+                </td>
+
+                <td>
+
+                  <div class="media">
+                    <a :href="driver.person_account.get_absolute_url">
+                      <img :src="driver.person_account.thumbnail" width="48" class="rounded-circle" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="driver.person_account.get_absolute_url">
+                        <h6 v-text="driver.person_account.name"></h6>
+                        <h6 v-text="driver.person_account.code"></h6>
+                      </a>
+                    </div>
+                  </div>
+
+                  
+                </td>
+
+                
+
+                <td>
+                  <span v-text="to_price(driver.person_account.balance)"></span> {{CURRENCY    }}
+                </td>
+                <td>
+                  {% if perms.market.change_driver %}
+                  <a
+                    target="_blank"
+                    :href="driver.get_edit_url"
+                    title="ویرایش"
+                  >
+                    <i class="fa fa-edit text-warning"></i>
+                  </a>
+                  {% endif %} {% if perms.market.delete_driver %}
+                  <a
+                    target="_blank"
+                    :href="driver.get_delete_url"
+                    title="حذف"
+                  >
+                    <i class="fa fa-trash text-danger"></i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

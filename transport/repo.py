@@ -840,9 +840,13 @@ class ServiceRepo():
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
-        if "parent_id" in kwargs:
-            parent_id=kwargs["parent_id"]
-            objects=objects.filter(parent_id=parent_id)  
+        if "driver_id" in kwargs:
+                    driver_id=kwargs["driver_id"]
+                    objects=objects.filter(driver_id=driver_id) 
+
+        if "service_man_id" in kwargs:
+                    service_man_id=kwargs["service_man_id"]
+                    objects=objects.filter(service_man_id=service_man_id)  
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id) 

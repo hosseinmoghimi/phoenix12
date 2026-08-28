@@ -5,9 +5,9 @@
    <div class="col-md-4">
         <h5 class="text-center">
             <small class="text-muted">
-                تعمیر کار :
+                راننده :
             </small>
-            {{service_man.person_account.person.full_name}}
+            {{driver.person_account.person.full_name}}
         </h5>
     </div>
     <div class="col-md-4">
@@ -15,43 +15,43 @@
             <div class="card-header ">
                 <h6>
                     <small class="text-muted">
-                    تعمیر کار :
+                    راننده :
 
                     </small>
-                    {{service_man.person_account.person.full_name}}
+                    {{driver.person_account.person.full_name}}
 
                 </h6>
             </div>
             <div class="card-body">
                 <h6>
                     <small class="text-muted">
-                    تعمیر کار :
+                    راننده :
 
                     </small>
-                    {{service_man.person_account.person.full_name}}
+                    {{driver.person_account.person.full_name}}
 
                 </h6>
-                {% if service_man.person_account %}
+                {% if driver.person_account %}
                 <h6>
                     <small class="text-muted">
                     حساب :
 
                     </small>
-                    <a href="{{service_man.person_account.get_absolute_url}}">
-                        {{service_man.person_account.name}}
+                    <a href="{{driver.person_account.get_absolute_url}}">
+                        {{driver.person_account.name}}
                     </a>
                 </h6>
                 {% endif %}
 
-                {% if perms.transport.change_service_man %}
-                <a href="{{service_man.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+                {% if perms.transport.change_driver %}
+                <a href="{{driver.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
                     <i class="fa fa-edit text-warning"></i> ویرایش
                 </a>
                 {% endif %}
 
 
-                {% if perms.transport.delete_service_man %}
-                <a href="{{service_man.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
+                {% if perms.transport.delete_driver %}
+                <a href="{{driver.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
                     <i class="fa fa-trash text-danger"></i> حذف
                 </a>
                 {% endif %}

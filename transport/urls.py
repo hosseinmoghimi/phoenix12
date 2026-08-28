@@ -25,8 +25,8 @@ urlpatterns = [
     path('service/<int:pk>/',login_required(views.ServiceView.as_view()),name="service"),
 
     
-    path('drivers/',login_required(views.VehiclesView.as_view()),name="drivers"),
-    path('driver/<int:pk>/',login_required(views.VehicleView.as_view()),name="driver"),
+    path('drivers/',login_required(views.DriversView.as_view()),name="drivers"),
+    path('driver/<int:pk>/',login_required(views.DriverView.as_view()),name="driver"),
 
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
     path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),

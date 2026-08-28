@@ -19,6 +19,11 @@
 
             <div class="col-md-12">
     
+                    {% include "transport/includes/services-app/template.html" %}
+            </div>
+
+            <div class="col-md-12">
+    
                     {% include "core/includes/page-thumbnail-header-app/template.html" %}
             </div>
             <div class="col-md-12">
@@ -87,6 +92,7 @@
 {% block script %}
 
 {% include "transport/includes/vehicle-app/script.html" %}
+{% include "transport/includes/services-app/script.html" %}
 {% include "transport/includes/maintenances-app/script.html" %}
 {% include "transport/includes/vehicle-statuses-app/script.html" %}
 {% include "transport/includes/work-shifts-app/script.html" %}

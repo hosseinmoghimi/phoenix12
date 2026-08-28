@@ -112,6 +112,8 @@ def CoreContext(request,*args, **kwargs):
 
  
     theme=parameter_repo.parameter(app_name=app_name,name=PARAMETER_NAME_ENUM.THEME,default="dark").value
+    leolog(theme=theme)
+    context['DARK_THEME']=False
     if theme=="dark":
         context['DARK_THEME']=True
     context['WIDE_LAYOUT']=parameter_repo.parameter(name=PARAMETER_NAME_ENUM.WIDE_LAYOUT,default="0").boolean_value

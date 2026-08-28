@@ -25,6 +25,8 @@ NO_NAVBAR="NO_NAVBAR"
 
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+    context['title']="حمل و نقل"
+
     context[WIDE_LAYOUT]=False 
  
     context['LAYOUT_PARENT']=LAYOUT_PARENT
@@ -110,6 +112,7 @@ class VehiclesView(View):
 class ReportView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        context['title']="گزارشگیری دستگاه ها"
         vehicles =VehicleRepo(request=request).list(*args, **kwargs)
         context['vehicles']=vehicles
         vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
@@ -170,6 +173,12 @@ class VehicleView(View):
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
+
+
+        services=vehicle.service_set.all().order_by('shift_date')
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
 
 
          
@@ -655,6 +664,13 @@ class ServiceManView(View):
         context['maintenances_s']=maintenances_s
  
 
+        services=service_man.service_set.all().order_by('shift_date')
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+        context[WIDE_LAYOUT]=True
+
+
         return render(request,TEMPLATE_ROOT+"service-man.html",context) 
 
     
@@ -845,14 +861,13 @@ class ServiceView(View):
 
         
  
-        services =ServiceRepo(request=request),list(*args, **kwargs)
-        context['services']=services
-        services_s=json.dumps(ServiceSerializer(services,many=True).data)
-        context['services_s']=services_s
+        service =ServiceRepo(request=request).service(*args, **kwargs)
+        context['service']=service
+        service_s=json.dumps(ServiceSerializer(service,many=False).data)
+        context['service_s']=service_s
 
 
- 
-        context['expand_services']=True
+  
         context[WIDE_LAYOUT]=True
 
         return render(request,TEMPLATE_ROOT+"service.html",context) 
@@ -986,3 +1001,58 @@ class VehiclesExcelView(View):
         return response
 
       
+
+class DriverView(View):
+    def get(self,request,*args, **kwargs):
+      
+ 
+        context=getContext(request=request)
+
+         
+
+        driver =DriverRepo(request=request).driver(*args, **kwargs)
+        context['driver']=driver
+        driver_s=json.dumps(DriverSerializer(driver,many=False).data)
+        context['driver_s']=driver_s
+  
+        context[WIDE_LAYOUT]=True
+
+
+ 
+        services =ServiceRepo(request=request).list(driver_id=driver.id)
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+
+        work_shifts =WorkShiftRepo(request=request).list(driver_id=driver.id).order_by('-start_hour').order_by('-shift_date')
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
+         
+
+
+
+        return render(request,TEMPLATE_ROOT+"driver.html",context) 
+
+
+class DriversView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        drivers =DriverRepo(request=request).list(*args, **kwargs) 
+        context['drivers']=drivers
+        drivers_s=json.dumps(DriverSerializer(drivers,many=True).data)
+        context['drivers_s']=drivers_s
+
+
+
+         
+        context['expand_drivers']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"drivers.html",context) 
+
+ 
