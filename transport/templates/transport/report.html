@@ -15,17 +15,33 @@
  
          <div class="col-md-4">
             <div class="form-group">
-              <label for="exampleInputDate">تاریخ</label>
-              <date-picker v-model="shift_date"></date-picker>
+              <label for="exampleInputDate">از تاریخ</label>
+              <date-picker v-model="from_shift_date"></date-picker>
 
               <input
                 type="text"
                 required
                 class="form-control"
-                v-model="shift_date"
+                v-model="from_shift_date"
               />
             </div>
           </div>
+
+          
+         <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تا تاریخ</label>
+              <date-picker v-model="to_shift_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="to_shift_date"
+              />
+            </div>
+          </div>
+
 
 
           
@@ -72,6 +88,7 @@
         <div class="col-md-12">
            <button class="btn btn-info" @click="get_report()">گزارش بگیر</button>
         </div>
+        {% include "utility/includes/message.html" %}
       </div>
     </div>
   </div>
@@ -84,10 +101,12 @@
     el: "#report-app",
     data: {
       vehicle_code: "B16",
-      shift_date: current_date,
+      from_shift_date: current_date,
+      to_shift_date: current_date,
       shift:"روز",
       location:"",
       driver_id: 0,
+      message:{show:false}
     },
     components: {
       DatePicker: VuePersianDatetimePicker,
@@ -97,7 +116,8 @@
             let payload={
                 csrfmiddlewaretoken:csrfmiddlewaretoken,
                 vehicle_code:report_app.vehicle_code,
-                shift_date:report_app.shift_date,
+                from_shift_date:report_app.from_shift_date,
+                to_shift_date:report_app.to_shift_date,
                 shift:report_app.shift,
 
                 location:report_app.location,
@@ -111,6 +131,7 @@
             $.post(url,payload).done(data=>{
                 console.log(data)
                 if(data.result==="SUCCEED"){
+                  show_message(report_app,'موفق',data.message,'success',10000)
                     if(typeof work_shifts_app != 'undefined'){
                         work_shifts_app.work_shifts=data.work_shifts
                     }

@@ -140,12 +140,13 @@ class ReportView(View):
             context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
             context['drivers']=DriverRepo(request=request).list()
         return render(request,TEMPLATE_ROOT+"report.html",context) 
+
     
 class VehicleView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
-        context[WIDE_LAYOUT]=False
+        context[WIDE_LAYOUT]=True
         context['vehicle']=vehicle 
 
         if vehicle is None:
@@ -751,9 +752,6 @@ class WorkShiftView(View):
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
 
-
-
-
 class WorkShiftsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -769,7 +767,6 @@ class WorkShiftsView(View):
         context['expand_work_shifts']=True
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
-
 
 
 class AnbarProductView(View):
@@ -835,9 +832,6 @@ class AnbarProductsView(View):
         return render(request,TEMPLATE_ROOT+"anbar-products.html",context) 
 
 
-
-
-
 class ServiceView(View):
     def get(self,request,*args, **kwargs):
         work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
@@ -899,8 +893,6 @@ class ServicesView(View):
         context['expand_services']=True
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"services.html",context) 
-
-
 
  
 class VehiclesExcelView(View):

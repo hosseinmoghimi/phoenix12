@@ -116,12 +116,31 @@ class WorkShiftRepo():
             objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
         if "driver_id" in kwargs and kwargs["driver_id"]:
             objects=objects.filter(driver_id=kwargs["driver_id"])  
-        if "shift_date" in kwargs:
+        if "shift_date" in kwargs and kwargs['shift_date']:
             year=kwargs['shift_date'][:2]
             if year=="13" or year=="14":
                 kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
                 kwargs['shift_date']=kwargs['shift_date'].date()
             objects=objects.filter(shift_date=kwargs["shift_date"]) 
+
+        if "from_shift_date" in kwargs and kwargs['from_shift_date']:
+            year=kwargs['from_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
+            leolog(from_shift_date=kwargs['from_shift_date'])
+            
+            objects=objects.filter(shift_date__gte=kwargs["from_shift_date"]) 
+
+        if "to_shift_date" in kwargs and kwargs['to_shift_date']:
+            year=kwargs['to_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
+
+            import datetime 
+            leolog(to_shift_date=kwargs['to_shift_date'])
+            delta=datetime.timedelta(hours=23,minutes=59,seconds=59)
+            kwargs['to_shift_date']=kwargs['to_shift_date']+delta                        
+            objects=objects.filter(shift_date__lte=kwargs["to_shift_date"]) 
 
             
         if "shift" in kwargs and kwargs['shift']:

@@ -120,6 +120,8 @@ class GetReportForm(forms.Form):
     driver_id=forms.IntegerField(required=False)
     location=forms.CharField(required=False, max_length=50) 
     shift_date=forms.CharField(required=False, max_length=50) 
+    from_shift_date=forms.CharField(required=False, max_length=50) 
+    to_shift_date=forms.CharField(required=False, max_length=50) 
     shift=forms.CharField(required=False, max_length=50) 
      
 class VehiclesExcelForm(forms.Form):

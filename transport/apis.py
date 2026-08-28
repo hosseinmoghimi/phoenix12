@@ -83,7 +83,29 @@ class GetReportApiw(APIView):
             anbar_products=AnbarProductRepo(request=request).list(**cd)
             context['anbar_products']=AnbarProductSerializer(anbar_products,many=True).data
             
-            message="گزارش گیری انجام شد."
+            message+="گزارش گیری انجام شد."
+
+            if "from_shift_date" in cd and cd['from_shift_date']:
+                from_shift_date=PersianCalendar().to_gregorian(cd["from_shift_date"])
+                from_shift_date=PersianCalendar().from_gregorian(from_shift_date)
+                import datetime 
+                # from_shift_date=datetime(from_shift_date)
+                message+="از تاریخ "+str(from_shift_date)
+
+
+            if "to_shift_date" in cd and cd['to_shift_date']:
+                to_shift_date=PersianCalendar().to_gregorian(cd["to_shift_date"])
+                 
+                # to_shift_date=datetime(to_shift_date)
+                delta=datetime.timedelta(hours=23,minutes=59,seconds=59)
+                to_shift_date=to_shift_date+delta
+                
+                print(to_shift_date) 
+                to_shift_date=PersianCalendar().from_gregorian(to_shift_date)
+
+                print(to_shift_date)
+                message+="تا تاریخ "+str(to_shift_date)
+
 
             result=SUCCEED
         context['message']=message
