@@ -127,7 +127,6 @@ class WorkShiftRepo():
             year=kwargs['from_shift_date'][:2]
             if year=="13" or year=="14":
                 kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
-            leolog(from_shift_date=kwargs['from_shift_date'])
             
             objects=objects.filter(shift_date__gte=kwargs["from_shift_date"]) 
 
@@ -137,7 +136,6 @@ class WorkShiftRepo():
                 kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
 
             import datetime 
-            leolog(to_shift_date=kwargs['to_shift_date'])
             delta=datetime.timedelta(hours=23,minutes=59,seconds=59)
             kwargs['to_shift_date']=kwargs['to_shift_date']+delta                        
             objects=objects.filter(shift_date__lte=kwargs["to_shift_date"]) 
