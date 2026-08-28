@@ -15,11 +15,13 @@ urlpatterns = [
     path('vehicles_excel/',login_required(views.VehiclesExcelView.as_view()),name="vehicles_excel"),
     path('import-vehicles-from-excel/',login_required(apis.ImportVehicleFromExcelApi.as_view()),name="import_vehicles_from_excel"),
 
-    path('anbar-products',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
+    path('anbar-products/',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
     path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
 
     
-    path('services',login_required(views.ServicesView.as_view()),name="services"),
+    path('add-service/',login_required(apis.AddServiceApi.as_view()),name="add_service"),
+    path('new-service/',login_required(views.NewServiceView.as_view()),name="new_service"),
+    path('services/',login_required(views.ServicesView.as_view()),name="services"),
     path('service/<int:pk>/',login_required(views.ServiceView.as_view()),name="service"),
 
     

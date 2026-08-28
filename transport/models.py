@@ -501,6 +501,10 @@ class Service(models.Model,LinkHelper):
          message="سرویس و تعمیر با موفقیت اضافه شد."
          return (result,message,product)
 
+    @property
+    def persian_shift_date(self):
+        return PersianCalendar().from_gregorian(self.shift_date)[:10]
+
 
 class AnbarProduct(models.Model,LinkHelper):
     class_name="anbarproduct"

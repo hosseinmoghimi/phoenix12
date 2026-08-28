@@ -1,0 +1,91 @@
+<script>
+  let add_service_app = new Vue({
+    el: "#add-service-app",
+    data: { 
+        vehicle_id: 0,
+        driver_id: 0,
+        service_man_id: 0,
+
+        grease:0,
+        vehicle_hour:0,
+        oil_liter:0,
+        oil_type:"",
+
+        filter_type:"",
+        filter_action:"",
+ 
+        shift_date: current_date,
+        shift: "",
+         
+        description: "", 
+
+        waiting: false,
+        message: { show: false },
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: { 
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_service: function () {
+        let payload = {
+            csrfmiddlewaretoken: csrfmiddlewaretoken,
+
+            driver_id: parseInt(this.driver_id),
+            vehicle_id: parseInt(this.vehicle_id), 
+            service_man_id: parseInt(this.service_man_id), 
+
+            shift_date: this.shift_date,  
+            shift: this.shift,
+            vehicle_hour: parseFloat(this.vehicle_hour),
+
+            grease:parseInt(this.grease),
+            
+            oil_type:this.oil_type,
+            oil_liter:parseInt(this.oil_liter),
+
+            filter_type:this.filter_type,
+            filter_action:this.filter_action,
+
+            description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_service' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_service_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+            if (typeof services_app != "undefined") {
+              services_app.services.push(data.service);
+            }
+            else{
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(
+              add_service_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

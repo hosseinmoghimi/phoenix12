@@ -131,6 +131,12 @@ class ReportView(View):
         anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
         context['anbar_products_s']=anbar_products_s
 
+
+        services =[]
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
         context[WIDE_LAYOUT]=True
         if request.user.has_perm(APP_NAME+'.add_vehicle'):
             context['add_vehicle_form']=AddVehicleForm()
@@ -833,45 +839,20 @@ class AnbarProductsView(View):
 
 class ServiceView(View):
     def get(self,request,*args, **kwargs):
-        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
-        if work_shift is None:
-            mv=MessageView()
-            return mv.get(request=request,title="وجود ندارد")
-
+      
  
         context=getContext(request=request)
 
         
+ 
+        services =ServiceRepo(request=request),list(*args, **kwargs)
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
 
  
-        context['work_shift']=work_shift
-
-        oil_services =work_shift.oilservice_set.all()
-        context['oil_services']=oil_services
-        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
-        context['oil_services_s']=oil_services_s
-
-
-
-
-
-        filter_services =work_shift.filterservice_set.all()
-        context['filter_services']=filter_services
-        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
-        context['filter_services_s']=filter_services_s
-
-
-
-
-
-        products =work_shift.product_set.all()
-        context['products']=products
-        products_s=json.dumps(ProductSerializer(products,many=True).data)
-        context['products_s']=products_s
-
-
-
-        context['expand_oil_services']=True
+        context['expand_services']=True
         context[WIDE_LAYOUT]=True
 
         return render(request,TEMPLATE_ROOT+"service.html",context) 
@@ -881,7 +862,7 @@ class ServicesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
  
-        services =ServiceRepo(request=request).list(*args, **kwargs).order_by('-start_hour').order_by('-shift_date')
+        services =ServiceRepo(request=request).list(*args, **kwargs) 
         context['services']=services
         services_s=json.dumps(ServiceSerializer(services,many=True).data)
         context['services_s']=services_s
@@ -892,6 +873,34 @@ class ServicesView(View):
         context['expand_services']=True
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"services.html",context) 
+
+ 
+
+class NewServiceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+
+        drivers =DriverRepo(request=request).list(*args, **kwargs)
+        context['drivers']=drivers
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+        service_mans =ServiceManRepo(request=request).list(*args, **kwargs)
+        context['service_mans']=service_mans
+         
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['expand_services']=True
+
+        
+        services =[]
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+        
+        
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"new-service.html",context) 
 
  
 class VehiclesExcelView(View):

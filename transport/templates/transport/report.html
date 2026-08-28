@@ -104,10 +104,11 @@
       vehicle_code: "",
       from_shift_date: current_date,
       to_shift_date: current_date,
-      shift:"روز",
+      shift:"",
       location:"",
       driver_id: 0,
-      message:{show:false}
+      message:{show:false},
+      waiting:false,
     },
     components: {
       DatePicker: VuePersianDatetimePicker,
@@ -128,8 +129,11 @@
             }
             console.log(payload)
             let url="{% url 'transport:get_report' %}"
-
+            report_app.waiting=true
+            report_app.message.show=false
             $.post(url,payload).done(data=>{
+                report_app.waiting=false
+
                 console.log(data)
                 if(data.result==="SUCCEED"){
                   show_message(report_app,'موفق',data.message,'success',10000)
@@ -141,6 +145,9 @@
                         anbar_products_app.anbar_products=data.anbar_products
                     }
 
+                    if(typeof services_app != 'undefined'){
+                        services_app.services=data.services
+                    }
                 }
 
                 
@@ -154,7 +161,7 @@
 </script>
 
 {% include "transport/includes/work-shifts-app/script.html" %}
-{% include "transport/includes/services-app/template.html" %}
+{% include "transport/includes/services-app/script.html" %}
 
 {% include "transport/includes/anbar-products-app/script.html" %}
 

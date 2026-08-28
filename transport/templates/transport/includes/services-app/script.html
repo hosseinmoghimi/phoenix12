@@ -1,6 +1,28 @@
-
 <script>
-    let services_app=new Vue({
-        el:"#services-app"
-    })
+  let   services_for_services_app = JSON.parse(`{{services_s|escapejs}}`);
+  let services_app = new Vue({
+    el: "#services-app",
+    data: {
+      services: services_for_services_app,
+    },
+    methods: {
+      sum_oil: function(){ 
+        let s = 0;
+        this.services.forEach(service11 => {
+            s+=service11.oil_liter
+        });
+        return s; 
+      },
+    
+
+    sum_grease: function(){ 
+        let s = 0;
+        this.services.forEach(service11 => {
+            s+=service11.grease
+        });
+        return s; 
+      },
+    },
+
+  });
 </script>

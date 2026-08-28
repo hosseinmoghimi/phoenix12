@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
+from .repo import VehicleRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
+from .serializers import ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -107,10 +107,14 @@ class GetReportApiw(APIView):
             context['work_shifts']=WorkShiftSerializer(work_shifts,many=True).data
 
             
-            
+                        
             anbar_products=AnbarProductRepo(request=request).list(**cd)
             context['anbar_products']=AnbarProductSerializer(anbar_products,many=True).data
-            
+
+
+            services=ServiceRepo(request=request).list(**cd)
+            context['services']=ServiceSerializer(services,many=True).data
+                                    
             message+="گزارش گیری انجام شد."
 
             if "from_shift_date" in cd and cd['from_shift_date']:
@@ -164,6 +168,29 @@ class AddWorkShiftApi(APIView):
             result,message,work_shift=WorkShiftRepo(request=request).add_work_shift(**cd)
             if work_shift is not None:
                 context['work_shift']=WorkShiftSerializer(work_shift).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+class AddServiceApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_service_form=AddServiceForm(request.POST)
+        if add_service_form.is_valid():
+            log=333
+            cd=add_service_form.cleaned_data 
+            result,message,service=ServiceRepo(request=request).add_service(**cd)
+            if service is not None:
+                context['service']=ServiceSerializer(service).data
         context['message']=message
         context['result']=result
         context['log']=log

@@ -130,5 +130,19 @@ class VehiclesExcelForm(forms.Form):
     
 class ImportVehicleFromExcelForm(forms.Form):
     count=forms.IntegerField( required=False)
-     
-    
+
+class AddServiceForm(forms.Form):
+    grease=forms.IntegerField( required=False)
+    shift_date=forms.CharField(required=False, max_length=50) 
+    shift=forms.CharField(required=False, max_length=50) 
+    vehicle_id=forms.IntegerField(required=False)
+    service_man_id=forms.IntegerField(required=False)
+    driver_id=forms.IntegerField(required=False)
+    oil_type=forms.CharField(required=False, max_length=50) 
+    oil_liter=forms.IntegerField(required=False)
+    vehicle_hour=forms.FloatField(required=False)
+    filter_type=forms.CharField(required=False, max_length=50) 
+    filter_action=forms.CharField(required=False, max_length=50) 
+    description=forms.CharField(required=False, max_length=500) 
+                
+        

@@ -1,0 +1,212 @@
+<div id="accordion-add-service" class="rtl text-right farsi">
+  <div class="card" id="add-service-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-service"
+          aria-expanded="true"
+          aria-controls="collapse-add-service"
+        >
+          افزودن گزارش تعمیر
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-service"
+      class="collapse show"
+      aria-labelledby="heading-add-service"
+      data-parent="#accordion-add-service"
+    >
+      <div class="card-body">
+        <div class="row">
+           
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">وسیله نقلیه</label>
+              <select v-model="vehicle_id" class="form-control">
+                {% for vehicle in vehicles %}
+                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">راننده</label>
+              <select v-model="driver_id" class="form-control">
+                {% for driver in drivers %}
+                <option value="{{driver.id}}">{{driver.person_account.person.full_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">تعمیرکار</label>
+              <select v-model="service_man_id" class="form-control">
+                {% for service_man in service_mans %}
+                <option value="{{service_man.id}}">{{service_man.person_account.person.full_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+<div class="col-12">
+  <hr>
+</div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">ساعت دستگاه</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="vehicle_hour"
+              />
+            </div>
+            </div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="dfjvhndsjkhlury48">گریس تحویلی</label>
+
+              <input
+                id="dfjvhndsjkhlury48"
+                type="text"
+                required
+                class="form-control"
+                v-model="grease"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+  <hr>
+</div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">نوع روغن</label>
+                <select v-model="oil_type" class="form-control">
+                {% for oil_type in oil_types %}
+                <option value="{{oil_type}}">{{oil_type}}</option>
+                {% endfor %}
+              </select>
+              
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">لیتراژ روغن</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="oil_liter"
+              />
+            </div>
+          </div>
+<div class="col-12">
+  <hr>
+</div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">نوع فیلتر</label>
+              <select v-model="filter_type" class="form-control">
+                {% for filter_type in filter_types %}
+                <option value="{{filter_type}}">{{filter_type}}</option>
+                {% endfor %}
+              </select>
+              
+            </div>
+          </div>
+
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">خدمات فیلتر</label>
+              <select v-model="filter_action" class="form-control">
+                <option value="تعویض">تعویض</option>
+                <option value="بادگیری">بادگیری</option>
+              </select>
+              
+            </div>
+          </div>
+
+
+          <div class="col-md-12"></div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ </label>
+              <date-picker v-model="shift_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="shift_date"
+              />
+            </div>
+          </div>
+
+       
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">شیفت</label>
+              <select v-model="shift" class="form-control">
+                <option value="روز">روز</option>
+                <option value="شب">شب</option>
+              </select>
+            </div>
+          </div>
+<div class="col-12">
+  <hr>
+</div>
+ 
+          <div class="col-md-8">
+            <div class="form-group">
+              <label for="dsfsdfsdf">توضیحات</label>
+
+              <input
+                id="dsfsdfsdf"
+                type="text"
+                required
+                class="form-control"
+                v-model="description"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div v-if="message.show">
+              <div :class="'my-2 alert alert-'+message.color">
+                <h5 v-text="message.title"></h5>
+                <div v-html="message.body"></div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-success"
+              @click="add_service()"
+              v-if="!waiting"
+              type="submit"
+            >
+              <i class="fa fa-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

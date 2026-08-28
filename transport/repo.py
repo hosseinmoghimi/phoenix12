@@ -835,6 +835,7 @@ class ServiceRepo():
                 self.objects=Service.objects
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
+        leolog(kwargs=kwargs)
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
@@ -843,8 +844,30 @@ class ServiceRepo():
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
         if "vehicle_id" in kwargs:
-                    vehicle_id=kwargs["vehicle_id"]
-                    objects=objects.filter(vehicle_id=vehicle_id) 
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id) 
+
+        if "shift" in kwargs and kwargs['shift']: 
+            objects=objects.filter(shift=kwargs["shift"]) 
+
+        if "from_shift_date" in kwargs and kwargs['from_shift_date']:
+            year=kwargs['from_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
+            
+            objects=objects.filter(shift_date__gte=kwargs["from_shift_date"]) 
+
+        if "to_shift_date" in kwargs and kwargs['to_shift_date']:
+            year=kwargs['to_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
+
+            import datetime 
+            delta=datetime.timedelta(hours=23,minutes=59,seconds=59)
+            kwargs['to_shift_date']=kwargs['to_shift_date']+delta                        
+            objects=objects.filter(shift_date__lte=kwargs["to_shift_date"]) 
+
+
         return objects.all()
         
     def service(self,*args, **kwargs):
@@ -861,13 +884,47 @@ class ServiceRepo():
         if not self.request.user.has_perm(APP_NAME+".add_service"):
             message="دسترسی غیر مجاز"
             return result,message,service
-        if len(Service.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
-            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
-            return FAILED,message,None
+         
         service=Service() 
-        if 'person_account_id' in kwargs:
-            service.person_account_id=kwargs["person_account_id"]
+        if 'grease' in kwargs:
+            service.grease=kwargs["grease"]
           
+        if 'oil_liter' in kwargs:
+            service.oil_liter=kwargs["oil_liter"]
+          
+        if 'filter_type' in kwargs:
+            service.filter_type=kwargs["filter_type"]
+          
+        if 'oil_type' in kwargs:
+            service.oil_type=kwargs["oil_type"]
+          
+        if 'filter_action' in kwargs:
+            service.filter_action=kwargs["filter_action"]
+          
+        if 'driver_id' in kwargs and kwargs["driver_id"]:
+            service.driver_id=kwargs["driver_id"]
+          
+        if 'vehicle_id' in kwargs and kwargs["vehicle_id"]:
+            service.vehicle_id=kwargs["vehicle_id"]
+          
+        if 'service_man_id' in kwargs and kwargs["service_man_id"]:
+            service.service_man_id=kwargs["service_man_id"]
+          
+        if 'shift' in kwargs and kwargs["shift"]:
+            service.shift=kwargs["shift"]
+          
+        if 'description' in kwargs and kwargs["description"]:
+            service.description=kwargs["description"]
+          
+        if 'vehicle_hour' in kwargs and kwargs["vehicle_hour"]:
+            service.vehicle_hour=kwargs["vehicle_hour"]
+          
+        if "shift_date" in kwargs and kwargs['shift_date']:
+            year=kwargs['shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
+            service.shift_date=kwargs["shift_date"]
+        leolog(kwargs=kwargs)    
         (result,message,service)=service.save()
         return result,message,service
 
