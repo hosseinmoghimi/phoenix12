@@ -1,0 +1,169 @@
+{% extends "transport/layout.html" %} {% block content %}
+{% load to_normal_number %}
+{% load to_persian_date %} {% include "core/includes/page-app/navbar.html" %}
+<div class="row rtl">
+ 
+  <div class="col-md-12">
+    <div class="row rtl">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="text-center">
+              سرویس و تعمیر
+            </h5>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <tr>
+                <td class="field_name">دستگاه</td>
+
+                <td class="field_value">
+                  <a href="{{service.vehicle.get_absolute_url}}">
+                    <span class="ml-3">
+                    {{service.vehicle.vehicle_code}} 
+
+                    </span>
+                    {{service.vehicle.title}}
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">تاریخ</td>
+                <td class="field_value">
+                  {{service.shift_date|to_persian_date|safe}}
+                  شیفت
+                  {{service.shift}}
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">گریس تحویلی</td>
+                <td class="field_value">
+                  {% if service.grease %} 
+                  {{service.grease | to_normal_number}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">نوع روغن</td>
+                <td class="field_value"> 
+                  {% if service.oil_type %} 
+                  {{service.oil_type}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">لیتراژ روغن</td>
+                <td class="field_value">
+                  {% if service.oil_liter %} 
+                  {{service.oil_liter|to_normal_number}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">نوع فیلتر</td>
+                <td class="field_value">
+                  {% if service.filter_type %} 
+                  {{service.filter_type}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">خدمات فیلتر</td>
+                <td class="field_value">
+                  {% if service.filter_action %} 
+                  {{service.filter_action}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              
+
+              <tr>
+                <td class="field_name">راننده</td>
+                <td class="field_value">
+                  {% if service.driver %} 
+                  <a href="{{service.driver.get_absolute_url}} ">
+                  {{service.driver.person_account.person.full_name}} 
+
+                  </a>
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">تعمیرکار</td>
+                <td class="field_value">
+                  {% if service.service_man %} 
+                  <a href="{{service.service_man.get_absolute_url}} ">
+                  {{service.service_man.person_account.person.full_name}} 
+
+                  </a>
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+              <tr>
+                <td class="field_name">توضیحات</td>
+                <td class="field_value">
+                  {% if service.description %} 
+                  {{service.description}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+             
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block script %} {% endblock script %}  

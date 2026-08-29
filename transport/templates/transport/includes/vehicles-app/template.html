@@ -26,6 +26,12 @@
       data-parent="#accordion-vehicles"
     >
       <div class="card-body">
+        <div class="row rtl">
+          <div class="col-md-3 my-2">
+            <input placeholder="جستجو ..." type="text" @input="filter()" v-model="search_for" class="form-control">
+
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped  ">
             <thead>
@@ -72,7 +78,7 @@
                     </div>
                   </div>
                 </td>
-  <th>
+                <th>
                   <span v-text="vehicle.description"></span>
                 </th>
                 <td>

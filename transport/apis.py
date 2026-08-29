@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
-from .serializers import ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
+from .repo import VehicleStatusRepo,VehicleRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
+from .serializers import VehicleStatusSerializer,ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -33,7 +33,6 @@ class AddOilingMaintenanceDetailApi(APIView):
         return JsonResponse(context)
 
 
-
 class AddVehicleApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -55,8 +54,6 @@ class AddVehicleApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
-
-
 
 
 class ImportVehicleFromExcelApi(APIView):
@@ -85,7 +82,30 @@ class ImportVehicleFromExcelApi(APIView):
         return JsonResponse(context)
 
 
-
+class ImportVehicleStatusFromExcelApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        import_vehicles_form=ImportVehicleStatusFromExcelForm(request.POST,request.FILES)
+        if import_vehicles_form.is_valid():
+            log=333
+            cd=import_vehicles_form.cleaned_data
+            
+            excel_file = request.FILES['file1']
+            cd['excel_file']=excel_file
+            result,message,vehicle_statuses=VehicleStatusRepo(request=request).import_vehicle_statuses_from_excel(**cd)
+            if vehicle_statuses is not None:
+                context['vehicle_statuses']=VehicleStatusSerializer(vehicle_statuses,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 
 class GetReportApiw(APIView):
@@ -146,7 +166,6 @@ class GetReportApiw(APIView):
         return JsonResponse(context)
 
 
-
 class AddWorkShiftApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -195,7 +214,6 @@ class AddServiceApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
-
 
 
 class AddKarkerdApi(APIView):
@@ -291,7 +309,6 @@ class AddMaintenanceApi(APIView):
             return JsonResponse(context)
          
     
-
 class AddOilingMaintenanceApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

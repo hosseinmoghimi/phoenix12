@@ -1,19 +1,26 @@
 {% extends "transport/layout.html" %} {% block content %} {% load to_persian_date %} {% include "core/includes/page-app/navbar.html" %}
 <div class="row rtl">
-  <div class="col-md-3">
-    {% include "core/includes/page-app/thumbnail-card.html" %} {% include "core/includes/page-app/card.html" %}
-  </div>
-  <div class="col-md-9">
+ 
+  <div class="col-md-12">
     <div class="row rtl">
       <div class="col-md-12">
         <div class="card">
+          <div class="card-header">
+            <h5 class="text-center">
+              وضعیت دستگاه
+            </h5>
+          </div>
           <div class="card-body">
             <table class="table">
               <tr>
-                <td class="field_name">ماشین</td>
+                <td class="field_name">دستگاه</td>
 
                 <td class="field_value">
                   <a href="{{vehicle_status.vehicle.get_absolute_url}}">
+                    <span class="ml-3">
+                    {{vehicle_status.vehicle.vehicle_code}} 
+
+                    </span>
                     {{vehicle_status.vehicle.title}}
                   </a>
                 </td>

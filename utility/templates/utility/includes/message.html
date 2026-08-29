@@ -6,7 +6,7 @@
     </div>
 </div>
 <div v-if="message.show" :class="'farsi text-right alert alert-'+message.color">
-    <h5 v-html="message.title">
+    <h5 :class="'text-'+message.color" v-html="message.title">
     </h5>
     <div v-html="message.body">
     </div>

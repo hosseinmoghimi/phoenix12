@@ -4,8 +4,14 @@
   <div class="col-md-12">
     {% include "transport/includes/vehicle-statuses-app/template.html" %}
   </div>
+   <div class="col-md-12">
+          {% include "transport/includes/import-vehicle-statuses-from-excel-app/template.html" %}
+
+      </div>
 </div>
 {% endblock content %}
 {% block script %} 
+          {% include "transport/includes/import-vehicle-statuses-from-excel-app/script.html" %}
+
 {% include "transport/includes/vehicle-statuses-app/script.html" %} 
 {% endblock script %}

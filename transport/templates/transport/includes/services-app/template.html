@@ -108,6 +108,15 @@
                   </td>
 
                   <td>
+                     <a
+                      target="_blank"
+                      :href="service.get_absolute_url"
+                      title="جزئیات"
+                    >
+                      <i class="fa fa-edit text-info"></i>
+                      جزئیات
+                    </a>
+
                     {% if perms.market.change_service %}
                     <a
                       target="_blank"

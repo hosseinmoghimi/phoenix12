@@ -226,7 +226,8 @@ class VehicleEvent(Event):
 class VehicleStatus(models.Model,LinkHelper):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)     
     status_datetime = models.DateTimeField(_("status_datetime"), auto_now=False, auto_now_add=False)
-    location=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
+    # location=models.ForeignKey("attachments.location", verbose_name=_("location"),null=True,blank=True, on_delete=models.SET_NULL)
+    location=models.CharField(_("location"),max_length=100, null=True,blank=True)
     kilometer=models.IntegerField(_("kilometer"))
     hour=models.IntegerField(_("hour"))
     motor=models.CharField(_("motor"),null=True,blank=True, max_length=500)
@@ -256,7 +257,16 @@ class VehicleStatus(models.Model,LinkHelper):
         from utility.num import separate
         return f"""<span class="mr-2">کیلومتر</span><strong class="mx-2">{separate(self.kilometer)}</strong><span class="mr-2">ساعت</span><strong class="mx-1">{separate(self.hour)} </strong>"""
 
-
+    
+    def save(self,*args, **kwargs): 
+        
+        (result,message,vehicle_status)=FAILED,'',self
+         
+        super(VehicleStatus,self).save()   
+        result=SUCCEED
+        message="وضعیت دستگاه با موفقیت ذخیره شد."
+        return (result,message,vehicle_status)
+    
 class WorkShift(models.Model,LinkHelper): 
     class_name="workshift"
     app_name=APP_NAME

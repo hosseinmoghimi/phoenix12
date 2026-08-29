@@ -188,14 +188,7 @@
           </div>
 
           <div class="col-md-12">
-            <div v-if="message.show">
-              <div :class="'my-2 alert alert-'+message.color">
-                <h5 v-text="message.title"></h5>
-                <div v-html="message.body"></div>
-              </div>
-            </div>
-
-            <button
+              <button
               class="btn btn-success"
               @click="add_service()"
               v-if="!waiting"
@@ -204,6 +197,12 @@
               <i class="fa fa-plus"></i>
               افزودن
             </button>
+            <div class="mt-4 mb-2">
+
+              {% include "utility/includes/message.html" %}
+              
+            </div>
+          
           </div>
         </div>
       </div>

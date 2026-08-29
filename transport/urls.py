@@ -38,7 +38,8 @@ urlpatterns = [
    
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
     path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
-    path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
+
+
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
@@ -65,6 +66,9 @@ urlpatterns = [
 
     path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
     path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
+    path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),
+    path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
+
 
 
 

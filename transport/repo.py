@@ -33,7 +33,7 @@ class VehicleStatusRepo():
         if "vehicle_id" in kwargs and kwargs['vehicle_id']:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
-        return objects.all()
+        return objects.all().order_by('-status_datetime')
         
     def vehicle_status(self,*args, **kwargs):
         if "vehicle_status_id" in kwargs and kwargs["vehicle_status_id"] is not None:
@@ -51,40 +51,178 @@ class VehicleStatusRepo():
             return result,message,vehicle_status
 
         vehicle_status=VehicleStatus()
-        if 'title' in kwargs:
-            vehicle_status.title=kwargs["title"]
-            if len(Vehicle.objects.filter(title=vehicle_status.title))>0:
-                message='نام تکراری برای وسیله نقلیه جدید'
-                return FAILED,message,None
-        if 'owner_id' in kwargs:
-            vehicle_status.owner_id=kwargs["owner_id"]
-        if 'brand_name' in kwargs:
-            vehicle_status.brand_name=kwargs["brand_name"]
-        if 'model_name' in kwargs:
-            vehicle_status.model_name=kwargs["model_name"]
-        if 'plaque' in kwargs:
-            vehicle_status.plaque=kwargs["plaque"]
-        if 'year' in kwargs:
-            vehicle_status.year=kwargs["year"]
-        if 'kilometer' in kwargs:
-            vehicle_status.kilometer=kwargs["kilometer"]
-        if 'driver_id' in kwargs:
-            driver_id=kwargs["driver_id"]
-            if driver_id is not None and driver_id>0:
-                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
-                if driver is not None:
-                    vehicle_status.driver=driver.person_account.person.full_name
-          
-        if 'price' in kwargs:
-            vehicle_status.price=kwargs["price"]
+        if 'cooler' in kwargs:
+            vehicle_status.cooler=kwargs["cooler"]
+
+            
+        if 'vehicle_id' in kwargs:
+            vehicle_status.vehicle_id=kwargs["vehicle_id"]
+
+        if 'status_datetime' in kwargs:
+            vehicle_status.status_datetime=kwargs["status_datetime"]
+        if 'wiring' in kwargs:
+            vehicle_status.wiring=kwargs["wiring"]
+        if 'heater' in kwargs:
+            vehicle_status.heater=kwargs["heater"]
+
+        if 'cabin' in kwargs:
+            vehicle_status.cabin=kwargs["cabin"]
+
+        if 'ziroband' in kwargs:
+            vehicle_status.ziroband=kwargs["ziroband"]
+
+                
+        if 'hydrolic' in kwargs:
+            vehicle_status.hydrolic=kwargs["hydrolic"]
+        if 'motor' in kwargs:
+            vehicle_status.motor=kwargs["motor"]
+        if 'hour' in kwargs:
+            vehicle_status.hour=kwargs["hour"]
         
+                
+        if 'description' in kwargs:
+            vehicle_status.description=kwargs["description"]
+        if 'location' in kwargs:
+            vehicle_status.location=kwargs["location"]
+        if 'pakat' in kwargs:
+            vehicle_status.pakat=kwargs["pakat"]
+        if 'compress' in kwargs:
+            vehicle_status.compress=kwargs["compress"]
+
+        vehicle_status.kilometer=0
+        if 'kilometer' in kwargs and kwargs["kilometer"]:
+                    kilometer=0
+                    kilometer=kwargs["kilometer"]
+                    try:
+                        kilometer=int(kilometer)
+                    except:
+                        pass
+                    vehicle_status.kilometer=kilometer
+
+        vehicle_status.hour=0
+        if 'hour' in kwargs and kwargs["hour"]:
+                    hour=0
+                    hour=kwargs["hour"]
+                    try:
+                        hour=float(hour)
+                    except:
+                        pass
+                    vehicle_status.hour=hour
+            
         (result,message,vehicle_status)=vehicle_status.save()
         return result,message,vehicle_status
 
     def last_statuses(self,*args, **kwargs):
-        return self.list(*args, **kwargs)
+        vehicles=Vehicle.objects.all()
+        ids=[]
+        for vehicle in vehicles:
+            stat=VehicleStatus.objects.filter(vehicle_id=vehicle.id).order_by('-status_datetime').first()
+            ids.append(stat.id)
+        
+        return VehicleStatus.objects.filter(id__in=ids)
 
  
+    def import_vehicle_statuses_from_excel(self,*args,**kwargs):
+        result,message,vehicle_statuses=FAILED,"",[]
+        excel_file=kwargs['excel_file']
+         
+        import openpyxl 
+
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['vehicle_statuses']
+            
+
+        except:
+            message='فایل شما  وضعیت ماشین آلات ندارد.'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه وضعیت ماشین آلات ، تعداد ندارد.'
+            return result,message,None 
+
+        vehicle_statuses_to_import=[]
+
+        START_ROW=EXCEL_VEHICLES_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            vehicle_status={}
+            
+            i=str(i) 
+            # product['id']=ws['A'+str(i)].value
+            vehicle_code=ws['B'+i].value
+            from django.utils import timezone
+
+            if vehicle_code is not None:
+                id=0
+                vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
+                if vehicle is not None:
+                    vehicle_status['vehicle_id']=vehicle.id
+
+                    vehicle_status['status_datetime']=(ws['D'+i].value)
+                    vehicle_status['status_datetime']=timezone.now()
+
+                    vehicle_status['location']=(ws['E'+i].value)
+
+                    kilometer=(ws['F'+i].value)
+                    try:
+                        kilometer=int(kilometer)
+                    except:
+                        pass
+                    vehicle_status['kilometer']=kilometer
+
+                    hour=(ws['G'+i].value)
+                    try:
+                        hour=float(hour)
+                    except:
+                        pass
+                    vehicle_status['hour']=hour
+
+                    vehicle_status['motor']=(ws['H'+i].value)
+                    vehicle_status['ziroband']=(ws['I'+i].value)
+                    vehicle_status['cabin']=(ws['J'+i].value)
+                    vehicle_status['compress']=(ws['K'+i].value)
+                    vehicle_status['hydrolic']=(ws['L'+i].value)
+                    vehicle_status['pakat']=(ws['M'+i].value)
+                    vehicle_status['cooler']=(ws['N'+i].value)
+                    vehicle_status['heater']=(ws['O'+i].value)
+                    vehicle_status['gear_box']=(ws['P'+i].value)
+                    vehicle_status['wiring']=(ws['Q'+i].value)
+                    vehicle_status['light']=(ws['R'+i].value)
+                    vehicle_status['description']=(ws['S'+i].value)
+                  
+                     
+                    # vehicle_status['thumbnail_origin']=ws['F'+str(i)].value
+                    vehicle_statuses_to_import.append(vehicle_status) 
+        modified=added=0
+
+        i=0
+        for vehicle_status in vehicle_statuses_to_import:
+            result,message,new_vehicle_status=self.add_vehicle_status(**vehicle_status)
+        
+            if result==SUCCEED:
+                added+=1
+
+        result=SUCCEED
+        message=f"""{added} وضعیت دستگاه اضافه شد."""
+        vehicle_status=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("transport:vehicle_statuses")
+            log_data['title']="بازیابی سرویس ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+        return result,message,vehicle_status
+
+
 class WorkShiftRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -838,7 +976,6 @@ class ServiceRepo():
                 self.objects=Service.objects
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
-        leolog(kwargs=kwargs)
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
@@ -931,7 +1068,6 @@ class ServiceRepo():
             if year=="13" or year=="14":
                 kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
             service.shift_date=kwargs["shift_date"]
-        leolog(kwargs=kwargs)    
         (result,message,service)=service.save()
         return result,message,service
 

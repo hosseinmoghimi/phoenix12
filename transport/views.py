@@ -169,7 +169,7 @@ class VehicleView(View):
         maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
         context['maintenances_s']=maintenances_s
 
-        vehicle_statuses=vehicle.vehiclestatus_set.all().order_by('status_datetime')
+        vehicle_statuses=vehicle.vehiclestatus_set.all().order_by('-status_datetime')
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
@@ -232,9 +232,10 @@ class VehicleStatusesExcelView(View):
         for i,vehicle_status in enumerate(vehicle_statuses,start=1):
             line={
                 'row':i,
+                'vehicle_code':vehicle_status.vehicle.vehicle_code,      
                 'vehicle':vehicle_status.vehicle.title,      
                 'datetime':PersianCalendar().from_gregorian(vehicle_status.status_datetime)[:10],      
-                'location':vehicle_status.location.title if vehicle_status.location else "",   
+                'location':vehicle_status.location,  
                 'kilometer':vehicle_status.kilometer,   
                 'hour':vehicle_status.hour,   
                 'motor':vehicle_status.motor,   
@@ -252,7 +253,8 @@ class VehicleStatusesExcelView(View):
             }
             lines.append(line)
         headers=['ردیف',
-                 'ماشین',
+                 'کد',
+                 'دستگاه',
                  'تاریخ',
                  'مکان',
                  'کیلومتر',
