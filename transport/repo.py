@@ -1096,7 +1096,8 @@ class AnbarProductRepo():
         if "vehicle_code" in kwargs and kwargs['vehicle_code']:
             objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
         if "driver_id" in kwargs and kwargs["driver_id"]:
-            objects=objects.filter(driver_id=kwargs["driver_id"]) 
+            pass
+            # objects=objects.filter(driver_id=kwargs["driver_id"]) 
         return objects.all()
         
     def anbar_product(self,*args, **kwargs):
