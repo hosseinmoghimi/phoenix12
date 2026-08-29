@@ -9,7 +9,26 @@
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+
+            
+            sum_oil: function() { 
+                let s=0
+                this.oil_services.forEach(oil_service => {
+                    s+=oil_service.oil_liter
+                });
+                return s 
+            },
+
+            
+            sum_cost: function() { 
+                let s=0
+                this.oil_services.forEach(oil_service => {
+                    s+=oil_service.cost
+                });
+                return to_price(s) 
+            },
+
         }
     })
 </script>

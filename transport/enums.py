@@ -14,6 +14,12 @@ class OilTypeEnum(TextChoices):
 class FilterActionEnum(TextChoices):
     REPLACE="تعویض",_("تعویض")
     BADGIRI='بادگیری',_("بادگیری")
+
+class OilActionEnum(TextChoices):
+    TAVIZ_ROGHAN_MOTOR="تعویض روغن موتور",_("تعویض روغن موتور")
+    SARRIZ_ROGHAN_MOTOR="سرریز روغن موتور",_("سرریز روغن موتور")
+    TAVIZ_ROGHAN_MISC="تعویض روغن متفرقه",_("تعویض روغن متفرقه")
+    SARRIZ_ROGHAN_MISC="سرریز روغن متفرقه",_("سرریز روغن متفرقه")
     
 class TavaghofCausesEnum(TextChoices):
     JEB="عدم جبهه کاری",_("عدم جبهه کاری")

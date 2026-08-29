@@ -37,6 +37,7 @@
               <th>ساعت دستگاه</th>
               <th>برآورد هزینه</th>
               <th>توضیحات</th> 
+              <th></th>
             </thead>
             <tbody>
               <tr v-for="oil_service in oil_services">
@@ -93,10 +94,40 @@
                 </td>
 
 
+<td>
+  
+{% if perms.transport.change_oilservice %}
+  <a target="_blank" title="ویرایش" class="btn btn-link text-warning"  :href="oil_service.get_edit_url">
+    <i class="fa fa-edit text-warning"></i>
+  </a>
+{% endif %}
 
+{% if perms.transport.delete_oilservice %}
+    <a target="_blank" title="حذف" class="btn btn-link text-danger"  :href="oil_service.get_delete_url">
+    <i class="fa fa-trash text-danger"></i>
+  </a>
+{% endif %}
+</td>
                
               </tr>
             </tbody>
+            <tfoot>
+              
+              <th></th>
+              <th></th>
+              <th>
+                <span v-text="sum_oil()"></span>
+              </th>
+              <th></th>
+              <th>
+                <span v-text="sum_cost()"></span>
+                {{CURRENCY}}
+
+              </th>
+              <th> </th> 
+
+              
+            </tfoot>
           </table>
         </div>
       </div>

@@ -718,10 +718,11 @@ class NewWorkShiftView(View):
         context['vehicles']=vehicles
 
         
- 
+        from .enums import OilActionEnum
         drivers =DriverRepo(request=request).list(*args, **kwargs)
         context['drivers']=drivers
         context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['oil_actions']=(i[0] for i in OilActionEnum.choices)
         context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
         context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
         context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)

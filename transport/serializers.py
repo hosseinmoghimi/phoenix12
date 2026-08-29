@@ -73,13 +73,13 @@ class WorkShiftSerializer(serializers.ModelSerializer):
 class FilterServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model=FilterService
-        fields=['id','cost','count','filter_type','filter_action','description']
+        fields=['id','cost','count','filter_type','filter_action','description', 'get_edit_url','get_delete_url']
 
    
 class OilServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model=OilService
-        fields=['id','vehicle_hour','oil_action','oil_liter','oil_type','description','cost']
+        fields=['id','vehicle_hour','oil_action','oil_liter','oil_type','description','cost', 'get_edit_url','get_delete_url']
 
 
 class ProductSerializer(serializers.ModelSerializer):

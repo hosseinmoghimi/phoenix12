@@ -266,6 +266,7 @@ class VehicleStatus(models.Model,LinkHelper):
         result=SUCCEED
         message="وضعیت دستگاه با موفقیت ذخیره شد."
         return (result,message,vehicle_status)
+
     
 class WorkShift(models.Model,LinkHelper): 
     class_name="workshift"
@@ -327,7 +328,7 @@ class WorkShift(models.Model,LinkHelper):
     def oil_liter(self):
         s=0
         for oil_service in OilService.objects.filter(work_shift_id=self.id).all():
-            if oil_service.oil_action=="تعویض روغن موتور" or oil_service.oil_action=="سرریز روغن موتور":
+            if oil_service.oil_action==OilActionEnum.TAVIZ_ROGHAN_MOTOR or oil_service.oil_action==OilActionEnum.SARRIZ_ROGHAN_MOTOR:
                 s+=oil_service.oil_liter
         return s
     

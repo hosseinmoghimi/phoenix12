@@ -247,10 +247,11 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="">نوع سرویس</label>
-            <select v-model="oil_action" type="text" class="form-control">
-              <option value="تعویض روغن موتور">تعویض روغن موتور</option>
-              <option value="روغن موتور سرریز">روغن موتور سرریز</option>
-              <option value="تعویض روغن متفرقه">تعویض روغن متفرقه</option>
+            <select v-model="oil_action" type="text" class="form-control"> 
+              {% for oil_action in oil_actions %}
+              <option value="{{oil_action}}">{{oil_action}}</option>
+                
+              {% endfor %}
               <option value="سرریز روغن متفرقه">سرریز روغن متفرقه</option>
             </select>
           </div>
