@@ -103,7 +103,7 @@ class AddWorkShiftForm(forms.Form):
 
     
     bar=forms.CharField(required=True, max_length=50) 
-    service_count=forms.IntegerField(required=False)
+    bar_count=forms.IntegerField(required=False)
 
     description=forms.CharField(required=False, max_length=500)
 

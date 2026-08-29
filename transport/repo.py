@@ -337,8 +337,8 @@ class WorkShiftRepo():
                     work_shift.vehicle_end_hour=kwargs["vehicle_end_hour"]
 
 
-        if 'service_count' in kwargs:
-            work_shift.service_count=kwargs["service_count"]
+        if 'bar_count' in kwargs:
+            work_shift.bar_count=kwargs["bar_count"]
 
         if 'bar' in kwargs:
             work_shift.bar=kwargs["bar"]
