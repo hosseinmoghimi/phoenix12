@@ -30,7 +30,7 @@ class VehicleStatusRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        if "vehicle_id" in kwargs:
+        if "vehicle_id" in kwargs and kwargs['vehicle_id']:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
         return objects.all()

@@ -223,18 +223,18 @@ class VehicleStatusesExcelView(View):
             log=333
             cd=vehicle_statuses_excel_form.cleaned_data
             vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(**cd)
- 
         now=PersianCalendar().date
         
         date=PersianCalendar().from_gregorian(now)
         lines=[]
         from utility.templatetags.to_normal_number import to_normal_number
+        leolog(vehicle_statuses=vehicle_statuses)
         for i,vehicle_status in enumerate(vehicle_statuses,start=1):
             line={
                 'row':i,
                 'vehicle':vehicle_status.vehicle.title,      
                 'datetime':PersianCalendar().from_gregorian(vehicle_status.status_datetime)[:10],      
-                'location':vehicle_status.location.title,   
+                'location':vehicle_status.location.title if vehicle_status.location else "",   
                 'kilometer':vehicle_status.kilometer,   
                 'hour':vehicle_status.hour,   
                 'motor':vehicle_status.motor,   
