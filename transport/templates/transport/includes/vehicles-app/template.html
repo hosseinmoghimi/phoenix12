@@ -29,12 +29,20 @@
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped  ">
             <thead>
-              <th>وسیله نقلیه</th>
+              <th>کد</th>
+              <th>دستگاه</th>
+              <th>
+                پلاک
+              </th>
               <th>مالک</th>
+              <th>توضیحات</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="vehicle in vehicles">
+                   <th>
+                  <span v-text="vehicle.vehicle_code"></span>
+                </th>
                 <td>
                  <div class="media">
                     <a :href="vehicle.get_absolute_url">
@@ -48,7 +56,9 @@
                     </div>
                   </div>
                 </td>
-
+                <th>
+                  <span v-text="vehicle.plaque"></span>
+                </th>
                 <td>
                   <div class="media" v-if="vehicle.owner">
                     <a :href="vehicle.owner.get_absolute_url">
@@ -62,7 +72,9 @@
                     </div>
                   </div>
                 </td>
-
+  <th>
+                  <span v-text="vehicle.description"></span>
+                </th>
                 <td>
                   <a
                     target="_blank"

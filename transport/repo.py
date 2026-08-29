@@ -348,6 +348,9 @@ class VehicleRepo():
         if 'price' in kwargs:
             vehicle.price=kwargs["price"]
         
+        if 'description' in kwargs:
+            vehicle.description=kwargs["description"]
+                
         (result,message,vehicle)=vehicle.save()
         return result,message,vehicle
 

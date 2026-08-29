@@ -112,7 +112,6 @@ def CoreContext(request,*args, **kwargs):
 
  
     theme=parameter_repo.parameter(app_name=app_name,name=PARAMETER_NAME_ENUM.THEME,default="dark").value
-    leolog(theme=theme)
     context['DARK_THEME']=False
     if theme=="dark":
         context['DARK_THEME']=True

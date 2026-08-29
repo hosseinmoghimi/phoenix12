@@ -17,7 +17,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
     class Meta:
         model=Vehicle
-        fields=['id','vehicle_code' ,'owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','vehicle_code','plaque' ,'owner', 'title','description','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
 
   
 class VehicleSerializer2(serializers.ModelSerializer):
