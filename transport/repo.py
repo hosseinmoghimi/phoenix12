@@ -117,7 +117,8 @@ class VehicleStatusRepo():
         ids=[]
         for vehicle in vehicles:
             stat=VehicleStatus.objects.filter(vehicle_id=vehicle.id).order_by('-status_datetime').first()
-            ids.append(stat.id)
+            if stat is not None:
+                ids.append(stat.id)
         
         return VehicleStatus.objects.filter(id__in=ids)
 
