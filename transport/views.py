@@ -192,6 +192,34 @@ class VehicleView(View):
 
 
 
+        from .repo import OilServiceRepo,ProductRepo,FilterServiceRepo
+
+
+        oil_services =OilServiceRepo(request=request).list(vehicle_id=vehicle.id)
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =FilterServiceRepo(request=request).list(vehicle_id=vehicle.id)
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        products =ProductRepo(request=request).list(vehicle_id=vehicle.id)
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
         return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
   
     
@@ -204,6 +232,8 @@ class VehicleStatusesView(View):
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
+        if request.user.has_perm(APP_NAME+".add_veiclestatus"):
+            context['add_vehicle_status_form']=AddVehicleStatusForm()
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
 
  
@@ -726,6 +756,17 @@ class NewWorkShiftView(View):
         context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
         context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
         context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+
+
+
+
+        work_shifts =[]
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+        context['expand_work_shifts']=True
+
+
 
         return render(request,TEMPLATE_ROOT+"new-work-shift.html",context) 
 

@@ -411,6 +411,252 @@ class WorkShiftRepo():
 
         return result,message,work_shift
 
+
+class OilServiceRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=OilService.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_oil_service"):
+                self.objects=OilService.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
+        return objects.all()
+        
+    def oil_service(self,*args, **kwargs):
+        if "oil_service_id" in kwargs and kwargs["oil_service_id"] is not None:
+            return self.objects.filter(pk=kwargs['oil_service_id']).first()  
+        if "oil_service_code" in kwargs and kwargs["oil_service_code"] is not None:
+            return self.objects.filter(oil_service_code=kwargs['oil_service_code']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_oil_service(self,*args,**kwargs):
+        result,message,oil_service=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_oil_service"):
+            message="دسترسی غیر مجاز"
+            return result,message,oil_service
+
+        oil_service=OilService()
+        if 'title' in kwargs:
+            oil_service.title=kwargs["title"]
+            if len(OilService.objects.filter(title=oil_service.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            oil_service.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            oil_service.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            oil_service.model_name=kwargs["model_name"]
+        if 'oil_service_type' in kwargs:
+            oil_service.oil_service_type=kwargs["oil_service_type"]
+        if 'oil_service_color' in kwargs:
+            oil_service.oil_service_color=kwargs["oil_service_color"]
+        if 'oil_service_code' in kwargs:
+            oil_service.oil_service_code=kwargs["oil_service_code"]
+        if 'plaque' in kwargs:
+            oil_service.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            oil_service.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            oil_service.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            if driver_id is not None and driver_id>0:
+                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
+                if driver is not None:
+                    oil_service.driver=driver.person_account.person.full_name
+          
+        if 'price' in kwargs:
+            oil_service.price=kwargs["price"]
+        
+        if 'description' in kwargs:
+            oil_service.description=kwargs["description"]
+                
+        (result,message,oil_service)=oil_service.save()
+        return result,message,oil_service
+
+
+class FilterServiceRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=FilterService.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_filter_service"):
+                self.objects=FilterService.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
+        return objects.all()
+        
+    def filter_service(self,*args, **kwargs):
+        if "filter_service_id" in kwargs and kwargs["filter_service_id"] is not None:
+            return self.objects.filter(pk=kwargs['filter_service_id']).first()  
+        if "filter_service_code" in kwargs and kwargs["filter_service_code"] is not None:
+            return self.objects.filter(filter_service_code=kwargs['filter_service_code']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_filter_service(self,*args,**kwargs):
+        result,message,filter_service=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_filter_service"):
+            message="دسترسی غیر مجاز"
+            return result,message,filter_service
+
+        filter_service=FilterService()
+        if 'title' in kwargs:
+            filter_service.title=kwargs["title"]
+            if len(FilterService.objects.filter(title=filter_service.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            filter_service.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            filter_service.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            filter_service.model_name=kwargs["model_name"]
+        if 'filter_service_type' in kwargs:
+            filter_service.filter_service_type=kwargs["filter_service_type"]
+        if 'filter_service_color' in kwargs:
+            filter_service.filter_service_color=kwargs["filter_service_color"]
+        if 'filter_service_code' in kwargs:
+            filter_service.filter_service_code=kwargs["filter_service_code"]
+        if 'plaque' in kwargs:
+            filter_service.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            filter_service.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            filter_service.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            if driver_id is not None and driver_id>0:
+                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
+                if driver is not None:
+                    filter_service.driver=driver.person_account.person.full_name
+        
+        if 'price' in kwargs:
+            filter_service.price=kwargs["price"]
+        
+        if 'description' in kwargs:
+            filter_service.description=kwargs["description"]
+                
+        (result,message,filter_service)=filter_service.save()
+        return result,message,filter_service
+  
+    
+class ProductRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=Product.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_product"):
+                self.objects=Product.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
+        if "owner_id" in kwargs:
+            owner_id=kwargs["owner_id"]
+            objects=objects.filter(owner_id=owner_id)  
+        return objects.all()
+        
+    def product(self,*args, **kwargs):
+        if "product_id" in kwargs and kwargs["product_id"] is not None:
+            return self.objects.filter(pk=kwargs['product_id']).first()  
+        if "product_code" in kwargs and kwargs["product_code"] is not None:
+            return self.objects.filter(product_code=kwargs['product_code']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_product(self,*args,**kwargs):
+        result,message,product=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_product"):
+            message="دسترسی غیر مجاز"
+            return result,message,product
+
+        product=Product()
+        if 'title' in kwargs:
+            product.title=kwargs["title"]
+            if len(Product.objects.filter(title=product.title))>0:
+                message='نام تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
+        if 'owner_id' in kwargs:
+            product.owner_id=kwargs["owner_id"]
+        if 'brand_name' in kwargs:
+            product.brand_name=kwargs["brand_name"]
+        if 'model_name' in kwargs:
+            product.model_name=kwargs["model_name"]
+        if 'product_type' in kwargs:
+            product.product_type=kwargs["product_type"]
+        if 'product_color' in kwargs:
+            product.product_color=kwargs["product_color"]
+        if 'product_code' in kwargs:
+            product.product_code=kwargs["product_code"]
+        if 'plaque' in kwargs:
+            product.plaque=kwargs["plaque"]
+        if 'year' in kwargs:
+            product.year=kwargs["year"]
+        if 'kilometer' in kwargs:
+            product.kilometer=kwargs["kilometer"]
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            if driver_id is not None and driver_id>0:
+                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
+                if driver is not None:
+                    product.driver=driver.person_account.person.full_name
+          
+        if 'price' in kwargs:
+            product.price=kwargs["price"]
+        
+        if 'description' in kwargs:
+            product.description=kwargs["description"]
+                
+        (result,message,product)=product.save()
+        return result,message,product
+ 
     
 class VehicleRepo():
     def __init__(self,request,*args, **kwargs):
@@ -471,6 +717,10 @@ class VehicleRepo():
             vehicle.vehicle_color=kwargs["vehicle_color"]
         if 'vehicle_code' in kwargs:
             vehicle.vehicle_code=kwargs["vehicle_code"]
+            vehicle.vehicle_code=kwargs["vehicle_code"]
+            if len(Vehicle.objects.filter(vehicle_code=vehicle.vehicle_code))>0:
+                message='کد تکراری برای وسیله نقلیه جدید'
+                return FAILED,message,None
         if 'plaque' in kwargs:
             vehicle.plaque=kwargs["plaque"]
         if 'year' in kwargs:

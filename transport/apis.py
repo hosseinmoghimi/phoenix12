@@ -355,3 +355,26 @@ class AddServiceManApi(APIView):
         return JsonResponse(context)
   
  
+class AddVehicleStatusApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_service_man_form=AddVehicleStatusForm(request.POST)
+        if add_service_man_form.is_valid():
+            log=333
+            cd=add_service_man_form.cleaned_data
+            result,message,vehicle_status=VehicleStatusRepo(request=request).add_vehicle_status(**cd)
+            if vehicle_status is not None:
+                context['vehicle_status']=VehicleStatusSerializer(vehicle_status).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+  
+ 

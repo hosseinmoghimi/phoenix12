@@ -40,7 +40,7 @@
         return to_price(vall) + " {{CURRENCY}}";
       },
 
-      add_maintenance: function () {
+      add_vehicle_status: function () {
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
@@ -68,7 +68,7 @@
         };
 
         console.log(payload);
-        let url = "{% url 'transport:add_oiling' %}";
+        let url = "{% url 'transport:add_vehicle_status' %}";
         let posting = $.post(url, payload);
         posting.done((data) => {
           console.log(data);

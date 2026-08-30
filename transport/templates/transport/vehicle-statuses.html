@@ -1,17 +1,22 @@
-{% extends "transport/layout.html" %} 
-{% block content %}
+{% extends "transport/layout.html" %} {% block content %}
 <div class="row rtl">
   <div class="col-md-12">
     {% include "transport/includes/vehicle-statuses-app/template.html" %}
   </div>
-   <div class="col-md-12">
-          {% include "transport/includes/import-vehicle-statuses-from-excel-app/template.html" %}
-
-      </div>
+  <div class="col-md-12">
+    {% include "transport/includes/import-vehicle-statuses-from-excel-app/template.html" %}
+  </div>
+  {% if add_vehicle_status_form %}
+  <div class="col-md-12">
+    {% include "transport/includes/add-vehicle-status-app/template.html" %}
+  </div>
+  {% endif %}
 </div>
-{% endblock content %}
+{% endblock content %} 
 {% block script %} 
-          {% include "transport/includes/import-vehicle-statuses-from-excel-app/script.html" %}
-
+{% include "transport/includes/import-vehicle-statuses-from-excel-app/script.html" %} 
 {% include "transport/includes/vehicle-statuses-app/script.html" %} 
-{% endblock script %}
+{% if add_vehicle_status_form %}
+ {% include "transport/includes/add-vehicle-status-app/script.html" %} 
+ {% endif %} 
+ {% endblock script %}

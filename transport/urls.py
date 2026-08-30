@@ -64,6 +64,7 @@ urlpatterns = [
     path('tavaghof/<int:pk>/',login_required(views.ServiceManView.as_view()),name="tavaghof"),
 
 
+    path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
     path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
     path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
     path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),

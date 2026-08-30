@@ -4,12 +4,17 @@
   <div class="col-md-12">
     {% include "transport/includes/add-work-shift-app/template.html" %}
   </div>
+  <div class="col-12">
+    {% include "transport/includes/work-shifts-app/template.html" %} 
+
+  </div>
   {% endif %}
  
 </div>
 {% endblock content %} {% block script %}
 <script></script>
  
+{% include "transport/includes/work-shifts-app/script.html" %} 
 {% if add_work_shift_form %}
  {% include "transport/includes/add-work-shift-app/script.html" %} 
  {% endif %} 

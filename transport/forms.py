@@ -69,11 +69,14 @@ class AddServiceManForm(forms.Form):
 class VehicleStatusesExcelForm(forms.Form):
     vehicle_id=forms.IntegerField(required=False) 
 
+
 class OilingMaintenanceDetailsExcelForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=False) 
 
+
 class ImportVehicleStatusFromExcelForm(forms.Form):
     count=forms.IntegerField(required=False) 
+
 
 class AddOilingMaintenanceDetailForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=True)
@@ -84,9 +87,28 @@ class AddOilingMaintenanceDetailForm(forms.Form):
     description=forms.CharField(required=False, max_length=500)
      
 
+class AddVehicleStatusForm(forms.Form):
+    vehicle_code=forms.CharField(required=True, max_length=50)
+    status_datetime=forms.CharField(required=True, max_length=50)
+    location=forms.CharField(required=False, max_length=50)
+    kilometer=forms.CharField(required=False, max_length=50)
+    hour=forms.CharField(required=False, max_length=50)
+    motor=forms.CharField(required=False, max_length=50)
+    gear_box=forms.CharField(required=False, max_length=50)
+    ziroband=forms.CharField(required=False, max_length=50)
+    cabin=forms.CharField(required=False, max_length=50)
+    cooler=forms.CharField(required=False, max_length=50)
+    heater=forms.CharField(required=False, max_length=50)
+    wiring=forms.CharField(required=False, max_length=50)
+    light=forms.CharField(required=False, max_length=50)
+    hydrolic=forms.CharField(required=False, max_length=50)
+    pakat=forms.CharField(required=False, max_length=50)
+    compress=forms.CharField(required=False, max_length=50)
+    description=forms.CharField(required=False, max_length=500)
+        
 
 class AddWorkShiftForm(forms.Form):
-    vehicle_code=forms.CharField(required=True, max_length=50) 
+    vehicle_code=forms.CharField(required=False, max_length=50) 
     driver_id=forms.IntegerField(required=False)
     location=forms.CharField(required=False, max_length=50) 
     
@@ -115,9 +137,7 @@ class AddWorkShiftForm(forms.Form):
     tavaghofs=forms.CharField(required=False, max_length=5000)
     products=forms.CharField(required=False, max_length=5000)
 
- 
-     
-    
+   
 class GetReportForm(forms.Form):
     vehicle_code=forms.CharField(required=False, max_length=50) 
     driver_id=forms.IntegerField(required=False)
@@ -126,6 +146,7 @@ class GetReportForm(forms.Form):
     from_shift_date=forms.CharField(required=False, max_length=50) 
     to_shift_date=forms.CharField(required=False, max_length=50) 
     shift=forms.CharField(required=False, max_length=50) 
+
      
 class VehiclesExcelForm(forms.Form):
     pass
@@ -133,6 +154,7 @@ class VehiclesExcelForm(forms.Form):
     
 class ImportVehicleFromExcelForm(forms.Form):
     count=forms.IntegerField( required=False)
+
 
 class AddServiceForm(forms.Form):
     grease=forms.IntegerField( required=False)
