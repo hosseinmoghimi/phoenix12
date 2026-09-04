@@ -232,7 +232,7 @@ class VehicleStatusesView(View):
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
-        if request.user.has_perm(APP_NAME+".add_veiclestatus"):
+        if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
             context['add_vehicle_status_form']=AddVehicleStatusForm()
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
 
@@ -1097,6 +1097,9 @@ class DriversView(View):
          
         context['expand_drivers']=True
         context[WIDE_LAYOUT]=True
+        
+        if request.user.has_perm(APP_NAME+".add_driver"):
+            context['add_driver_form']=AddDriverForm()
         return render(request,TEMPLATE_ROOT+"drivers.html",context) 
 
  

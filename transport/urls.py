@@ -27,6 +27,7 @@ urlpatterns = [
     
     path('drivers/',login_required(views.DriversView.as_view()),name="drivers"),
     path('driver/<int:pk>/',login_required(views.DriverView.as_view()),name="driver"),
+    path('add-driver/',login_required(apis.AddDriverApi.as_view()),name="add_driver"),
 
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
     path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),

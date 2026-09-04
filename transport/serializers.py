@@ -10,7 +10,7 @@ class DriverSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:
         model=Driver
-        fields=['id','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','full_name','driver_code','level','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
   
 
 class VehicleSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class ServiceManSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:
         model=ServiceMan
-        fields=['id', 'title','person_account','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id', 'full_name','person_account','get_absolute_url',  'get_edit_url','get_delete_url']
  
   
 class MaintenanceSerializer(serializers.ModelSerializer):

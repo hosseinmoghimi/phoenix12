@@ -294,7 +294,7 @@ class WorkShiftRepo():
         
         
     def add_work_shift(self,*args,**kwargs):
-
+        leolog(kwargs=kwargs)
         result,message,work_shift=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
             message="دسترسی غیر مجاز"
@@ -311,9 +311,16 @@ class WorkShiftRepo():
             vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
             if vehicle is not None:
                 work_shift.vehicle=vehicle
-
-        if 'driver_id' in kwargs:
-            work_shift.driver_id=kwargs["driver_id"]
+        if 'driver_code' in kwargs and kwargs['driver_code']:
+            driver_code=kwargs["driver_code"]
+            driver=Driver.objects.filter(driver_code=driver_code).first()
+            if driver is not None:
+                work_shift.driver=driver
+        if 'driver_id' in kwargs and kwargs['driver_id']:
+            driver=Driver.objects.filter(pk=kwargs['driver_id']).first()
+            if driver is not None:
+                work_shift.driver=driver
+ 
 
         if 'location' in kwargs:
             work_shift.location=kwargs["location"]
@@ -883,25 +890,28 @@ class DriverRepo():
         
         
     def add_driver(self,*args,**kwargs):
+        leolog(kwargs=kwargs)
         result,message,driver=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_driver"):
             message="دسترسی غیر مجاز"
             return result,message,driver
 
         driver=Driver()
-        if 'title' in kwargs:
-            driver.title=kwargs["title"]
-            if len(Driver.objects.filter(title=driver.title))>0:
+        if 'full_name' in kwargs:
+            driver.full_name=kwargs["full_name"]
+            if len(Driver.objects.filter(full_name=driver.full_name))>0:
                 message='نام تکراری برای وسیله نقلیه جدید'
                 return FAILED,message,None
-        if 'owner_id' in kwargs:
-            driver.owner_id=kwargs["owner_id"]
-        if 'brand_name' in kwargs:
-            driver.brand_name=kwargs["brand_name"]
-        if 'model_name' in kwargs:
-            driver.model_name=kwargs["model_name"]
-        if 'driver_type' in kwargs:
-            driver.driver_type=kwargs["driver_type"]
+        if 'account_id' in kwargs:
+            driver.account_id=kwargs["account_id"]
+        if 'level' in kwargs:
+            driver.level=kwargs["level"]
+        if 'license_no' in kwargs:
+            driver.license_no=kwargs["license_no"]
+        if 'driver_code' in kwargs:
+            driver.driver_code=kwargs["driver_code"]
+        if 'year' in kwargs:
+            driver.year=kwargs["year"]
         if 'driver_color' in kwargs:
             driver.driver_color=kwargs["driver_color"]
         if 'driver_code' in kwargs:

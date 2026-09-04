@@ -83,7 +83,7 @@
                 <td>
                   <a :href="work_shift.driver.get_absolute_url">
                     <div class="media">
-                      <img
+                      <img v-if="work_shift.driver.person_account"
                         class="rounded-circle"
                         :src="work_shift.driver.person_account.person.image"
                         width="32"
@@ -91,7 +91,7 @@
                       />
                       <div class="media-body mr-2">
                         <span
-                          v-text="work_shift.driver.person_account.person.full_name"
+                          v-text="work_shift.driver.full_name"
                         ></span>
                       </div>
                     </div>

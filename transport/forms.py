@@ -1,4 +1,13 @@
 from accounting.forms import forms,AddInvoiceForm,AddEventForm
+
+class AddDriverForm(forms.Form):
+    owner_id=forms.IntegerField(required=False)
+    account_id=forms.IntegerField(required=False)
+    full_name=forms.CharField( max_length=100, required=True)
+    license_no=forms.CharField( max_length=100, required=False)
+    driver_code=forms.CharField( max_length=100, required=False)
+    level=forms.CharField( max_length=100, required=False)
+    year=forms.CharField( max_length=100, required=False)
  
  
 class AddVehicleForm(forms.Form):
@@ -111,6 +120,7 @@ class AddVehicleStatusForm(forms.Form):
 class AddWorkShiftForm(forms.Form):
     vehicle_code=forms.CharField(required=False, max_length=50) 
     driver_id=forms.IntegerField(required=False)
+    driver_code=forms.CharField(max_length=50,required=False)
     location=forms.CharField(required=False, max_length=50) 
     
 

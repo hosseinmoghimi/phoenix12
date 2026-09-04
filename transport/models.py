@@ -19,7 +19,9 @@ from accounting.models import Invoice,InvoiceLine
 
 
 class ServiceMan(models.Model,LinkHelper):
-    person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
+    person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"),null=True,blank=True, on_delete=models.SET_NULL)
+    full_name=models.CharField(_("full_name"), max_length=50)
+
     class_name='serviceman'
     app_name=APP_NAME
 
@@ -28,7 +30,7 @@ class ServiceMan(models.Model,LinkHelper):
         verbose_name_plural = _("ServiceMans")
     @property
     def title(self):
-        return self.person_account.person.full_name
+        return self.full_name
     def __str__(self):
         return str(self.title)
     def save(self,*args, **kwargs):
@@ -41,7 +43,13 @@ class ServiceMan(models.Model,LinkHelper):
 
 
 class Driver(models.Model,LinkHelper):
-    person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"), on_delete=models.CASCADE)
+    person_account=models.ForeignKey("accounting.personaccount", verbose_name=_("person_account"),null=True,blank=True, on_delete=models.CASCADE)
+    full_name=models.CharField(_("full_name"), max_length=50)
+    license_no=models.CharField(_("license_no"),null=True,blank=True, max_length=50)
+    driver_code=models.CharField(_("driver_code"),null=True,blank=True, max_length=50)
+    year=models.CharField(_("year"),null=True,blank=True, max_length=50)
+    level=models.CharField(_("level"),null=True,blank=True, max_length=50)
+
     class_name='driver'
     app_name=APP_NAME
 
@@ -50,15 +58,15 @@ class Driver(models.Model,LinkHelper):
         verbose_name_plural = _("Drivers")
     @property
     def title(self):
-        return self.person_account.person.full_name
+        return self.full_name
     def __str__(self):
         return str(self.title)
     def save(self,*args, **kwargs):
         result,message,driver=FAILED,'',None
-        if self.title is None or self.title=="":
-            self.title=self.account.title
+        if self.full_name is None or self.full_name=="":
+            self.full_name=self.person_account.person.full_name
         super(Driver,self).save(*args, **kwargs)
-        message='سرویس کار با موفقیت اضافه شد.'
+        message='راننده با موفقیت اضافه شد.'
         return SUCCEED,message,self
 
 

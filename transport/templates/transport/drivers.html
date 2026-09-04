@@ -4,6 +4,15 @@
 {% block content %}
 <div class="row rtl farsi">
      
+
+    {% if add_driver_form %}
+      <div class="col-md-12">
+          {% include "transport/includes/add-driver-app/template.html" %}
+
+      </div>
+      
+    {% endif %}
+
     <div class="col-md-12">
 
         
@@ -17,4 +26,10 @@
 {% block script %}
 {% include "transport/includes/drivers-app/script.html" %}
  
+
+    {% if add_driver_form %}
+          {% include "transport/includes/add-driver-app/script.html" %}
+
+      
+    {% endif %}
 {% endblock script %}

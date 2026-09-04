@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleStatusRepo,VehicleRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
-from .serializers import VehicleStatusSerializer,ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
+from .repo import VehicleStatusRepo,VehicleRepo,DriverRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
+from .serializers import VehicleStatusSerializer,DriverSerializer,ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -349,6 +349,29 @@ class AddServiceManApi(APIView):
             result,message,service_man=ServiceManRepo(request=request).add_service_man(**cd)
             if service_man is not None:
                 context['service_man']=ServiceManSerializer(service_man).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+  
+ 
+class AddDriverApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_driver_form=AddDriverForm(request.POST)
+        if add_driver_form.is_valid():
+            log=333
+            cd=add_driver_form.cleaned_data
+            result,message,driver=DriverRepo(request=request).add_driver(**cd)
+            if driver is not None:
+                context['driver']=DriverSerializer(driver).data
         context['message']=message
         context['result']=result
         context['log']=log
