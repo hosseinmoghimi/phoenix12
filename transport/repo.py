@@ -711,12 +711,13 @@ class VehicleRepo():
             vehicle.brand_name=kwargs["brand_name"]
         if 'model_name' in kwargs:
             vehicle.model_name=kwargs["model_name"]
-        if 'vehicle_type' in kwargs:
+        if 'vehicle_type' in kwargs and kwargs['vehicle_type']:
             vehicle.vehicle_type=kwargs["vehicle_type"]
-        if 'vehicle_color' in kwargs:
+        if 'vehicle_color' in kwargs and kwargs['vehicle_color']:
             vehicle.vehicle_color=kwargs["vehicle_color"]
-        if 'vehicle_code' in kwargs:
-            vehicle.vehicle_code=kwargs["vehicle_code"]
+        if 'vehicle_size' in kwargs and kwargs['vehicle_size']:
+            vehicle.vehicle_size=kwargs["vehicle_size"]
+        if 'vehicle_code' in kwargs:  
             vehicle.vehicle_code=kwargs["vehicle_code"]
             if len(Vehicle.objects.filter(vehicle_code=vehicle.vehicle_code))>0:
                 message='کد تکراری برای وسیله نقلیه جدید'

@@ -138,6 +138,7 @@ class MaintenanceInvoice(Invoice):
 class Vehicle(Asset):
     vehicle_type=models.CharField(_("نوع وسیله "),null=True,blank=True, max_length=50)
     vehicle_code=models.CharField(_("کد وسیله "), null=True,blank=True,max_length=50)
+    vehicle_size=models.CharField(_("سایز وسیله "), null=True,blank=True,max_length=50)
     brand_name=models.CharField(_("برند"),null=True,blank=True, max_length=50)
     model_name=models.CharField(_("مدل"),null=True,blank=True, max_length=50)
     plaque=models.CharField(_("پلاک"),null=True,blank=True, max_length=50)

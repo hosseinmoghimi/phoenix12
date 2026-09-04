@@ -94,6 +94,15 @@
 
             <div class="col-md-6">
               <div class="form-group">
+                <label for="">سایز</label>
+                <select v-model="vehicle_size" class="form-control">
+                  <option value="سبک">سبک</option>
+                  <option value="سنگین">سنگین</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
                 <label for="">رنگ</label>
                 <select v-model="vehicle_color" class="form-control">
                   {% for vehicle_color in vehicle_colors %}
