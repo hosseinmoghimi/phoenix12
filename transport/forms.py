@@ -4,6 +4,7 @@ from accounting.forms import forms,AddInvoiceForm,AddEventForm
 class AddVehicleForm(forms.Form):
     owner_id=forms.IntegerField(required=False)
     title=forms.CharField( max_length=100, required=False)
+    vehicle_size=forms.CharField( max_length=100, required=False)
     vehicle_color=forms.CharField( max_length=100, required=False)
     vehicle_code=forms.CharField( max_length=100, required=False)
     vehicle_type=forms.CharField( max_length=100, required=False)
