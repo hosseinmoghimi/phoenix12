@@ -40,10 +40,9 @@ class AddMaintenanceForm(AddEventForm):
     kilometer=forms.IntegerField(  required=False)
     service_man_id=forms.IntegerField(required=True)
     driver_id=forms.IntegerField(required=False)
-    vehicle_id=forms.IntegerField(required=True)
     maintenance_type=forms.CharField(max_length=100, required=True)
-    description=forms.CharField(max_length=500, required=False)
-
+    vehicle_code=forms.CharField(max_length=50, required=True)
+    driver_code=forms.CharField(max_length=50, required=False)
 
 class AddKarkerdForm(AddEventForm): 
     driver_id=forms.IntegerField(required=True)
@@ -85,6 +84,10 @@ class OilingMaintenanceDetailsExcelForm(forms.Form):
 
 
 class ImportVehicleStatusFromExcelForm(forms.Form):
+    count=forms.IntegerField(required=False) 
+
+
+class ImportDriverFromExcelForm(forms.Form):
     count=forms.IntegerField(required=False) 
 
 
@@ -163,6 +166,9 @@ class VehiclesExcelForm(forms.Form):
     pass
      
     
+class DriversExcelForm(forms.Form):
+    pass
+     
 class ImportVehicleFromExcelForm(forms.Form):
     count=forms.IntegerField( required=False)
 

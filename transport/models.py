@@ -64,7 +64,10 @@ class Driver(models.Model,LinkHelper):
     def save(self,*args, **kwargs):
         result,message,driver=FAILED,'',None
         if self.full_name is None or self.full_name=="":
-            self.full_name=self.person_account.person.full_name
+            self.full_name=="بی نام"
+            if self.person_account is not None:
+                if self.person_account.person is not None:
+                    self.full_name=self.person_account.person.full_name
         super(Driver,self).save(*args, **kwargs)
         message='راننده با موفقیت اضافه شد.'
         return SUCCEED,message,self

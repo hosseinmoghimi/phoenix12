@@ -73,5 +73,12 @@ urlpatterns = [
 
 
 
+   
+    path('import-drivers-from-excel/',login_required(apis.ImportDriverFromExcelApi.as_view()),name="import_drivers_from_excel"),
+    path('drivers-excel/',login_required(views.DriversExcelView.as_view()),name="drivers_excel"),
+
+
+   
+
 
 ]

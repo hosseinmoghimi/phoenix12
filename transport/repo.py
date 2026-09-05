@@ -216,7 +216,7 @@ class VehicleStatusRepo():
             from log.repo import LogRepo
             log_data['person_id']=PersonRepo(request=self.request).me.id
             log_data['url']=reverse("transport:vehicle_statuses")
-            log_data['title']="بازیابی سرویس ها"
+            log_data['title']="بازیابی وضعیت دستگاه ها"
             log_data['description']=message
             log_data['app_name']=APP_NAME
             LogRepo(request=self.request).add_log(**log_data)
@@ -929,6 +929,71 @@ class DriverRepo():
         (result,message,driver)=driver.save()
         return result,message,driver
 
+    def import_drivers_from_excel(self,*args,**kwargs):
+        result,message,drivers=FAILED,"",[]
+        excel_file=kwargs['excel_file']
+         
+        import openpyxl 
+
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['drivers']
+            
+
+        except:
+            message='فایل شما برگه راننده ها ندارد.'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه راننده ها ، تعداد ندارد.'
+            return result,message,None 
+
+        drivers_to_import=[]
+        from .constants import EXCEL_DRIVERS_DATA_START_ROW
+        START_ROW=EXCEL_DRIVERS_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            driver={}
+            
+            i=str(i)  
+           
+            driver['driver_code']=(ws['B'+i].value)
+            driver['full_name']=(ws['C'+i].value)
+            driver['license_no']=(ws['D'+i].value)
+            driver['year']=(ws['E'+i].value)
+            driver['level']=(ws['F'+i].value)
+          
+                
+            # driver['thumbnail_origin']=ws['F'+str(i)].value
+            drivers_to_import.append(driver) 
+        modified=added=0
+
+        i=0
+        for driver in drivers_to_import:
+            result,message,new_driver=self.add_driver(**driver)
+        
+            if result==SUCCEED:
+                added+=1
+
+        result=SUCCEED
+        message=f"""{added} راننده اضافه شد."""
+        drivers=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("transport:drivers")
+            log_data['title']="بازیابی راننده ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+        return result,message,drivers
+
 
 class MaintenanceRepo():
     def __init__(self,request,*args, **kwargs):
@@ -1044,6 +1109,7 @@ class MaintenanceRepo():
         return result,message,invoice
     
     def add_maintenance(self,*args,**kwargs):
+        leolog(kwargs=kwargs)
         result,message,maintenance=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_maintenance"):
             message="دسترسی غیر مجاز"
@@ -1058,13 +1124,34 @@ class MaintenanceRepo():
             
         if 'service_man_id' in kwargs:
             maintenance.service_man_id=kwargs["service_man_id"]
-            
-        if 'vehicle_id' in kwargs:
-            maintenance.vehicle_id=kwargs["vehicle_id"]
+
+
+        if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
+                    vehicle_code=kwargs["vehicle_code"]
+                    vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
+                    if vehicle is not None:
+                        maintenance.vehicle=vehicle
+
+        if 'vehicle_id' in kwargs and kwargs['vehicle_id']:
+            vehicle=Vehicle.objects.filter(pk=kwargs['vehicle_id']).first()
+            if vehicle is not None:
+                maintenance.vehicle=vehicle
+
             
         if 'driver_id' in kwargs:
-            maintenance.driver_id=kwargs["driver_id"]
+            driver_id=kwargs["driver_id"]
+            driver=Driver.objects.filter(pk=driver_id).first()
+            if driver is not None:
+                maintenance.driver=driver
 
+
+        if 'driver_code' in kwargs:
+            driver_code=kwargs["driver_code"]
+            driver=Driver.objects.filter(driver_code=driver_code).first()
+            if driver is not None:
+                maintenance.driver=driver
+            
+            
         if 'kilometer' in kwargs:
             maintenance.kilometer=kwargs["kilometer"]
 

@@ -324,10 +324,90 @@ class VehicleStatusesExcelView(View):
             table_has_header=False,
             table_headers=headers,
             style=style,
-            sheet_name='Statuses',
+            sheet_name='statuses',
         )
             
         file_name=f"""Phoenix Transport Statuses {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      
+class DriversExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        drivers_excel_form=DriversExcelForm(request.POST)
+        if drivers_excel_form.is_valid():
+            log=333
+            cd=drivers_excel_form.cleaned_data
+            drivers=DriverRepo(request=request).list(**cd)
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        leolog(drivers=drivers)
+        for i,driver in enumerate(drivers,start=1):
+
+            
+            
+            line={
+                'row':i,
+                'driver_code':driver.driver_code,      
+                # 'datetime':PersianCalendar().from_gregorian(driver.status_datetime)[:10],      
+                'full_name':driver.full_name,  
+                'license_no':driver.license_no,   
+                'year':driver.year,   
+                'level':driver.level,
+                # 'description':driver.description,    
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'کد',
+                 'نام کامل',
+                 'شماره گواهینامه',
+                 'سال',
+                 'پایه',
+                #  'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='drivers',
+        )
+            
+        file_name=f"""Phoenix Transport Drivers {date.replace('/','').replace(':','')}.xlsx"""
         from django.http import HttpResponse
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
@@ -1032,7 +1112,7 @@ class VehiclesExcelView(View):
             table_has_header=False,
             table_headers=headers,
             style=style,
-            # sheet_name='vehicles',
+            sheet_name='vehicles',
         )
             
         file_name=f"""Phoenix Transport vehicles {date.replace('/','').replace(':','')}.xlsx"""

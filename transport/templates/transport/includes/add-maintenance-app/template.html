@@ -63,9 +63,9 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">وسیله نقلیه</label>
-              <select v-model="vehicle_id" class="form-control">
+              <select v-model="vehicle_code" class="form-control">
                 {% for vehicle in vehicles %}
-                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                <option value="{{vehicle.vehicle_code}}">{{vehicle}}</option>
                 {% endfor %}
               </select>
             </div>

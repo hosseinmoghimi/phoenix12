@@ -11,16 +11,17 @@
         methods: {
             separate:vall=>to_price(vall,""),
             filter: function () {
-                this.maintenances = maintenances_for_maintenances_app.filter(function (maintenances) {
+                this.maintenances = maintenances_for_maintenances_app.filter(function (maintenance) {
 
-                    if (maintenances.title.indexOf(this.search_for) > -1)
+                    if (maintenance.title.indexOf(maintenances_app.search_for) > -1)
                         return true
-                    if (maintenances.bedehkar.full_name.indexOf(this.search_for) > -1)
-                        return true
-                    if (maintenances.bestankar.full_name.indexOf(this.search_for) > -1)
-                        return true
-                    return false
-
+                    // if (maintenances.bedehkar.full_name.indexOf(this.search_for) > -1)
+                    //     return true
+                    // if (maintenances.bestankar.full_name.indexOf(this.search_for) > -1)
+                    //     return true
+                    else{
+                        return false
+                    }
                 })
             },
             to_price: function (vall) {

@@ -33,12 +33,13 @@
             <div class="card-body">
 
                 {% load static %}
-                <form @submit.prinvoice="search()">
-                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+               <div class="my-3">
 
-                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
-                        @input="filter()">
-                </form>
+                   
+                   <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                   @input="filter()">
+                </div>
+               
 
 
                 <div class="table-responsive rtl">
@@ -107,7 +108,7 @@
                             {% if not service_man %}
                                <td>
                                     <a :href="maintenance.service_man.get_absolute_url">
-                                        <span v-text="maintenance.service_man.title">
+                                        <span v-text="maintenance.service_man.full_name">
 
                                         </span>
                                     </a>

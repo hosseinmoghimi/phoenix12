@@ -10,6 +10,11 @@
           {% include "transport/includes/add-driver-app/template.html" %}
 
       </div>
+       <div class="col-md-12">
+          {% include "transport/includes/import-drivers-from-excel-app/template.html" %}
+
+      </div>
+
       
     {% endif %}
 
@@ -30,6 +35,7 @@
     {% if add_driver_form %}
           {% include "transport/includes/add-driver-app/script.html" %}
 
+          {% include "transport/includes/import-drivers-from-excel-app/script.html" %}
       
     {% endif %}
 {% endblock script %}
