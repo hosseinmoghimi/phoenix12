@@ -740,7 +740,7 @@ class VehicleRepo():
             if driver_id is not None and driver_id>0:
                 driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
                 if driver is not None:
-                    vehicle.driver=driver.person_account.person.full_name
+                    vehicle.driver=driver.full_name
           
         if 'price' in kwargs:
             vehicle.price=kwargs["price"]
