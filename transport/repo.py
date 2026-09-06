@@ -837,7 +837,7 @@ class VehicleRepo():
                 if result==SUCCEED:
                     added+=1
         result=SUCCEED
-        message=f"""{added} سرویس اضافه شد.
+        message=f"""{added} دستگاه اضافه شد.
                     <br>
                     {modified} سرویس ویرایش شد. """
         services=self.list()
