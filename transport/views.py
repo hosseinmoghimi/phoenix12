@@ -324,6 +324,8 @@ class VehicleStatusesExcelView(View):
             table_headers=headers,
             style=style,
             sheet_name='statuses',
+            title='vehicle_statuses',
+
         )
             
         file_name=f"""Phoenix Transport Statuses {date.replace('/','').replace(':','')}.xlsx"""
@@ -394,6 +396,8 @@ class DriversExcelView(View):
             table_headers=headers,
             style=style,
             sheet_name='drivers',
+            title='drivers',
+
         )
             
         file_name=f"""Phoenix Transport Drivers {date.replace('/','').replace(':','')}.xlsx"""
@@ -737,7 +741,9 @@ class OilingMaintenanceDetailsExcelView(View):
             table_has_header=False,
             table_headers=headers,
             style=style,
-            sheet_name='OilingMaintenanceDetails',
+            sheet_name='oiling_maintenance_details',
+            title='oiling_maintenance_details',
+
         )
             
         file_name=f"""Phoenix OilingMaintenanceDetails {date.replace('/','').replace(':','')}.xlsx"""
@@ -1104,8 +1110,8 @@ class VehiclesExcelView(View):
             table_headers=headers,
             style=style,
             sheet_name='vehicles',
+            title='vehicles',
         )
-            
         file_name=f"""Phoenix Transport vehicles {date.replace('/','').replace(':','')}.xlsx"""
         from django.http import HttpResponse
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
