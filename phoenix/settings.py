@@ -1,4 +1,4 @@
-VERSION='0.2.5'
+VERSION='0.3.50'
 
 from pathlib import Path
 from . import server_settings

@@ -6,6 +6,7 @@
       title: "",
       valid:true,
       status:"",
+      amount:0,
       event_date: current_date,
       event_time: current_time,
       event_datetime: current_datetime,
@@ -110,11 +111,11 @@
           title: this.title,
           status: this.status,
           valid: this.valid,
+          manual_amount: parseInt(this.amount),
           event_datetime: this.event_date + " " + this.event_time,
           bedehkar_id: this.bedehkar.id,
           bestankar_id: this.bestankar.id,
           maintenance_id: parseInt("{{maintenance.id}}"),
-          amount: 0,
         };
 
         console.log(payload);

@@ -81,6 +81,7 @@ class ImportVehicleFromExcelApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
 class ImportDriverFromExcelApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -105,7 +106,6 @@ class ImportDriverFromExcelApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
-
 
 
 class ImportVehicleStatusFromExcelApi(APIView):
@@ -305,7 +305,8 @@ class AddInvoiceApi(APIView):
             cd=add_maintenance_invoice_form.cleaned_data
             result,message,invoice=MaintenanceRepo(request=request).add_invoice(**cd)
             if invoice is not None:
-                context['invoice']=InvoiceSerializer(invoice).data
+                from .serializers import MaintenanceInvoiceSerializer
+                context['invoice']=MaintenanceInvoiceSerializer(invoice).data
         context['message']=message
         context['result']=result
         context['log']=log

@@ -1,4 +1,4 @@
-from accounting.forms import forms,AddInvoiceForm,AddEventForm
+from accounting.forms import forms,AddInvoiceForm as AddInvoiceForm2,AddEventForm
 
 class AddDriverForm(forms.Form):
     owner_id=forms.IntegerField(required=False)
@@ -31,9 +31,12 @@ class AddInvoiceToMaintenanceForm(forms.Form):
     maintenance_id=forms.IntegerField(required=True)
 
  
-class AddInvoiceForm(AddInvoiceForm):
+class AddInvoiceForm(AddInvoiceForm2):
     maintenance_id=forms.IntegerField(required=True)
- 
+    bedehkar_id=forms.IntegerField(required=False)
+    bestankar_id=forms.IntegerField(required=False)
+    amount=forms.IntegerField(required=False)
+    manual_amount=forms.IntegerField(required=True)
  
 class AddMaintenanceForm(AddEventForm):
     hour=forms.IntegerField(  required=False)

@@ -450,10 +450,8 @@ class CustomerRepo():
             customer.regions.add(kwargs["region_id"])
         if 'groups_ids' in kwargs:
             groups_ids=(kwargs["groups_ids"])
-            leolog(groups_ids=groups_ids)
             for group_id in groups_ids:
                 group_id=int(group_id)
-                leolog(group_id=group_id)
                 customer.groups.add(group_id)
  
         return result,message,customer

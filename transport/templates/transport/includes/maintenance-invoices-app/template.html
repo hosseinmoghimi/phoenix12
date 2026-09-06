@@ -94,7 +94,7 @@
                                 </td>
                             {% if not vehicle %}
                                <td>
-                                    <a :href="maintenance_invoice.vehicle.get_absolute_url">
+                                    <a v-if="maintenance_invoice.vehicle"  :href="maintenance_invoice.vehicle.get_absolute_url">
                                         <span v-text="maintenance_invoice.vehicle.title">
 
                                         </span>
@@ -103,7 +103,7 @@
                             {% endif %}
                             {% if not service_man %}
                                <td>
-                                    <a :href="maintenance_invoice.service_man.get_absolute_url">
+                                    <a v-if="maintenance_invoice.service_man"   :href="maintenance_invoice.service_man.get_absolute_url">
                                         <span v-text="maintenance_invoice.service_man.title">
 
                                         </span>
@@ -182,7 +182,7 @@
 
                                 <td>
 
-                                    <span v-text="to_price(maintenance_invoice.amount)">
+                                    <span v-text="to_price(maintenance_invoice.manual_amount)">
 
                                     </span>
 

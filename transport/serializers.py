@@ -1,10 +1,10 @@
 from core.serializers import serializers
 from .models import OilService,Tavaghof,FilterService,Product,Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
-from .models import Service,AnbarProduct
+from .models import Service,AnbarProduct,MaintenanceInvoice
 
 from .models import VehicleEvent,Tavaghof
-
+from accounting.serializers import AccountSerializer
 
 class DriverSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
@@ -13,6 +13,14 @@ class DriverSerializer(serializers.ModelSerializer):
         fields=['id','full_name','driver_code','level','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
   
 
+
+class MaintenanceInvoiceSerializer(serializers.ModelSerializer):
+       bedehkar=AccountSerializer()
+       bestankar=AccountSerializer()
+       class Meta:
+        model = MaintenanceInvoice
+        fields = ['id','title','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
+  
 class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
     class Meta:

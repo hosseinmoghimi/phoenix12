@@ -34,7 +34,6 @@
 
                 let url = "{% url 'market:add_shipper' %}"
                 $.post(url, payload).done(data => {
-                    leolog(data)
                     if (data.result === "SUCCEED") {
                         if (typeof shippers_app != "undefined") {
                             shippers_app.shippers.push(data.shipper)

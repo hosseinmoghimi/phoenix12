@@ -80,7 +80,8 @@ class Maintenance(Event):
     driver=models.ForeignKey("driver", verbose_name=_("driver"),blank=True,null=True, on_delete=models.PROTECT)
     hour=models.IntegerField(_("hour"),default=0)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)
-    invoices=models.ManyToManyField("accounting.invoice",blank=True, verbose_name=_("invoice"))
+    # invoices=models.ManyToManyField("accounting.invoice",blank=True, verbose_name=_("invoice"))
+    invoices=models.ManyToManyField("transport.maintenanceinvoice",blank=True, verbose_name=_("invoice"))
     
     class_name='maintenance'
     app_name=APP_NAME
@@ -121,11 +122,12 @@ class Maintenance(Event):
 
 
 class MaintenanceInvoice(Invoice):
-    hour=models.IntegerField(_("hour"),default=0)
-    kilometer=models.IntegerField(_("کیلومتر"),default=0)
-    service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
-    vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
-    maintenance_type=models.CharField(_("سرویس"),choices=MaintenanceTypesEnum.choices, max_length=100)
+    # hour=models.IntegerField(_("hour"),default=0)
+    # kilometer=models.IntegerField(_("کیلومتر"),default=0)
+    # service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
+    # vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
+    # maintenance_type=models.CharField(_("سرویس"),choices=MaintenanceTypesEnum.choices, max_length=100)
+    manual_amount=models.IntegerField(_("مبلغ"),default=0)
     class Meta:
         verbose_name = _("MaintenanceInvoice")
         verbose_name_plural = _("MaintenanceInvoices")
@@ -143,7 +145,7 @@ class MaintenanceInvoice(Invoice):
         return (result,message,self)
     
     def __str__(self):
-        return f'{self.service_man} {self.maintenance_type} {self.vehicle}'
+        return f'فاکتور شماره {self.id} '
 
 
 class Vehicle(Asset):

@@ -258,7 +258,6 @@ class VehicleStatusesExcelView(View):
         date=PersianCalendar().from_gregorian(now)
         lines=[]
         from utility.templatetags.to_normal_number import to_normal_number
-        leolog(vehicle_statuses=vehicle_statuses)
         for i,vehicle_status in enumerate(vehicle_statuses,start=1):
             line={
                 'row':i,
@@ -358,7 +357,6 @@ class DriversExcelView(View):
         date=PersianCalendar().from_gregorian(now)
         lines=[]
         from utility.templatetags.to_normal_number import to_normal_number
-        leolog(drivers=drivers)
         for i,driver in enumerate(drivers,start=1):
 
             
@@ -386,16 +384,7 @@ class DriversExcelView(View):
         from utility.excel import ReportWorkBook,get_style
         report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
         style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
-        # sheet1=ReportSheet(
-        #     data=lines,
-        #     start_row=3,
-        #     start_col=1,
-        #     table_has_header=False,
-        #     table_headers=None,
-        #     style=style,
-        #     sheet_name='links',
-            
-        # )
+        
         
         start_row=3
         report_work_book.add_sheet(
@@ -500,6 +489,7 @@ class MaintenancesView(View):
             context.update(AddMaintenanceContext(request=request))
         return render(request,TEMPLATE_ROOT+"maintenances.html",context) 
     
+     
     
 class MaintenanceView(View):
     def get(self,request,*args, **kwargs):
@@ -518,9 +508,10 @@ class MaintenanceView(View):
 
         
         invoices=maintenance.invoices.order_by('-event_datetime')
-        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        from .serializers import MaintenanceInvoiceSerializer
+        invoices_s=json.dumps(MaintenanceInvoiceSerializer(invoices,many=True).data)
         context['invoices']=invoices
-        context['invoices_s']=invoices_s
+        context['maintenance_invoices_s']=invoices_s
 
 
 

@@ -11,6 +11,7 @@ from utility.calendar import PersianCalendar
 from .models import VehicleEvent,Tavaghof,VehicleStatus
 from .models import FilterService,OilService,Tavaghof,Product,AnbarProduct,Service
 from .constants import EXCEL_VEHICLES_DATA_START_ROW
+from accounting.repo import MiscAccount
 class VehicleStatusRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -294,7 +295,6 @@ class WorkShiftRepo():
         
         
     def add_work_shift(self,*args,**kwargs):
-        leolog(kwargs=kwargs)
         result,message,work_shift=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
             message="دسترسی غیر مجاز"
@@ -890,7 +890,6 @@ class DriverRepo():
         
         
     def add_driver(self,*args,**kwargs):
-        leolog(kwargs=kwargs)
         result,message,driver=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_driver"):
             message="دسترسی غیر مجاز"
@@ -1038,60 +1037,63 @@ class MaintenanceRepo():
         from accounting.models import Invoice,PersianCalendar
 
             
-        if not self.request.user.has_perm(APP_NAME+".add_invoice"):
+        if not self.request.user.has_perm(APP_NAME+".add_maintenanceinvoice"):
             message="دسترسی غیر مجاز"
             return result,message,invoice
-
-        invoice=Invoice()
+        from .models import MaintenanceInvoice
+        maintenance_invoice=MaintenanceInvoice()
         
         if 'valid' in kwargs and kwargs['valid'] is not None:
-            invoice.valid=kwargs["valid"]
+            maintenance_invoice.valid=kwargs["valid"]
 
-        if 'title' in kwargs:
-            invoice.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                invoice.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            invoice.color=kwargs["color"]
-        if 'code' in kwargs:
-            invoice.code=kwargs["code"]
+        if 'title' in kwargs and kwargs['title']:
+            maintenance_invoice.title=kwargs["title"]
+        if 'color' in kwargs and kwargs['color']:
+            maintenance_invoice.color=kwargs["color"]
+        if 'shipping_fee' in kwargs and kwargs['shipping_fee']:
+            maintenance_invoice.shipping_fee=kwargs["shipping_fee"]
+         
         if 'priority' in kwargs:
-            invoice.priority=kwargs["priority"]
+            maintenance_invoice.priority=kwargs["priority"]
+        if 'manual_amount' in kwargs and kwargs['manual_amount']:
+            maintenance_invoice.manual_amount=kwargs["manual_amount"]
+            maintenance_invoice.amount=kwargs["manual_amount"]
         if 'bedehkar_id' in kwargs:
-            invoice.bedehkar_id=kwargs["bedehkar_id"]
+            if kwargs["bedehkar_id"]:
+                maintenance_invoice.bedehkar_id=kwargs["bedehkar_id"]
+            if maintenance_invoice.bedehkar_id is None:
+                maintenance_invoice.bedehkar_id=MiscAccount().id
         if 'bestankar_id' in kwargs:
-            invoice.bestankar_id=kwargs["bestankar_id"]
+            if kwargs["bestankar_id"]:
+                maintenance_invoice.bestankar_id=kwargs["bestankar_id"]
+            if maintenance_invoice.bestankar_id is None:
+                maintenance_invoice.bestankar_id=MiscAccount().id
         if 'event_datetime' in kwargs:
             
             year=kwargs['event_datetime'][:2]
             if year=="13" or year=="14":
                 kwargs['event_datetime']=PersianCalendar().to_gregorian(kwargs["event_datetime"])
-            invoice.event_datetime=kwargs["event_datetime"]
+            maintenance_invoice.event_datetime=kwargs["event_datetime"]
 
         if 'type' in kwargs:
-            invoice.type=kwargs["type"]
+            maintenance_invoice.type=kwargs["type"]
 
            
         if 'status' in kwargs:
-            invoice.status=kwargs["status"]
+            maintenance_invoice.status=kwargs["status"]
 
            
-           
-        if 'invoice_no' in kwargs:
-            invoice.invoice_no=kwargs["invoice_no"]
-
-
+            
         if 'maintenance_id' in kwargs:
             maintenance_id=kwargs["maintenance_id"]
             maintenance=Maintenance.objects.filter(pk=maintenance_id).first()
             if maintenance is not None:
-                (result,message,invoice)=invoice.save()
-                maintenance.invoices.add(invoice.id)
+                (result,message,maintenance_invoice)=maintenance_invoice.save()
+                maintenance.invoices.add(maintenance_invoice.id)
                 result=SUCCEED
                 message='با موفقیت اضافه شد.'
 
-        return result,message,invoice
+        return result,message,maintenance_invoice
 
      
     def add_invoice_to_maintenance(self,*args, **kwargs):   
@@ -1109,7 +1111,6 @@ class MaintenanceRepo():
         return result,message,invoice
     
     def add_maintenance(self,*args,**kwargs):
-        leolog(kwargs=kwargs)
         result,message,maintenance=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_maintenance"):
             message="دسترسی غیر مجاز"

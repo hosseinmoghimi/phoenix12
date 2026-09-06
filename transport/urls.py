@@ -34,6 +34,9 @@ urlpatterns = [
 
     path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
 
+    path('maintenance-invoice/<int:pk>/',login_required(views.MaintenanceInvoiceView.as_view()),name="maintenanceinvoice"),
+    path('maintenance-invoices/',login_required(views.MaintenanceInvoicesView.as_view()),name="maintenanceinvoices"),
+
     
     path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
    

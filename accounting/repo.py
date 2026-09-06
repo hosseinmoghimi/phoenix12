@@ -20,7 +20,16 @@ from .server_settings import ACCOUNT_LEVEL_NAMES
 from authentication.models import Person
 
 from utility.repo import leolog,Repo
- 
+def MiscAccount():
+    MISC="متفرقه"
+    acc=Account.objects.filter(title=MISC).first()
+    if acc is None:
+        acc=Account()
+        acc.title=MISC
+        acc.level=1
+        acc.code="0"
+        acc.save()
+    return acc 
 class InvoiceLineItemUnitRepo:
     def __init__(self,request,*args, **kwargs):
         self.request=request
