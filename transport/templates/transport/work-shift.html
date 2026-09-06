@@ -1,4 +1,6 @@
-{% extends "transport/layout.html" %} {% block content %} {% load static %} {% load to_normal_number %} {% load to_persian_date %}
+{% extends "transport/layout.html" %} {% block content %}
+ {% load static %} {% load to_normal_number %}
+  {% load to_persian_date %}
 <div class="row rtl farsi">
   <div class="col-md-4">
     <h5 class="text-center">شیفت کارکرد ماشین</h5>
@@ -169,8 +171,7 @@
                 <td class="field_name">توضیحات</td>
 
                 <td class="field_value">
-                  {% if work_shift.description %} {{work_shift.description}} {%
-                  endif %}
+                  {% if work_shift.description %} {{work_shift.description}} {% endif %}
                 </td>
               </tr>
             </table>
@@ -192,6 +193,7 @@
 {% endblock content %} {% block script %}
 <script></script>
 
-{% include "transport/includes/oil-services-app/script.html" %} {% include
-"transport/includes/filter-services-app/script.html" %} {% include
-"transport/includes/products-app/script.html" %} {% endblock script %}
+{% include "transport/includes/oil-services-app/script.html" %}
+ {% include "transport/includes/filter-services-app/script.html" %} 
+ {% include "transport/includes/products-app/script.html" %}
+  {% endblock script %}
