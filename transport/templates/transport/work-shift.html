@@ -2,31 +2,11 @@
 {% load static %} {% load to_normal_number %}
 {% load to_persian_date %}
 <div class="row rtl farsi">
-  <div class="col-md-4">
+  <div class="col-md-12">
     <h5 class="text-center">شیفت کارکرد ماشین</h5>
   </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-        {% if work_shift.person_account %}
-        <h6>
-          <small class="text-muted"> حساب : </small>
-          <a href="{{work_shift.person_account.get_absolute_url}}">
-            {{work_shift.person_account.name}}
-          </a>
-        </h6>
-        {% endif %} {% if perms.transport.change_work_shift %}
-        <a href="{{work_shift.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
-          <i class="fa fa-edit text-warning"></i> ویرایش
-        </a>
-        {% endif %} {% if perms.transport.delete_work_shift %}
-        <a href="{{work_shift.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
-          <i class="fa fa-trash text-danger"></i> حذف
-        </a>
-     
-        {% endif %}
-      </div>
-    </div>
+  <div class="col-lg-4">
+    
     {% if perms.transport.delete_work_shift %}
        
     {% include 'transport/includes/work-shift-app/delete.html' %}
@@ -34,7 +14,7 @@
         {% endif %}
   </div>
 
-  <div class="col-md-12">
+  <div class="col-lg-8">
     
     {% include 'transport/includes/work-shift-app/card.html' %}
   </div>

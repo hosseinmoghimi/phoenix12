@@ -1,6 +1,16 @@
 <div id="delete-work-shift-app">
     <div class="card">
         <div class="card-body">
+
+
+            <div class="mb-3">
+            {% if perms.transport.change_work_shift %}
+        <a href="{{work_shift.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+          <i class="fa fa-edit text-warning"></i> ویرایش
+        </a>
+        {% endif %} 
+
+        </div>
             <button class="btn btn-danger" v-if="!confirm" @click="confirm=true">
                 <i class="fa fa-trash"></i>
                 حذف</button>
