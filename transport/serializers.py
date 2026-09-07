@@ -116,6 +116,6 @@ class AnbarProductSerializer(serializers.ModelSerializer):
     vehicle=VehicleSerializer2()
     class Meta:
         model=AnbarProduct
-        fields=['id','vehicle','shift_date','shift','name','unit_price','persian_shift_date','quantity','description','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','vehicle','anbar','shift_date','shift','name','unit_price','persian_shift_date','quantity','description','get_absolute_url',  'get_edit_url','get_delete_url']
 
    

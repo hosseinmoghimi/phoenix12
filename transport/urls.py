@@ -17,6 +17,8 @@ urlpatterns = [
 
     path('anbar-products/',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
     path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
+    path('new-anbar-product/',login_required(views.NewAnbarProductView.as_view()),name="new_anbar_product"),
+    path('add-anbar-product/',login_required(apis.AddAnbarProductApi.as_view()),name="add_anbar_product"),
 
     
     path('add-service/',login_required(apis.AddServiceApi.as_view()),name="add_service"),
@@ -53,7 +55,7 @@ urlpatterns = [
     path('delete-work-shift/',login_required(apis.DeleteWorkShiftApi.as_view()),name="delete_work_shift"),
     path('work-shift/<int:pk>/',login_required(views.WorkShiftView.as_view()),name="workshift"),
     path('work-shifts-excel/',login_required(views.WorkShiftsExcelView.as_view()),name="work_shifts_excel"),
-
+    
     
     path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
     path('add-karkerd/',login_required(apis.AddKarkerdApi.as_view()),name="add_karkerd"),

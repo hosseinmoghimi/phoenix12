@@ -1534,7 +1534,24 @@ class AnbarProductRepo():
          
 
         if "vehicle_code" in kwargs and kwargs['vehicle_code']:
-            objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])  
+            objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])
+
+        if "from_shift_date" in kwargs and kwargs['from_shift_date']:
+            year=kwargs['from_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
+            
+            objects=objects.filter(shift_date__gte=kwargs["from_shift_date"]) 
+
+        if "to_shift_date" in kwargs and kwargs['to_shift_date']:
+            year=kwargs['to_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
+         
+
+        if "shift" in kwargs and kwargs['shift']:
+            objects=objects.filter(shift=kwargs["shift"])
+
         if "driver_id" in kwargs and kwargs["driver_id"]:
             pass
             # objects=objects.filter(driver_id=kwargs["driver_id"]) 
@@ -1551,16 +1568,52 @@ class AnbarProductRepo():
         
     def add_anbar_product(self,*args,**kwargs):
         result,message,anbar_product=FAILED,"",None
-        if not self.request.user.has_perm(APP_NAME+".add_anbar_product"):
+        if not self.request.user.has_perm(APP_NAME+".add_anbarproduct"):
             message="دسترسی غیر مجاز"
             return result,message,anbar_product
-        if len(AnbarProduct.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
-            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
-            return FAILED,message,None
-        anbar_product=AnbarProduct() 
-        if 'person_account_id' in kwargs:
-            anbar_product.person_account_id=kwargs["person_account_id"]
         
+        anbar_product=AnbarProduct() 
+        if 'name' in kwargs and kwargs['name']:
+            anbar_product.name=kwargs["name"]
+
+
+            
+        if 'unit_price' in kwargs and kwargs['unit_price']:
+            anbar_product.unit_price=kwargs["unit_price"]
+
+            
+        if 'quantity' in kwargs and kwargs['quantity']:
+            anbar_product.quantity=kwargs["quantity"]
+
+            
+        if 'shift' in kwargs and kwargs['shift']:
+            anbar_product.shift=kwargs["shift"]
+
+             
+        if "shift_date" in kwargs and kwargs['shift_date']:
+            year=kwargs['shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"]).date()
+                leolog(kwargs=kwargs)
+
+            anbar_product.shift_date=kwargs["shift_date"]
+            
+        if 'description' in kwargs and kwargs['description']:
+            anbar_product.description=kwargs["description"]
+
+            
+        if 'anbar' in kwargs and kwargs['anbar']:
+            anbar_product.anbar=kwargs["anbar"]
+        
+
+            
+        if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
+            vehicle_code=kwargs["vehicle_code"]
+            vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
+            if vehicle is None:
+                return FAILED,'کد دستگاه نامعتبر میباشد.',None
+            anbar_product.vehicle=vehicle
+
         (result,message,anbar_product)=anbar_product.save()
         return result,message,anbar_product
   

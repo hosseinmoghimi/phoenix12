@@ -302,6 +302,30 @@ class DeleteWorkShiftApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
+    
+class AddAnbarProductApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_anbar_product_form=AddAnbarProductForm(request.POST)
+        if add_anbar_product_form.is_valid():
+            log=333
+            cd=add_anbar_product_form.cleaned_data 
+            result,message,anbar_product=AnbarProductRepo(request=request).add_anbar_product(**cd)
+            if anbar_product is not None:
+                context['anbar_product']=AnbarProductSerializer(anbar_product).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 
 
 class AddServiceApi(APIView):

@@ -1,0 +1,120 @@
+<div id="accordion-add-anbar-product" class="rtl text-right farsi">
+    <div class="card" id="add-anbar-product-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-anbar-product"
+                    aria-expanded="true" aria-controls="collapse-add-anbar-product">
+                    افزودن برگه انبار
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-add-anbar-product" class="collapse" aria-labelledby="heading-add-anbar-product"
+            data-parent="#accordion-add-anbar-product">
+            <div class="card-body">
+                <form @submit.prevent="add_anbar_product()">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleInputDate">تاریخ</label>
+                                <date-picker v-model="shift_date"></date-picker>
+
+                                <input type="text" required class="form-control" v-model="shift_date" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">شیفت</label>
+                                <select v-model="shift" class="form-control">
+                                    <option value="روز">روز</option>
+                                    <option value="شب">شب</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">نام قطعه</label>
+                                <input v-model="name" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">تعداد</label>
+                                <input v-model="quantity" type="text" class="form-control" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">قیمت جزء
+                                    <span v-text="to_price(unit_price)"></span> {{CURRENCY}}
+
+                                </label>
+                                <input v-model="unit_price" type="number" class="form-control" />
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for=""> جمع به {{CURRENCY}}</label>
+                                <input readonly v-model="to_price(quantity*unit_price)" type="text"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">انبار</label>
+                                <input v-model="anbar" type="text" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">کد دستگاه</label>
+                                <input v-model="vehicle_code" type="text" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">توضیحات</label>
+                                <input v-model="description" type="text" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button class="btn btn-success" type="submit">
+                                <i class="fa fa-plus"></i>
+                                افزودن
+                            </button>
+                        </div>
+
+                        <div class="my-3 mx-3">
+                            {% include "utility/includes/message.html" %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1247,6 +1247,31 @@ class WorkShiftsView(View):
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
 
 
+class NewAnbarProductView(View):
+    def get(self,request,*args, **kwargs):
+
+       
+        
+ 
+        context=getContext(request=request)
+
+        
+
+        anbar_products =[]
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+
+
+        if request.user.has_perm(APP_NAME+".add_anbarproduct"):
+            context['add_anbar_product_form']=AddAnbarProductForm()
+
+        context['expand_anbar_products']=True
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"new-anbar-product.html",context) 
+
+
 class AnbarProductView(View):
     def get(self,request,*args, **kwargs):
         work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)

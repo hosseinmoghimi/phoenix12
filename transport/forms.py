@@ -38,7 +38,17 @@ class AddInvoiceForm(AddInvoiceForm2):
     amount=forms.IntegerField(required=False)
     manual_amount=forms.IntegerField(required=True)
 
- 
+class AddAnbarProductForm(forms.Form):
+    anbar=forms.CharField(max_length=50, required=True)
+    name=forms.CharField(max_length=50, required=True)
+    vehicle_code=forms.CharField(max_length=50, required=True)
+    quantity=forms.IntegerField(required=False)
+    unit_price=forms.IntegerField(required=False) 
+    description=forms.CharField(max_length=1000, required=False)
+    shift=forms.CharField(max_length=50, required=True)
+    shift_date=forms.CharField(max_length=50, required=True)
+  
+
 class AddMaintenanceForm(AddEventForm):
     hour=forms.IntegerField(  required=False)
     kilometer=forms.IntegerField(  required=False)

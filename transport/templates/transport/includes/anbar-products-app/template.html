@@ -3,17 +3,12 @@
   <div class="card" id="anbar-products-app">
     <div class="card-header">
       <h5 class="text-center">
-        <button
-          class="btn btn-link"
-          data-toggle="collapse"
-          data-target="#collapse-anbar-products"
-          aria-expanded="true"
-          aria-controls="collapse-anbar-products"
-        >
-            گزارشات انبار
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-anbar-products" aria-expanded="true"
+          aria-controls="collapse-anbar-products">
+          گزارشات انبار
 
 
-        <span v-if="anbar_products.length>0">
+          <span v-if="anbar_products.length>0">
             <small class="text-danger mx-2">
               <span v-text="anbar_products.length"></span>
             </small>
@@ -22,12 +17,8 @@
       </h5>
     </div>
 
-    <div
-      id="collapse-anbar-products"
-      class="collapse {% if expand_anbar_products %} show {% endif %}"
-      aria-labelledby="heading-anbar-products"
-      data-parent="#accordion-anbar-products"
-    >
+    <div id="collapse-anbar-products" class="collapse {% if expand_anbar_products %} show {% endif %}"
+      aria-labelledby="heading-anbar-products" data-parent="#accordion-anbar-products">
       <div class="card-body card-dark">
         <div class="table-responsive" v-if="anbar_products.length>0">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
@@ -37,8 +28,10 @@
 
               <th>دستگاه</th>
               {% endif %}
+              <th>انبار</th>
               <th>قطعه</th>
               <th>تعداد</th>
+              <th>قیمت</th>
               <th>توضیحات</th>
               <th></th>
             </thead>
@@ -48,7 +41,8 @@
                   <span v-text="anbar_product.persian_shift_date"></span>
                   <div class="text-muted">
                     شیفت
-                    <span v-text="anbar_product.shift"></span> 
+                    <span v-text="anbar_product.shift"></span>
+                    <img :src="to_icon(anbar_product.shift)" alt="anbar_product.shift" width="28">
                   </div>
                 </td>
                 {% if not vehicle %}
@@ -56,11 +50,7 @@
                 <td>
                   <a :href="anbar_product.vehicle.get_absolute_url">
                     <div class="media">
-                      <img class="rounded"
-                        :src="anbar_product.vehicle.thumbnail"
-                        width="48"
-                        alt=""
-                      />
+                      <img class="rounded" :src="anbar_product.vehicle.thumbnail" width="48" alt="" />
                       <div class="media-body mr-2">
                         <div>
                           <span v-text="anbar_product.vehicle.title"></span>
@@ -76,69 +66,84 @@
 
                 <td>
 
-                             <span
-                      v-text="anbar_product.name"
-                    ></span> 
-                        
-                   
+                  <span v-text="anbar_product.anbar"></span>
+
+
                   </a>
 
+
+                </td>
+
+                <td>
+
+                  <span v-text="anbar_product.name"></span>
+
+
+                  </a>
+
+
+                </td>
+
+
+                <td>
+
+                  <span v-text="anbar_product.quantity"></span>
+
+                </td>
+
                 
-                </td>
-
                 <td>
-                  
-                      <span v-text="anbar_product.quantity"></span>
-                     
-                </td>
-
-                <td>
-                   
-                    <span v-text="anbar_product.description"></span>
-                   
-                </td>
+<div>
+  
+  <span    v-text="to_price(anbar_product.quantity*anbar_product.unit_price)"></span>
+  {{CURRENCY}}
+</div>
+<div >
  
-          
-               
+
+  <span class="text-muted" v-text="anbar_product.quantity"></span>
+  
+  <span class="text-muted" >*</span>
+  <span class="text-muted" v-text="to_price(anbar_product.unit_price)"></span>
+   
+  
+</div>
+
+                </td>
+
+
                 <td>
-                  <a
-                    target="_blank"
-                    :href="anbar_product.get_absolute_url"
-                    title="نمایش"
-                    class="text-info mx-2"
-                  >
+
+                  <span v-text="anbar_product.description"></span>
+
+                </td>
+
+
+
+                <td>
+                  <a target="_blank" :href="anbar_product.get_absolute_url" title="نمایش" class="text-info mx-2">
                     <i class="fa fa-edit text-info"> </i>
                     نمایش
                   </a>
 
-                  <a
-                    target="_blank"
-                    :href="anbar_product.get_edit_url"
-                    title="ویرایش"
-                    class="text-warning mx-2"
-                  >
+                  <a target="_blank" :href="anbar_product.get_edit_url" title="ویرایش" class="text-warning mx-2">
                     <i class="fa fa-edit text-warning"> </i>
                     ویرایش
                   </a>
 
-                  <a
-                    target="_blank"
-                    :href="anbar_product.get_delete_url"
-                    title="حذف"
-                    class="text-danger mx-2"
-                  >
+                  <a target="_blank" :href="anbar_product.get_delete_url" title="حذف" class="text-danger mx-2">
                     <i class="fa fa-trash text-danger"> </i>
                     حذف
                   </a>
                 </td>
               </tr>
             </tbody>
-            
+
           </table>
         </div>
-         <h5 class="text-center">
-            برگه انباری وجود ندارد.
-          </h5>
+        <h5 class="text-center" v-if="anbar_products.length<1">
+          برگه انباری وجود ندارد.
+        </h5>
 
       </div>
     </div>
