@@ -273,6 +273,9 @@ class WorkShiftRepo():
         if "shift" in kwargs and kwargs["shift"]:
             objects=objects.filter(shift=kwargs["shift"])
 
+        if "id__in" in kwargs and kwargs["id__in"]:
+            objects=objects.filter(id__in=kwargs["id__in"])
+            
         if "location" in kwargs and kwargs["location"]:
             objects=objects.filter(location=kwargs["location"]) 
         if "vehicle_id" in kwargs:

@@ -103,7 +103,7 @@ class AddOilingMaintenanceDetailForm(forms.Form):
     description=forms.CharField(required=False, max_length=500)
      
 class WorkShiftsExcelForm(forms.Form):
-    pass
+    work_shift_ids=forms.CharField( max_length=1000, required=False)
 class AddVehicleStatusForm(forms.Form):
     vehicle_code=forms.CharField(required=True, max_length=50)
     status_datetime=forms.CharField(required=True, max_length=50)

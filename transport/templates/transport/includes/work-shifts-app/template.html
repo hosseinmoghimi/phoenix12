@@ -332,7 +332,7 @@
         <div class="my-3">
           <form method="POST" action="{% url 'transport:work_shifts_excel' %}">
             {% csrf_token %}
-            <input type="hidden" name="oiling_maintenance_id" value="">
+            <input type="hidden" name="work_shift_ids" :value="work_shift_ids()">
             <button type="submit" class="btn btn-info">
               <i class="fa fa-file-excel-o ml-3"></i>
               دریافت لیست شیفت ها در قالب فایل اکسل

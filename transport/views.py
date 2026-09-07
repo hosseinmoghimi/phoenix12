@@ -297,7 +297,8 @@ class WorkShiftsExcelView(View):
         if work_shifts_excel_form.is_valid():
             log=333
             cd=work_shifts_excel_form.cleaned_data
-            work_shifts=WorkShiftRepo(request=request).list(**cd)
+            cd['work_shift_ids']=json.loads(cd['work_shift_ids'])
+            work_shifts=WorkShiftRepo(request=request).list(id__in=cd['work_shift_ids'])
         now=PersianCalendar().date
         
         date=PersianCalendar().from_gregorian(now)

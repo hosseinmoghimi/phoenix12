@@ -7,6 +7,13 @@
             work_shifts: work_shifts_for_work_shifts_app
         },
         methods: {
+            work_shift_ids:function(){
+                let ids=[]
+                this.work_shifts.forEach(work_shift => {
+                    ids.push(work_shift.id)
+                });
+                return JSON.stringify(ids)
+            },
             ekhtelaf:function(ws){
 
             },
