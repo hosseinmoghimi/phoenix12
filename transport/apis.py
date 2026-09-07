@@ -160,7 +160,60 @@ class GetReportApiw(APIView):
 
             services=ServiceRepo(request=request).list(**cd)
             context['services']=ServiceSerializer(services,many=True).data
-                                    
+
+
+            from .repo import OilServiceRepo,FilterServiceRepo,TavaghofRepo,ProductRepo
+            from .serializers import OilServiceSerializer,FilterServiceSerializer,TavaghofSerializer,ProductSerializer
+
+             
+            work_shift_ids=[]
+            for work_shift in work_shifts:
+                work_shift_ids.append(work_shift.id)
+
+  
+
+            oil_services_origin =OilServiceRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            oil_services=[] 
+            for o_s_o in oil_services_origin:
+                find=False
+                for o_s in oil_services:
+                    if o_s_o.oil_type==o_s.oil_type:
+                        find=True
+                        o_s.oil_liter+=o_s_o.oil_liter
+                if not find:
+                    oil_services.append(o_s_o)
+            oil_services_s=(OilServiceSerializer(oil_services,many=True).data)
+            context['oil_services']=oil_services_s
+
+
+
+
+
+            filter_services =FilterServiceRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            context['filter_services']=filter_services
+            filter_services_s= (FilterServiceSerializer(filter_services,many=True).data)
+            context['filter_services']=filter_services_s
+
+
+
+
+
+            tavaghofs =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            context['tavaghofs']=tavaghofs
+            tavaghofs_s= (TavaghofSerializer(tavaghofs,many=True).data)
+            context['tavaghofs']=tavaghofs_s
+
+
+
+
+
+            products =ProductRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            context['products']=products
+            products_s= (ProductSerializer(products,many=True).data)
+            context['products']=products_s
+
+
+
             message+="گزارش گیری انجام شد."
 
             if "from_shift_date" in cd and cd['from_shift_date']:

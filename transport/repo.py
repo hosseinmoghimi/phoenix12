@@ -491,6 +491,9 @@ class OilServiceRepo():
         if "owner_id" in kwargs:
             owner_id=kwargs["owner_id"]
             objects=objects.filter(owner_id=owner_id)  
+        if "work_shift_id__in" in kwargs:
+            work_shift_id__in=kwargs["work_shift_id__in"]
+            objects=objects.filter(work_shift_id__in=work_shift_id__in) 
         return objects.all()
         
     def oil_service(self,*args, **kwargs):
@@ -572,7 +575,12 @@ class FilterServiceRepo():
             objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
         if "owner_id" in kwargs:
             owner_id=kwargs["owner_id"]
-            objects=objects.filter(owner_id=owner_id)  
+            objects=objects.filter(owner_id=owner_id) 
+            
+        if "work_shift_id__in" in kwargs:
+            work_shift_id__in=kwargs["work_shift_id__in"]
+            objects=objects.filter(work_shift_id__in=work_shift_id__in) 
+
         return objects.all()
         
     def filter_service(self,*args, **kwargs):
@@ -655,6 +663,11 @@ class ProductRepo():
         if "owner_id" in kwargs:
             owner_id=kwargs["owner_id"]
             objects=objects.filter(owner_id=owner_id)  
+            
+        if "work_shift_id__in" in kwargs:
+            work_shift_id__in=kwargs["work_shift_id__in"]
+            objects=objects.filter(work_shift_id__in=work_shift_id__in) 
+            
         return objects.all()
         
     def product(self,*args, **kwargs):
@@ -1339,8 +1352,12 @@ class TavaghofRepo():
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
         if "vehicle_id" in kwargs:
-                    vehicle_id=kwargs["vehicle_id"]
-                    objects=objects.filter(vehicle_id=vehicle_id) 
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(vehicle_id=vehicle_id) 
+                    
+        if "work_shift_id__in" in kwargs:
+            work_shift_id__in=kwargs["work_shift_id__in"]
+            objects=objects.filter(work_shift_id__in=work_shift_id__in) 
         return objects.all()
         
     def tavaghof(self,*args, **kwargs):

@@ -1,0 +1,123 @@
+{% load to_normal_number %}
+{% load to_persian_date %}
+{% load static %}
+<div class="card">
+    <div class="card-header">
+        <h5>شیفت کارکرد ماشین</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <table class="table">
+                    <tr>
+                        <td class="field_name">دستگاه</td>
+
+                        <td class="field_value">
+                            <a href="{{work_shift.vehicle.get_absolute_url}}">
+                                {{work_shift.vehicle.title}}
+                            </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="field_name">تاریخ</td>
+
+                        <td class="field_value">
+                            {{work_shift.shift_date|to_persian_date|safe}}
+                            <small class="mx-2">
+                                {{work_shift.start_hour}} ~ {{work_shift.end_hour}}
+                                <span class="badge badge-{{work_shift.shift_color}}">
+                                    {{work_shift.shift}}
+                                </span>
+                            </small>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="field_name">محل فعالیت</td>
+
+                        <td class="field_value">{{work_shift.location}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="field_name">بار</td>
+
+                        <td class="field_value">
+                            <img src="{% static 'transport/img/ship.png' %}" width="28" alt="" />
+                            {{work_shift.bar}}
+                            <small class="mx-2"> {{work_shift.bar_count}} سرویس </small>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table">
+                    {% if work_shift.gasoil_liter %}
+
+                    <tr>
+                        <td class="field_name">گازوئیل مصرفی</td>
+
+                        <td class="field_value">
+                            <img src="{% static 'transport/img/gasoil.png' %}" width="28" alt="" />
+                            {{work_shift.gasoil_liter}}
+                        </td>
+                    </tr>
+                    {% endif %} {% if work_shift.oil_liter %}
+
+                    <tr>
+                        <td class="field_name">روغن مصرفی</td>
+
+                        <td class="field_value">
+                            <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="" />
+                            {{work_shift.oil_liter|to_normal_number}}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-4">
+                <table class="table">
+                    <tr>
+                        <td class="field_name">ساعت دستگاه</td>
+
+                        <td class="field_value">
+                            {{work_shift.vehicle_start_hour|to_normal_number}}
+                            ~{{work_shift.vehicle_end_hour|to_normal_number}}
+                        </td>
+                    </tr>
+                    {% if work_shift.vehicle_karkerd %}
+
+                    <tr>
+                        <td class="field_name">کارکرد ساعت دستگاه</td>
+
+                        <td class="field_value">
+                            <img src="{% static 'transport/img/timer.png' %}" width="28" alt="" />
+                            {{work_shift.vehicle_karkerd|to_normal_number}} ساعت
+                        </td>
+                    </tr>
+                    {% endif %} {% if work_shift.tavaghof %}
+
+                    <tr>
+                        <td class="field_name">توقف</td>
+                        <td class="field_value">
+                            <img src="{% static 'transport/img/stop.png' %}" width="28" alt="" />
+                            {{work_shift.tavaghof|to_normal_number}} ساعت
+                        </td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <td class="field_name">توضیحات</td>
+
+                        <td class="field_value">
+                            {% if work_shift.description %} {{work_shift.description}} {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

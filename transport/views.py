@@ -15,6 +15,9 @@ from .enums import MaintenanceTypesEnum,OilTypeEnum
 from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
 from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer,ServiceSerializer,AnbarProductSerializer
 
+
+from .repo import OilServiceRepo,FilterServiceRepo,TavaghofRepo,ProductRepo
+
 from .serializers import VehicleEventSerializer
 from .repo import VehicleEventRepo,TavaghofRepo
 LAYOUT_PARENT='phoenix/layout.html'
@@ -140,14 +143,53 @@ class ReportView(View):
         services_s=json.dumps(ServiceSerializer(services,many=True).data)
         context['services_s']=services_s
 
+
+
+
+
+
+        oil_services =[]
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =[]
+        context['filter_services']=filter_services
+        filter_services_s= json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        tavaghofs =[]
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s= json.dumps(TavaghofSerializer(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+
+
+
+
+
+        products =[]
+        context['products']=products
+        products_s= json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
         context[WIDE_LAYOUT]=True
-        if request.user.has_perm(APP_NAME+'.add_vehicle'):
-            context['add_vehicle_form']=AddVehicleForm()
-            from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
-            context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
-            context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
-            context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
-            context['drivers']=DriverRepo(request=request).list()
+        # if request.user.has_perm(APP_NAME+'.add_vehicle'):
+        #     context['add_vehicle_form']=AddVehicleForm()
+        #     from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
+        #     context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
+        #     context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
+        #     context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
+        #     context['drivers']=DriverRepo(request=request).list()
         return render(request,TEMPLATE_ROOT+"report.html",context) 
 
     
@@ -903,6 +945,9 @@ class WorkShiftView(View):
 
 
         context['expand_oil_services']=True
+        context['expand_filter_services']=True
+        context['expand_tavaghofs']=True
+        context['expand_products']=True
         context[WIDE_LAYOUT]=True
 
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
