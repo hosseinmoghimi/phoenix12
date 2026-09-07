@@ -294,16 +294,32 @@ class WorkShiftsExcelView(View):
         from utility.message import INVALID_FORM_VALUE_MESSAGE
         message=INVALID_FORM_VALUE_MESSAGE
         work_shifts_excel_form=WorkShiftsExcelForm(request.POST)
-        if work_shifts_excel_form.is_valid():
-            log=333
-            cd=work_shifts_excel_form.cleaned_data
-            cd['work_shift_ids']=json.loads(cd['work_shift_ids'])
-            work_shifts=WorkShiftRepo(request=request).list(id__in=cd['work_shift_ids'])
+        if not work_shifts_excel_form.is_valid():
+            return context
+        log=333
+        cd=work_shifts_excel_form.cleaned_data
+        cd['work_shift_ids']=json.loads(cd['work_shift_ids'])
+        work_shifts=WorkShiftRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        oil_services=OilServiceRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        filter_services=FilterServiceRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        tavaghofs=TavaghofRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        products=ProductRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+
         now=PersianCalendar().date
         
         date=PersianCalendar().from_gregorian(now)
-        lines=[]
+        from utility.excel import ReportWorkBook,get_style
         from utility.templatetags.to_normal_number import to_normal_number
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+     
+# work shifts
+# ###########################################################################
+   
+
+        lines=[]
         for i,work_shift in enumerate(work_shifts,start=1):
             line={
                 'row':i,
@@ -344,20 +360,6 @@ class WorkShiftsExcelView(View):
                  'توضیحات'
         ]
                 
-        from utility.excel import ReportWorkBook,get_style
-        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
-        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
-        # sheet1=ReportSheet(
-        #     data=lines,
-        #     start_row=3,
-        #     start_col=1,
-        #     table_has_header=False,
-        #     table_headers=None,
-        #     style=style,
-        #     sheet_name='links',
-            
-        # )
-        
         start_row=3
         report_work_book.add_sheet(
             data=lines,
@@ -369,6 +371,176 @@ class WorkShiftsExcelView(View):
             title='work_shifts',
 
         )
+
+
+
+
+
+# oil services
+# ###########################################################################
+
+        
+        lines=[]
+        for i,oil_service in enumerate(oil_services,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(oil_service.work_shift.shift_date)[:10]+' '+oil_service.work_shift.shift,      
+
+                'oil_type':oil_service.oil_type,    
+                'oil_action':oil_service.oil_action,  
+                'oil_liter':oil_service.oil_liter,   
+                'cost':oil_service.cost,   
+                'vehicle_hour':oil_service.vehicle_hour,  
+                'description':oil_service.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'شیفت',
+                 'نوع روغن',
+                 'خدمات',
+                 'لیتر روغن',
+                 'هزینه',
+                 'ساعت دستگاه',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='oil_services',
+            title='oil_services',
+
+        )
+
+
+
+
+
+# filter services
+# ###########################################################################
+
+
+        lines=[]
+        for i,filter_service in enumerate(filter_services,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(filter_service.work_shift.shift_date)[:10]+' '+filter_service.work_shift.shift,      
+                'filter_type':filter_service.filter_type,    
+                'filter_action':filter_service.filter_action,  
+                'count':filter_service.count,   
+                'cost':filter_service.cost,    
+                'description':filter_service.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'شیفت',
+                 'نوع فیلتر',
+                 'خدمات',
+                 'تعداد',
+                 'هزینه', 
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='filter_services',
+            title='filter_services',
+
+        )
+
+
+
+
+
+
+# tavaghofs
+# ###########################################################################
+
+        
+
+        lines=[]
+        for i,tavaghof in enumerate(tavaghofs,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(tavaghof.work_shift.shift_date)[:10]+' '+tavaghof.work_shift.shift,      
+                'cause':tavaghof.cause,    
+                'duration':tavaghof.duration,  
+                'vehicle_hour':tavaghof.vehicle_hour,   
+                'description':tavaghof.descriptin,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'شیفت',
+                 'علت توقف',
+                 'مدت توقف',
+                 'ساعت دستگاه',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='tavaghofs',
+            title='tavaghofs',
+
+        )
+
+
+
+# products
+# ###########################################################################
+
+        from utility.currency import to_price
+        lines=[]
+        for i,product in enumerate(products,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(product.work_shift.shift_date)[:10]+' '+product.work_shift.shift,      
+                'product':product.name,    
+                'quantity':product.quantity,  
+                'unit_price':to_price(product.unit_price),  
+                'total':to_price(product.unit_price*product.quantity),  
+                'anbar':product.anbar,   
+                'service_man':product.service_man, 
+                'description':product.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'شیفت',
+                 'قطعه',
+                 'تعداد',
+                 'قیمت واحد',
+                 'مبلغ',
+                 'انبار',
+                 'تعمیرکار',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='products',
+            title='products',
+
+        )
+
             
         file_name=f"""Phoenix Transport work_shifts {date.replace('/','').replace(':','')}.xlsx"""
         from django.http import HttpResponse
