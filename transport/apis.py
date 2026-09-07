@@ -180,6 +180,7 @@ class GetReportApiw(APIView):
                     if o_s_o.oil_type==o_s.oil_type:
                         find=True
                         o_s.oil_liter+=o_s_o.oil_liter
+                        o_s.cost+=o_s_o.cost
                 if not find:
                     oil_services.append(o_s_o)
             oil_services_s=(OilServiceSerializer(oil_services,many=True).data)
@@ -196,9 +197,18 @@ class GetReportApiw(APIView):
 
 
 
+ 
+            tavaghofs_origin =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            tavaghofs=[] 
+            for tav_o in tavaghofs_origin:
+                find=False
+                for tav in tavaghofs:
+                    if tav_o.cause==tav.cause:
+                        find=True
+                        tav.duration+=tav_o.duration
+                if not find:
+                    tavaghofs.append(tav_o)
 
-
-            tavaghofs =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids)
             context['tavaghofs']=tavaghofs
             tavaghofs_s= (TavaghofSerializer(tavaghofs,many=True).data)
             context['tavaghofs']=tavaghofs_s

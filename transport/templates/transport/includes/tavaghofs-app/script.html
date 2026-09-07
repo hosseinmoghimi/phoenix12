@@ -9,7 +9,14 @@
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+            sum_duration:function(){
+                let s=0
+                this.tavaghofs.forEach(tavaghof => {
+                    s+=tavaghof.duration
+                });
+                return to_price(s)
+            },
         }
     })
 </script>

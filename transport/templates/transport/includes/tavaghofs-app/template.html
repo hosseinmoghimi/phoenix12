@@ -49,7 +49,14 @@
 
                 <td>
                   
-                <h6 v-text="tavaghof.duration"></h6>
+                <h6>
+                  <span v-text="tavaghof.duration">
+
+                  </span>
+                  <small class="text-muted">
+                    ساعت
+                  </small>
+                </h6>
                 </td>
 
 
@@ -80,6 +87,21 @@
                
               </tr>
             </tbody>
+            <tfoot>
+              <th></th>
+              <th>
+                
+                 <small class="text-muted">
+                  جمع
+                </small>
+                <span v-text="sum_duration()"></span>
+                   <small class="text-muted">
+                  ساعت
+                </small>
+
+              </th>
+              <th></th>
+            </tfoot>
           </table>
         </div>
       </div>
