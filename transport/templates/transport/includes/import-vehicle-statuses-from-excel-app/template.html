@@ -21,9 +21,18 @@
             data-parent="#accordion-import-vehicles">
 
             <div class="card-body">
+                <div class="my-3">
+                    <form method="POST" action="{% url 'transport:vehicle_statuses_excel' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="oiling_maintenance_id" value="">
+                        <button type="submit" class="btn btn-info">
+                            <i class="fa fa-file-excel-o ml-3"></i>
+                            دریافت وضعیت دستگاه ها در قالب فایل اکسل
+                        </button>
+                    </form>
+                </div>
 
 
-                
                 <p class="text-right">
 
 

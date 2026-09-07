@@ -56,13 +56,31 @@ class VehicleStatusRepo():
             vehicle_status.cooler=kwargs["cooler"]
 
             
+        if 'vehicle_id' in kwargs and kwargs['vehicle_id']:
+            vehicle_status.vehicle_id=kwargs["vehicle_id"]
+            
+        if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
+            vehicle_status.vehicle=Vehicle.objects.filter(vehicle_code=kwargs["vehicle_code"]).first()
+            if vehicle_status.vehicle is None:
+                message="دستگاه به درستی انتخاب نشده است."
+                return FAILED,message,None
+            
         if 'vehicle_id' in kwargs:
             vehicle_status.vehicle_id=kwargs["vehicle_id"]
 
-        if 'status_datetime' in kwargs:
-            vehicle_status.status_datetime=kwargs["status_datetime"]
         if 'wiring' in kwargs:
             vehicle_status.wiring=kwargs["wiring"]
+
+            
+
+        if 'gear_box' in kwargs:
+            vehicle_status.gear_box=kwargs["gear_box"]
+
+            
+
+        if 'light' in kwargs:
+            vehicle_status.light=kwargs["light"]
+
         if 'heater' in kwargs:
             vehicle_status.heater=kwargs["heater"]
 
@@ -109,7 +127,14 @@ class VehicleStatusRepo():
                     except:
                         pass
                     vehicle_status.hour=hour
-            
+
+        if "status_datetime" in kwargs and kwargs['status_datetime']:
+            year=kwargs['status_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['status_datetime']=PersianCalendar().to_gregorian(kwargs["status_datetime"])
+            vehicle_status.status_datetime=kwargs['status_datetime']
+
+       
         (result,message,vehicle_status)=vehicle_status.save()
         return result,message,vehicle_status
 

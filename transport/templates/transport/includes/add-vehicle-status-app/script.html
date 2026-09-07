@@ -2,14 +2,28 @@
   let add_vehicle_status_app = new Vue({
     el: "#add-vehicle-status-app",
     data: {
+
+ 
+
+      vehicle_code: 0,
+      location: "",
       kilometer: 0,
       hour: 0,
-      vehicle_id: 0,
-      description: "",
-      maintenance_type: "",
+      motor:"",
+      gear_box:"",
+      ziroband:"",
+      cabin:"",
+      cooler:"",
+      heater:"",
+      wiring:"",
+      light:"",
+      hydrolic:"",
+      pakat:"",
+      compress:"",
+      description: "", 
       event_date: current_date,
       event_time: current_time,
-      event_datetime: current_datetime,
+      status_datetime: current_datetime,
       
 
       waiting: false,
@@ -44,27 +58,26 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
-          vehicle_id: parseInt(this.vehicle_id),
-          service_man_id: parseInt(this.service_man_id),
-          maintenance_type: this.maintenance_type,
-          description: this.description,
+          vehicle_code:  (this.vehicle_code),
           hour: parseInt(this.hour),
-          fuel_liter:this.fuel_liter,
-
-          
-          oil_type: this.oil_type,
-          oil_liter: this.oil_liter,
-          oil_filter: this.oil_filter,
-          gasoil_filter: this.gasoil_filter,
-          Hydrolic_filter: this.Hydrolic_filter,
-          nano_filter: this.nano_filter,
-          abgir_filter: this.abgir_filter,
-          tank_filter: this.tank_filter,
-          bokharkesh_filter: this.bokharkesh_filter,
-          lajangir_filter: this.lajangir_filter,
-
           kilometer: parseInt(this.kilometer),
-          event_datetime: this.event_date + " " + this.event_time,
+          location: this.location,
+          description: this.description,
+          motor:  (this.motor),
+          gear_box:this.gear_box,
+          ziroband:this.ziroband,
+          cabin:this.cabin,
+          cooler:this.cooler,
+          heater:this.heater,
+          wiring:this.wiring,
+          light:this.light,
+          hydrolic:this.hydrolic,
+          pakat:this.pakat,
+          compress:this.compress,
+          description:this.description,
+          pakat:this.pakat,
+          pakat:this.pakat,
+          status_datetime: this.event_date + " " + this.event_time,
         };
 
         console.log(payload);
@@ -74,20 +87,20 @@
           console.log(data);
 
           if (data.result === "SUCCEED") {
-            add_oiling_app.title = "";
+            add_vehicle_status_app.title = "";
             show_message(
-              add_oiling_app,
+              add_vehicle_status_app,
               "موفق",
               data.message,
               "success",
               5000
             );
-            if (typeof oiling_maintenances_app != "undefined") {
-              oiling_maintenances_app.oiling_maintenances.push(data.oiling_maintenance);
+            if (typeof vehicle_statuses_app != "undefined") {
+              vehicle_statuses_app.vehicle_statuses.push(data.vehicle_status);
             }
           } else {
             show_message(
-              add_oiling_app,
+              add_vehicle_status_app,
               "خطا",
               data.message,
               "danger",

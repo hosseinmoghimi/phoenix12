@@ -228,6 +228,10 @@ class VehicleStatusesView(View):
         context=getContext(request=request)
         context[WIDE_LAYOUT]=True 
 
+        
+        vehicles=VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+        
         vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(*args, **kwargs)
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
