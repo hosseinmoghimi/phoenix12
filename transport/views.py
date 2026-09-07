@@ -384,8 +384,8 @@ class WorkShiftsExcelView(View):
         for i,oil_service in enumerate(oil_services,start=1):
             line={
                 'row':i,  
-                'shift_date':PersianCalendar().from_gregorian(oil_service.work_shift.shift_date)[:10]+' '+oil_service.work_shift.shift,      
-
+                'shift_date':PersianCalendar().from_gregorian(oil_service.work_shift.shift_date)[:10],      
+                'shift':oil_service.work_shift.shift,      
                 'oil_type':oil_service.oil_type,    
                 'oil_action':oil_service.oil_action,  
                 'oil_liter':oil_service.oil_liter,   
@@ -395,6 +395,7 @@ class WorkShiftsExcelView(View):
             }
             lines.append(line)
         headers=['ردیف', 
+                 'تاریخ',
                  'شیفت',
                  'نوع روغن',
                  'خدمات',
@@ -428,7 +429,8 @@ class WorkShiftsExcelView(View):
         for i,filter_service in enumerate(filter_services,start=1):
             line={
                 'row':i,  
-                'shift_date':PersianCalendar().from_gregorian(filter_service.work_shift.shift_date)[:10]+' '+filter_service.work_shift.shift,      
+                'shift_date':PersianCalendar().from_gregorian(filter_service.work_shift.shift_date)[:10],      
+                'shift':filter_service.work_shift.shift,      
                 'filter_type':filter_service.filter_type,    
                 'filter_action':filter_service.filter_action,  
                 'count':filter_service.count,   
@@ -437,6 +439,7 @@ class WorkShiftsExcelView(View):
             }
             lines.append(line)
         headers=['ردیف', 
+                 'تاریخ',
                  'شیفت',
                  'نوع فیلتر',
                  'خدمات',
@@ -471,7 +474,8 @@ class WorkShiftsExcelView(View):
         for i,tavaghof in enumerate(tavaghofs,start=1):
             line={
                 'row':i,  
-                'shift_date':PersianCalendar().from_gregorian(tavaghof.work_shift.shift_date)[:10]+' '+tavaghof.work_shift.shift,      
+                'shift_date':PersianCalendar().from_gregorian(tavaghof.work_shift.shift_date)[:10],      
+                'shift':tavaghof.work_shift.shift,      
                 'cause':tavaghof.cause,    
                 'duration':tavaghof.duration,  
                 'vehicle_hour':tavaghof.vehicle_hour,   
@@ -479,6 +483,7 @@ class WorkShiftsExcelView(View):
             }
             lines.append(line)
         headers=['ردیف', 
+                 'تاریخ',
                  'شیفت',
                  'علت توقف',
                  'مدت توقف',
@@ -508,7 +513,8 @@ class WorkShiftsExcelView(View):
         for i,product in enumerate(products,start=1):
             line={
                 'row':i,  
-                'shift_date':PersianCalendar().from_gregorian(product.work_shift.shift_date)[:10]+' '+product.work_shift.shift,      
+                'shift_date':PersianCalendar().from_gregorian(product.work_shift.shift_date)[:10],      
+                'shift':product.work_shift.shift,      
                 'product':product.name,    
                 'quantity':product.quantity,  
                 'unit_price':to_price(product.unit_price),  
@@ -519,6 +525,7 @@ class WorkShiftsExcelView(View):
             }
             lines.append(line)
         headers=['ردیف', 
+                 'تاریخ',
                  'شیفت',
                  'قطعه',
                  'تعداد',

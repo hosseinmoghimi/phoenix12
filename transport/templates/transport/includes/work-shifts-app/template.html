@@ -48,14 +48,17 @@
             <tbody>
               <tr v-for="work_shift in work_shifts">
                 <td>
+                  <a :href="work_shift.get_absolute_url">
                   <span v-text="work_shift.persian_shift_date"></span>
                   <div>
                     شیفت
                     <span v-text="work_shift.shift"></span>
+                    <img :src="to_icon(work_shift.shift)" :alt="work_shift.shift" width="28"> 
+
                     <span v-text="work_shift.start_hour"></span>
                     ~
                     <span v-text="work_shift.end_hour"></span>
-                  </div>
+                  </div></a>
                 </td>
                 {% if not vehicle %}
 

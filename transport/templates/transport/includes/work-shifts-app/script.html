@@ -7,6 +7,12 @@
             work_shifts: work_shifts_for_work_shifts_app
         },
         methods: {
+            to_icon:function(vall){
+                    if (vall==='روز'){
+                        return '{{STATIC_URL}}transport/img/sun.png'
+                    } 
+                    return '{{STATIC_URL}}transport/img/moon.png'
+            },
             work_shift_ids:function(){
                 let ids=[]
                 this.work_shifts.forEach(work_shift => {
