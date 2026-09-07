@@ -231,7 +231,7 @@ class VehicleStatusesView(View):
         
         vehicles=VehicleRepo(request=request).list()
         context['vehicles']=vehicles
-        
+
         vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(*args, **kwargs)
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
@@ -885,10 +885,20 @@ class WorkShiftView(View):
 
 
 
+        tavaghofs =work_shift.tavaghof_set.all()
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s=json.dumps(TavaghofSerializer(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+
+
+
+
+
         products =work_shift.product_set.all()
         context['products']=products
         products_s=json.dumps(ProductSerializer(products,many=True).data)
         context['products_s']=products_s
+
 
 
 

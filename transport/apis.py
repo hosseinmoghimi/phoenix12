@@ -219,6 +219,28 @@ class AddWorkShiftApi(APIView):
         return JsonResponse(context)
 
 
+class DeleteWorkShiftApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        delete_work_shift_form=DeleteWorkShiftForm(request.POST)
+        if delete_work_shift_form.is_valid():
+            log=333
+            cd=delete_work_shift_form.cleaned_data
+            result,message=WorkShiftRepo(request=request).delete_work_shift(**cd)
+             
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddServiceApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

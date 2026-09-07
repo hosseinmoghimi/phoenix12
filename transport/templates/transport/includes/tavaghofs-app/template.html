@@ -1,0 +1,88 @@
+{% load static %}
+<div id="accordion-tavaghofs" class="rtl text-right farsi">
+  <div class="card" id="tavaghofs-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-tavaghofs"
+          aria-expanded="true"
+          aria-controls="collapse-tavaghofs"
+        >
+            توقف دستگاه
+
+            <span v-if="tavaghofs.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="tavaghofs.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-tavaghofs"
+      class="collapse {% if expand_tavaghofs %} show {% endif %}"
+      aria-labelledby="heading-tavaghofs"
+      data-parent="#accordion-tavaghofs"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead>
+              <th>علت</th>
+              <th>مدت زمان به ساعت</th>
+              <th>ساعت دستگاه</th>
+              <th>توضیحات</th> 
+            </thead>
+            <tbody>
+              <tr v-for="tavaghof in tavaghofs">
+                <td>
+                 <div class="media">
+                      <img src="{% static 'transport/img/motor-oil.png' %}" width="32" class="rounded-circle" alt="">
+                    <div class="media-body mr-2">
+                        <span v-text="tavaghof.cause"></span>
+                </div>
+            </div>
+                </td>
+
+                <td>
+                  
+                <h6 v-text="tavaghof.duration"></h6>
+                </td>
+
+
+                 
+                   
+
+                
+                   <td>
+                     <div v-if="tavaghof.vehicle_hour" >
+
+                        <span v-text="to_price(tavaghof.vehicle_hour)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+                 
+
+
+                 <td>
+                        <h6 v-text="tavaghof.descriptin"></h6>
+                </td>
+
+
+
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

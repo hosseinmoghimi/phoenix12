@@ -1,6 +1,6 @@
 {% extends "transport/layout.html" %} {% block content %}
- {% load static %} {% load to_normal_number %}
-  {% load to_persian_date %}
+{% load static %} {% load to_normal_number %}
+{% load to_persian_date %}
 <div class="row rtl farsi">
   <div class="col-md-4">
     <h5 class="text-center">شیفت کارکرد ماشین</h5>
@@ -16,26 +16,22 @@
           </a>
         </h6>
         {% endif %} {% if perms.transport.change_work_shift %}
-        <a
-          href="{{work_shift.get_edit_url}}"
-          class="my-2 text-warning mx-2"
-          title="ویرایش"
-          target="_blank"
-        >
+        <a href="{{work_shift.get_edit_url}}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
           <i class="fa fa-edit text-warning"></i> ویرایش
         </a>
         {% endif %} {% if perms.transport.delete_work_shift %}
-        <a
-          href="{{work_shift.get_delete_url}}"
-          class="my-2 text-danger mx-2"
-          title="ویرایش"
-          target="_blank"
-        >
+        <a href="{{work_shift.get_delete_url}}" class="my-2 text-danger mx-2" title="ویرایش" target="_blank">
           <i class="fa fa-trash text-danger"></i> حذف
         </a>
+     
         {% endif %}
       </div>
     </div>
+    {% if perms.transport.delete_work_shift %}
+       
+    {% include 'transport/includes/work-shift-app/delete.html' %}
+
+        {% endif %}
   </div>
 
   <div class="col-md-12">
@@ -81,11 +77,7 @@
                 <td class="field_name">بار</td>
 
                 <td class="field_value">
-                  <img
-                    src="{% static 'transport/img/ship.png' %}"
-                    width="28"
-                    alt=""
-                  />
+                  <img src="{% static 'transport/img/ship.png' %}" width="28" alt="" />
                   {{work_shift.bar}}
                   <small class="mx-2"> {{work_shift.bar_count}} سرویس </small>
                 </td>
@@ -100,11 +92,7 @@
                 <td class="field_name">گازوئیل مصرفی</td>
 
                 <td class="field_value">
-                  <img
-                    src="{% static 'transport/img/gasoil.png' %}"
-                    width="28"
-                    alt=""
-                  />
+                  <img src="{% static 'transport/img/gasoil.png' %}" width="28" alt="" />
                   {{work_shift.gasoil_liter}}
                 </td>
               </tr>
@@ -114,11 +102,7 @@
                 <td class="field_name">روغن مصرفی</td>
 
                 <td class="field_value">
-                  <img
-                    src="{% static 'transport/img/motor-oil.png' %}"
-                    width="28"
-                    alt=""
-                  />
+                  <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="" />
                   {{work_shift.oil_liter|to_normal_number}}
                 </td>
               </tr>
@@ -141,11 +125,7 @@
                 <td class="field_name">کارکرد ساعت دستگاه</td>
 
                 <td class="field_value">
-                  <img
-                    src="{% static 'transport/img/timer.png' %}"
-                    width="28"
-                    alt=""
-                  />
+                  <img src="{% static 'transport/img/timer.png' %}" width="28" alt="" />
                   {{work_shift.vehicle_karkerd|to_normal_number}} ساعت
                 </td>
               </tr>
@@ -154,11 +134,7 @@
               <tr>
                 <td class="field_name">توقف</td>
                 <td class="field_value">
-                  <img
-                    src="{% static 'transport/img/stop.png' %}"
-                    width="28"
-                    alt=""
-                  />
+                  <img src="{% static 'transport/img/stop.png' %}" width="28" alt="" />
                   {{work_shift.tavaghof|to_normal_number}} ساعت
                 </td>
               </tr>
@@ -179,12 +155,16 @@
         </div>
       </div>
     </div>
+    {% include 'transport/includes/work-shift-app/card.html' %}
   </div>
   <div class="col-md-12">
     {% include "transport/includes/oil-services-app/template.html" %}
   </div>
   <div class="col-md-12">
     {% include "transport/includes/filter-services-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/tavaghofs-app/template.html" %}
   </div>
   <div class="col-md-12">
     {% include "transport/includes/products-app/template.html" %}
@@ -194,6 +174,11 @@
 <script></script>
 
 {% include "transport/includes/oil-services-app/script.html" %}
- {% include "transport/includes/filter-services-app/script.html" %} 
- {% include "transport/includes/products-app/script.html" %}
-  {% endblock script %}
+{% include "transport/includes/filter-services-app/script.html" %}
+{% include "transport/includes/tavaghofs-app/script.html" %}
+{% include "transport/includes/products-app/script.html" %}
+{% include 'transport/includes/work-shift-app/delete.html' %}
+{% include 'transport/includes/work-shift-app/script.html' %}
+
+
+{% endblock script %}

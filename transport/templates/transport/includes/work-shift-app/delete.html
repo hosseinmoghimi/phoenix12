@@ -1,0 +1,33 @@
+<div id="delete-work-shift-app">
+    <div class="card">
+        <div class="card-body">
+            <button class="btn btn-danger" v-if="!confirm" @click="confirm=true">
+                <i class="fa fa-trash"></i>
+                حذف</button>
+
+
+
+            <div v-if="confirm">
+                <label for="">
+
+                    شیفت کاری حذف شود؟
+                </label>
+                <div>
+
+                    <button class="btn btn-secondary" @click="confirm=false">
+                        <i class="fa fa-trash"></i>
+                        خیر</button>
+                        
+                        <button class="btn btn-danger" @click="delete_work_shift()">
+                            <i class="fa fa-trash"></i>
+                            حذف شود</button>
+                        </div>
+<div class="my-2">
+
+    {% include 'utility/includes/message.html' %}
+</div>
+                    </div>
+
+        </div>
+    </div>
+</div>

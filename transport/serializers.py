@@ -41,11 +41,17 @@ class VehicleStatusSerializer(serializers.ModelSerializer):
         fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_absolute_url','get_edit_url','get_delete_url' ]
   
  
-class TavaghofSerializer(serializers.ModelSerializer):
+class TavaghofSerializer2(serializers.ModelSerializer):
     vehicle=VehicleSerializer()
     class Meta:
         model=Tavaghof
-        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','cause','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+        fields=['id','vehicle','cause','duration','vehicle_hour','description', 'get_edit_url','get_delete_url', ]
+      
+
+class TavaghofSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Tavaghof
+        fields=['id','cause','duration','vehicle_hour','descriptin', 'get_edit_url','get_delete_url', ]
       
 
 class VehicleEventSerializer(serializers.ModelSerializer):

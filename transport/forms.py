@@ -122,6 +122,8 @@ class AddVehicleStatusForm(forms.Form):
     compress=forms.CharField(required=False, max_length=50)
     description=forms.CharField(required=False, max_length=500)
         
+class DeleteWorkShiftForm(forms.Form):
+    work_shift_id=forms.IntegerField(required=True) 
 
 class AddWorkShiftForm(forms.Form):
     vehicle_code=forms.CharField(required=False, max_length=50) 

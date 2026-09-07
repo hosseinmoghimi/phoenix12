@@ -311,7 +311,30 @@ class WorkShiftRepo():
         if "shift" in kwargs and kwargs['shift']:
             objects=objects.filter(shift=kwargs["shift"])  
         return objects.all()
+    def delete_work_shift(self,*args, **kwargs):
         
+        result,message=FAILED,""
+        if not self.request.user.has_perm(APP_NAME+".delete_workshift"):
+            message="دسترسی غیر مجاز"
+        work_shift=self.work_shift(pk=kwargs['work_shift_id'])
+        work_shift=self.work_shift(**kwargs)
+        if work_shift is None:
+            return FAILED,'شیفت کاری موجود نمی باشد.'
+        
+        oil_services=OilService.objects.filter(work_shift_id=work_shift.id)
+        filter_services=FilterService.objects.filter(work_shift_id=work_shift.id)
+        tavaghofs=Tavaghof.objects.filter(work_shift_id=work_shift.id)
+        products=Product.objects.filter(work_shift_id=work_shift.id)
+
+        oil_services.delete()
+        filter_services.delete()
+        tavaghofs.delete()
+        products.delete()
+
+        work_shift.delete()
+        
+        return SUCCEED,'شیفت کاری با موفقیت حذف شد.'
+    
     def work_shift(self,*args, **kwargs):
         if "work_shift_id" in kwargs and kwargs["work_shift_id"] is not None:
             return self.objects.filter(pk=kwargs['work_shift_id']).first()  
@@ -323,7 +346,7 @@ class WorkShiftRepo():
         
     def add_work_shift(self,*args,**kwargs):
         result,message,work_shift=FAILED,"",None
-        if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
+        if not self.request.user.has_perm(APP_NAME+".add_workshift"):
             message="دسترسی غیر مجاز"
             return result,message,work_shift
 

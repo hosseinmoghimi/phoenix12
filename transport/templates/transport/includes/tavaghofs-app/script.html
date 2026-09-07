@@ -1,0 +1,15 @@
+<script>
+    
+    let tavaghofs_for_tavaghofs_app=JSON.parse("{{tavaghofs_s|escapejs}}")
+    let tavaghofs_app = new Vue({
+        el: "#tavaghofs-app",
+        data: {
+            tavaghofs: tavaghofs_for_tavaghofs_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

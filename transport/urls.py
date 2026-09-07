@@ -50,6 +50,7 @@ urlpatterns = [
     path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),
     path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),
     path('add-work-shift/',login_required(apis.AddWorkShiftApi.as_view()),name="add_work_shift"),
+    path('delete-work-shift/',login_required(apis.DeleteWorkShiftApi.as_view()),name="delete_work_shift"),
     path('work-shift/<int:pk>/',login_required(views.WorkShiftView.as_view()),name="workshift"),
 
     
