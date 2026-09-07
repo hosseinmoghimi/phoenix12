@@ -87,8 +87,8 @@ INSTALLED_APPS = [
     'bms',
     'django_social_share',
     'archive',
-    'transport'
-    'academy'
+    'transport',
+    'academy',
 
 
     # 'allauth',   # <--

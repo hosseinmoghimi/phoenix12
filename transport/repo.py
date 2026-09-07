@@ -136,7 +136,9 @@ class VehicleStatusRepo():
             
 
         except:
-            message='فایل شما  وضعیت ماشین آلات ندارد.'
+            message='فایل شما  وضعیت ماشین آلات ندارد. <br>' \
+            'نام شیت باید عبارت \"vehicle_statuses\"' \
+            'باشد'
             return result,message,None
         count=kwargs['count']
         try:
@@ -763,7 +765,9 @@ class VehicleRepo():
             
 
         except:
-            message='فایل شما برگه ماشین آلات ندارد.'
+            message='فایل شما برگه ماشین آلات ندارد.<br>' \
+            'نام شیت باید عبارت \"vehicles\"' \
+            'باشد'
             return result,message,None
         count=kwargs['count']
         try:
@@ -940,7 +944,9 @@ class DriverRepo():
             
 
         except:
-            message='فایل شما برگه راننده ها ندارد.'
+            message='فایل شما برگه راننده ها ندارد.<br>' \
+            'نام شیت باید عبارت \"drivers\"' \
+            'باشد'
             return result,message,None
         count=kwargs['count']
         try:
