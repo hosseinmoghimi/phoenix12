@@ -35,8 +35,8 @@ class ServiceMan(models.Model,LinkHelper):
         return str(self.title)
     def save(self,*args, **kwargs):
         result,message,service_man=FAILED,'',None
-        if self.title is None or self.title=="":
-            self.title=self.account.title
+        if self.full_name is None or self.full_name=="":
+            self.title=self.person_account.person.full_name
         super(ServiceMan,self).save(*args, **kwargs)
         message='سرویس کار با موفقیت اضافه شد.'
         return SUCCEED,message,self

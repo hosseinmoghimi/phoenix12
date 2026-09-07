@@ -3,7 +3,8 @@
   let add_person_account_app = new Vue({
     el: "#add-service-man-app",
     data: {
-      title: "",
+      
+      full_name:"",
       person_account_code:"",
       person_account: { },
       message:{show:false},
@@ -31,6 +32,7 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           person_account_id: this.person_account.id,
+          full_name: this.full_name,
         };
 
         console.log(payload);

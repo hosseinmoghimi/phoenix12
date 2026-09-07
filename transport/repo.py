@@ -272,7 +272,7 @@ class WorkShiftRepo():
          
         if "shift" in kwargs and kwargs["shift"]:
             objects=objects.filter(shift=kwargs["shift"])
-            
+
         if "work_shift_id__in" in kwargs and kwargs["work_shift_id__in"]:
             objects=objects.filter(id__in=kwargs["work_shift_id__in"])
 
@@ -1281,12 +1281,25 @@ class ServiceManRepo():
         if not self.request.user.has_perm(APP_NAME+".add_service_man"):
             message="دسترسی غیر مجاز"
             return result,message,service_man
-        if len(ServiceMan.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
+        if 'person_account_id' in kwargs and kwargs["person_account_id"] and len(ServiceMan.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
             message='قبلا برای این شخص سرویس کار ایجاد شده است.'
+
+        if 'full_name' in kwargs and kwargs["full_name"] and len(ServiceMan.objects.filter(full_name=kwargs["full_name"]))>0:
+            
+            message='قبلا سرویس کار با این عنوان ایجاد شده است.'
+
+            return FAILED,message,None
+        if not 'full_name' in kwargs or not kwargs['full_name']:
+            
+            message='نام برای سرویس کار وارد کنید..'
+
             return FAILED,message,None
         service_man=ServiceMan() 
-        if 'person_account_id' in kwargs:
+        if 'person_account_id' in kwargs and kwargs['person_account_id']:
             service_man.person_account_id=kwargs["person_account_id"]
+
+        if 'full_name' in kwargs and kwargs['full_name']:
+            service_man.full_name=kwargs["full_name"]
           
         (result,message,service_man)=service_man.save()
         return result,message,service_man

@@ -1,27 +1,32 @@
 <script>
-    let delete_work_shift_app=new Vue({
-        el:"#delete-work-shift-app",
-        data:{
-            confirm:false,
-            waiting:false,
-            message:{show:true},
+    let delete_work_shift_app = new Vue({
+        el: "#delete-work-shift-app",
+        data: {
+            confirm: false,
+            waiting: false,
+            message: { show: true },
 
         },
-        methods:{
-            delete_work_shift:function(){
-                let payload={
-                    csrfmiddlewaretoken:csrfmiddlewaretoken,
-                    work_shift_id:parseInt("{{work_shift.id}}")
+        methods: {
+            delete_work_shift: function () {
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    work_shift_id: parseInt("{{work_shift.id}}")
                 }
                 console.log(payload)
-                let url="{% url 'transport:delete_work_shift' %}"
-                $.post(url,payload).done(data=>{
+                let url = "{% url 'transport:delete_work_shift' %}"
+                $.post(url, payload).done(data => {
                     console.log(data)
-                    if(data.result==="SUCCEED"){
-                        show_message(delete_work_shift_app,'حذف',data.message,'success',5000)
+                    if (data.result === "SUCCEED") {
+                        show_message(delete_work_shift_app, 'حذف', data.message, 'danger', 5000)
+                        setTimeout(() => {
+                            location.href = "{% url 'transport:index' %}"
+
+
+                        }, 2000);
                     }
-                    if(data.result!="SUCCEED"){
-                        show_message(delete_work_shift_app,'خطا',data.message,'danger',5000)
+                    if (data.result != "SUCCEED") {
+                        show_message(delete_work_shift_app, 'خطا', data.message, 'danger', 5000)
                     }
                 })
             },

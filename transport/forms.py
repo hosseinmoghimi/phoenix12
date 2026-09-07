@@ -37,6 +37,7 @@ class AddInvoiceForm(AddInvoiceForm2):
     bestankar_id=forms.IntegerField(required=False)
     amount=forms.IntegerField(required=False)
     manual_amount=forms.IntegerField(required=True)
+
  
 class AddMaintenanceForm(AddEventForm):
     hour=forms.IntegerField(  required=False)
@@ -46,6 +47,7 @@ class AddMaintenanceForm(AddEventForm):
     maintenance_type=forms.CharField(max_length=100, required=True)
     vehicle_code=forms.CharField(max_length=50, required=True)
     driver_code=forms.CharField(max_length=50, required=False)
+
 
 class AddKarkerdForm(AddEventForm): 
     driver_id=forms.IntegerField(required=True)
@@ -75,7 +77,8 @@ class AddOilingMaintenanceForm(AddMaintenanceForm):
    
     
 class AddServiceManForm(forms.Form):
-    person_account_id=forms.IntegerField(required=True)
+    person_account_id=forms.IntegerField(required=False)
+    full_name=forms.CharField( max_length=100, required=True)
 
      
 class VehicleStatusesExcelForm(forms.Form):
@@ -101,9 +104,12 @@ class AddOilingMaintenanceDetailForm(forms.Form):
     filter_action=forms.CharField(required=True, max_length=50)
     filter_type=forms.CharField(required=True, max_length=50)
     description=forms.CharField(required=False, max_length=500)
+
      
 class WorkShiftsExcelForm(forms.Form):
     work_shift_ids=forms.CharField( max_length=1000, required=False)
+
+
 class AddVehicleStatusForm(forms.Form):
     vehicle_code=forms.CharField(required=True, max_length=50)
     status_datetime=forms.CharField(required=True, max_length=50)
@@ -122,9 +128,11 @@ class AddVehicleStatusForm(forms.Form):
     pakat=forms.CharField(required=False, max_length=50)
     compress=forms.CharField(required=False, max_length=50)
     description=forms.CharField(required=False, max_length=500)
+
         
 class DeleteWorkShiftForm(forms.Form):
     work_shift_id=forms.IntegerField(required=True) 
+
 
 class AddWorkShiftForm(forms.Form):
     vehicle_code=forms.CharField(required=False, max_length=50) 
@@ -174,6 +182,7 @@ class VehiclesExcelForm(forms.Form):
     
 class DriversExcelForm(forms.Form):
     pass
+
      
 class ImportVehicleFromExcelForm(forms.Form):
     count=forms.IntegerField( required=False)

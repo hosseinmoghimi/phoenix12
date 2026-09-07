@@ -31,8 +31,7 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
             <thead>
               <th>سرویس کار</th>
-              <th>حساب</th>
-              <th>مانده</th>
+              <th>حساب</th> 
               <th></th>
             </thead>
             <tbody>
@@ -40,14 +39,14 @@
                 <td>
                   <a :href="service_man.get_absolute_url">
                     <span
-                      v-text="service_man.person_account.person.full_name"
+                      v-text="service_man.full_name"
                     ></span>
                   </a>
                 </td>
 
                 <td>
 
-                  <div class="media">
+                  <div class="media" v-if="service_man.person_account">
                     <a :href="service_man.person_account.get_absolute_url">
                       <img :src="service_man.person_account.thumbnail" width="48" class="rounded-circle" alt="">
                     </a>
@@ -64,9 +63,7 @@
 
                 
 
-                <td>
-                  <span v-text="to_price(service_man.person_account.balance)"></span> {{CURRENCY    }}
-                </td>
+                
                 <td>
                   {% if perms.market.change_service_man %}
                   <a
