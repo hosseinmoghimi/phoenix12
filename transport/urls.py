@@ -52,6 +52,7 @@ urlpatterns = [
     path('add-work-shift/',login_required(apis.AddWorkShiftApi.as_view()),name="add_work_shift"),
     path('delete-work-shift/',login_required(apis.DeleteWorkShiftApi.as_view()),name="delete_work_shift"),
     path('work-shift/<int:pk>/',login_required(views.WorkShiftView.as_view()),name="workshift"),
+    path('work-shifts-excel/',login_required(views.WorkShiftsExcelView.as_view()),name="work_shifts_excel"),
 
     
     path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
@@ -71,10 +72,10 @@ urlpatterns = [
 
     path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
     path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
+
     path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
     path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),
     path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
-
 
 
    

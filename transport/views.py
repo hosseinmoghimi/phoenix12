@@ -282,6 +282,103 @@ class VehicleStatusesView(View):
             context['add_vehicle_status_form']=AddVehicleStatusForm()
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
 
+class WorkShiftsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        work_shifts_excel_form=WorkShiftsExcelForm(request.POST)
+        if work_shifts_excel_form.is_valid():
+            log=333
+            cd=work_shifts_excel_form.cleaned_data
+            work_shifts=WorkShiftRepo(request=request).list(**cd)
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,work_shift in enumerate(work_shifts,start=1):
+            line={
+                'row':i,
+                'vehicle':work_shift.vehicle.title,      
+                'driver':work_shift.driver.full_name,      
+                'location':work_shift.location,  
+                'shift_date':PersianCalendar().from_gregorian(work_shift.shift_date)[:10],      
+                'shift':work_shift.shift,   
+                'start_hour':work_shift.start_hour,   
+                'end_hour':work_shift.end_hour,   
+                'vehicle_start_hour':work_shift.vehicle_start_hour,   
+                'vehicle_end_hour':work_shift.vehicle_end_hour,  
+                'vehicle_karkerd':work_shift.vehicle_karkerd(),   
+                'bar_count':work_shift.bar_count,   
+                'bar':work_shift.bar,   
+                'gasoil_liter':work_shift.gasoil_liter,   
+                'oil_liter':work_shift.oil_liter(),   
+                'tavaghof':work_shift.tavaghof(),   
+                'description':work_shift.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'دستگاه',
+                 'راننده',
+                 'مکان',
+                 'تاریخ',
+                 'شیفت',
+                 'ساعت شروع شیفت',
+                 'ساعت پایان شیفت',
+                 'ساعت شروع دستگاه',
+                 'ساعت پایان دستگاه',
+                 'میزان کارکرد دستگاه',
+                 'تعداد سرویس',
+                 'بار',
+                 'لیتراژ گازوئیل',
+                 'لیتراژ روغن',
+                 'توقف',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='work_shifts',
+            title='work_shifts',
+
+        )
+            
+        file_name=f"""Phoenix Transport work_shifts {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      
  
 class VehicleStatusesExcelView(View):
     def post(self,request,*args, **kwargs):
