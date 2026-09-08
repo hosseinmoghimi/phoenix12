@@ -30,6 +30,8 @@ class AddInvoiceToMaintenanceForm(forms.Form):
     invoice_id=forms.IntegerField(required=True)
     maintenance_id=forms.IntegerField(required=True)
 
+class AnbarProductsExcelForm(forms.Form):
+    anbar_products_ids=forms.CharField(required=False,max_length=50000)
  
 class AddInvoiceForm(AddInvoiceForm2):
     maintenance_id=forms.IntegerField(required=True)

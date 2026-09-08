@@ -93,21 +93,21 @@
 
                 
                 <td>
-<div>
-  
-  <span    v-text="to_price(anbar_product.quantity*anbar_product.unit_price)"></span>
-  {{CURRENCY}}
-</div>
-<div >
+                  <div>
+                    
+                    <span    v-text="to_price(anbar_product.quantity*anbar_product.unit_price)"></span>
+                    {{CURRENCY}}
+                  </div>
+                  <div >
  
 
-  <span class="text-muted" v-text="anbar_product.quantity"></span>
-  
-  <span class="text-muted" >*</span>
-  <span class="text-muted" v-text="to_price(anbar_product.unit_price)"></span>
-   
-  
-</div>
+                      <span class="text-muted" v-text="anbar_product.quantity"></span>
+                      
+                      <span class="text-muted" >*</span>
+                      <span class="text-muted" v-text="to_price(anbar_product.unit_price)"></span>
+                    
+                    
+                  </div>
 
                 </td>
 
@@ -145,6 +145,17 @@
           برگه انباری وجود ندارد.
         </h5>
 
+      </div>
+      <div class="card-footer">
+        <form method="POST" action="{% url 'transport:anbar_products_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="anbar_products_ids" :value="anbar_products_ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              اکسل
+              
+            </button>
+          </form>
       </div>
     </div>
   </div>

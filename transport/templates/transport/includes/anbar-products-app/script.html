@@ -7,6 +7,13 @@
             anbar_products: anbar_products_for_anbar_products_app
         },
         methods: {
+            anbar_products_ids:function(){
+                let ids=[]
+                this.anbar_products.forEach(anbar_product => {
+                    ids.push(anbar_product.id)
+                });
+                return JSON.stringify(ids)
+            },
             to_icon: function (vall) {
                 if (vall === 'روز') {
                     return '{{STATIC_URL}}transport/img/sun.png'

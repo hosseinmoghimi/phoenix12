@@ -91,7 +91,11 @@
                             <div class="form-group">
                                 <label for="">کد دستگاه</label>
                                 <input v-model="vehicle_code" type="text" class="form-control" />
-
+                                <select v-model="vehicle_code"  class="form-control">
+                                    {% for vehicle in vehicles %}
+                                      <option value="{{vehicle.vehicle_code}}">{{vehicle.title}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
 

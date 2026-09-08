@@ -1522,16 +1522,20 @@ class AnbarProductRepo():
         if profile is not None:
             if request.user.has_perm(APP_NAME+".view_vehicle"):
                 self.objects=AnbarProduct.objects
-                self.my_accounts=self.objects 
+                self.my_accounts=self.objects
+                
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+            objects=objects.filter(Q(person_account__person__full_name__contains=search_for))
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
          
+        if "anbar_products_ids" in kwargs:
+            anbar_products_ids=kwargs["anbar_products_ids"]
+            objects=objects.filter(id__in=anbar_products_ids)  
 
         if "vehicle_code" in kwargs and kwargs['vehicle_code']:
             objects=objects.filter(vehicle__vehicle_code=kwargs["vehicle_code"])
@@ -1540,13 +1544,13 @@ class AnbarProductRepo():
             year=kwargs['from_shift_date'][:2]
             if year=="13" or year=="14":
                 kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
-            
             objects=objects.filter(shift_date__gte=kwargs["from_shift_date"]) 
 
         if "to_shift_date" in kwargs and kwargs['to_shift_date']:
             year=kwargs['to_shift_date'][:2]
             if year=="13" or year=="14":
                 kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
+            objects=objects.filter(shift_date__lte=kwargs["to_shift_date"]) 
          
 
         if "shift" in kwargs and kwargs['shift']:
@@ -1594,7 +1598,6 @@ class AnbarProductRepo():
             year=kwargs['shift_date'][:2]
             if year=="13" or year=="14":
                 kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"]).date()
-                leolog(kwargs=kwargs)
 
             anbar_product.shift_date=kwargs["shift_date"]
             

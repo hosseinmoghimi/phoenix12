@@ -1,3 +1,4 @@
+from utility.currency import to_price
 from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
@@ -269,6 +270,7 @@ class VehicleStatusesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         context[WIDE_LAYOUT]=True 
+        context['expand_vehicle_statuses']=True
 
         
         vehicles=VehicleRepo(request=request).list()
@@ -281,6 +283,7 @@ class VehicleStatusesView(View):
         if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
             context['add_vehicle_status_form']=AddVehicleStatusForm()
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
+
 
 class WorkShiftsExcelView(View):
     def post(self,request,*args, **kwargs):
@@ -517,8 +520,8 @@ class WorkShiftsExcelView(View):
                 'shift':product.work_shift.shift,      
                 'product':product.name,    
                 'quantity':product.quantity,  
-                'unit_price':to_price(product.unit_price),  
-                'total':to_price(product.unit_price*product.quantity),  
+                'unit_price':(product.unit_price),  
+                'total':(product.unit_price*product.quantity),  
                 'anbar':product.anbar,   
                 'service_man':product.service_man, 
                 'description':product.description,      
@@ -558,7 +561,6 @@ class WorkShiftsExcelView(View):
         report_work_book.work_book.close()
         return response
 
-      
  
 class VehicleStatusesExcelView(View):
     def post(self,request,*args, **kwargs):
@@ -731,8 +733,7 @@ class DriversExcelView(View):
         report_work_book.work_book.save(response)
         report_work_book.work_book.close()
         return response
-
-      
+ 
 
 class VehicleStatusView(View):
     def get(self,request,*args, **kwargs):
@@ -816,7 +817,6 @@ class MaintenancesView(View):
             context.update(AddMaintenanceContext(request=request))
         return render(request,TEMPLATE_ROOT+"maintenances.html",context) 
     
-     
     
 class MaintenanceView(View):
     def get(self,request,*args, **kwargs):
@@ -871,7 +871,6 @@ class NewMaintenanceView(View):
             context.update(AddMaintenanceContext(request=request))
         return render(request,TEMPLATE_ROOT+"new-maintenance.html",context) 
     
-     
     
 class OilingMaintenanceDetailsView(View):
     def get(self,request,*args, **kwargs):
@@ -1271,6 +1270,11 @@ class NewAnbarProductView(View):
  
         context=getContext(request=request)
 
+        vehicles =VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
         
 
         anbar_products =[]
@@ -1350,7 +1354,96 @@ class AnbarProductsView(View):
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"anbar-products.html",context) 
 
+ 
+class AnbarProductsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        anbar_products_excel_form=AnbarProductsExcelForm(request.POST)
+        if anbar_products_excel_form.is_valid():
+            log=333
+            cd=anbar_products_excel_form.cleaned_data
+            if 'anbar_products_ids' in cd and cd['anbar_products_ids']:
+                cd['anbar_products_ids']=json.loads(cd['anbar_products_ids'])
+            anbar_products=AnbarProductRepo(request=request).list(**cd)
 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,anbar_product in enumerate(anbar_products,start=1):
+            line={
+                'row':i,
+                'id':anbar_product.id,
+                'shift_date':PersianCalendar().from_gregorian(anbar_product.shift_date)[:10],      
+                'shift':anbar_product.shift,  
+                'name':anbar_product.name,  
+                'quantity':anbar_product.quantity,   
+                'unit_price':(anbar_product.unit_price),   
+                'total':(anbar_product.quantity*anbar_product.unit_price),   
+                'anbar':anbar_product.anbar,   
+                'vehicle_code':anbar_product.vehicle.vehicle_code,   
+                'vehicle':anbar_product.vehicle.title,   
+                'description':anbar_product.description,      
+            }
+            lines.append(line)
+
+        headers=['ردیف',
+                'شناسه',
+                'تاریخ',
+                'شیفت',
+                'قطعه',
+                'تعداد',
+                'قیمت جزء',
+                'جمع',
+                'انبار',
+                'کد دستگاه',
+                'دستگاه',
+                'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='anbar_products',
+            title='anbar_products',
+        )
+        file_name=f"""Phoenix Transport anbar_products {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+       
 class ServiceView(View):
     def get(self,request,*args, **kwargs):
       

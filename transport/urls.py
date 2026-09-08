@@ -15,6 +15,7 @@ urlpatterns = [
     path('vehicles_excel/',login_required(views.VehiclesExcelView.as_view()),name="vehicles_excel"),
     path('import-vehicles-from-excel/',login_required(apis.ImportVehicleFromExcelApi.as_view()),name="import_vehicles_from_excel"),
 
+    path('anbar_products_excel/',login_required(views.AnbarProductsExcelView.as_view()),name="anbar_products_excel"),
     path('anbar-products/',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
     path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
     path('new-anbar-product/',login_required(views.NewAnbarProductView.as_view()),name="new_anbar_product"),
@@ -27,25 +28,24 @@ urlpatterns = [
     path('service/<int:pk>/',login_required(views.ServiceView.as_view()),name="service"),
 
     
+    path('import-drivers-from-excel/',login_required(apis.ImportDriverFromExcelApi.as_view()),name="import_drivers_from_excel"),
+    path('drivers-excel/',login_required(views.DriversExcelView.as_view()),name="drivers_excel"),
     path('drivers/',login_required(views.DriversView.as_view()),name="drivers"),
     path('driver/<int:pk>/',login_required(views.DriverView.as_view()),name="driver"),
     path('add-driver/',login_required(apis.AddDriverApi.as_view()),name="add_driver"),
-
-    path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
  
 
     path('maintenance-invoice/<int:pk>/',login_required(views.MaintenanceInvoiceView.as_view()),name="maintenanceinvoice"),
     path('maintenance-invoices/',login_required(views.MaintenanceInvoicesView.as_view()),name="maintenanceinvoices"),
+    path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
+    path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
 
     
-    path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
    
     path('new-maintenance/',login_required(views.NewMaintenanceView.as_view()),name="new_maintenance"),
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
-    path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
-    path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
 
 
 
@@ -59,30 +59,25 @@ urlpatterns = [
     
     path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
     path('add-karkerd/',login_required(apis.AddKarkerdApi.as_view()),name="add_karkerd"),
-
-    path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oilingmaintenance"),
-
+ 
     path('service-mans/',login_required(views.ServiceMansView.as_view()),name="service_mans"),
     path('service-man/<int:pk>/',login_required(views.ServiceManView.as_view()),name="serviceman"),
     path('add-service-man/',login_required(apis.AddServiceManApi.as_view()),name="add_service_man"),
 
 
-    path('vehicle-events/',login_required(views.VehicleEventsView.as_view()),name="vehicle_events"),
-    path('karkerd/<int:pk>/',login_required(views.ServiceManView.as_view()),name="karkerd"),
+    path('vehicle-events/',login_required(views.VehicleEventsView.as_view()),name="vehicle_events"), 
     path('tavaghof/<int:pk>/',login_required(views.ServiceManView.as_view()),name="tavaghof"),
 
 
-    path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
-    path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
 
+    path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
+    path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
     path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
     path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),
     path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
 
 
    
-    path('import-drivers-from-excel/',login_required(apis.ImportDriverFromExcelApi.as_view()),name="import_drivers_from_excel"),
-    path('drivers-excel/',login_required(views.DriversExcelView.as_view()),name="drivers_excel"),
 
 
    
