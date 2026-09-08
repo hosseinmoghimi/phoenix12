@@ -190,7 +190,7 @@ class GetReportForm(forms.Form):
     from_shift_date=forms.CharField(required=False, max_length=50) 
     to_shift_date=forms.CharField(required=False, max_length=50) 
     shift=forms.CharField(required=False, max_length=50) 
-
+    search_for=forms.CharField(max_length=100, required=False)
      
 class VehiclesExcelForm(forms.Form):
     pass

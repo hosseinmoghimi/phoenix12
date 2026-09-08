@@ -31,6 +31,29 @@
         <div class="table-responsive" v-if="tavaghofs.length>0">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
+
+                {% if not work_shift %}
+                <th>
+                 
+                    شیفت
+                 
+
+                </th>
+
+                
+                <th>
+           
+                  دستگاه
+
+                </th>
+
+                
+                <th>
+                   راننده
+                   
+                </th>
+              {% endif %}
+
               <th>علت</th>
               <th>مدت زمان به ساعت</th>
               <th>ساعت دستگاه</th>
@@ -38,6 +61,35 @@
             </thead>
             <tbody>
               <tr v-for="tavaghof in tavaghofs">
+
+                  {% if not work_shift %}
+                <td>
+                 
+                    <span v-text="tavaghof.persian_shift_date"></span>
+                    <div>
+
+                      <span v-text="tavaghof.shift"></span>
+                    </div>
+                 
+
+                </td>
+
+                
+                <td>
+           
+                    <span v-text="tavaghof.vehicle_title"></span>
+                 
+
+                </td>
+
+                
+                <td>
+                    <span v-text="tavaghof.driver_full_name"></span>
+                   
+                   
+                </td>
+              {% endif %}
+
                 <td>
                  <div class="media">
                       <img src="{% static 'transport/img/stop.png' %}" width="32" class="rounded-circle" alt="">

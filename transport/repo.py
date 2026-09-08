@@ -25,7 +25,7 @@ class VehicleStatusRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
         if "parent_id" in kwargs:
@@ -295,9 +295,9 @@ class WorkShiftRepo():
 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            # objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
          
         if "shift" in kwargs and kwargs["shift"]:
             objects=objects.filter(shift=kwargs["shift"])
@@ -521,9 +521,9 @@ class OilServiceRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(oil_type__contains=search_for) | Q(oil_action__contains=search_for)  )
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
@@ -606,9 +606,9 @@ class FilterServiceRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(filter_type__contains=search_for) | Q(filter_action__contains=search_for)  )
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
@@ -693,9 +693,9 @@ class ProductRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(name__contains=search_for))  
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(work_shift__vehicle_id=vehicle_id)  
@@ -780,9 +780,9 @@ class VehicleRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(title__contains=search_for) | Q(vehicle_code=search_for)  )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -973,9 +973,9 @@ class DriverRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(full_name__contains=search_for) | Q(driver_code=search_for)  )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -1114,11 +1114,10 @@ class MaintenanceRepo():
                 self.my_accounts=self.objects 
 
     def list(self,*args, **kwargs):
-        leolog(MaintenanceRepo_kwargs=kwargs)
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            # objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -1155,7 +1154,6 @@ class MaintenanceRepo():
             objects=objects.filter(event_datetime__lte=kwargs["to_shift_date"]) 
 
 
-        leolog(MaintenanceRepo_objects=objects.all())
 
         return objects.all()
         
@@ -1166,9 +1164,6 @@ class MaintenanceRepo():
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
-        
-    
-       
 
     def add_invoice(self,*args,**kwargs):
         result,message,invoice=FAILED,"",None 
@@ -1231,7 +1226,6 @@ class MaintenanceRepo():
                 message='با موفقیت اضافه شد.'
 
         return result,message,maintenance_invoice
-
      
     def add_invoice_to_maintenance(self,*args, **kwargs):   
         result,message,invoice=FAILED,'',None
@@ -1310,8 +1304,6 @@ class MaintenanceRepo():
         return result,message,maintenance
 
 
-
-
 class MaintenanceInvoiceRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -1325,9 +1317,9 @@ class MaintenanceInvoiceRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            # objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -1420,7 +1412,6 @@ class MaintenanceInvoiceRepo():
          
         (result,message,maintenance_invoice)=maintenance_invoice.save()
         return result,message,maintenance_invoice
-
  
  
 class ServiceManRepo():
@@ -1436,9 +1427,9 @@ class ServiceManRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+            objects=objects.filter(Q(full_name__contains=search_for) )
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -1495,9 +1486,9 @@ class VehicleEventRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+            # objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
         if "vehicle_id" in kwargs:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
@@ -1540,10 +1531,11 @@ class TavaghofRepo():
                 self.objects=Tavaghof.objects
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
+        leolog(TavaghofRepo=kwargs)
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+            objects=objects.filter(Q(cause__contains=search_for))
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
@@ -1594,9 +1586,9 @@ class ServiceRepo():
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
+            # objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
         if "driver_id" in kwargs and kwargs['driver_id'] and kwargs['driver_id']>0:
                     driver_id=kwargs["driver_id"]
                     objects=objects.filter(driver_id=driver_id) 
@@ -1741,9 +1733,9 @@ class AnbarProductRepo():
                 
     def list(self,*args, **kwargs):
         objects=self.objects
-        if "search_for" in kwargs:
+        if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(person_account__person__full_name__contains=search_for))
+            # objects=objects.filter(Q(person_account__person__full_name__contains=search_for))
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  

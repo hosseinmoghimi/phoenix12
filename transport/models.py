@@ -416,7 +416,7 @@ class OilService(models.Model,LinkHelper,WorkShiftDetailHelper):
         return self.work_shift.vehicle
 
 
-class FilterService(models.Model,LinkHelper):
+class FilterService(models.Model,LinkHelper,WorkShiftDetailHelper):
     class_name='filterservice'
     app_name=APP_NAME
     work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
@@ -450,7 +450,7 @@ class FilterService(models.Model,LinkHelper):
         return self.work_shift.vehicle
 
 
-class Tavaghof(models.Model,LinkHelper):
+class Tavaghof(models.Model,LinkHelper,WorkShiftDetailHelper):
     class_name="tavaghof"
     app_name=APP_NAME
     work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)
@@ -480,7 +480,7 @@ class Tavaghof(models.Model,LinkHelper):
          return (result,message,tavaghof)
 
 
-class Product(models.Model,LinkHelper):
+class Product(models.Model,LinkHelper,WorkShiftDetailHelper):
     class_name="product"
     app_name=APP_NAME
     work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)

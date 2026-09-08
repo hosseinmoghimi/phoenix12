@@ -1328,6 +1328,28 @@ class OilServicesView(View):
         return render(request,TEMPLATE_ROOT+"oil-services.html",context) 
 
 
+class TavaghofsView(View):
+    def get(self,request,*args, **kwargs):
+        
+ 
+        context=getContext(request=request)
+
+        from .serializers import TavaghofSerializer2
+
+  
+        tavaghofs =TavaghofRepo(request=request).list()
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s=json.dumps(TavaghofSerializer2(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+
+
+ 
+        context['expand_tavaghofs']=True 
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"tavaghofs.html",context) 
+
+
 class NewAnbarProductView(View):
     def get(self,request,*args, **kwargs):
 

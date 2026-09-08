@@ -192,7 +192,7 @@ class GetReportApiw(APIView):
             filter_services_s= (FilterServiceSerializer(filter_services,many=True).data)
             context['filter_services']=filter_services_s
  
-            tavaghofs_origin =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids)
+            tavaghofs_origin =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids,**cd)
             tavaghofs=[] 
             for tav_o in tavaghofs_origin:
                 find=False
