@@ -856,6 +856,22 @@ class MaintenanceView(View):
 
         return render(request,TEMPLATE_ROOT+"maintenance.html",context) 
 
+
+class NewMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        maintenances =[]
+        context['maintenances']=maintenances
+        maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
+        context['maintenances_s']=maintenances_s
+ 
+        context['expand_new_maintenance']=True
+        context[WIDE_LAYOUT]=False
+        if request.user.has_perm(APP_NAME+'.add_maintenance'):
+            context.update(AddMaintenanceContext(request=request))
+        return render(request,TEMPLATE_ROOT+"new-maintenance.html",context) 
+    
+     
     
 class OilingMaintenanceDetailsView(View):
     def get(self,request,*args, **kwargs):

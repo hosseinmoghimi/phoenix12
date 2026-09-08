@@ -32,9 +32,7 @@ urlpatterns = [
     path('add-driver/',login_required(apis.AddDriverApi.as_view()),name="add_driver"),
 
     path('add-oiling-maintenance/',login_required(apis.AddOilingMaintenanceApi.as_view()),name="add_oiling_maintenance"),
-    path('new-oiling-maintenance/',login_required(views.NewOilingMaintenanceView.as_view()),name="new_oiling_maintenance"),
-
-    path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
+ 
 
     path('maintenance-invoice/<int:pk>/',login_required(views.MaintenanceInvoiceView.as_view()),name="maintenanceinvoice"),
     path('maintenance-invoices/',login_required(views.MaintenanceInvoicesView.as_view()),name="maintenanceinvoices"),
@@ -42,12 +40,14 @@ urlpatterns = [
     
     path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
    
+    path('new-maintenance/',login_required(views.NewMaintenanceView.as_view()),name="new_maintenance"),
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
-    path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
-
-
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
+    path('oiling_maintenance_details_excel/',login_required(views.OilingMaintenanceDetailsExcelView.as_view()),name="oiling_maintenance_details_excel"),
+    path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
+
+
 
     path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),
     path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),

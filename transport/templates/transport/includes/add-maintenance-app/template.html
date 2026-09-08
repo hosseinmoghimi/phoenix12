@@ -14,9 +14,11 @@
       </h5>
     </div>
 
+
+  
     <div
       id="collapse-add-maintenance"
-      class="collapse"
+      class="collapse {% if expand_new_maintenance %}show {% endif %} "
       aria-labelledby="heading-add-maintenance"
       data-parent="#accordion-add-maintenance"
     >
@@ -63,6 +65,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">وسیله نقلیه</label>
+              <input type="text" v-model="vehicle_code" class="form-control">
               <select v-model="vehicle_code" class="form-control">
                 {% for vehicle in vehicles %}
                 <option value="{{vehicle.vehicle_code}}">{{vehicle}}</option>
