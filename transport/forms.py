@@ -33,6 +33,10 @@ class AddInvoiceToMaintenanceForm(forms.Form):
 class AnbarProductsExcelForm(forms.Form):
     anbar_products_ids=forms.CharField(required=False,max_length=50000)
  
+class AddVehicleStatusImageForm(forms.Form):
+    vehicle_status_id=forms.IntegerField(required=True)
+    title=forms.CharField(max_length=100, required=True)
+ 
 class AddInvoiceForm(AddInvoiceForm2):
     maintenance_id=forms.IntegerField(required=True)
     bedehkar_id=forms.IntegerField(required=False)

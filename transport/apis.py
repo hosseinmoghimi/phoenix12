@@ -514,6 +514,36 @@ class AddDriverApi(APIView):
         return JsonResponse(context)
   
  
+
+
+class AddVehicleStatusImageApi(APIView):
+    def post(self, request, *args, **kwargs):
+        log = 1
+        context = {}
+        context['result'] = FAILED
+        if request.method == 'POST':
+            log += 1 
+            add_page_download_form = AddVehicleStatusImageForm(request.POST, request.FILES)
+            if add_page_download_form.is_valid():
+                log += 1
+                cd=add_page_download_form.cleaned_data
+                vehicle_status_id = cd['vehicle_status_id']
+                title = cd['title']
+                image = request.FILES['image']
+                
+                result,message,image = VehicleStatusRepo(request=request).add_image(
+                    vehicle_status_id=vehicle_status_id,
+                    title=title,
+                    image=image,
+                    )
+                if result==SUCCEED and image is not None:
+                    from attachments.apis import ImageSerializer
+                    context['image'] = ImageSerializer(image).data
+                    context['result'] = SUCCEED
+        context['log'] = log
+        return JsonResponse(context)
+
+    
 class AddVehicleStatusApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

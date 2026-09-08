@@ -256,6 +256,7 @@ class VehicleStatus(models.Model,LinkHelper):
     pakat=models.CharField(_("pakat"),null=True,blank=True, max_length=500)
     compress=models.CharField(_("compress"),null=True,blank=True, max_length=500)
     description=HTMLField(_("توضیحات کامل"),null=True,blank=True, max_length=5000)
+    images=models.ManyToManyField("attachments.image", verbose_name=_("images"),blank=True)
     class_name="vehiclestatus"
     app_name=APP_NAME
     class Meta:
@@ -267,6 +268,7 @@ class VehicleStatus(models.Model,LinkHelper):
 
     def persian_status_datetime(self):
         return PersianCalendar().from_gregorian(self.status_datetime)
+
     def short_desc(self):
         from utility.num import separate
         return f"""<span class="mr-2">کیلومتر</span><strong class="mx-2">{separate(self.kilometer)}</strong><span class="mr-2">ساعت</span><strong class="mx-1">{separate(self.hour)} </strong>"""

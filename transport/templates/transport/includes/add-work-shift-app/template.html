@@ -46,12 +46,12 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="">محل فعالیت</label>
-            <!-- <select v-model="location" type="text" class="form-control">
-              {% for location in locations %}
-              <option value="{{location}}">{{location}}a</option>
-              {% endfor %}
-            </select> -->
             <input type="text" class="form-control" v-model="location" />
+            <select v-model="location" type="text" class="form-control">
+              {% for location in locations %}
+              <option value="{{location}}">{{location}}</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
         <div class="col-md-12">
@@ -324,7 +324,7 @@
           <div v-if="!confirm_clear_oils">
             <button class="btn btn-success" @click="add_oil()">
               <i class="fa fa-plus mx-2"></i>
-              اضافه کن
+              افزودن سرویس روغن
             </button>
           </div>
 
@@ -506,7 +506,7 @@
           <div v-if="!confirm_clear_filters">
             <button class="btn btn-success" @click="add_filter()">
               <i class="fa fa-plus mx-2"></i>
-              اضافه کن
+              افزودن سرویس فیلتر
             </button>
           </div>
 
@@ -650,7 +650,7 @@
           <div v-if="!confirm_clear_tavaghofs">
             <button class="btn btn-success" @click="add_tavaghof()">
               <i class="fa fa-plus mx-2"></i>
-              اضافه کن
+              افزودن توقف
             </button>
           </div>
 
@@ -825,7 +825,7 @@
           <div v-if="!confirm_clear_products">
             <button class="btn btn-success" @click="add_product()">
               <i class="fa fa-plus mx-2"></i>
-              اضافه کن
+              افزودن قطعه مصرفی
             </button>
           </div>
 
@@ -921,12 +921,16 @@
   <div class="card">
     <div class="card-body"> 
       <div>
-        <button class="btn btn-success" @click="add_work_shift">
+        <button class="btn btn-success py-4" @click="add_work_shift">
           <i class="fa fa-plus"></i>
           افزودن
+          و ثبت نهایی اطلاعات شیفت کاری
         </button>
       </div>
-      {% include "utility/includes/message.html" %}
+      <div class="my-3">
+
+        {% include "utility/includes/message.html" %}
+      </div>
     </div>
   </div>
 </div>

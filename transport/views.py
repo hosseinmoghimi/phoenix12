@@ -745,9 +745,20 @@ class VehicleStatusView(View):
             mv=MessageView()
             return mv.get(request=request,title="پیدا نشد")
 
-        
+
+
+
         vehicle=vehicle_status.vehicle
         context.update(PageContext(request=request,page=vehicle))
+
+
+        images=vehicle_status.images.all()
+        leolog(images=images)
+        from attachments.serializer import ImageSerializer
+        images_s=json.dumps(ImageSerializer(images,many=True).data)
+        context['images']=images
+        context['images_s']=images_s
+
         context['vehicle']=vehicle
         context['vehicle_status']=vehicle_status
         vehicle_status_s=json.dumps(VehicleStatusSerializer(vehicle_status,many=False).data)
@@ -1173,6 +1184,16 @@ class NewWorkShiftView(View):
         context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
 
 
+        locations=[
+            'سنگ شکن',
+            'ققنوس',
+            'محدوده یک',
+            'محدوده دو',
+            'محدوده سه',
+            'محدوده چهار',
+            'محدوده پنج', 
+        ]
+        context['locations']=locations
 
 
         work_shifts =[]

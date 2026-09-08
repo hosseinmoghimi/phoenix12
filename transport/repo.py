@@ -44,6 +44,36 @@ class VehicleStatusRepo():
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         
+    def add_image(self,*args, **kwargs):
+            leolog(kwargs=kwargs)
+            result,message,image=FAILED,"",None
+            title=''
+            if not self.request.user.has_perm(APP_NAME+'.add_image'):
+                message='دسترسی غیر مجاز'
+                return FAILED,message,None
+            me_person=PersonRepo(request=self.request).me
+            
+            vehicle_status=self.vehicle_status(pk=kwargs['vehicle_status_id'])
+            if me_person is None:
+                return None
+            if vehicle_status is None:
+                return None
+            if 'title' in kwargs:
+                title=kwargs['title']
+    
+            if 'image' in kwargs:
+                image_text=kwargs['image']
+            if image_text is None:
+                return result,message,image
+            from attachments.models import Image
+            image=Image(creator_id=me_person.id,image_main_origin=image_text,title=title)
+            image.save()
+            if vehicle_status is not None and image is not None:
+                vehicle_status.images.add(image.id)
+            result=SUCCEED
+            message='تصویر با موفقیت اضافه شد.'
+            return result,message,image
+        
         
     def add_vehicle_status(self,*args,**kwargs):
         result,message,vehicle_status=FAILED,"",None
@@ -367,16 +397,21 @@ class WorkShiftRepo():
             vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
             if vehicle is not None:
                 work_shift.vehicle=vehicle
+            else:
+                return (FAILED,'دستگاه به درستی انتخاب نشده است.',None)
+        driver=None    
         if 'driver_code' in kwargs and kwargs['driver_code']:
-            driver_code=kwargs["driver_code"]
-            driver=Driver.objects.filter(driver_code=driver_code).first()
-            if driver is not None:
-                work_shift.driver=driver
+            driver=Driver.objects.filter(driver_code=kwargs["driver_code"]).first()
+         
         if 'driver_id' in kwargs and kwargs['driver_id']:
             driver=Driver.objects.filter(pk=kwargs['driver_id']).first()
-            if driver is not None:
-                work_shift.driver=driver
- 
+
+
+        if driver is not None:
+            work_shift.driver=driver
+        else:
+            return (FAILED,'راننده به درستی انتخاب نشده است.',None)
+
 
         if 'location' in kwargs:
             work_shift.location=kwargs["location"]
@@ -414,8 +449,7 @@ class WorkShiftRepo():
         if 'gasoil_liter' in kwargs:
             work_shift.gasoil_liter=kwargs["gasoil_liter"]
           
-         
-
+          
         
         (result,message,work_shift)=work_shift.save()
 

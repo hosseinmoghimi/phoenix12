@@ -265,7 +265,7 @@ class Link(Icon,LinkHelper):
   
 
 class Image(models.Model,LinkHelper,DateTimeHelper):
-    page=models.ForeignKey("core.page", verbose_name=_("page"), on_delete=models.CASCADE)
+    page=models.ForeignKey("core.page", verbose_name=_("page"),null=True,blank=True, on_delete=models.CASCADE)
     app_name=APP_NAME
     class_name='image'
 

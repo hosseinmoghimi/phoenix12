@@ -28,7 +28,7 @@
       data-parent="#accordion-oil-services"
     >
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive" v-if="oil_services.length>0">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>نوع روغن</th>
@@ -129,6 +129,12 @@
               
             </tfoot>
           </table>
+        </div>
+        <div v-else>
+          <p class="text-center">
+
+            لیست خالی می باشد.
+          </p>
         </div>
       </div>
     </div>

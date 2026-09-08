@@ -72,6 +72,7 @@ urlpatterns = [
 
     path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
     path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
+    path('add-vehicle-status-image/',login_required(apis.AddVehicleStatusImageApi.as_view()),name="add_vehicle_status_image"),
     path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
     path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),
     path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
