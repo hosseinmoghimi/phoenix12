@@ -1531,7 +1531,6 @@ class TavaghofRepo():
                 self.objects=Tavaghof.objects
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
-        leolog(TavaghofRepo=kwargs)
         objects=self.objects
         if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
