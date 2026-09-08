@@ -48,6 +48,7 @@ urlpatterns = [
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
 
+    path('oil-services/',login_required(views.OilServicesView.as_view()),name="oil_services"),
 
     path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),
     path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),

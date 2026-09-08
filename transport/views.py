@@ -117,7 +117,7 @@ class ReportView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         context['title']="گزارشگیری دستگاه ها"
-        
+
         vehicles =VehicleRepo(request=request).list(*args, **kwargs)
         context['vehicles']=vehicles
         vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
@@ -375,9 +375,13 @@ class WorkShiftsExcelView(View):
         lines=[]
         for i,oil_service in enumerate(oil_services,start=1):
             line={
-                'row':i,  
+                'row':i, 
                 'shift_date':PersianCalendar().from_gregorian(oil_service.work_shift.shift_date)[:10],      
-                'shift':oil_service.work_shift.shift,      
+                'shift':oil_service.work_shift.shift,  
+                'vehicle':oil_service.work_shift.vehicle.title,      
+                'driver':oil_service.work_shift.driver.full_name,      
+                'location':oil_service.work_shift.location,  
+
                 'oil_type':oil_service.oil_type,    
                 'oil_action':oil_service.oil_action,  
                 'oil_liter':oil_service.oil_liter,   
@@ -389,6 +393,10 @@ class WorkShiftsExcelView(View):
         headers=['ردیف', 
                  'تاریخ',
                  'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
                  'نوع روغن',
                  'خدمات',
                  'لیتر روغن',
@@ -422,7 +430,11 @@ class WorkShiftsExcelView(View):
             line={
                 'row':i,  
                 'shift_date':PersianCalendar().from_gregorian(filter_service.work_shift.shift_date)[:10],      
-                'shift':filter_service.work_shift.shift,      
+                'shift':filter_service.work_shift.shift, 
+                'vehicle':filter_service.work_shift.vehicle.title,      
+                'driver':filter_service.work_shift.driver.full_name,      
+                'location':filter_service.work_shift.location,  
+
                 'filter_type':filter_service.filter_type,    
                 'filter_action':filter_service.filter_action,  
                 'count':filter_service.count,   
@@ -433,6 +445,10 @@ class WorkShiftsExcelView(View):
         headers=['ردیف', 
                  'تاریخ',
                  'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
                  'نوع فیلتر',
                  'خدمات',
                  'تعداد',
@@ -467,7 +483,12 @@ class WorkShiftsExcelView(View):
             line={
                 'row':i,  
                 'shift_date':PersianCalendar().from_gregorian(tavaghof.work_shift.shift_date)[:10],      
-                'shift':tavaghof.work_shift.shift,      
+                'shift':tavaghof.work_shift.shift,    
+                
+                'vehicle':tavaghof.work_shift.vehicle.title,      
+                'driver':tavaghof.work_shift.driver.full_name,      
+                'location':tavaghof.work_shift.location,  
+
                 'cause':tavaghof.cause,    
                 'duration':tavaghof.duration,  
                 'vehicle_hour':tavaghof.vehicle_hour,   
@@ -477,6 +498,10 @@ class WorkShiftsExcelView(View):
         headers=['ردیف', 
                  'تاریخ',
                  'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
                  'علت توقف',
                  'مدت توقف',
                  'ساعت دستگاه',
@@ -506,7 +531,11 @@ class WorkShiftsExcelView(View):
             line={
                 'row':i,  
                 'shift_date':PersianCalendar().from_gregorian(product.work_shift.shift_date)[:10],      
-                'shift':product.work_shift.shift,      
+                'shift':product.work_shift.shift,  
+                'vehicle':product.work_shift.vehicle.title,      
+                'driver':product.work_shift.driver.full_name,      
+                'location':product.work_shift.location,  
+
                 'product':product.name,    
                 'quantity':product.quantity,  
                 'unit_price':(product.unit_price),  
@@ -519,6 +548,10 @@ class WorkShiftsExcelView(View):
         headers=['ردیف', 
                  'تاریخ',
                  'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+
                  'قطعه',
                  'تعداد',
                  'قیمت واحد',
@@ -1270,6 +1303,29 @@ class WorkShiftsView(View):
         context['expand_work_shifts']=True
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
+
+
+
+class OilServicesView(View):
+    def get(self,request,*args, **kwargs):
+        
+ 
+        context=getContext(request=request)
+
+        from .serializers import OilServiceSerializer2
+
+  
+        oil_services =OilServiceRepo(request=request).list()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer2(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+ 
+        context['expand_oil_services']=True 
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"oil-services.html",context) 
 
 
 class NewAnbarProductView(View):

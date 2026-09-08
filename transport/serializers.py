@@ -97,6 +97,11 @@ class OilServiceSerializer(serializers.ModelSerializer):
         fields=['id','vehicle_hour','oil_action','oil_liter','oil_type','description','cost', 'get_edit_url','get_delete_url']
 
 
+class OilServiceSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model=OilService
+        fields=['id','driver_full_name','vehicle_title','persian_shift_date','shift','vehicle_hour','oil_action','oil_liter','oil_type','description','cost', 'get_edit_url','get_delete_url']
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product

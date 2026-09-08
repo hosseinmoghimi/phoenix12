@@ -362,8 +362,27 @@ class WorkShift(models.Model,LinkHelper):
     def persian_shift_date(self):
         return PersianCalendar().from_gregorian(self.shift_date)[0:10]
 
+class WorkShiftDetailHelper: 
+    @property
+    def persian_shift_date(self):
+        return PersianCalendar().from_gregorian(self.work_shift.shift_date)
 
-class OilService(models.Model,LinkHelper):
+    
+    @property
+    def shift(self):
+        return self.work_shift.shift
+
+    
+    @property
+    def driver_full_name(self):
+        return self.work_shift.driver.full_name
+
+    
+    @property
+    def vehicle_title(self):
+        return self.work_shift.vehicle.title
+    
+class OilService(models.Model,LinkHelper,WorkShiftDetailHelper):
     class_name="oilservice"
     app_name=APP_NAME
     work_shift=models.ForeignKey("workshift", verbose_name=_("workshift"), on_delete=models.PROTECT)

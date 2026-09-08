@@ -31,6 +31,19 @@
         <div class="table-responsive" v-if="oil_services.length>0">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
+              
+              {% if not work_shift %}
+                <th>
+                  شیفت
+                </th>
+                <th>
+                  دستگاه
+                </th>
+                <th>
+                  راننده
+                </th>
+              {% endif %}
+                
               <th>نوع روغن</th>
               <th>سرویس روغن</th>
               <th>لیتراژ روغن</th>
@@ -41,6 +54,34 @@
             </thead>
             <tbody>
               <tr v-for="oil_service in oil_services">
+                
+              {% if not work_shift %}
+                <td>
+                 
+                    <span v-text="oil_service.persian_shift_date"></span>
+                    <div>
+
+                      <span v-text="oil_service.shift"></span>
+                    </div>
+                 
+
+                </td>
+
+                
+                <td>
+           
+                    <span v-text="oil_service.vehicle_title"></span>
+                 
+
+                </td>
+
+                
+                <td>
+                    <span v-text="oil_service.driver_full_name"></span>
+                   
+                   
+                </td>
+              {% endif %}
                 <td>
                  <div class="media">
                     <a :href="oil_service.get_absolute_url">
