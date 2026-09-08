@@ -2,7 +2,7 @@ from utility.currency import to_price
 from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,DriverSerializer
+from .serializers import MaintenanceInvoiceSerializer,VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,DriverSerializer
 from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,DriverRepo,AnbarProductRepo,ServiceRepo
 from .forms import *
 from .apps import APP_NAME
@@ -117,80 +117,59 @@ class ReportView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         context['title']="گزارشگیری دستگاه ها"
+        
         vehicles =VehicleRepo(request=request).list(*args, **kwargs)
         context['vehicles']=vehicles
         vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
         context['vehicles_s']=vehicles_s
 
-
-
+        maintenance_invoices =[]
+        context['maintenance_invoices']=maintenance_invoices
+        maintenance_invoices_s=json.dumps(MaintenanceInvoiceSerializer(maintenance_invoices,many=True).data)
+        context['maintenance_invoices_s']=maintenance_invoices_s
+ 
+        maintenances =[]
+        context['maintenances']=maintenances
+        maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
+        context['maintenances_s']=maintenances_s
         
         work_shifts =[]
         context['work_shifts']=work_shifts
         work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
         context['work_shifts_s']=work_shifts_s
-
-
-
         
         anbar_products =[]
         context['anbar_products']=anbar_products
         anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
         context['anbar_products_s']=anbar_products_s
 
-
         services =[]
         context['services']=services
         services_s=json.dumps(ServiceSerializer(services,many=True).data)
         context['services_s']=services_s
-
-
-
-
-
 
         oil_services =[]
         context['oil_services']=oil_services
         oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
         context['oil_services_s']=oil_services_s
 
-
-
-
-
         filter_services =[]
         context['filter_services']=filter_services
         filter_services_s= json.dumps(FilterServiceSerializer(filter_services,many=True).data)
         context['filter_services_s']=filter_services_s
-
-
-
-
 
         tavaghofs =[]
         context['tavaghofs']=tavaghofs
         tavaghofs_s= json.dumps(TavaghofSerializer(tavaghofs,many=True).data)
         context['tavaghofs_s']=tavaghofs_s
 
-
-
-
-
         products =[]
         context['products']=products
         products_s= json.dumps(ProductSerializer(products,many=True).data)
         context['products_s']=products_s
 
-
-
         context[WIDE_LAYOUT]=True
-        # if request.user.has_perm(APP_NAME+'.add_vehicle'):
-        #     context['add_vehicle_form']=AddVehicleForm()
-        #     from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
-        #     context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
-        #     context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
-        #     context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
-        #     context['drivers']=DriverRepo(request=request).list()
+        
         return render(request,TEMPLATE_ROOT+"report.html",context) 
 
     

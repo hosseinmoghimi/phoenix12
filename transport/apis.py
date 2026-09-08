@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import VehicleStatusRepo,VehicleRepo,DriverRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo
-from .serializers import VehicleStatusSerializer,DriverSerializer,ServiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
+from .repo import VehicleStatusRepo,VehicleRepo,DriverRepo,ServiceRepo,ServiceManRepo,MaintenanceRepo,WorkShiftRepo,AnbarProductRepo,MaintenanceInvoiceRepo
+from .serializers import VehicleStatusSerializer,DriverSerializer,ServiceSerializer,MaintenanceInvoiceSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,WorkShiftSerializer,AnbarProductSerializer
 from django.http import JsonResponse
 from .forms import *
 from accounting.serializers import InvoiceSerializer
@@ -152,15 +152,18 @@ class GetReportApiw(APIView):
             work_shifts=WorkShiftRepo(request=request).list(**cd)
             context['work_shifts']=WorkShiftSerializer(work_shifts,many=True).data
 
+            maintenances=MaintenanceRepo(request=request).list(**cd)
+            context['maintenances']=MaintenanceSerializer(maintenances,many=True).data
+            
+            maintenance_invoices=MaintenanceInvoiceRepo(request=request).list(maintenances=maintenances)
+            context['maintenance_invoices']=MaintenanceInvoiceSerializer(maintenance_invoices,many=True).data
             
                         
             anbar_products=AnbarProductRepo(request=request).list(**cd)
             context['anbar_products']=AnbarProductSerializer(anbar_products,many=True).data
 
-
             services=ServiceRepo(request=request).list(**cd)
             context['services']=ServiceSerializer(services,many=True).data
-
 
             from .repo import OilServiceRepo,FilterServiceRepo,TavaghofRepo,ProductRepo
             from .serializers import OilServiceSerializer,FilterServiceSerializer,TavaghofSerializer,ProductSerializer
@@ -169,8 +172,6 @@ class GetReportApiw(APIView):
             work_shift_ids=[]
             for work_shift in work_shifts:
                 work_shift_ids.append(work_shift.id)
-
-  
 
             oil_services_origin =OilServiceRepo(request=request).list(work_shift_id__in=work_shift_ids)
             oil_services=[] 
@@ -186,17 +187,10 @@ class GetReportApiw(APIView):
             oil_services_s=(OilServiceSerializer(oil_services,many=True).data)
             context['oil_services']=oil_services_s
 
-
-
-
-
             filter_services =FilterServiceRepo(request=request).list(work_shift_id__in=work_shift_ids)
             context['filter_services']=filter_services
             filter_services_s= (FilterServiceSerializer(filter_services,many=True).data)
             context['filter_services']=filter_services_s
-
-
-
  
             tavaghofs_origin =TavaghofRepo(request=request).list(work_shift_id__in=work_shift_ids)
             tavaghofs=[] 
@@ -213,16 +207,10 @@ class GetReportApiw(APIView):
             tavaghofs_s= (TavaghofSerializer(tavaghofs,many=True).data)
             context['tavaghofs']=tavaghofs_s
 
-
-
-
-
             products =ProductRepo(request=request).list(work_shift_id__in=work_shift_ids)
             context['products']=products
             products_s= (ProductSerializer(products,many=True).data)
             context['products']=products_s
-
-
 
             message+="گزارش گیری انجام شد."
 
@@ -413,8 +401,7 @@ class AddInvoiceApi(APIView):
             log=333
             cd=add_maintenance_invoice_form.cleaned_data
             result,message,invoice=MaintenanceRepo(request=request).add_invoice(**cd)
-            if invoice is not None:
-                from .serializers import MaintenanceInvoiceSerializer
+            if invoice is not None: 
                 context['invoice']=MaintenanceInvoiceSerializer(invoice).data
         context['message']=message
         context['result']=result

@@ -45,7 +45,6 @@ class VehicleStatusRepo():
             return self.objects.filter(pk=kwargs['id']).first() 
         
     def add_image(self,*args, **kwargs):
-            leolog(kwargs=kwargs)
             result,message,image=FAILED,"",None
             title=''
             if not self.request.user.has_perm(APP_NAME+'.add_image'):
@@ -1112,7 +1111,9 @@ class MaintenanceRepo():
             if request.user.has_perm(APP_NAME+".view_maintenance"):
                 self.objects=Maintenance.objects
                 self.my_accounts=self.objects 
+
     def list(self,*args, **kwargs):
+        leolog(MaintenanceRepo_kwargs=kwargs)
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
@@ -1120,12 +1121,41 @@ class MaintenanceRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        if "vehicle_id" in kwargs:
-            vehicle_id=kwargs["vehicle_id"]
-            objects=objects.filter(vehicle_id=vehicle_id)  
-        if "service_man_id" in kwargs:
+        if "vehicle_id" in kwargs and kwargs['vehicle_id'] and kwargs['vehicle_id']>0:
+                    vehicle_id=kwargs["vehicle_id"]
+                    objects=objects.filter(vehicle_id=vehicle_id)  
+        if "vehicle_code" in kwargs and kwargs['vehicle_code']:
+            vehicle_code=kwargs["vehicle_code"]
+            objects=objects.filter(vehicle__vehicle_code=vehicle_code)  
+        
+        if "service_man_id" in kwargs and kwargs["service_man_id"]:
             service_man_id=kwargs["service_man_id"]
             objects=objects.filter(service_man_id=service_man_id)
+
+            
+        if "shift" in kwargs and kwargs['shift']: 
+            objects=objects.filter(shift=kwargs["shift"]) 
+
+        if "from_shift_date" in kwargs and kwargs['from_shift_date']:
+            year=kwargs['from_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['from_shift_date']=PersianCalendar().to_gregorian(kwargs["from_shift_date"])
+            
+            objects=objects.filter(event_datetime__gte=kwargs["from_shift_date"]) 
+
+        if "to_shift_date" in kwargs and kwargs['to_shift_date']:
+            year=kwargs['to_shift_date'][:2]
+            if year=="13" or year=="14":
+                kwargs['to_shift_date']=PersianCalendar().to_gregorian(kwargs["to_shift_date"])
+
+            import datetime 
+            delta=datetime.timedelta(hours=23,minutes=59,seconds=59)
+            kwargs['to_shift_date']=kwargs['to_shift_date']+delta                        
+            objects=objects.filter(event_datetime__lte=kwargs["to_shift_date"]) 
+
+
+        leolog(MaintenanceRepo_objects=objects.all())
+
         return objects.all()
         
     def maintenance(self,*args, **kwargs):
@@ -1306,6 +1336,14 @@ class MaintenanceInvoiceRepo():
         if "service_man_id" in kwargs:
             service_man_id=kwargs["service_man_id"]
             objects=objects.filter(service_man_id=service_man_id)
+        if "maintenances" in kwargs:
+            maintenances=kwargs["maintenances"]
+            invoice_ids=[]
+            for maintenance in maintenances:
+                for invoice in maintenance.invoices.all():
+                    invoice_ids.append(invoice.id)
+            objects=objects.filter(id__in=invoice_ids)
+
         return objects.all()
         
     def maintenance_invoice(self,*args, **kwargs):

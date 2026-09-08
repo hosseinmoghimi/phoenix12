@@ -73,7 +73,10 @@
         <div class="col-md-12">
           <button class="btn btn-info" @click="get_report()">گزارش بگیر</button>
         </div>
-        {% include "utility/includes/message.html" %}
+        <div class="my-3">
+
+          {% include "utility/includes/message.html" %}
+        </div>
       </div>
     </div>
   </div>
@@ -100,6 +103,12 @@
   <div class="col-md-12">
     {% include "transport/includes/anbar-products-app/template.html" %}
   </div>
+   <div class="col-md-12">
+          {% include 'transport/includes/maintenances-app/template.html' %}
+    </div>
+   <div class="col-md-12">
+          {% include 'transport/includes/maintenance-invoices-app/template.html' %}
+    </div>
 </div>
 {% endblock content %} {% block script %}
 <script>
@@ -173,6 +182,17 @@
             if (typeof products_app != 'undefined') {
               products_app.products = data.products
             }
+
+            
+            if (typeof maintenance_invoices_app != 'undefined') {
+              maintenance_invoices_app.maintenance_invoices = data.maintenance_invoices
+            }
+
+            if (typeof maintenances_app != 'undefined') {
+              maintenances_app.maintenances = data.maintenances
+            }
+
+             
           }
 
 
@@ -196,5 +216,8 @@
 {% include "transport/includes/filter-services-app/script.html" %}
 {% include "transport/includes/tavaghofs-app/script.html" %}
 {% include "transport/includes/products-app/script.html" %}
+{% include 'transport/includes/maintenance-invoices-app/script.html' %}
+{% include 'transport/includes/maintenances-app/script.html' %}
+ 
 
 {% endblock script %}

@@ -30,205 +30,225 @@
             aria-labelledby="heading-maintenance-invoices" data-parent="#accordion-maintenance-invoices">
 
 
-            <div class="card-body">
+            <div class="card-body"> {% load static %}
+                <div class="my-3">
 
-                {% load static %}
-                <form @submit.prinvoice="search()">
-                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+                    <form @submit.prinvoice="search()">
+                        <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
 
-                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
-                        @input="filter()">
-                </form>
+                        <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                            @input="filter()">
+                    </form>
+                </div>
 
-
-                <div class="table-responsive rtl">
-                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
-                    <h6 v-if="false">
-
-                        <span class="text-muted">در حال بار گذاری ... </span>
-                    </h6>
-                    <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
-                        <thead>
-                            <th>
-                                عنوان
-                            </th>
-
-                            <th>
-                                مبلغ
-                            </th>
-
-                            {% if not vehicle %}
-                            <th>
-                                وسیله نقلیه
-                            </th>
-                            {% endif %}
+                <div v-if="maintenance_invoices.length>0">
 
 
+                    <div class="table-responsive rtl">
+                        <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                        <h6 v-if="false">
 
-                            <th>
-                                تاریخ
-                            </th>
-                            <th>
-                                بدهکار
-                            </th>
-                            <th>
-                                بستانکار
-                            </th>
-                            <th>
+                            <span class="text-muted">در حال بار گذاری ... </span>
+                        </h6>
+                        <div v-if="maintenance_invoices.length>0" class="table-responsive">
 
-                            </th>
-                        </thead>
-                        <tbody>
+                            <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
+                                <thead>
+                                    <th>
+                                        عنوان
+                                    </th>
+
+                                    <th>
+                                        مبلغ
+                                    </th>
+
+                                    {% if not vehicle %}
+                                    <th>
+                                        وسیله نقلیه
+                                    </th>
+                                    {% endif %}
 
 
-                            <tr v-for="maintenance_invoice in maintenance_invoices">
-                                <td>
-                                    <a :href="maintenance_invoice.get_absolute_url">
-                                        <span v-text="maintenance_invoice.title">
 
-                                        </span>
-                                    </a>
-                                </td>
-                                <td>
+                                    <th>
+                                        تاریخ
+                                    </th>
+                                    <th>
+                                        بدهکار
+                                    </th>
+                                    <th>
+                                        بستانکار
+                                    </th>
+                                    <th>
 
-                                    <span v-text="to_price(maintenance_invoice.manual_amount)">
+                                    </th>
+                                </thead>
+                                <tbody>
 
-                                    </span>
 
-                                    {{CURRENCY}}
+                                    <tr v-for="maintenance_invoice in maintenance_invoices">
+                                        <td>
+                                            <a :href="maintenance_invoice.get_absolute_url">
+                                                <span v-text="maintenance_invoice.title">
 
-                                </td>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
 
-                                {% if not vehicle %}
-                                <td>
-                                    <a v-if="maintenance_invoice.vehicle"
-                                        :href="maintenance_invoice.vehicle.get_absolute_url">
-                                        <span v-text="maintenance_invoice.vehicle.title">
-
-                                        </span>
-                                        <div>
-
-                                            <span v-text="maintenance_invoice.vehicle.vehicle_code">
+                                            <span v-text="to_price(maintenance_invoice.manual_amount)">
 
                                             </span>
-                                        </div>
-                                    </a>
-                                </td>
-                                {% endif %}
+
+                                            {{CURRENCY}}
+
+                                        </td>
+
+                                        {% if not vehicle %}
+                                        <td>
+                                            <a v-if="maintenance_invoice.vehicle"
+                                                :href="maintenance_invoice.vehicle.get_absolute_url">
+                                                <span v-text="maintenance_invoice.vehicle.title">
+
+                                                </span>
+                                                <div>
+
+                                                    <span v-text="maintenance_invoice.vehicle.vehicle_code">
+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        {% endif %}
 
 
 
-                                <td>
-                                    <span v-text="maintenance_invoice.persian_event_datetime">
+                                        <td>
+                                            <span v-text="maintenance_invoice.persian_event_datetime">
 
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="media">
-                                        <a :href="maintenance_invoice.bedehkar.get_absolute_url">
-                                            <img :src="maintenance_invoice.bedehkar.thumbnail" class="rounded"
-                                                width="32" alt="">
-                                        </a>
-                                        <div class="media-body mr-3">
-                                            <div>
-
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="media">
                                                 <a :href="maintenance_invoice.bedehkar.get_absolute_url">
-                                                    <span v-text="maintenance_invoice.bedehkar.name "></span>
+                                                    <img :src="maintenance_invoice.bedehkar.thumbnail" class="rounded"
+                                                        width="32" alt="">
                                                 </a>
+                                                <div class="media-body mr-3">
+                                                    <div>
+
+                                                        <a :href="maintenance_invoice.bedehkar.get_absolute_url">
+                                                            <span v-text="maintenance_invoice.bedehkar.name "></span>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+
+                                                        <a :href="maintenance_invoice.bedehkar.get_absolute_url">
+                                                            <small class="text-muted"
+                                                                v-text="maintenance_invoice.bedehkar.full_title"></small>
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            <span
+                                                                v-text="maintenance_invoice.bedehkar.class_title"></span>
+                                                        </small>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div>
-
-                                                <a :href="maintenance_invoice.bedehkar.get_absolute_url">
-                                                    <small class="text-muted"
-                                                        v-text="maintenance_invoice.bedehkar.full_title"></small>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted">
-                                                    <span v-text="maintenance_invoice.bedehkar.class_title"></span>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
-                                </td>
+                                        </td>
 
-                                <td>
-                                    <div class="media">
-                                        <a :href="maintenance_invoice.bestankar.get_absolute_url">
-                                            <img :src="maintenance_invoice.bestankar.thumbnail" class="rounded"
-                                                width="32" alt="">
-                                        </a>
-                                        <div class="media-body mr-3">
-                                            <div>
-
+                                        <td>
+                                            <div class="media">
                                                 <a :href="maintenance_invoice.bestankar.get_absolute_url">
-                                                    <span v-text="maintenance_invoice.bestankar.name"></span>
+                                                    <img :src="maintenance_invoice.bestankar.thumbnail" class="rounded"
+                                                        width="32" alt="">
                                                 </a>
+                                                <div class="media-body mr-3">
+                                                    <div>
+
+                                                        <a :href="maintenance_invoice.bestankar.get_absolute_url">
+                                                            <span v-text="maintenance_invoice.bestankar.name"></span>
+                                                        </a>
+                                                    </div>
+
+                                                    <div>
+
+                                                        <a :href="maintenance_invoice.bestankar.get_absolute_url">
+                                                            <small class="text-muted"
+                                                                v-text="maintenance_invoice.bestankar.full_title"></small>
+                                                        </a>
+                                                    </div>
+
+                                                    <div>
+                                                        <small class="text-muted">
+                                                            <span
+                                                                v-text="maintenance_invoice.bestankar.class_title"></span>
+                                                        </small>
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            <div>
 
-                                                <a :href="maintenance_invoice.bestankar.get_absolute_url">
-                                                    <small class="text-muted"
-                                                        v-text="maintenance_invoice.bestankar.full_title"></small>
-                                                </a>
-                                            </div>
-
-                                            <div>
-                                                <small class="text-muted">
-                                                    <span v-text="maintenance_invoice.bestankar.class_title"></span>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </td>
+                                        </td>
 
 
 
 
-                                <td>
-                                    {% if perms.transport.change_maintenanceinvoice %}
-                                    <a target="_blank" title="ویرایش" class="btn btn-link text-warning"
-                                        :href="maintenance_invoice.get_edit_url">
-                                        <i class="fa fa-edit text-warning"></i>
-                                    </a>
+                                        <td>
+                                            {% if perms.transport.change_maintenanceinvoice %}
+                                            <a target="_blank" title="ویرایش" class="btn btn-link text-warning"
+                                                :href="maintenance_invoice.get_edit_url">
+                                                <i class="fa fa-edit text-warning"></i>
+                                            </a>
+                                            {% endif %}
+
+                                            {% if perms.transport.delete_maintenanceinvoice %}
+                                            <a target="_blank" title="حذف" class="btn btn-link text-danger"
+                                                :href="maintenance_invoice.get_delete_url">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                            {% endif %}
+
+
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <th></th>
+                                    <th>
+                                        <label for="">
+                                            <!-- جمع : -->
+                                            <span v-text="sum()"></span>
+                                            {{CURRENCY}}
+                                        </label>
+                                    </th>
+                                    {% if not vehicle %}
+
+                                    <th></th>
                                     {% endif %}
+                                    <th></th>
+                                    <th></th>
 
-                                    {% if perms.transport.delete_maintenanceinvoice %}
-                                    <a target="_blank" title="حذف" class="btn btn-link text-danger"
-                                        :href="maintenance_invoice.get_delete_url">
-                                        <i class="fa fa-trash text-danger"></i>
-                                    </a>
-                                    {% endif %}
-
-
-
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <th></th>
-                            <th>
-                                <label for="">
-                                    <!-- جمع : -->
-                                    <span v-text="sum()"></span>
-                                {{CURRENCY}}
-                                </label>
-                            </th> 
-                            {% if not vehicle %}
-
-                            <th></th>
-                            {% endif %} 
-                            <th></th>
-                            <th></th>
-
-                        </tfoot>
-                    </table>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div v-else>
+                            <p class="text-center">
+                                لیست خالی می باشد.
+                            </p>
+                        </div>
+                    </div>
                 </div>
+                <div v-else>
+                    <p class="text-center">
+                        لیست خالی می باشد.
+                    </p>
+                </div>
+
             </div>
 
         </div>
