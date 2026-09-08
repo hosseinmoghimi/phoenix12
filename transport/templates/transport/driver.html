@@ -7,7 +7,7 @@
             <small class="text-muted">
                 راننده :
             </small>
-            {{driver.person_account.person.full_name}}
+            {{driver.full_name}}
         </h5>
     </div>
     <div class="col-md-4">
@@ -18,7 +18,7 @@
                     راننده :
 
                     </small>
-                    {{driver.person_account.person.full_name}}
+                    {{driver.full_name}}
 
                 </h6>
             </div>
@@ -28,7 +28,7 @@
                     راننده :
 
                     </small>
-                    {{driver.person_account.person.full_name}}
+                    {{driver.full_name}}
 
                 </h6>
                 {% if driver.person_account %}
@@ -60,14 +60,19 @@
     </div>
 
 
-    <div class="col-md-12 ">
-        {% include "transport/includes/maintenances-app/template.html" %}
-    </div>
     
-    <div class="col-md-12 ">
-{% include "transport/includes/services-app/template.html" %}  
+     <div class="col-md-12">
+{% include "transport/includes/services-app/template.html" %} 
+
     </div>
+
+
     
+     <div class="col-md-12">
+
+
+        {% include "transport/includes/work-shifts-app/template.html" %}
+    </div>
 </div>
 {% endblock content %}
 
@@ -79,7 +84,7 @@
 
 </script> 
 {% include "transport/includes/services-app/script.html" %} 
-
-{% include "transport/includes/maintenances-app/script.html" %}
+ 
+        {% include "transport/includes/work-shifts-app/script.html" %}
    
  {% endblock script %}

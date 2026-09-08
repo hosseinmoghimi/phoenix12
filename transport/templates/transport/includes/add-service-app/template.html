@@ -26,10 +26,11 @@
 
           <div class="col-md-4">
             <div class="form-group">
-              <label for="bedehkar_code">وسیله نقلیه</label>
-              <select v-model="vehicle_id" class="form-control">
+              <label for="bedehkar_code">دستگاه</label>
+              <input type="text" v-model="vehicle_code" class="form-control">
+              <select v-model="vehicle_code" class="form-control">
                 {% for vehicle in vehicles %}
-                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                <option value="{{vehicle.vehicle_code}}"> {{vehicle.vehicle_code}} - {{vehicle}}</option>
                 {% endfor %}
               </select>
             </div>
@@ -38,9 +39,10 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">راننده</label>
-              <select v-model="driver_id" class="form-control">
+              <input type="text" v-model="driver_code" class="form-control">
+              <select v-model="driver_code" class="form-control">
                 {% for driver in drivers %}
-                <option value="{{driver.id}}">{{driver.person_account.person.full_name}}</option>
+                <option value="{{driver.driver_code}}"> {{driver.driver_code}} - {{driver.full_name}}</option>
                 {% endfor %}
               </select>
             </div>
@@ -51,7 +53,7 @@
               <label for="bedehkar_code">تعمیرکار</label>
               <select v-model="service_man_id" class="form-control">
                 {% for service_man in service_mans %}
-                <option value="{{service_man.id}}">{{service_man.person_account.person.full_name}}</option>
+                <option value="{{service_man.id}}">{{service_man.full_name}}</option>
                 {% endfor %}
               </select>
             </div>

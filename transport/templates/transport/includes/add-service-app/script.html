@@ -2,8 +2,8 @@
   let add_service_app = new Vue({
     el: "#add-service-app",
     data: { 
-        vehicle_id: 0,
-        driver_id: 0,
+        vehicle_code: "",
+        driver_code: "",
         service_man_id: 0,
 
         grease:0,
@@ -35,8 +35,8 @@
         let payload = {
             csrfmiddlewaretoken: csrfmiddlewaretoken,
 
-            driver_id: parseInt(this.driver_id),
-            vehicle_id: parseInt(this.vehicle_id), 
+            driver_code:  (this.driver_code),
+            vehicle_code:  (this.vehicle_code), 
             service_man_id: parseInt(this.service_man_id), 
 
             shift_date: this.shift_date,  

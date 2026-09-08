@@ -1269,7 +1269,7 @@ class MaintenanceRepo():
                     if vehicle is not None:
                         maintenance.vehicle=vehicle
 
-        if 'vehicle_id' in kwargs and kwargs['vehicle_id']:
+        if 'vehicle_id' in kwargs and kwargs['vehicle_id'] and kwargs['vehicle_id']>0:
             vehicle=Vehicle.objects.filter(pk=kwargs['vehicle_id']).first()
             if vehicle is not None:
                 maintenance.vehicle=vehicle
@@ -1661,12 +1661,27 @@ class ServiceRepo():
         if 'filter_action' in kwargs:
             service.filter_action=kwargs["filter_action"]
           
-        if 'driver_id' in kwargs and kwargs["driver_id"]:
+        if 'driver_id' in kwargs and kwargs["driver_id"] and kwargs["driver_id"]>0:
             service.driver_id=kwargs["driver_id"]
           
-        if 'vehicle_id' in kwargs and kwargs["vehicle_id"]:
+        if 'vehicle_id' in kwargs and kwargs["vehicle_id"] and kwargs["vehicle_id"]>0:
             service.vehicle_id=kwargs["vehicle_id"]
-          
+
+        vehicle=None
+        if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
+                    vehicle_code=kwargs["vehicle_code"]
+                    vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
+                    if vehicle is not None:
+                        service.vehicle=vehicle
+
+        driver=None
+        if 'driver_code' in kwargs and kwargs['driver_code']:
+            driver_code=kwargs["driver_code"]
+            driver=Driver.objects.filter(driver_code=driver_code).first()
+            if driver is not None:
+                service.driver=driver
+                        
+
         if 'service_man_id' in kwargs and kwargs["service_man_id"]:
             service.service_man_id=kwargs["service_man_id"]
           
