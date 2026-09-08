@@ -12,7 +12,7 @@
             separate:vall=>to_price(vall,""),
             filter: function () {
                 this.maintenances = maintenances_for_maintenances_app.filter(function (maintenance) {
-
+                        
                     if (maintenance.title.indexOf(maintenances_app.search_for) > -1)
                         return true
                     // if (maintenances.bedehkar.full_name.indexOf(this.search_for) > -1)
