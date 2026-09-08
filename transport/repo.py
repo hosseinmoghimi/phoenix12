@@ -1,4 +1,4 @@
-from .models import Vehicle,ServiceMan,Maintenance,VehicleStatus,WorkShift,Driver
+from .models import Vehicle,MaintenanceInvoice,ServiceMan,Maintenance,VehicleStatus,WorkShift,Driver
 from .apps import APP_NAME
 from .enums import *
 from log.repo import LogRepo 
@@ -1147,7 +1147,6 @@ class MaintenanceRepo():
         if not self.request.user.has_perm(APP_NAME+".add_maintenanceinvoice"):
             message="دسترسی غیر مجاز"
             return result,message,invoice
-        from .models import MaintenanceInvoice
         maintenance_invoice=MaintenanceInvoice()
         
         if 'valid' in kwargs and kwargs['valid'] is not None:
@@ -1279,6 +1278,111 @@ class MaintenanceRepo():
         (result,message,maintenance)=maintenance.save()
         return result,message,maintenance
 
+
+
+
+class MaintenanceInvoiceRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.my_accounts=[]
+        self.request=request
+        self.objects=MaintenanceInvoice.objects.filter(id=0)
+        profile=PersonRepo(request=request).me
+        if profile is not None:
+            if request.user.has_perm(APP_NAME+".view_maintenance_invoice"):
+                self.objects=MaintenanceInvoice.objects
+                self.my_accounts=self.objects 
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "vehicle_id" in kwargs:
+            vehicle_id=kwargs["vehicle_id"]
+            objects=objects.filter(maintenance__vehicle_id=vehicle_id)  
+        if "service_man_id" in kwargs:
+            service_man_id=kwargs["service_man_id"]
+            objects=objects.filter(service_man_id=service_man_id)
+        return objects.all()
+        
+    def maintenance_invoice(self,*args, **kwargs):
+        if "maintenance_invoice_id" in kwargs and kwargs["maintenance_invoice_id"] is not None:
+            return self.objects.filter(pk=kwargs['maintenance_invoice_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+    
+       
+ 
+      
+    def add_maintenance_invoice(self,*args,**kwargs):
+        result,message,maintenance_invoice=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_maintenance_invoice"):
+            message="دسترسی غیر مجاز"
+            return result,message,maintenance_invoice
+
+        maintenance_invoice=MaintenanceInvoice()
+        if 'title' in kwargs:
+            maintenance_invoice.title=kwargs["title"]
+
+        if 'hour' in kwargs:
+            maintenance_invoice.hour=kwargs["hour"]
+            
+        if 'service_man_id' in kwargs:
+            maintenance_invoice.service_man_id=kwargs["service_man_id"]
+
+
+        if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
+                    vehicle_code=kwargs["vehicle_code"]
+                    vehicle=Vehicle.objects.filter(vehicle_code=vehicle_code).first()
+                    if vehicle is not None:
+                        maintenance_invoice.vehicle=vehicle
+
+        if 'vehicle_id' in kwargs and kwargs['vehicle_id']:
+            vehicle=Vehicle.objects.filter(pk=kwargs['vehicle_id']).first()
+            if vehicle is not None:
+                maintenance_invoice.vehicle=vehicle
+
+            
+        if 'driver_id' in kwargs:
+            driver_id=kwargs["driver_id"]
+            driver=Driver.objects.filter(pk=driver_id).first()
+            if driver is not None:
+                maintenance_invoice.driver=driver
+
+
+        if 'driver_code' in kwargs:
+            driver_code=kwargs["driver_code"]
+            driver=Driver.objects.filter(driver_code=driver_code).first()
+            if driver is not None:
+                maintenance_invoice.driver=driver
+            
+            
+        if 'kilometer' in kwargs:
+            maintenance_invoice.kilometer=kwargs["kilometer"]
+
+        if 'maintenance_invoice_type' in kwargs:
+            maintenance_invoice.maintenance_invoice_type=kwargs["maintenance_invoice_type"]
+
+        if 'description' in kwargs:
+            maintenance_invoice.description=kwargs["description"]
+
+
+        if 'event_datetime' in kwargs and kwargs['event_datetime'] is not None and not kwargs['event_datetime']=='':
+            year=kwargs['event_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['event_datetime']=PersianCalendar().to_gregorian(kwargs["event_datetime"])
+            maintenance_invoice.event_datetime=kwargs["event_datetime"]
+         
+        (result,message,maintenance_invoice)=maintenance_invoice.save()
+        return result,message,maintenance_invoice
+
+ 
  
 class ServiceManRepo():
     def __init__(self,request,*args, **kwargs):

@@ -13,33 +13,41 @@
         <div class="row rtl">
 
             <div class="col-md-12">
-    
-                    {% include "transport/includes/work-shifts-app/template.html" %}
-            </div>
 
-                <div class="col-md-12">
-                    {% include "transport/includes/oil-services-app/template.html" %}
-                </div>
-                <div class="col-md-12">
-                    {% include "transport/includes/filter-services-app/template.html" %}
-                </div>
-                <div class="col-md-12">
-                    {% include "transport/includes/products-app/template.html" %}
-                </div>
-                
-
-            <div class="col-md-12">
-    
-                    {% include "transport/includes/services-app/template.html" %}
+                {% include "transport/includes/work-shifts-app/template.html" %}
             </div>
 
             <div class="col-md-12">
-    
-                    {% include "core/includes/page-thumbnail-header-app/template.html" %}
+                {% include "transport/includes/oil-services-app/template.html" %}
             </div>
             <div class="col-md-12">
-    
-                    {% include "transport/includes/vehicle-statuses-app/template.html" %}
+                {% include "transport/includes/filter-services-app/template.html" %}
+            </div>
+            <div class="col-md-12">
+                {% include "transport/includes/products-app/template.html" %}
+            </div>
+
+            <div class="col-md-12">
+                {% include "transport/includes/maintenances-app/template.html" %}
+
+            </div>
+
+            <div class="col-md-12">
+                {% include 'transport/includes/maintenance-invoices-app/template.html' %}
+            </div>
+
+            <div class="col-md-12">
+
+                {% include "transport/includes/services-app/template.html" %}
+            </div>
+
+            <div class="col-md-12">
+
+                {% include "core/includes/page-thumbnail-header-app/template.html" %}
+            </div>
+            <div class="col-md-12">
+
+                {% include "transport/includes/vehicle-statuses-app/template.html" %}
             </div>
             <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
@@ -52,11 +60,7 @@
             </div>
             {% endif %}
 
-            <div class="col-md-12">
-                {% include "transport/includes/maintenances-app/template.html" %}
 
-            </div>
-           
             <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
 
@@ -113,17 +117,19 @@
 {% include "transport/includes/oil-services-app/script.html" %}
 {% include "transport/includes/filter-services-app/script.html" %}
 {% include "transport/includes/products-app/script.html" %}
+{% include 'transport/includes/maintenance-invoices-app/script.html' %}
 
 {% endblock script %}
 
 
 {% block style %}
-  <style>
-                .tavaghof{
-                  background: #fff0f0;
-                }
-                .karkerd{
-                  background: #eafff3;
-                }
-              </style>
+<style>
+    .tavaghof {
+        background: #fff0f0;
+    }
+
+    .karkerd {
+        background: #eafff3;
+    }
+</style>
 {% endblock style %}

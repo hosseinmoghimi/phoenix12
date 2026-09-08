@@ -9,6 +9,13 @@
 
         },
         methods: {
+            sum:function(){
+                let s=0
+                this.maintenance_invoices.forEach(maintenance_invoice => {
+                    s+=maintenance_invoice.manual_amount
+                });
+                return to_price(s)
+            },
             filter: function () {
                 this.invoices = maintenance_invoices_for_maintenance_invoices_app.filter(function (invoice) {
 

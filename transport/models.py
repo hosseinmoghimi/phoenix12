@@ -147,7 +147,12 @@ class MaintenanceInvoice(Invoice):
     def __str__(self):
         return f'فاکتور شماره {self.id} '
 
-
+    @property
+    def vehicle(self):
+        maintenance= self.maintenance_set.first()
+        if maintenance is not None:
+            return maintenance.vehicle
+    
 class Vehicle(Asset):
     vehicle_type=models.CharField(_("نوع وسیله "),null=True,blank=True, max_length=50)
     vehicle_code=models.CharField(_("کد وسیله "), null=True,blank=True,max_length=50)

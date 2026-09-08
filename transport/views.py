@@ -212,6 +212,16 @@ class VehicleView(View):
         maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
         context['maintenances_s']=maintenances_s
 
+
+        from .repo import MaintenanceInvoiceRepo 
+        invoices=MaintenanceInvoiceRepo(request=request).list(vehicle_id=vehicle.id)
+        from .serializers import MaintenanceInvoiceSerializer
+        invoices_s=json.dumps(MaintenanceInvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['maintenance_invoices_s']=invoices_s
+
+        
+
         vehicle_statuses=vehicle.vehiclestatus_set.all().order_by('-status_datetime')
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)

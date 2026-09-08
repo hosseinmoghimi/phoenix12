@@ -14,19 +14,20 @@ class DriverSerializer(serializers.ModelSerializer):
   
 
 
-class MaintenanceInvoiceSerializer(serializers.ModelSerializer):
-       bedehkar=AccountSerializer()
-       bestankar=AccountSerializer()
-       class Meta:
-        model = MaintenanceInvoice
-        fields = ['id','title','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
-  
 class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
     class Meta:
         model=Vehicle
         fields=['id','vehicle_code','plaque' ,'owner', 'title','description','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
 
+class MaintenanceInvoiceSerializer(serializers.ModelSerializer):
+       bedehkar=AccountSerializer()
+       bestankar=AccountSerializer()
+       vehicle=VehicleSerializer()
+       class Meta:
+        model = MaintenanceInvoice
+        fields = ['id','title','vehicle','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
+  
   
 class VehicleSerializer2(serializers.ModelSerializer):
     class Meta:

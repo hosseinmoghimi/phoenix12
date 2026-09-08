@@ -136,6 +136,9 @@
             if (typeof invoices_app != "undefined") {
               invoices_app.invoices.push(data.invoice);
             }
+            if (typeof maintenance_invoices_app != "undefined") {
+              maintenance_invoices_app.maintenance_invoices.push(data.invoice);
+            }
           } else {
             show_message(add_invoice_app, "خطا", data.message, "danger", 5000);
           }

@@ -24,7 +24,7 @@
                 </button>
             </h5>
 
-         
+
         </div>
         <div id="collapse-maintenance-invoices" class="collapse {% if expand_maintenance_invoices %} show {% endif %}"
             aria-labelledby="heading-maintenance-invoices" data-parent="#accordion-maintenance-invoices">
@@ -52,18 +52,18 @@
                             <th>
                                 عنوان
                             </th>
+
+                            <th>
+                                مبلغ
+                            </th>
+
                             {% if not vehicle %}
-                                 <th>
+                            <th>
                                 وسیله نقلیه
                             </th>
                             {% endif %}
-                            {% if not service_man %}
-                              
-                            <th>
-                                تعمیرکار
-                            </th>
-                            {% endif %}
-                         
+
+
 
                             <th>
                                 تاریخ
@@ -73,9 +73,6 @@
                             </th>
                             <th>
                                 بستانکار
-                            </th>
-                            <th>
-                                مبلغ
                             </th>
                             <th>
 
@@ -92,24 +89,33 @@
                                         </span>
                                     </a>
                                 </td>
-                            {% if not vehicle %}
-                               <td>
-                                    <a v-if="maintenance_invoice.vehicle"  :href="maintenance_invoice.vehicle.get_absolute_url">
+                                <td>
+
+                                    <span v-text="to_price(maintenance_invoice.manual_amount)">
+
+                                    </span>
+
+                                    {{CURRENCY}}
+
+                                </td>
+
+                                {% if not vehicle %}
+                                <td>
+                                    <a v-if="maintenance_invoice.vehicle"
+                                        :href="maintenance_invoice.vehicle.get_absolute_url">
                                         <span v-text="maintenance_invoice.vehicle.title">
 
                                         </span>
-                                    </a>
-                                </td>
-                            {% endif %}
-                            {% if not service_man %}
-                               <td>
-                                    <a v-if="maintenance_invoice.service_man"   :href="maintenance_invoice.service_man.get_absolute_url">
-                                        <span v-text="maintenance_invoice.service_man.title">
+                                        <div>
 
-                                        </span>
+                                            <span v-text="maintenance_invoice.vehicle.vehicle_code">
+
+                                            </span>
+                                        </div>
                                     </a>
                                 </td>
-                            {% endif %}
+                                {% endif %}
+
 
 
                                 <td>
@@ -120,7 +126,8 @@
                                 <td>
                                     <div class="media">
                                         <a :href="maintenance_invoice.bedehkar.get_absolute_url">
-                                            <img :src="maintenance_invoice.bedehkar.thumbnail" class="rounded" width="32" alt="">
+                                            <img :src="maintenance_invoice.bedehkar.thumbnail" class="rounded"
+                                                width="32" alt="">
                                         </a>
                                         <div class="media-body mr-3">
                                             <div>
@@ -150,7 +157,8 @@
                                 <td>
                                     <div class="media">
                                         <a :href="maintenance_invoice.bestankar.get_absolute_url">
-                                            <img :src="maintenance_invoice.bestankar.thumbnail" class="rounded" width="32" alt="">
+                                            <img :src="maintenance_invoice.bestankar.thumbnail" class="rounded"
+                                                width="32" alt="">
                                         </a>
                                         <div class="media-body mr-3">
                                             <div>
@@ -180,28 +188,22 @@
                                 </td>
 
 
-                                <td>
 
-                                    <span v-text="to_price(maintenance_invoice.manual_amount)">
-
-                                    </span>
-
-                                    {{CURRENCY}}
-
-                                </td>
 
                                 <td>
-{% if perms.transport.change_maintenanceinvoice %}
-  <a target="_blank" title="ویرایش" class="btn btn-link text-warning"  :href="maintenance_invoice.get_edit_url">
-    <i class="fa fa-edit text-warning"></i>
-  </a>
-{% endif %}
+                                    {% if perms.transport.change_maintenanceinvoice %}
+                                    <a target="_blank" title="ویرایش" class="btn btn-link text-warning"
+                                        :href="maintenance_invoice.get_edit_url">
+                                        <i class="fa fa-edit text-warning"></i>
+                                    </a>
+                                    {% endif %}
 
-{% if perms.transport.delete_maintenanceinvoice %}
-    <a target="_blank" title="حذف" class="btn btn-link text-danger"  :href="maintenance_invoice.get_delete_url">
-    <i class="fa fa-trash text-danger"></i>
-  </a>
-{% endif %}
+                                    {% if perms.transport.delete_maintenanceinvoice %}
+                                    <a target="_blank" title="حذف" class="btn btn-link text-danger"
+                                        :href="maintenance_invoice.get_delete_url">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                    {% endif %}
 
 
 
@@ -210,13 +212,17 @@
                         </tbody>
                         <tfoot>
                             <th></th>
+                            <th>
+                                <label for="">
+                                    <!-- جمع : -->
+                                    <span v-text="sum()"></span>
+                                {{CURRENCY}}
+                                </label>
+                            </th> 
                             {% if not vehicle %}
-                              
-                            {% endif %}
-                            {% if not service_man %}
-                              
-                            {% endif %}
+
                             <th></th>
+                            {% endif %} 
                             <th></th>
                             <th></th>
 
@@ -224,6 +230,7 @@
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
