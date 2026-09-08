@@ -58,13 +58,8 @@
 
         <div class="col-md-4">
           <div class="form-group">
-            <label for="">راننده</label>
-            <select v-model="driver_id" class="form-control">
-              <option value="0">همه</option>
-              {% for driver in drivers %}
-              <option value="{{driver.id}}">{{driver.person_account.person.full_name}}</option>
-              {% endfor %}
-            </select>
+            <label for="">کد راننده</label>
+            <input v-model="driver_code" type="text" class="form-control"/>
           </div>
         </div>
 
@@ -138,7 +133,7 @@
 
           location: report_app.location,
 
-          driver_id: parseInt(report_app.driver_id),
+          driver_code: (report_app.driver_code),
 
         }
         console.log(payload)

@@ -13,6 +13,13 @@
         });
         return s; 
       },
+      sum_gasoil: function(){ 
+        let s = 0;
+        this.services.forEach(service11 => {
+            s+=service11.gasoil_liter
+        });
+        return s; 
+      },
     
 
     sum_grease: function(){ 

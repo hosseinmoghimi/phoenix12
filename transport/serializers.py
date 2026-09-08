@@ -110,7 +110,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Service
-        fields=['id','driver','shift','vehicle','persian_shift_date','grease','oil_type','oil_liter','service_man','filter_type','filter_action','description','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','driver','shift','vehicle','persian_shift_date','grease','oil_type','oil_liter','gasoil_liter','service_man','filter_type','filter_action','description','get_absolute_url',  'get_edit_url','get_delete_url']
 
    
 class AnbarProductSerializer(serializers.ModelSerializer):

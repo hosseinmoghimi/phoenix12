@@ -152,6 +152,7 @@ class MaintenanceInvoice(Invoice):
         maintenance= self.maintenance_set.first()
         if maintenance is not None:
             return maintenance.vehicle
+
     
 class Vehicle(Asset):
     vehicle_type=models.CharField(_("نوع وسیله "),null=True,blank=True, max_length=50)
@@ -508,6 +509,7 @@ class Service(models.Model,LinkHelper):
     grease=models.FloatField(_("grease"),default=0)
 
     oil_type=models.CharField(_("oil_type"), max_length=50)
+    gasoil_liter=models.FloatField(_("gasoil_liter"),default=0)
     oil_liter=models.FloatField(_("oil_liter"),default=0)
     service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
 

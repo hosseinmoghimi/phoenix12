@@ -998,7 +998,8 @@ class DriverRepo():
         if not self.request.user.has_perm(APP_NAME+".add_driver"):
             message="دسترسی غیر مجاز"
             return result,message,driver
-
+        if len(Driver.objects.filter(driver_code=kwargs['driver_code']))>0:
+            return FAILED,'کد تکراری',None
         driver=Driver()
         if 'full_name' in kwargs:
             driver.full_name=kwargs["full_name"]
@@ -1596,16 +1597,25 @@ class ServiceRepo():
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(person_account__person__full_name__contains=search_for)    )
-        if "driver_id" in kwargs:
+        if "driver_id" in kwargs and kwargs['driver_id'] and kwargs['driver_id']>0:
                     driver_id=kwargs["driver_id"]
                     objects=objects.filter(driver_id=driver_id) 
 
-        if "service_man_id" in kwargs:
+        if "service_man_id" in kwargs and kwargs['service_man_id'] and kwargs['service_man_id']>0: 
                     service_man_id=kwargs["service_man_id"]
                     objects=objects.filter(service_man_id=service_man_id)  
-        if "vehicle_id" in kwargs:
+        if "vehicle_id" in kwargs and kwargs['vehicle_id'] and kwargs['vehicle_id']>0:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id) 
+
+        if "vehicle_code" in kwargs and kwargs['vehicle_code'] :
+            vehicle_code=kwargs["vehicle_code"]
+            objects=objects.filter(vehicle__vehicle_code=vehicle_code) 
+
+        if "driver_code" in kwargs and kwargs['driver_code'] :
+            driver_code=kwargs["driver_code"]
+            objects=objects.filter(driver__driver_code=driver_code) 
+
 
         if "shift" in kwargs and kwargs['shift']: 
             objects=objects.filter(shift=kwargs["shift"]) 
@@ -1651,7 +1661,10 @@ class ServiceRepo():
           
         if 'oil_liter' in kwargs:
             service.oil_liter=kwargs["oil_liter"]
-          
+        
+        if 'gasoil_liter' in kwargs:
+            service.gasoil_liter=kwargs["gasoil_liter"]
+                    
         if 'filter_type' in kwargs:
             service.filter_type=kwargs["filter_type"]
           
@@ -1681,10 +1694,11 @@ class ServiceRepo():
             if driver is not None:
                 service.driver=driver
                         
-
+        service_man=None
         if 'service_man_id' in kwargs and kwargs["service_man_id"]:
             service.service_man_id=kwargs["service_man_id"]
-          
+            service_man=service.service_man
+
         if 'shift' in kwargs and kwargs["shift"]:
             service.shift=kwargs["shift"]
           
@@ -1699,6 +1713,16 @@ class ServiceRepo():
             if year=="13" or year=="14":
                 kwargs['shift_date']=PersianCalendar().to_gregorian(kwargs["shift_date"])
             service.shift_date=kwargs["shift_date"]
+
+        if driver is None:
+            return FAILED,'راننده را به درستی انتخاب کنید.',None
+
+        if vehicle is None:
+            return FAILED,'دستگاه را به درستی انتخاب کنید.',None
+        
+        if service_man is None:
+            return FAILED,'سرویسکار را به درستی انتخاب کنید.',None
+        
         (result,message,service)=service.save()
         return result,message,service
 

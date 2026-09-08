@@ -8,6 +8,7 @@
 
         grease:0,
         vehicle_hour:0,
+        gasoil_liter:0,
         oil_liter:0,
         oil_type:"",
 
@@ -32,6 +33,28 @@
       },
 
       add_service: function () {
+        let pass=true
+        let message=""
+        if(this.vehicle_code.length<1){
+          message+='<br>'+'کد دستگاه را مشخص کنید.' 
+          pass=false
+        }
+        if(this.driver_code.length<1){
+          message+='<br>'+'کد راننده را مشخص کنید.' 
+          pass=false
+        }
+        if(this.service_man_id<1){
+          message+='<br>'+'سرویسکار را مشخص کنید.' 
+          pass=false
+        }
+        if(this.shift.length<1){
+          message+='<br>'+'شیفت را مشخص کنید.' 
+          pass=false
+        }
+        if(!pass){
+          show_message(add_service_app,'خطا',message,'danger',3000)
+          return
+        }
         let payload = {
             csrfmiddlewaretoken: csrfmiddlewaretoken,
 
@@ -47,6 +70,7 @@
             
             oil_type:this.oil_type,
             oil_liter:parseInt(this.oil_liter),
+            gasoil_liter:parseInt(this.gasoil_liter),
 
             filter_type:this.filter_type,
             filter_action:this.filter_action,

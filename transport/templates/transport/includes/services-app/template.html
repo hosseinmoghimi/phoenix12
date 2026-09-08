@@ -38,8 +38,9 @@
                 <th>دستگاه</th>
                 <th>تعمیرکار / راننده</th>
 
+                <th>گازوئیل</th>
+                
                 <th>لیتراژ روغن</th>
-
                 <th>گریس</th>
 
                 <th>خدمات فیلتر</th>
@@ -73,26 +74,63 @@
                       </a>
                     </div>
                     <div>
-                      <a :href="service.driver.get_absolute_url">
+                      <a :href="service.driver.get_absolute_url"> 
+                        
+                        <span
+                          v-text="service.driver.driver_code"
+                        ></span> 
+                        
                         <span
                           v-text="service.driver.full_name"
                         ></span>
+                  
+                          
+                 
                       </a>
                     </div>
                   </td>
 
                   <td>
+                    <div v-if="service.gasoil_liter>0">
+
+                    <img
+                      src="{% static 'transport/img/gasoil.png' %}"
+                      width="32"
+                      alt=""
+                    />
+                    <span v-text="service.gasoil_liter"></span>
+                     
+                    <small class="text-muted">
+
+                      لیتر
+                    </small>
+                    
+                    </div>
+                  </td>
+                  <td>
+
+                    <div v-if="service.oil_liter>0">
+
+
                     <img
                       src="{% static 'transport/img/motor-oil.png' %}"
                       width="32"
                       alt=""
                     />
                     <span v-text="service.oil_liter"></span>
-                    لیتر
-                    <span v-text="service.oil_type"></span>
+                     <small class="text-muted">
+
+                      لیتر
+                      <span v-text="service.oil_type"></span>
+                    </small>
+ 
+                    </div>
+
                   </td>
 
                   <td>
+                    <div v-if="service.grease>0">
+
                     <img
                       src="{% static 'transport/img/grease.png' %}"
                       width="32"
@@ -100,6 +138,8 @@
                     />
 
                     <span v-text="service.grease"></span>
+                    </div>
+
                   </td>
 
                   <td>
@@ -146,6 +186,17 @@
 
                 <th>
                   <img
+                    src="{% static 'transport/img/gasoil.png' %}"
+                    width="32"
+                    alt=""
+                  />
+                  مجموعا
+                  <span v-text="sum_gasoil()"></span>
+                  لیتر
+                </th>
+
+                <th>
+                  <img
                     src="{% static 'transport/img/motor-oil.png' %}"
                     width="32"
                     alt=""
@@ -154,6 +205,7 @@
                   <span v-text="sum_oil()"></span>
                   لیتر
                 </th>
+
 
                 <th>
                   <img

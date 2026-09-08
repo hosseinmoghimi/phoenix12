@@ -213,6 +213,7 @@ class AddServiceForm(forms.Form):
     driver_code=forms.CharField(required=False, max_length=50)
     oil_type=forms.CharField(required=False, max_length=50) 
     oil_liter=forms.IntegerField(required=False)
+    gasoil_liter=forms.IntegerField(required=False)
     vehicle_hour=forms.FloatField(required=False)
     filter_type=forms.CharField(required=False, max_length=50) 
     filter_action=forms.CharField(required=False, max_length=50) 
