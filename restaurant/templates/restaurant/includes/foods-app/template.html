@@ -1,0 +1,84 @@
+<div id="accordion-foods" class="rtl text-right farsi">
+  <div class="card" id="foods-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-foods"
+          aria-expanded="true"
+          aria-controls="collapse-foods"
+        >
+          غذاها
+          <span v-if="foods.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="foods.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-foods"
+      class="collapse {% if expand_foods %} show {% endif %}"
+      aria-labelledby="heading-foods"
+      data-parent="#accordion-foods"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead>
+              <th>کد</th>
+              <th>نام</th> 
+
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="food in foods">
+
+                <td>
+                  <a :href="food.get_absolute_url">
+                    <span v-text="food.code"></span>
+                  </a>
+
+                  <div></div>
+                </td>
+                <td>
+                  <a :href="food.get_absolute_url">
+                    <span v-text="food.title"></span>
+                  </a>
+
+                </td>
+             
+
+                
+                <td>
+                  <a
+                    target="_blank"
+                    :href="food.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="food.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

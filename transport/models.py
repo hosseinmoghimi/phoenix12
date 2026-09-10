@@ -109,7 +109,8 @@ class Maintenance(Event):
             self.app_name = APP_NAME
         if self.class_name is None or self.class_name=="":
             self.class_name = "maintenance"
-        return super(Maintenance, self).save(*args, **kwargs)
+        super(Maintenance, self).save(*args, **kwargs)
+        return SUCCEED,'تعمیر و نگهداری ذخیره شد.',self
     class Meta:
         verbose_name = _("Maintenance")
         verbose_name_plural = _("Maintenances")

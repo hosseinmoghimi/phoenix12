@@ -1,0 +1,18 @@
+<script>
+    
+    let foods_for_foods_app=JSON.parse("{{foods_s|escapejs}}")
+    let foods_app = new Vue({
+        el: "#foods-app",
+        data: {
+            foods: foods_for_foods_app,
+            
+            message:{show:false},
+            waiting:false,
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

@@ -1,0 +1,45 @@
+{% extends "restaurant/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl farsi">
+  
+
+  
+  <div class="col-md-4 col-lg-3 text-center my-3">
+    <div class="card">
+      <div class="card-header">
+        <h4>غذا</h4>
+      </div>
+      <div class="card-body"> 
+        <div class="text-center">
+
+          <img
+          src="{% static 'restaurant/img/food.png' %}"
+          width="64em"
+          class="mb-2"
+          alt=""
+          />
+        </div>
+          <h6 class="text-center">غذا 
+            <a href="{{food.get_absolute_url}}">
+            
+              {{food.title}}
+            </a>
+            </h6>
+
+              
+
+       
+
+ 
+      </div>
+    </div>
+  </div>
+ 
+</div>
+{% endblock content %} {% block script %}
+<script>
+  console.log("name1: {{name1}}");
+  console.log("name2: {{name2}}");
+  console.log("name3: {{name3}}");
+</script>
+    
+{% endblock script %}
