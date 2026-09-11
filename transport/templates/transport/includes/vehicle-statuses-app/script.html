@@ -1,15 +1,55 @@
 <script>
-    
-    let vehicle_statuses_for_vehicle_statuses_app=JSON.parse("{{vehicle_statuses_s|escapejs}}")
-    let vehicle_statuses_app = new Vue({
-        el: "#vehicle-statuses-app",
-        data: {
-            vehicle_statuses: vehicle_statuses_for_vehicle_statuses_app
+  let vehicle_statuses_for_vehicle_statuses_app = JSON.parse(
+    "{{vehicle_statuses_s|escapejs}}",
+  );
+  let vehicle_statuses_app = new Vue({
+    el: "#vehicle-statuses-app",
+    data: {
+      vehicle_statuses: vehicle_statuses_for_vehicle_statuses_app,
+      search_for: "",
+    },
+    methods: {
+        vehicle_status_ids:function(){
+            let ids=[]
+            this.vehicle_statuses.forEach(vehicle_status => {
+                ids.push(vehicle_status.id)
+            });
+            return JSON.stringify(ids)
         },
-        methods: {
-            to_price: function(vall) { 
-                return  to_price(vall) 
-            }
+      filter: function () {
+        if (this.search_for === "") {
+          vehicle_statuses_app.vehicle_statuses =
+            vehicle_statuses_for_vehicle_statuses_app;
+          return;
         }
-    })
+        vehicle_statuses_app.vehicle_statuses =
+          vehicle_statuses_for_vehicle_statuses_app.filter(
+            function (vehicle_status) {
+              if (
+                vehicle_status.vehicle.vehicle_code ===
+                vehicle_statuses_app.search_for
+              ) {
+                return true;
+              }
+              if (vehicle_status.description &&
+                vehicle_status.description.includes(vehicle_statuses_app.search_for)
+              ) {
+                return true;
+              }
+
+              if (vehicle_status.vehicle &&
+                vehicle_status.vehicle.title.includes(vehicle_statuses_app.search_for)
+              ) {
+                return true;
+              }
+
+              return false;
+            },
+          );
+      },
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+    },
+  });
 </script>

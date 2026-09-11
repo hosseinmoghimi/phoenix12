@@ -99,7 +99,7 @@ class AddServiceManForm(forms.Form):
      
 class VehicleStatusesExcelForm(forms.Form):
     vehicle_id=forms.IntegerField(required=False) 
-
+    vehicle_status_ids=forms.CharField( max_length=10000, required=False)
 
 class OilingMaintenanceDetailsExcelForm(forms.Form):
     oiling_maintenance_id=forms.IntegerField(required=False) 

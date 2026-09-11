@@ -274,6 +274,27 @@ class VehicleStatusesView(View):
         return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
 
 
+    
+class NewVehicleStatusView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context[WIDE_LAYOUT]=True 
+        context['expand_vehicle_statuses']=True
+
+        context['expand_new_vehicle_status']=True
+        
+        vehicles=VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+
+        vehicle_statuses=[]
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+        if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
+            context['add_vehicle_status_form']=AddVehicleStatusForm()
+        return render(request,TEMPLATE_ROOT+"new-vehicle-status.html",context) 
+
+
 class WorkShiftsExcelView(View):
     def post(self,request,*args, **kwargs):
         context={}
@@ -599,7 +620,10 @@ class VehicleStatusesExcelView(View):
         if vehicle_statuses_excel_form.is_valid():
             log=333
             cd=vehicle_statuses_excel_form.cleaned_data
-            vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(**cd)
+            if 'vehicle_status_ids' in cd:
+                leolog(sdsds=cd['vehicle_status_ids'])
+                cd['vehicle_status_ids']=json.loads(cd['vehicle_status_ids'])
+            vehicle_statuses=VehicleStatusRepo(request=request).list(**cd)
         now=PersianCalendar().date
         
         date=PersianCalendar().from_gregorian(now)

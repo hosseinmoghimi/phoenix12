@@ -34,6 +34,9 @@ class VehicleStatusRepo():
         if "vehicle_id" in kwargs and kwargs['vehicle_id']:
             vehicle_id=kwargs["vehicle_id"]
             objects=objects.filter(vehicle_id=vehicle_id)  
+        if "vehicle_status_ids" in kwargs and kwargs['vehicle_status_ids']:
+            vehicle_status_ids=kwargs["vehicle_status_ids"]
+            objects=objects.filter(id__in=vehicle_status_ids) 
         return objects.all().order_by('-status_datetime')
         
     def vehicle_status(self,*args, **kwargs):
@@ -79,23 +82,24 @@ class VehicleStatusRepo():
         if not self.request.user.has_perm(APP_NAME+".add_vehicle"):
             message="دسترسی غیر مجاز"
             return result,message,vehicle_status
-
+        vehicle=None
         vehicle_status=VehicleStatus()
         if 'cooler' in kwargs:
             vehicle_status.cooler=kwargs["cooler"]
 
             
         if 'vehicle_id' in kwargs and kwargs['vehicle_id']:
-            vehicle_status.vehicle_id=kwargs["vehicle_id"]
-            
+            vehicle=Vehicle.objects.filter(vehicle_id=kwargs["vehicle_id"]).first()
         if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
-            vehicle_status.vehicle=Vehicle.objects.filter(vehicle_code=kwargs["vehicle_code"]).first()
-            if vehicle_status.vehicle is None:
-                message="دستگاه به درستی انتخاب نشده است."
-                return FAILED,message,None
+            vehicle=Vehicle.objects.filter(vehicle_code=kwargs["vehicle_code"]).first()
+
+        if vehicle is None:
+            message="دستگاه به درستی انتخاب نشده است."
+            return FAILED,message,None
+
             
-        if 'vehicle_id' in kwargs:
-            vehicle_status.vehicle_id=kwargs["vehicle_id"]
+        vehicle_status.vehicle=vehicle
+            
 
         if 'wiring' in kwargs:
             vehicle_status.wiring=kwargs["wiring"]

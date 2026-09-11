@@ -16,7 +16,8 @@
     <div id="collapse-vehicle-statuses" class="collapse {% if expand_vehicle_statuses %} show {% endif %}"
       aria-labelledby="heading-vehicle-statuses" data-parent="#accordion-vehicle-statuses">
       <div class="card-body">
-        <div class="table-responsive">
+        <input type="text" class="form-control my-2" @input="filter()" v-model="search_for">
+        <div class="table-responsive" v-if="vehicle_statuses.length>0"> 
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>وضعیت</th>
@@ -83,12 +84,17 @@
             </tbody>
           </table>
         </div>
+        <div v-else>
+          <p class="text-center">
+            لیست خالی می باشد.
+          </p>
+        </div>
       </div>
       <div class="card-footer">
         <div class="my-3">
           <form method="POST" action="{% url 'transport:vehicle_statuses_excel' %}">
             {% csrf_token %}
-            <input type="hidden" name="oiling_maintenance_id" value="">
+            <input type="hidden" name="vehicle_status_ids" :value="vehicle_status_ids()">
             <button type="submit" class="btn btn-info">
               <i class="fa fa-file-excel-o ml-3"></i>
               دریافت وضعیت دستگاه ها در قالب فایل اکسل
