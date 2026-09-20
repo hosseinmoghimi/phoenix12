@@ -9,6 +9,14 @@
 
 
     </div>
+    {% if vehicle_status %}
+      
+    <div class="col-md-12">
+        
+        {% include "transport/includes/vehicle-status-app/template.html" %}
+    </div>
+    {% endif %}
+
     <div class="col-md-12">
 
         {% include "transport/includes/work-shifts-app/template.html" %}

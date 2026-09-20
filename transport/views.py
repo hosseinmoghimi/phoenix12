@@ -179,6 +179,9 @@ class VehicleView(View):
         vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
         context[WIDE_LAYOUT]=True
         context['vehicle']=vehicle 
+        vehicle_status=vehicle.last_status()
+        if vehicle_status:
+            context['vehicle_status']=vehicle_status 
 
         if vehicle is None:
                     from core.views import MessageView

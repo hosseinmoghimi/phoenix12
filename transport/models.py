@@ -166,7 +166,8 @@ class Vehicle(Asset):
     year=models.CharField(_("سال"), max_length=50,null=True,blank=True)
     vehicle_color=models.CharField(_("رنگ"),null=True,blank=True, max_length=50)
     kilometer=models.IntegerField(_("کیلومتر"),default=0)
- 
+    def last_status(self):
+        return self.vehiclestatus_set.order_by('-status_datetime').first()
     def save(self,*args, **kwargs): 
         (result,message,vehicle)=FAILED,'',self
         if vehicle.title is None or vehicle.title=="":
