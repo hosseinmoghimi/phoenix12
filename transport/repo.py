@@ -551,46 +551,33 @@ class OilServiceRepo():
         
         
     def add_oil_service(self,*args,**kwargs):
+        leolog(add_oil_service_kwargs=kwargs)
         result,message,oil_service=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_oil_service"):
             message="دسترسی غیر مجاز"
             return result,message,oil_service
 
         oil_service=OilService()
-        if 'title' in kwargs:
-            oil_service.title=kwargs["title"]
-            if len(OilService.objects.filter(title=oil_service.title))>0:
-                message='نام تکراری برای وسیله نقلیه جدید'
-                return FAILED,message,None
-        if 'owner_id' in kwargs:
-            oil_service.owner_id=kwargs["owner_id"]
-        if 'brand_name' in kwargs:
-            oil_service.brand_name=kwargs["brand_name"]
-        if 'model_name' in kwargs:
-            oil_service.model_name=kwargs["model_name"]
-        if 'oil_service_type' in kwargs:
-            oil_service.oil_service_type=kwargs["oil_service_type"]
-        if 'oil_service_color' in kwargs:
-            oil_service.oil_service_color=kwargs["oil_service_color"]
-        if 'oil_service_code' in kwargs:
-            oil_service.oil_service_code=kwargs["oil_service_code"]
-        if 'plaque' in kwargs:
-            oil_service.plaque=kwargs["plaque"]
-        if 'year' in kwargs:
-            oil_service.year=kwargs["year"]
-        if 'kilometer' in kwargs:
-            oil_service.kilometer=kwargs["kilometer"]
-        if 'driver_id' in kwargs:
-            driver_id=kwargs["driver_id"]
-            if driver_id is not None and driver_id>0:
-                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
-                if driver is not None:
-                    oil_service.driver=driver.person_account.person.full_name
-          
-        if 'price' in kwargs:
-            oil_service.price=kwargs["price"]
         
-        if 'description' in kwargs:
+        if 'work_shift_id' in kwargs and kwargs['work_shift_id']:
+            oil_service.work_shift_id=kwargs["work_shift_id"]
+
+        if 'oil_type' in kwargs and kwargs['oil_type']:
+            oil_service.oil_type=kwargs["oil_type"]
+
+        if 'oil_action' in kwargs and kwargs['oil_action']:
+            oil_service.oil_action=kwargs["oil_action"]
+
+        if 'oil_liter' in kwargs and kwargs['oil_liter']:
+            oil_service.oil_liter=kwargs["oil_liter"]
+
+        if 'vehicle_hour' in kwargs and kwargs['vehicle_hour']:
+            oil_service.vehicle_hour=kwargs["vehicle_hour"]
+
+        if 'cost' in kwargs and kwargs['cost']:
+            oil_service.cost=kwargs["cost"]
+
+        if 'description' in kwargs and kwargs['description']:
             oil_service.description=kwargs["description"]
                 
         (result,message,oil_service)=oil_service.save()

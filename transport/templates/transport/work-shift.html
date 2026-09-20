@@ -17,6 +17,12 @@
   </div>
  
 
+  {% if add_oil_service_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/oil-services-app/form.html" %}
+  </div>
+  {% endif %}
   <div class="col-md-12">
     {% include "transport/includes/oil-services-app/template.html" %}
   </div>

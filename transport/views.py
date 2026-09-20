@@ -1,3 +1,5 @@
+
+from .enums import OilActionEnum
 from utility.currency import to_price
 from utility.views import MessageView
 from django.shortcuts import render
@@ -1223,7 +1225,6 @@ class NewWorkShiftView(View):
         context['vehicles']=vehicles
 
         
-        from .enums import OilActionEnum
         drivers =DriverRepo(request=request).list(*args, **kwargs)
         context['drivers']=drivers
         context['oil_types']=(i[0] for i in OilTypeEnum.choices)
@@ -1310,8 +1311,21 @@ class WorkShiftView(View):
         context['expand_filter_services']=True
         context['expand_tavaghofs']=True
         context['expand_products']=True
-        context[WIDE_LAYOUT]=True
 
+
+
+
+        
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['oil_actions']=(i[0] for i in OilActionEnum.choices)
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+
+
+        context[WIDE_LAYOUT]=True
+        if request.user.has_perm(APP_NAME+".add_oilservice"):
+            context['add_oil_service_form']=AddOilServiceForm()
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
 

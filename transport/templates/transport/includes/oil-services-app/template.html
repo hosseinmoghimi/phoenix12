@@ -107,19 +107,21 @@
 
 
                 
-                <td>
-                        <h6 v-text="oil_service.oil_liter"></h6>
+                <td> 
+                  <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="">   
+                  <span v-text="oil_service.oil_liter"></span>
+
                 </td>
                    <td>
                      <div v-if="oil_service.vehicle_hour" >
 
-                         <img src="{% static 'leo/img/timer.png' %}" width="28" alt="{{CURRENCY}}">   
+                         <img src="{% static 'transport/img/timer.png' %}" width="28" alt="">   
                         <span v-text="to_price(oil_service.vehicle_hour)">
                             
                         </span>
                     </div>
 
-                        <h6 v-text="oil_service.vehicle_hour"></h6>
+                        
                 </td>
 
                 

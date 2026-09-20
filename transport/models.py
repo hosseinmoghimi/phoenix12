@@ -391,7 +391,7 @@ class OilService(models.Model,LinkHelper,WorkShiftDetailHelper):
     oil_type=models.CharField(_("oil_type"), max_length=50)
     oil_action=models.CharField(_("oil_action"),max_length=50)
     oil_liter=models.FloatField(_("oil_liter"),default=1)
-    cost=models.IntegerField(_("cost"),default=1)
+    cost=models.IntegerField(_("cost"),default=0)
     vehicle_hour=models.FloatField(_("vehicle_hour"),default=0)
     description=models.CharField(_("description"),null=True,blank=True, max_length=500)
 
@@ -403,15 +403,12 @@ class OilService(models.Model,LinkHelper,WorkShiftDetailHelper):
         return f'{self.work_shift} / {self.oil_type} {self.oil_action} {self.oil_liter} '
  
     def save(self,*args, **kwargs): 
-         (result,message,oiling_maintenance_detail)=FAILED,'',self
-         if self.class_name is None or self.class_name=="":
-             self.class_name="oiling_maintenance_detail"
-         if self.app_name is None or self.app_name=="":
-             self.app_name=APP_NAME
+         (result,message,oil_service)=FAILED,'',self
+         
          super(OilService,self).save()   
          result=SUCCEED
          message="جزئیات روغن کاری با موفقیت اضافه شد."
-         return (result,message,oiling_maintenance_detail)
+         return (result,message,oil_service)
 
     @property
     def vehicle(self):

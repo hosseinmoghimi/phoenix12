@@ -36,6 +36,15 @@ class AnbarProductsExcelForm(forms.Form):
 class AddVehicleStatusImageForm(forms.Form):
     vehicle_status_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=100, required=True)
+
+class AddOilServiceForm(forms.Form):
+    work_shift_id=forms.IntegerField(required=True)
+    cost=forms.IntegerField(required=False)
+    vehicle_hour=forms.IntegerField(required=False)
+    oil_liter=forms.IntegerField(required=True)
+    oil_type=forms.CharField(max_length=50, required=True)
+    oil_action=forms.CharField(max_length=50, required=True)
+    description=forms.CharField(max_length=500, required=False)
  
 class AddInvoiceForm(AddInvoiceForm2):
     maintenance_id=forms.IntegerField(required=True)

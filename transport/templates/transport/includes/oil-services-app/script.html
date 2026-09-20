@@ -1,34 +1,97 @@
 <script>
-    
-    let oil_services_for_oil_services_app=JSON.parse("{{oil_services_s|escapejs}}")
-    let oil_services_app = new Vue({
-        el: "#oil-services-app",
-        data: {
-            oil_services: oil_services_for_oil_services_app
-        },
-        methods: {
-            to_price: function(vall) { 
-                return  to_price(vall) 
-            },
+  let oil_services_for_oil_services_app = JSON.parse(
+    "{{oil_services_s|escapejs}}",
+  );
+  let oil_services_app = new Vue({
+    el: "#oil-services-app",
+    data: {
+      oil_services: oil_services_for_oil_services_app,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
 
-            
-            sum_oil: function() { 
-                let s=0
-                this.oil_services.forEach(oil_service => {
-                    s+=oil_service.oil_liter
-                });
-                return s 
-            },
+      sum_oil: function () {
+        let s = 0;
+        this.oil_services.forEach((oil_service) => {
+          s += oil_service.oil_liter;
+        });
+        return s;
+      },
 
-            
-            sum_cost: function() { 
-                let s=0
-                this.oil_services.forEach(oil_service => {
-                    s+=oil_service.cost
-                });
-                return to_price(s) 
-            },
-
-        }
-    })
+      sum_cost: function () {
+        let s = 0;
+        this.oil_services.forEach((oil_service) => {
+          s += oil_service.cost;
+        });
+        return to_price(s);
+      },
+    },
+  });
 </script>
+{% if add_oil_service_form %}
+<script>
+  let add_oil_service_app = new Vue({
+    el: "#add-oil-service-app",
+    data: {
+      oil_type: "",
+      oil_action: "",
+      oil_liter: 0,
+      vehicle_hour: 0,
+      cost: 0,
+      description: "",
+      confirm_clear_oils: false,
+      message: { show: false },
+      waiting: false,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      clear_oils:function(){
+        console.log("clear_oils");
+
+      },
+      add_oil: function () {
+        console.log("add_oil");
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          oil_type: this.oil_type,
+          oil_action: this.oil_action,
+          oil_liter: parseInt(this.oil_liter),
+          cost: parseInt(this.cost),
+          work_shift_id: parseInt("{{work_shift.id}}"),
+          vehicle_hour: parseFloat(this.vehicle_hour),
+          description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_oil_service' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_oil_service_app,
+              "موفق",
+              data.message,
+              "success",
+              5000,
+            );
+            if (typeof oil_services_app != "undefined") {
+              oil_services_app.oil_services.push(data.oil_service);
+            } else {
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(oil_services_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endif %}
