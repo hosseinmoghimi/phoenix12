@@ -178,9 +178,9 @@ class GetReportApiw(APIView):
             for o_s_o in oil_services_origin:
                 find=False
                 for o_s in oil_services:
-                    if o_s_o.oil_type==o_s.oil_type:
+                    if o_s_o.oil_type==o_s.oil_type :
                         find=True
-                        o_s.oil_liter+=o_s_o.oil_liter
+                        o_s.oil_liter+=o_s_o.oil_liter 
                         o_s.cost+=o_s_o.cost
                 if not find:
                     oil_services.append(o_s_o)

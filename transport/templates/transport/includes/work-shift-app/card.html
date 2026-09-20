@@ -26,10 +26,13 @@
                         <td class="field_value">
                             {{work_shift.shift_date|to_persian_date|safe}}
                             <small class="mx-2">
-                                <span class="badge badge-{{work_shift.shift_color}}">
-                                    {{work_shift.shift}}
-                                </span>
+                                   
+                                     <span class="text-muted">
+                                    شیفت 
 
+                                    </span>
+                                     {{work_shift.shift}}
+                         
                                 <img class="ml-3" src="{{STATIC_URL}}transport/img/{{work_shift.shift|to_shift_time_icon}}" alt="{{work_shift.shift}}" width="28"> 
 
                                 {{work_shift.start_hour}} ~ {{work_shift.end_hour}}

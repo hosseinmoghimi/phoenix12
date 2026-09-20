@@ -5,7 +5,7 @@
       <h5 class="text-center">
         <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-anbar-products" aria-expanded="true"
           aria-controls="collapse-anbar-products">
-          گزارشات انبار
+          گزارشات انباردار
 
 
           <span v-if="anbar_products.length>0">
@@ -38,12 +38,14 @@
             <tbody>
               <tr v-for="anbar_product in anbar_products">
                 <td>
+                  <a :href="anbar_product.get_absolute_url">
                   <span v-text="anbar_product.persian_shift_date"></span>
                   <div class="text-muted">
                     شیفت
                     <span v-text="anbar_product.shift"></span>
                     <img :src="to_icon(anbar_product.shift)" alt="anbar_product.shift" width="28">
                   </div>
+                </a>
                 </td>
                 {% if not vehicle %}
 

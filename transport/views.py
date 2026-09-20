@@ -1396,29 +1396,14 @@ class NewAnbarProductView(View):
 
 class AnbarProductView(View):
     def get(self,request,*args, **kwargs):
-        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
-        if work_shift is None:
+        anbar_product =AnbarProductRepo(request=request).anbar_product(*args, **kwargs)
+        if anbar_product is None:
             mv=MessageView()
             return mv.get(request=request,title="وجود ندارد")
  
         context=getContext(request=request)
-        context['work_shift']=work_shift
-        oil_services =work_shift.oilservice_set.all()
-        context['oil_services']=oil_services
-        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
-        context['oil_services_s']=oil_services_s
-
-        filter_services =work_shift.filterservice_set.all()
-        context['filter_services']=filter_services
-        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
-        context['filter_services_s']=filter_services_s
-
-        products =work_shift.product_set.all()
-        context['products']=products
-        products_s=json.dumps(ProductSerializer(products,many=True).data)
-        context['products_s']=products_s
-
-        context['expand_oil_services']=True
+        context['anbar_product']=anbar_product
+          
         context[WIDE_LAYOUT]=True
 
         return render(request,TEMPLATE_ROOT+"anbar-product.html",context) 

@@ -37,9 +37,7 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>نوع فیلتر</th> 
-              <th>تعداد</th>
-              <th>برآورد هزینه</th>
-              <th>توضیحات</th> 
+              <th>تعداد</th> 
             </thead>
             <tbody>
               <tr v-for="filter_service in filter_services">
@@ -66,20 +64,7 @@
                    
 
                 
-                   <td>
-                    <div v-if="filter_service.cost" >
-
-                        <span v-text="to_price(filter_service.cost)">
-                            
-                        </span>
-                        <img src="{% static 'leo/img/rial.png' %}" width="28" alt="{{CURRENCY}}">   
-                    </div>
-                </td>
-
-                 <td>
-                        <h6 v-text="filter_service.description"></h6>
-                </td>
-
+                    
 
 
                

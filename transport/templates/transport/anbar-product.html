@@ -1,1 +1,98 @@
+{% extends "transport/layout.html" %} {% block content %}
+{% load to_persian_date %}
+{% load to_shift_time_icon %}
+{% load to_price %}
+<div class="row rtl farsi">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <table class="table">
 
+             <tr>
+                        <td class="field_name">تاریخ</td>
+
+                        <td class="field_value">
+                            {{anbar_product.shift_date|to_persian_date|safe}}
+                            <small class="mx-2">
+                                <span class="badge badge-{{anbar_product.shift_color}}">
+                                    <span class="text-muted">
+                                    شیفت 
+
+                                    </span>
+                                    {{anbar_product.shift}}
+                                </span>
+
+                                <img class="ml-3" src="{{STATIC_URL}}transport/img/{{anbar_product.shift|to_shift_time_icon}}" alt="{{anbar_product.shift}}" width="28"> 
+
+                               
+
+                            </small>
+                        </td>
+                    </tr>
+
+
+          <tr>
+            <td class="field_name">انبار</td>
+            <td class="field_value">
+              <a href="{{anbar_product.anbar.get_absolute_url}}">
+                <div>{{anbar_product.anbar}}</div>
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="field_name">دستگاه</td>
+            <td class="field_value">
+              <a href="{{anbar_product.vehicle.get_absolute_url}}">
+                <div>{{anbar_product.vehicle.title}}</div>
+
+                <div>{{anbar_product.vehicle.vehicle_code}}</div>
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="field_name">قطعه</td>
+            <td class="field_value">{{anbar_product.name}}</td>
+          </tr>
+
+
+            <tr>
+            <td class="field_name">تعداد</td>
+            <td class="field_value">{{anbar_product.quantity}}</td>
+          </tr>
+
+
+           <tr>
+            <td class="field_name">قیمت جزء</td>
+            <td class="field_value">{{anbar_product.unit_price|to_price}} {{CURRENCY}}</td>
+          </tr>
+
+          <tr>
+            <td class="field_name">قیمت کل</td>
+            <td class="field_value">{{anbar_product.line_total|to_price}} {{CURRENCY}}</td>
+          </tr>
+
+
+            <tr>
+            <td class="field_name">توضیحات</td>
+            <td class="field_value">
+                {% if anbar_product.description %}
+                  
+                {{anbar_product.description}}
+                {% else %}
+                ...
+                {% endif %}
+            
+            </td>
+          </tr>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+
+{% endblock script %}
