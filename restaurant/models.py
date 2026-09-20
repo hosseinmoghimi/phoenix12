@@ -1,12 +1,12 @@
 from django.db import models
 from core.models import _,reverse,Page,LinkHelper,DateTimeHelper,FAILED,SUCCEED
 from .apps import APP_NAME 
+from accounting.models import Product
 
 
-class Food(models.Model,LinkHelper):
+class Food(Product,LinkHelper):
     class_name="food"
     app_name=APP_NAME
-    title=models.CharField(_("عنوان"), max_length=50)
     code=models.CharField(_("کد"), max_length=50)
     
     

@@ -47,6 +47,13 @@ class FoodRepo():
         if not self.request.user.has_perm(APP_NAME+".add_food"):
             message="دسترسی غیر مجاز"
             return result,message,food
+        
+        if len(Food.objects.filter(title=kwargs['title']))>0:
+            return FAILED,'عنوان تکراری برای غذای جدید',None
+        
+        if len(Food.objects.filter(code=kwargs['code']))>0:
+            return FAILED,'کد تکراری برای غذای جدید',None
+        
         food=Food()
         if 'title' in kwargs and kwargs['title']:
             food.title=kwargs["title"]
@@ -57,3 +64,31 @@ class FoodRepo():
         (result,message,food)=food.save()
         return result,message,food
  
+    def delete_all_foods(self,*args,**kwargs):
+        result,message=FAILED,""
+        if not self.request.user.has_perm(APP_NAME+".delete_food"):
+            message="دسترسی غیر مجاز"
+            return result,message
+        Food.objects.all().delete()
+        
+        (result,message)=(SUCCEED,'همه غذا ها حذف شد.')
+        return result,message
+
+
+  
+    def initial_default_foods(self,*args,**kwargs):
+        result,message,foods=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".add_food"):
+            message="دسترسی غیر مجاز"
+            return result,message,foods
+        from .defaults import initial_foods
+        foods=[]
+        counter=0
+        for food1 in initial_foods:
+            (result,message,food)=self.add_food(**food1)
+            if result==SUCCEED:
+                foods.append(food)
+                counter+=1
+        (result,message,foods)=(SUCCEED,'همه غذا های پیش فرض اضافه شدند.'+'<br>'+f'{counter} عنوان جدید',foods)
+        return result,message,foods
+   

@@ -50,13 +50,17 @@
               <tbody>
                 <tr v-for="service in services">
                   <td>
-                    <div>
-                      <span v-text="service.persian_shift_date"></span>
-                    </div>
-                    <div>
-                      شیفت
-                      <span v-text="service.shift"></span>
-                    </div>
+                    <a :href="service.get_absolute_url">
+
+                      <div>
+                        
+                        <span v-text="service.persian_shift_date"></span>
+                      </div>
+                      <div>
+                        شیفت
+                        <span v-text="service.shift"></span>
+                      </div>
+                    </a>
                   </td>
                   <td>
                     <a :href="service.vehicle.get_absolute_url">

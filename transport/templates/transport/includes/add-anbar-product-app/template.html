@@ -9,7 +9,7 @@
             </h5>
         </div>
 
-        <div id="collapse-add-anbar-product" class="collapse" aria-labelledby="heading-add-anbar-product"
+        <div id="collapse-add-anbar-product" class="collapse {% if expand_add_anbar_product %} show {% endif %}" aria-labelledby="heading-add-anbar-product"
             data-parent="#accordion-add-anbar-product">
             <div class="card-body">
                 <form @submit.prevent="add_anbar_product()">
@@ -17,7 +17,10 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="exampleInputDate">تاریخ</label>
+                                <label for="exampleInputDate">تاریخ
+                                
+                                    <span class="text-danger mr-2">*</span>
+                                </label> 
                                 <date-picker v-model="shift_date"></date-picker>
 
                                 <input type="text" required class="form-control" v-model="shift_date" />
@@ -26,7 +29,11 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">شیفت</label>
+                                <label for="">شیفت
+
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
                                 <select v-model="shift" class="form-control">
                                     <option value="روز">روز</option>
                                     <option value="شب">شب</option>
@@ -39,7 +46,10 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">نام قطعه</label>
+                                <label for="">نام قطعه
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
                                 <input v-model="name" type="text" class="form-control" />
                             </div>
                         </div>
@@ -51,7 +61,10 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">تعداد</label>
+                                <label for="">تعداد
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
                                 <input v-model="quantity" type="text" class="form-control" />
                             </div>
                         </div>
@@ -63,6 +76,9 @@
                                 <label for="">قیمت جزء
                                     <span v-text="to_price(unit_price)"></span> {{CURRENCY}}
 
+                                <span class="text-danger mr-2">*</span>
+
+                                
                                 </label>
                                 <input v-model="unit_price" type="number" class="form-control" />
                             </div>
@@ -82,14 +98,20 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">انبار</label>
+                                <label for="">انبار
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
                                 <input v-model="anbar" type="text" class="form-control" />
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">کد دستگاه</label>
+                                <label for="">کد دستگاه
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
                                 <input v-model="vehicle_code" type="text" class="form-control" />
                                 <select v-model="vehicle_code"  class="form-control">
                                     {% for vehicle in vehicles %}

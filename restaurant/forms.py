@@ -4,3 +4,8 @@ class AddFoodForm(forms.Form):
     title=forms.CharField(max_length=50,required=True)
     code=forms.CharField(max_length=500,required=False)
     
+class InitialDefaultFoodsForm(forms.Form):
+    pass
+    
+class DeleteAllFoodsForm(forms.Form):
+    pass

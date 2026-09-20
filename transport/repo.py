@@ -1790,6 +1790,8 @@ class AnbarProductRepo():
         if 'name' in kwargs and kwargs['name']:
             anbar_product.name=kwargs["name"]
 
+        else:
+            return FAILED,'نام کالا را وارد کنید.',None
 
             
         if 'unit_price' in kwargs and kwargs['unit_price']:
@@ -1817,7 +1819,8 @@ class AnbarProductRepo():
             
         if 'anbar' in kwargs and kwargs['anbar']:
             anbar_product.anbar=kwargs["anbar"]
-        
+        else:
+            return FAILED,'نام انبار را وارد کنید.',None
 
             
         if 'vehicle_code' in kwargs and kwargs['vehicle_code']:
@@ -1826,7 +1829,7 @@ class AnbarProductRepo():
             if vehicle is None:
                 return FAILED,'کد دستگاه نامعتبر میباشد.',None
             anbar_product.vehicle=vehicle
-
+        
         (result,message,anbar_product)=anbar_product.save()
         return result,message,anbar_product
   

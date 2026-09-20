@@ -1329,7 +1329,6 @@ class WorkShiftsView(View):
         return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
 
 
-
 class OilServicesView(View):
     def get(self,request,*args, **kwargs):
         
@@ -1354,20 +1353,13 @@ class OilServicesView(View):
 
 class TavaghofsView(View):
     def get(self,request,*args, **kwargs):
-        
- 
+
         context=getContext(request=request)
-
         from .serializers import TavaghofSerializer2
-
-  
         tavaghofs =TavaghofRepo(request=request).list()
         context['tavaghofs']=tavaghofs
         tavaghofs_s=json.dumps(TavaghofSerializer2(tavaghofs,many=True).data)
         context['tavaghofs_s']=tavaghofs_s
-
-
- 
         context['expand_tavaghofs']=True 
         context[WIDE_LAYOUT]=True
 
@@ -1376,24 +1368,19 @@ class TavaghofsView(View):
 
 class NewAnbarProductView(View):
     def get(self,request,*args, **kwargs):
-
-       
-        
  
         context=getContext(request=request)
 
+        context['expand_add_anbar_product']=True
         vehicles =VehicleRepo(request=request).list()
         context['vehicles']=vehicles
         vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
         context['vehicles_s']=vehicles_s
 
-        
-
         anbar_products =[]
         context['anbar_products']=anbar_products
         anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
         context['anbar_products_s']=anbar_products_s
-
 
         if request.user.has_perm(APP_NAME+".add_anbarproduct"):
             context['add_anbar_product_form']=AddAnbarProductForm()
@@ -1410,39 +1397,23 @@ class AnbarProductView(View):
         if work_shift is None:
             mv=MessageView()
             return mv.get(request=request,title="وجود ندارد")
-
  
         context=getContext(request=request)
-
-        
-
- 
         context['work_shift']=work_shift
-
         oil_services =work_shift.oilservice_set.all()
         context['oil_services']=oil_services
         oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
         context['oil_services_s']=oil_services_s
-
-
-
-
 
         filter_services =work_shift.filterservice_set.all()
         context['filter_services']=filter_services
         filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
         context['filter_services_s']=filter_services_s
 
-
-
-
-
         products =work_shift.product_set.all()
         context['products']=products
         products_s=json.dumps(ProductSerializer(products,many=True).data)
         context['products_s']=products_s
-
-
 
         context['expand_oil_services']=True
         context[WIDE_LAYOUT]=True
@@ -1458,9 +1429,6 @@ class AnbarProductsView(View):
         context['anbar_products']=anbar_products
         anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
         context['anbar_products_s']=anbar_products_s
-
-
-
          
         context['expand_anbar_products']=True
         context[WIDE_LAYOUT]=True
@@ -1562,14 +1530,10 @@ class ServiceView(View):
  
         context=getContext(request=request)
 
-        
- 
         service =ServiceRepo(request=request).service(*args, **kwargs)
         context['service']=service
         service_s=json.dumps(ServiceSerializer(service,many=False).data)
         context['service_s']=service_s
-
-
   
         context[WIDE_LAYOUT]=True
 
@@ -1592,7 +1556,6 @@ class ServicesView(View):
         context[WIDE_LAYOUT]=True
         return render(request,TEMPLATE_ROOT+"services.html",context) 
 
- 
 
 class NewServiceView(View):
     def get(self,request,*args, **kwargs):
@@ -1704,7 +1667,6 @@ class VehiclesExcelView(View):
         return response
 
       
-
 class DriverView(View):
     def get(self,request,*args, **kwargs):
       

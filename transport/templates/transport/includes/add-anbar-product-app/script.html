@@ -40,6 +40,32 @@
       },
 
       add_anbar_product: function () {
+        let valid=true
+        if(add_anbar_product_app.name.length<1){
+          valid=false
+        }
+
+        
+        if(add_anbar_product_app.anbar.length<1){
+          valid=false
+        }
+
+        if(add_anbar_product_app.vehicle_code.length<1){
+          valid=false
+        }
+
+        
+        if(add_anbar_product_app.quantity<1){
+          valid=false
+        }
+
+        
+        if(add_anbar_product_app.unit_price<0){
+          valid=false
+        }
+        if(!valid){
+          show_message(add_anbar_product_app,'خطا','مقادیر ورودی را یه صورت صحیح وارد کنید.','danger',3000)
+        }
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           anbar: this.anbar,

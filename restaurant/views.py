@@ -45,6 +45,17 @@ class IndexView(View):
         return render(request,TEMPLATE_ROOT+"index.html",context)
 
 
+class SettingsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        phoenix_apps=context["phoenix_apps"]
+        phoenix_apps=phoenix_apps
+        phoenix_apps = sorted(phoenix_apps, key=lambda d: d['priority'])
+
+        context['phoenix_apps']=phoenix_apps
+        return render(request,TEMPLATE_ROOT+"settings.html",context)
+
 class FoodView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
