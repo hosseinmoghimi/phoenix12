@@ -47,12 +47,25 @@
     {% include "transport/includes/tavaghofs-app/form.html" %}
   </div>
   {% endif %}
+
+
   <div class="col-md-12">
     {% include "transport/includes/tavaghofs-app/template.html" %}
   </div>
+  
+  {% if add_product_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/products-app/form.html" %}
+  </div>
+  {% endif %}
+
+
+
   <div class="col-md-12">
     {% include "transport/includes/products-app/template.html" %}
   </div>
+
 </div>
 {% endblock content %} {% block script %}
 <script></script>

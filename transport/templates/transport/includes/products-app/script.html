@@ -13,3 +13,71 @@
         }
     })
 </script>
+
+
+{% if add_product_form %}
+<script>
+  let add_product_app = new Vue({
+    el: "#add-product-app",
+    data: {
+      name: "",
+      anbar: "",
+      quantity: 0,
+      unit_price: 0,
+      service_man: "",
+      description: "",
+      confirm_clear_products: false,
+      message: { show: false },
+      waiting: false,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      clear_products:function(){
+        console.log("clear_products");
+
+      },
+      add_product: function () {
+        console.log("add_product");
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          name: this.name,
+          anbar: this.anbar,
+          service_man: this.service_man,
+          quantity: parseFloat(this.quantity),
+          unit_price: parseInt(this.unit_price),
+          work_shift_id: parseInt("{{work_shift.id}}"),
+          description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_product' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_product_app,
+              "موفق",
+              data.message,
+              "success",
+              5000,
+            );
+            if (typeof products_app != "undefined") {
+              products_app.products.push(data.product);
+            } else {
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(products_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endif %}
+

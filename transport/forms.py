@@ -53,6 +53,18 @@ class AddTavaghofForm(forms.Form):
     duration=forms.FloatField(required=True)
     vehicle_hour=forms.IntegerField(required=True)
     description=forms.CharField(max_length=500, required=False)
+
+
+    
+ 
+class AddProductForm(forms.Form):
+    work_shift_id=forms.IntegerField(required=True)
+    anbar=forms.CharField(max_length=50, required=False)
+    quantity=forms.FloatField(required=False)
+    unit_price=forms.IntegerField(required=False)
+    name=forms.CharField(max_length=500, required=True)
+    service_man=forms.CharField(max_length=500, required=False)
+    description=forms.CharField(max_length=500, required=False)
  
 
 class AddOilServiceForm(forms.Form):

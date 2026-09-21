@@ -1,0 +1,163 @@
+{% load static %}
+<div id="accordion-add-product-form" class="rtl text-right farsi">
+  <div class="card" id="add-product-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-product-form"
+          aria-expanded="true"
+          aria-controls="collapse-add-product-form"
+        >
+          افزودن قطعه تحویلی ( گزارش راننده )
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-product-form"
+      class="collapse"
+      aria-labelledby="heading-add-product-form"
+      data-parent="#accordion-add-product-form"
+    >
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">نام کالا</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="name"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">نام سرویس کار</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="service_man"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">نام انبار</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="anbar"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">تعداد</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="quantity"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">قیمت جزء</label>
+
+              <input
+                type="number"
+                required
+                class="form-control"
+                v-model="unit_price"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="exampleInputDate">جمع</label>
+
+              <input
+                type="text"
+                readonly
+                class="form-control"
+                :value="to_price(unit_price*quantity)+' {{CURRENCY}}'"
+              />
+            </div>
+          </div>
+
+          <div class="md-12"></div>
+
+          <div class="col-md-9">
+            <div class="form-group">
+              <label for="exampleInputDate">توضیحات</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="description"
+              />
+            </div>
+          </div>
+
+          <div class="col-md-12"></div>
+          <div class="col-md-3 my-3">
+            <div v-if="!confirm_clear_products">
+              <button class="btn btn-success" @click="add_product()">
+                <i class="fa fa-plus mx-2"></i>
+                افزودن قطعه
+              </button>
+            </div>
+
+            <div v-if="!confirm_clear_products" class="mt-2">
+              <button
+                class="btn btn-danger"
+                @click="confirm_clear_products=true"
+              >
+                <i class="fa fa-plus mx-2"></i>
+                حذف همه
+              </button>
+            </div>
+            <div v-if="confirm_clear_products">
+              <h5>همه قطعات حذف شوند؟</h5>
+              <button class="btn btn-danger" @click="clear_products()">
+                <i class="fa fa-plus mx-2"></i>
+
+                حذف کن
+              </button>
+
+              <button
+                class="btn btn-secondary"
+                @click="confirm_clear_products=false"
+              >
+                <i class="fa fa-plus mx-2"></i>
+
+                خیر
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

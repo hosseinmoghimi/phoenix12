@@ -383,6 +383,7 @@ class WorkShiftDetailHelper:
     @property
     def vehicle_title(self):
         return self.work_shift.vehicle.title
+
     
 class OilService(models.Model,LinkHelper,WorkShiftDetailHelper):
     class_name="oilservice"

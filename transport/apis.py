@@ -365,6 +365,32 @@ class AddOilServiceApi(APIView):
         return JsonResponse(context)
 
 
+
+class AddProductApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_product_form=AddProductForm(request.POST)
+        if add_product_form.is_valid():
+            log=333
+            cd=add_product_form.cleaned_data 
+            from .repo import ProductRepo
+            from .serializers import ProductSerializer
+            result,message,product=ProductRepo(request=request).add_product(**cd)
+            if product is not None:
+                context['product']=ProductSerializer(product).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddTavaghofApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

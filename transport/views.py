@@ -1335,6 +1335,9 @@ class WorkShiftView(View):
         if request.user.has_perm(APP_NAME+".add_tavaghof"):
             context['add_tavaghof_form']=AddTavaghofForm()
 
+        if request.user.has_perm(APP_NAME+".add_product"):
+            context['add_product_form']=AddProductForm()
+
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
 

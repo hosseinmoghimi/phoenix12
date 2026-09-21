@@ -33,9 +33,17 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>قطعه</th>
+              
               <th>تعداد</th>
               <th>قیمت جزء</th>
               <th>جمع</th>
+              <th>
+                انبار
+                <div>
+
+                  سرویسکار
+                </div>
+              </th>
               <th>توضیحات</th> 
             </thead>
             <tbody>
@@ -48,6 +56,9 @@
                 </div>
             </div>
                 </td>
+
+
+
 
                 <td>
                   
@@ -85,6 +96,14 @@
                 </td>
 
 
+                 <td>
+                 
+                        <span v-text="product.anbar"></span>
+                <div>
+                        <span v-text="product.service_man"></span>
+
+                </div>
+                </td>
                  <td>
                         <h6 v-text="product.description"></h6>
                 </td>

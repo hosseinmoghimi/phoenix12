@@ -105,7 +105,7 @@ class OilServiceSerializer2(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
-        fields=['id','name','unit_price','quantity','description']
+        fields=['id','name','anbar','service_man','unit_price','quantity','description']
 
    
 class ServiceSerializer(serializers.ModelSerializer):

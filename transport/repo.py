@@ -700,43 +700,38 @@ class ProductRepo():
             message="دسترسی غیر مجاز"
             return result,message,product
 
-        product=Product()
-        if 'title' in kwargs:
-            product.title=kwargs["title"]
-            if len(Product.objects.filter(title=product.title))>0:
-                message='نام تکراری برای وسیله نقلیه جدید'
-                return FAILED,message,None
-        if 'owner_id' in kwargs:
-            product.owner_id=kwargs["owner_id"]
-        if 'brand_name' in kwargs:
-            product.brand_name=kwargs["brand_name"]
-        if 'model_name' in kwargs:
-            product.model_name=kwargs["model_name"]
-        if 'product_type' in kwargs:
-            product.product_type=kwargs["product_type"]
-        if 'product_color' in kwargs:
-            product.product_color=kwargs["product_color"]
-        if 'product_code' in kwargs:
-            product.product_code=kwargs["product_code"]
-        if 'plaque' in kwargs:
-            product.plaque=kwargs["plaque"]
-        if 'year' in kwargs:
-            product.year=kwargs["year"]
-        if 'kilometer' in kwargs:
-            product.kilometer=kwargs["kilometer"]
-        if 'driver_id' in kwargs:
-            driver_id=kwargs["driver_id"]
-            if driver_id is not None and driver_id>0:
-                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
-                if driver is not None:
-                    product.driver=driver.person_account.person.full_name
-          
-        if 'price' in kwargs:
-            product.price=kwargs["price"]
-        
-        if 'description' in kwargs:
+        product=Product() 
+        if 'name' in kwargs and kwargs['name']:
+            product.name=kwargs["name"]
+
+        else:
+            return FAILED,'نام کالا را وارد کنید.',None
+
+            
+        if 'work_shift_id' in kwargs and kwargs['work_shift_id']:
+            product.work_shift_id=kwargs["work_shift_id"]
+
+        if 'unit_price' in kwargs and kwargs['unit_price']:
+            product.unit_price=kwargs["unit_price"]
+
+            
+        if 'quantity' in kwargs and kwargs['quantity']:
+            product.quantity=kwargs["quantity"]
+
+              
+        if 'description' in kwargs and kwargs['description']:
             product.description=kwargs["description"]
-                
+
+            
+        if 'anbar' in kwargs and kwargs['anbar']:
+            product.anbar=kwargs["anbar"]
+
+            
+        if 'service_man' in kwargs and kwargs['service_man']:
+            product.service_man=kwargs["service_man"]
+        else:
+            return FAILED,'نام انبار را وارد کنید.',None
+    
         (result,message,product)=product.save()
         return result,message,product
  
