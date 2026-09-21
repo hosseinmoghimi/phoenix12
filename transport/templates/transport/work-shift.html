@@ -2,12 +2,12 @@
 {% load static %} {% load to_normal_number %}
 {% load to_persian_date %}
 <div class="row rtl farsi">
-  <div class="col-lg-8">
+  <div class="col-md-9">
     
     <h5 class="text-center">شیفت کارکرد ماشین</h5>
     {% include 'transport/includes/work-shift-app/card.html' %}
   </div>
-  <div class="col-lg-4">
+  <div class="col-md-3">
     
     {% if perms.transport.delete_work_shift %}
        
