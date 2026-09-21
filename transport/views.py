@@ -1331,6 +1331,10 @@ class WorkShiftView(View):
         if request.user.has_perm(APP_NAME+".add_filterservice"):
             context['add_filter_service_form']=AddFilterServiceForm()
 
+            
+        if request.user.has_perm(APP_NAME+".add_tavaghof"):
+            context['add_tavaghof_form']=AddTavaghofForm()
+
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
 

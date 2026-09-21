@@ -365,6 +365,31 @@ class AddOilServiceApi(APIView):
         return JsonResponse(context)
 
 
+class AddTavaghofApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_tavaghof_form=AddTavaghofForm(request.POST)
+        if add_tavaghof_form.is_valid():
+            log=333
+            cd=add_tavaghof_form.cleaned_data 
+            from .repo import TavaghofRepo
+            from .serializers import TavaghofSerializer
+            result,message,tavaghof=TavaghofRepo(request=request).add_tavaghof(**cd)
+            if tavaghof is not None:
+                context['tavaghof']=TavaghofSerializer(tavaghof).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddFilterServiceApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

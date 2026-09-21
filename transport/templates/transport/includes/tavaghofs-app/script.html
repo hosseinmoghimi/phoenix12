@@ -20,3 +20,65 @@
         }
     })
 </script>
+
+{% if add_tavaghof_form %}
+<script>
+  let add_tavaghof_app = new Vue({
+    el: "#add-tavaghof-app",
+    data: {
+      cause: "",
+      duration: 0,
+      vehicle_hour: 0,
+      description: "",
+      confirm_clear_tavaghofs: false,
+      message: { show: false },
+      waiting: false,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      clear_tavaghofs:function(){
+        console.log("clear_tavaghofs");
+
+      },
+      add_tavaghof: function () {
+        console.log("add_tavaghof");
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          cause: this.cause,  
+          work_shift_id: parseInt("{{work_shift.id}}"),
+          vehicle_hour: parseFloat(this.vehicle_hour),
+          duration: parseFloat(this.duration),
+          description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_tavaghof' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_tavaghof_app,
+              "موفق",
+              data.message,
+              "success",
+              5000,
+            );
+            if (typeof tavaghofs_app != "undefined") {
+              tavaghofs_app.tavaghofs.push(data.tavaghof);
+            } else {
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(tavaghofs_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endif %}

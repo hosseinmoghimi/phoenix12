@@ -46,6 +46,15 @@ class AddFilterServiceForm(forms.Form):
     description=forms.CharField(max_length=500, required=False)
  
 
+
+class AddTavaghofForm(forms.Form):
+    work_shift_id=forms.IntegerField(required=True)
+    cause=forms.CharField(max_length=50, required=False)
+    duration=forms.FloatField(required=True)
+    vehicle_hour=forms.IntegerField(required=True)
+    description=forms.CharField(max_length=500, required=False)
+ 
+
 class AddOilServiceForm(forms.Form):
     work_shift_id=forms.IntegerField(required=True)
     cost=forms.IntegerField(required=False)

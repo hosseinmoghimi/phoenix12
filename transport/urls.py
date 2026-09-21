@@ -51,6 +51,7 @@ urlpatterns = [
 
     path('oil-services/',login_required(views.OilServicesView.as_view()),name="oil_services"),
     path('add-oil-service/',login_required(apis.AddOilServiceApi.as_view()),name="add_oil_service"),
+    path('add-tavaghof/',login_required(apis.AddTavaghofApi.as_view()),name="add_tavaghof"),
     path('tavaghofs/',login_required(views.TavaghofsView.as_view()),name="tavaghofs"),
 
     path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),

@@ -1531,17 +1531,31 @@ class TavaghofRepo():
         
         
     def add_tavaghof(self,*args,**kwargs):
+        leolog(kwargs=kwargs)
         result,message,tavaghof=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_tavaghof"):
             message="دسترسی غیر مجاز"
             return result,message,tavaghof
-        if len(Tavaghof.objects.filter(person_account_id=kwargs["person_account_id"]))>0:
-            message='قبلا برای این شخص سرویس کار ایجاد شده است.'
-            return FAILED,message,None
-        tavaghof=Tavaghof() 
-        if 'person_account_id' in kwargs:
-            tavaghof.person_account_id=kwargs["person_account_id"]
-          
+        
+        tavaghof=Tavaghof()  
+        
+        if 'work_shift_id' in kwargs and kwargs['work_shift_id']:
+            tavaghof.work_shift_id=kwargs["work_shift_id"]
+
+        if 'cause' in kwargs and kwargs['cause']:
+            tavaghof.cause=kwargs["cause"]
+
+        if 'duration' in kwargs and kwargs['duration']:
+            tavaghof.duration=kwargs["duration"]
+ 
+        if 'vehicle_hour' in kwargs and kwargs['vehicle_hour']:
+            tavaghof.vehicle_hour=kwargs["vehicle_hour"]
+ 
+
+        if 'description' in kwargs and kwargs['description']:
+            tavaghof.descriptin=kwargs["description"]
+
+                
         (result,message,tavaghof)=tavaghof.save()
         return result,message,tavaghof
 
