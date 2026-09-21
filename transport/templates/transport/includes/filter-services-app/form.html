@@ -1,16 +1,16 @@
 {% load static %}
-<div id="accordion-add-oil-service-form" class="rtl text-right farsi">
-  <div class="card" id="add-oil-service-app">
+<div id="accordion-add-filter-service-form" class="rtl text-right farsi">
+  <div class="card" id="add-filter-service-app">
     <div class="card-header">
       <h5 class="text-center">
         <button
           class="btn btn-link"
           data-toggle="collapse"
-          data-target="#collapse-add-oil-service-form"
+          data-target="#collapse-add-filter-service-form"
           aria-expanded="true"
-          aria-controls="collapse-add-oil-service-form"
+          aria-controls="collapse-add-filter-service-form"
         >
-افزودن سرویس روغن
+افزودن سرویس فیلتر
  
  
         </button>
@@ -18,10 +18,10 @@
     </div>
 
     <div
-      id="collapse-add-oil-service-form"
+      id="collapse-add-filter-service-form"
       class="collapse  "
-      aria-labelledby="heading-add-oil-service-form"
-      data-parent="#accordion-add-oil-service-form"
+      aria-labelledby="heading-add-filter-service-form"
+      data-parent="#accordion-add-filter-service-form"
     >
       <div class="card-body">
       <div class="row">
@@ -33,10 +33,10 @@
         <div class="col-md-4">
 
           <div class="form-group">
-            <label for="">نوع روغن</label>
-            <select v-model="oil_type" type="text" class="form-control">
-              {% for oil_type in oil_types %}
-              <option value="{{oil_type}}">{{oil_type}}</option>
+            <label for="">نوع فیلتر</label>
+            <select v-model="filter_type" type="text" class="form-control">
+              {% for filter_type in filter_types %}
+              <option value="{{filter_type}}">{{filter_type}}</option>
               {% endfor %}
             </select>
           </div>
@@ -44,9 +44,9 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="">نوع سرویس</label>
-            <select v-model="oil_action" type="text" class="form-control"> 
-              {% for oil_action in oil_actions %}
-              <option value="{{oil_action}}">{{oil_action}}</option>
+            <select v-model="filter_action" type="text" class="form-control"> 
+              {% for filter_action in filter_actions %}
+              <option value="{{filter_action}}">{{filter_action}}</option>
               {% endfor %}
             </select>
           </div>
@@ -54,29 +54,18 @@
 
         <div class="col-md-2">
           <div class="form-group">
-            <label for="exampleInputDate">لیتراژ روغن</label>
+            <label for="exampleInputDate">تعداد</label>
 
             <input
               type="number"
               required
               class="form-control"
-              v-model="oil_liter"
+              v-model="count"
             />
           </div>
         </div>
 
-        <div class="col-md-2">
-          <div class="form-group">
-            <label for="exampleInputDate">ساعت دستگاه</label>
-
-            <input
-              type="number"
-              required
-              class="form-control"
-              v-model="vehicle_hour"
-            />
-          </div>
-        </div>
+        
         <div class="md-12">
 
         </div>
@@ -85,7 +74,8 @@
           <div class="form-group">
             <label for="exampleInputDate">برآورد هزینه
               <span class="mx-2" v-text="to_price(cost)"></span>
-              {{CURRENCY}}</label>
+              {{CURRENCY}}
+            </label>
             <input
               type="number"
               required
@@ -110,28 +100,28 @@
 
         <div class="col-md-12"></div>
         <div class="col-md-3 my-3">
-          <div v-if="!confirm_clear_oils">
-            <button class="btn btn-success" @click="add_oil()">
+          <div v-if="!confirm_clear_filters">
+            <button class="btn btn-success" @click="add_filter()">
               <i class="fa fa-plus mx-2"></i>
-              افزودن سرویس روغن
+              افزودن سرویس فیلتر
             </button>
           </div>
 
-          <div v-if="!confirm_clear_oils" class="mt-2">
-            <button class="btn btn-danger" @click="confirm_clear_oils=true">
+          <div v-if="!confirm_clear_filters" class="mt-2">
+            <button class="btn btn-danger" @click="confirm_clear_filters=true">
               <i class="fa fa-plus mx-2"></i>
               حذف همه
             </button>
           </div>
-          <div v-if="confirm_clear_oils">
-            <h5>همه خدمات روغن حذف شوند؟</h5>
-            <button class="btn btn-danger" @click="clear_oils()">
+          <div v-if="confirm_clear_filters">
+            <h5>همه خدمات فیلتر حذف شوند؟</h5>
+            <button class="btn btn-danger" @click="clear_filters()">
               <i class="fa fa-plus mx-2"></i>
 
               حذف کن
             </button>
 
-            <button class="btn btn-secondary" @click="confirm_clear_oils=false">
+            <button class="btn btn-secondary" @click="confirm_clear_filters=false">
               <i class="fa fa-plus mx-2"></i>
 
               خیر

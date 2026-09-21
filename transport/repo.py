@@ -631,42 +631,25 @@ class FilterServiceRepo():
             return result,message,filter_service
 
         filter_service=FilterService()
-        if 'title' in kwargs:
-            filter_service.title=kwargs["title"]
-            if len(FilterService.objects.filter(title=filter_service.title))>0:
-                message='نام تکراری برای وسیله نقلیه جدید'
-                return FAILED,message,None
-        if 'owner_id' in kwargs:
-            filter_service.owner_id=kwargs["owner_id"]
-        if 'brand_name' in kwargs:
-            filter_service.brand_name=kwargs["brand_name"]
-        if 'model_name' in kwargs:
-            filter_service.model_name=kwargs["model_name"]
-        if 'filter_service_type' in kwargs:
-            filter_service.filter_service_type=kwargs["filter_service_type"]
-        if 'filter_service_color' in kwargs:
-            filter_service.filter_service_color=kwargs["filter_service_color"]
-        if 'filter_service_code' in kwargs:
-            filter_service.filter_service_code=kwargs["filter_service_code"]
-        if 'plaque' in kwargs:
-            filter_service.plaque=kwargs["plaque"]
-        if 'year' in kwargs:
-            filter_service.year=kwargs["year"]
-        if 'kilometer' in kwargs:
-            filter_service.kilometer=kwargs["kilometer"]
-        if 'driver_id' in kwargs:
-            driver_id=kwargs["driver_id"]
-            if driver_id is not None and driver_id>0:
-                driver=DriverRepo(request=self.request).driver(driver_id=driver_id)
-                if driver is not None:
-                    filter_service.driver=driver.person_account.person.full_name
-        
-        if 'price' in kwargs:
-            filter_service.price=kwargs["price"]
-        
-        if 'description' in kwargs:
+         
+        if 'work_shift_id' in kwargs and kwargs['work_shift_id']:
+            filter_service.work_shift_id=kwargs["work_shift_id"]
+
+        if 'filter_type' in kwargs and kwargs['filter_type']:
+            filter_service.filter_type=kwargs["filter_type"]
+
+        if 'filter_action' in kwargs and kwargs['filter_action']:
+            filter_service.filter_action=kwargs["filter_action"]
+
+        if 'count' in kwargs and kwargs['count']:
+            filter_service.count=kwargs["count"]
+ 
+        if 'cost' in kwargs and kwargs['cost']:
+            filter_service.cost=kwargs["cost"]
+
+        if 'description' in kwargs and kwargs['description']:
             filter_service.description=kwargs["description"]
-                
+            
         (result,message,filter_service)=filter_service.save()
         return result,message,filter_service
   

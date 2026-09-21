@@ -13,3 +13,67 @@
         }
     })
 </script>
+
+{% if add_filter_service_form %}
+<script>
+  let add_filter_service_app = new Vue({
+    el: "#add-filter-service-app",
+    data: {
+      filter_type: "",
+      filter_action: "",
+      count: 0,
+      cost: 0,
+      description: "",
+      confirm_clear_filters: false,
+      message: { show: false },
+      waiting: false,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      clear_filters:function(){
+        console.log("clear_filters");
+
+      },
+      add_filter: function () {
+        console.log("add_filter");
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          filter_type: this.filter_type,
+          filter_action: this.filter_action,
+          count: parseInt(this.count),
+          cost: parseInt(this.cost),
+          work_shift_id: parseInt("{{work_shift.id}}"),
+          description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_filter_service' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_filter_service_app,
+              "موفق",
+              data.message,
+              "success",
+              5000,
+            );
+            if (typeof filter_services_app != "undefined") {
+              filter_services_app.filter_services.push(data.filter_service);
+            } else {
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(filter_services_app, "خطا", data.message, "danger", 5000);
+          }
+        });
+      },
+    },
+  });
+</script>
+{% endif %}

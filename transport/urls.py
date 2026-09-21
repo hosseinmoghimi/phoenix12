@@ -47,6 +47,7 @@ urlpatterns = [
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
+    path('add-filter-service/',login_required(apis.AddFilterServiceApi.as_view()),name="add_filter_service"),
 
     path('oil-services/',login_required(views.OilServicesView.as_view()),name="oil_services"),
     path('add-oil-service/',login_required(apis.AddOilServiceApi.as_view()),name="add_oil_service"),

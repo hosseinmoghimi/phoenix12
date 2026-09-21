@@ -37,6 +37,15 @@ class AddVehicleStatusImageForm(forms.Form):
     vehicle_status_id=forms.IntegerField(required=True)
     title=forms.CharField(max_length=100, required=True)
 
+class AddFilterServiceForm(forms.Form):
+    work_shift_id=forms.IntegerField(required=True)
+    cost=forms.IntegerField(required=False)
+    count=forms.IntegerField(required=True)
+    filter_type=forms.CharField(max_length=50, required=True)
+    filter_action=forms.CharField(max_length=50, required=True)
+    description=forms.CharField(max_length=500, required=False)
+ 
+
 class AddOilServiceForm(forms.Form):
     work_shift_id=forms.IntegerField(required=True)
     cost=forms.IntegerField(required=False)

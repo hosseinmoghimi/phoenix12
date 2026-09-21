@@ -365,6 +365,31 @@ class AddOilServiceApi(APIView):
         return JsonResponse(context)
 
 
+class AddFilterServiceApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_filter_service_form=AddFilterServiceForm(request.POST)
+        if add_filter_service_form.is_valid():
+            log=333
+            cd=add_filter_service_form.cleaned_data 
+            from .repo import FilterServiceRepo
+            from .serializers import FilterServiceSerializer
+            result,message,filter_service=FilterServiceRepo(request=request).add_filter_service(**cd)
+            if filter_service is not None:
+                context['filter_service']=FilterServiceSerializer(filter_service).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddKarkerdApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

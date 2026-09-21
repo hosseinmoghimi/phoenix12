@@ -1326,6 +1326,11 @@ class WorkShiftView(View):
         context[WIDE_LAYOUT]=True
         if request.user.has_perm(APP_NAME+".add_oilservice"):
             context['add_oil_service_form']=AddOilServiceForm()
+
+            
+        if request.user.has_perm(APP_NAME+".add_filterservice"):
+            context['add_filter_service_form']=AddFilterServiceForm()
+
         return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
 
 
@@ -1367,6 +1372,9 @@ class OilServicesView(View):
 
         return render(request,TEMPLATE_ROOT+"oil-services.html",context) 
 
+
+
+ 
 
 class TavaghofsView(View):
     def get(self,request,*args, **kwargs):
