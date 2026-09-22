@@ -129,6 +129,11 @@ class MaintenanceInvoice(Invoice):
     # vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.PROTECT)
     # maintenance_type=models.CharField(_("سرویس"),choices=MaintenanceTypesEnum.choices, max_length=100)
     manual_amount=models.IntegerField(_("مبلغ"),default=0)
+    @property
+    def maintenance_title(self):
+        sss=self.maintenance_set.first()
+        if sss is not None:
+            return sss.title
     class Meta:
         verbose_name = _("MaintenanceInvoice")
         verbose_name_plural = _("MaintenanceInvoices")

@@ -26,7 +26,7 @@ class MaintenanceInvoiceSerializer(serializers.ModelSerializer):
        vehicle=VehicleSerializer()
        class Meta:
         model = MaintenanceInvoice
-        fields = ['id','title','vehicle','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
+        fields = ['id','title','maintenance_title','vehicle','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
   
   
 class VehicleSerializer2(serializers.ModelSerializer):

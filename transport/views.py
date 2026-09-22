@@ -858,6 +858,7 @@ class MaintenanceInvoicesView(View):
 class MaintenanceInvoiceView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        from .repo import MaintenanceInvoiceRepo
         maintenance_invoice =MaintenanceInvoiceRepo(request=request).maintenance_invoice(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['maintenance_invoice']=maintenance_invoice
