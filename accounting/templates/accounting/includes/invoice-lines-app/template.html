@@ -247,7 +247,8 @@
                                         v-text="to_price(sum_prices())"></div>  -->
                                         {% if SHOW_PRICE %}
                                         {% if invoice %}
-                                        {{ invoice.amount|to_price }}
+                                        <!-- {{ invoice.amount|to_price }} -->
+                                        <span v-text="to_price(lines_total())"></span>
                                         {% else %}
                                         <span v-text="to_price(lines_total())"></span>
                                         {% endif %}

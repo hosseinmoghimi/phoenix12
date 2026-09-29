@@ -58,7 +58,10 @@
                                    
                                       
                                 <div v-for="person in [person_account.person]">
-                                    {% include "accounting/includes/person-app/media.html" %}
+                                    <div v-if="person">
+
+                                        {% include "accounting/includes/person-app/media.html" %}
+                                    </div>
 
                                 </div>
                                 </td>
