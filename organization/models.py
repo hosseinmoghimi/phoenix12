@@ -55,7 +55,7 @@ class OrganizationalUnit(Page,LinkHelper):
         if self.person_account.thumbnail_origin is not None and not self.person_account.thumbnail_origin=='':
             return self.person_account.thumbnail
         
-        if self.person_account.person.image_origin is not None and not self.person_account.person.image_origin=='':
+        if self.person_account.person is not None and self.person_account.person.image_origin is not None and not self.person_account.person.image_origin=='':
             return self.person_account.person.image
         
         try:
