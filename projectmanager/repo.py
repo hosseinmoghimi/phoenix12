@@ -358,6 +358,7 @@ class ProjectRepo():
         if old is not None:
             project.invoices.remove(invoice)
             project.save() 
+            project.normalize()
             result=SUCCEED
             message='با موفقیت حذف شد.'
             return result,message,invoice
@@ -366,6 +367,7 @@ class ProjectRepo():
             
         project.invoices.add(invoice.id) 
         result=SUCCEED
+        project.normalize()
         message='با موفقیت اضافه شد.'
         return result,message,invoice
 
