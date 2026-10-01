@@ -732,17 +732,26 @@ class PersonAccountRepo(Repo):
             message="دسترسی غیر مجاز"
             return result,message,person_account
         person_account=PersonAccount()
+        person_account.parent_id=None
         
         
     
+    
+        if 'title' in kwargs and kwargs['title']:
+            person_account.title=kwargs['title']
 
         if 'person' in kwargs:
             person_account.person=kwargs['person']
 
         if 'nature' in kwargs:
             person_account.nature=kwargs['nature']
-        if 'person_id' in kwargs:
+
+        if 'person_id' in kwargs and kwargs['person_id']:
             person_account.person_id=kwargs['person_id']
+
+        if 'parent_id' in kwargs and kwargs['parent_id']:
+            person_account.parent_id=kwargs['parent_id']
+
         if 'person_category' in kwargs:
             person_account.person_category=kwargs['person_category']
         if 'person_category_id' in kwargs:

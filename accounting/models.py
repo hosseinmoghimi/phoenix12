@@ -105,7 +105,7 @@ class Account(CorePage,LinkHelper,PersonAccountHelper):
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)
     type=models.CharField(_("نوع"),choices=AccountTypeEnum.choices, max_length=50)
     nature=models.CharField(_("ماهیت"),choices=AccountNatureEnum.choices,default=AccountNatureEnum.FREE, max_length=50)
-    level=models.IntegerField(_("level"))
+    level=models.IntegerField(_("level"),default=0)
     bedehkar=models.IntegerField(_("bedehkar"),default=0)
     bestankar=models.IntegerField(_("bestankar"),default=0)
     balance=models.IntegerField("balance",default=0)
@@ -172,7 +172,6 @@ class Account(CorePage,LinkHelper,PersonAccountHelper):
 
         result=FAILED
         message="خطا"
-        
         global ACCOUNT_LEVEL_NAMES
         from .server_settings import ACCOUNT_LEVEL_NAMES 
         self.type=AccountTypeEnum.GROUP
@@ -281,7 +280,7 @@ class Account(CorePage,LinkHelper,PersonAccountHelper):
  
     
 class PersonAccount(Account,LinkHelper):
-    person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
+    person=models.ForeignKey("authentication.person",null=True,blank=True, verbose_name=_("person"), on_delete=models.PROTECT)
     person_category=models.ForeignKey("personcategory", verbose_name=_("person_category"), on_delete=models.PROTECT)
     
     
@@ -291,7 +290,7 @@ class PersonAccount(Account,LinkHelper):
             return f"{MEDIA_URL}{self.thumbnail_origin}"
          
         if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
-            if self.person.image_origin is not None and not self.person.image_origin=='':
+            if self.person is not None and self.person.image_origin is not None and not self.person.image_origin=='':
                 return self.person.image
             try:
                 return f"{STATIC_URL}{self.app_name}/img/pages/thumbnail/{self.class_name}.png/"
@@ -328,8 +327,14 @@ class PersonAccount(Account,LinkHelper):
     def save(self,*args, **kwargs):
         
         result,message,person_account=FAILED,"",None
+
         p_a=PersonAccount.objects.filter(person_id=self.person_id).filter(person_category_id=self.person_category_id).first()
-        if p_a is not None and self.id is None:
+        from authentication.models import Person
+        person=Person.objects.filter(pk=self.person_id).first()
+        if person is None:
+            pass
+
+        elif p_a is not None and self.id is None:
             message="از قبل برای این دسته بندی و شخص حساب مرتبط ایجاد شده است. "
             return result,message,person_account
 
@@ -338,6 +343,7 @@ class PersonAccount(Account,LinkHelper):
             self.parent=person_category.account
         if self.code is None or self.code==0 or self.code=='':
             self.code=self.generate_code()
+            
         if self.title is None or self.title=="":
             self.title=f'{self.person} # {self.category}'
         
@@ -345,7 +351,7 @@ class PersonAccount(Account,LinkHelper):
             self.app_name=APP_NAME
         if self.class_name is None or self.class_name=='':
             self.class_name='personaccount'
-        result,message,account=super(PersonAccount,self).save(*args, **kwargs)
+        result,message,person_account=super(PersonAccount,self).save(*args, **kwargs)
     
         if self.id is not None:
             result=SUCCEED

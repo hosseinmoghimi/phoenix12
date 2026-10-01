@@ -154,7 +154,9 @@ def AccountContext(request,account,*args, **kwargs):
     context.update(AddFinancialDocumentLineContext(request=request,account=account))       
     person_account=PersonAccountRepo(request=request).person_account(pk=account.pk)
     if person_account is not None:
-        context.update(PersonContext(request=request,person=person_account.person))
+        if person_account.person is not None:
+
+            context.update(PersonContext(request=request,person=person_account.person))
         account=person_account
 
     bank_account=BankAccountRepo(request=request).bank_account(pk=account.pk)
