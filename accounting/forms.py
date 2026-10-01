@@ -14,7 +14,7 @@ class EditPersonCategoryForm(forms.Form):
 
     
 class AddVarizInfoForm(forms.Form):
-    variz_info=forms.CharField(max_length=100, required=True)
+    variz_info=forms.CharField(max_length=200, required=True)
     invoice_id=forms.IntegerField(required=True) 
 
 
