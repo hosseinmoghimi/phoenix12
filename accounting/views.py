@@ -1630,7 +1630,11 @@ class InvoiceView(View):
         context['invoice_s']=invoice_s
         context.update(InvoiceContext(request=request,invoice=invoice,warehouse=True))
 
-        
+        bank_accounts=BankAccountRepo(request=request).list()
+        bank_accounts_s=json.dumps(BankAccountSerializer(bank_accounts,many=True).data)
+        context['bank_accounts_s']=bank_accounts_s
+  
+        context['add_variz_info_form']=AddVarizInfoForm()
   
 
         return render(request,TEMPLATE_ROOT+"invoice.html",context)

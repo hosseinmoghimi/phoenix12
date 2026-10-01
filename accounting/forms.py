@@ -13,6 +13,10 @@ class EditPersonCategoryForm(forms.Form):
     code_length=forms.IntegerField(required=True)
 
     
+class AddVarizInfoForm(forms.Form):
+    variz_info=forms.CharField(max_length=100, required=True)
+    invoice_id=forms.IntegerField(required=True) 
+
 
 class EditFinancialDocumentLineForm(forms.Form):
     financial_document_line_id=forms.IntegerField(required=True)

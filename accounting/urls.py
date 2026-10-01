@@ -106,6 +106,7 @@ urlpatterns = [
     path('invoice-estelam/<int:pk>/',login_required(views.InvoiceEstelamView.as_view()),name="invoice_estelam"),
     path('invoice-official-print/<int:pk>/',login_required(views.InvoiceOfficialPrintView.as_view()),name="invoice_official_print"),
     path('invoice_line/<int:pk>/',login_required(views.InvoiceLineView.as_view()),name="invoiceline"),
+    path('add-variz-info/',login_required(apis.AddVarizInfoApi.as_view()),name="add_variz_info"),
 
     
     path('categories/',login_required(views.CategoriesView.as_view()),name="categories"),

@@ -42,6 +42,30 @@ class AddProductToCategoryApi(APIView):
         return JsonResponse(context)
 
 
+class AddVarizInfoApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_variz_info_form=AddVarizInfoForm(request.POST)
+        if add_variz_info_form.is_valid():
+            log=333
+            cd=add_variz_info_form.cleaned_data
+            result,message,variz_info=InvoiceRepo(request=request).add_variz_info(**cd)
+            if result==SUCCEED:
+                context['variz_info']=variz_info
+                
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
 class AddPersonAccountApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

@@ -2835,6 +2835,26 @@ class InvoiceRepo(FinancialEventRepo):
         objects=self.objects.filter(parent_id=None)
         return objects.all()
 
+    def add_variz_info(self,*args, **kwargs):
+        result,message,variz_info=FAILED,"",''
+        
+        if not self.request.user.has_perm(APP_NAME+".change_invoice"):
+            message="دسترسی غیر مجاز"
+            return result,message,''
+
+        if "invoice_id" in kwargs and kwargs["invoice_id"]:
+            invoice_id=kwargs['invoice_id']
+
+        if "variz_info" in kwargs:
+            variz_info=kwargs['variz_info']
+        invoice=Invoice.objects.filter(pk=invoice_id).first()
+        if invoice is not None:
+            invoice.variz_info=variz_info
+            invoice.save()
+            return SUCCEED,'اطلاعات واریزی با موفقیت ثبت شد.',variz_info
+        if invoice is None:
+            message='فاکتور مورد نظر پیدا نشد.'
+        return result,message,variz_info
     def invoice(self,*args, **kwargs):
         if "invoice_id" in kwargs and kwargs["invoice_id"] is not None:
             return self.objects.filter(pk=kwargs['invoice_id']).first()  

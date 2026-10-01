@@ -961,6 +961,7 @@ class Cheque(FinancialEvent,ImageHelper):
 
 class Invoice(FinancialEvent):
     invoice_no=models.IntegerField(_("invoice_no"),default=0)
+    variz_info=models.CharField(_("variz_info"),null=True,blank=True, max_length=200)
     # def get_absolute_url(self):
     #     return reverse(APP_NAME+":invoice",kwargs={'invoice_no':self.invoice_no})
     @property
