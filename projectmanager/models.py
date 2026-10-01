@@ -56,7 +56,7 @@ class Project(Event,LinkHelper,DateHelper):
             message="پروژه با موفقیت اضافه شد."
         except:
             message="خطا در ذخیره سازی"
-
+        self.normalize()
         return (result,message,project)
     @property
     def parent_project(self):
