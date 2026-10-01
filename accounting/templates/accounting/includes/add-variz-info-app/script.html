@@ -20,8 +20,8 @@
                     variz_info+=" شماره حساب "+this.bank_account.account_no
                 if (this.bank_account.shaba_no)
                     variz_info+=" شماره شبا "+this.bank_account.shaba_no
-                if (this.bank_account.shaba_no)
-                    variz_info+=" به نام "+this.bank_account.title
+                if (this.bank_account.title)
+                    variz_info+=" "+this.bank_account.title
 
                 let payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
