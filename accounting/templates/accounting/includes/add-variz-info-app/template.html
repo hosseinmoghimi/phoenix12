@@ -22,7 +22,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">حساب بانکی</label>
-                                    <select name="" class="form-control" v-model="bank_account">
+                                    <select @input="change1()" name="" class="form-control" v-model="bank_account">
                                         <option v-for="bank_account in bank_accounts" :value="bank_account" v-text="bank_account.title"></option>
 
                                     </select>
@@ -32,7 +32,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">شماره کارت</label>
-                                    <input type="text" class="form-control" v-model="bank_account.card_no">
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.card_no">
                                 </div>
                             </div>
 
@@ -40,7 +40,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">شماره حساب</label>
-                                    <input type="text" class="form-control" v-model="bank_account.account_no">
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.account_no">
                                 </div>
                             </div>
 
@@ -48,11 +48,17 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">شماره شبا</label>
-                                    <input type="text" class="form-control" v-model="bank_account.shaba_no">
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.shaba_no">
                                 </div>
                             </div>
 
-
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">اطلاعات واریزی</label>
+                                    <input type="text" class="form-control" v-model="variz_info">
+                                     
+                                </div>
+                            </div>
                          
                             <div class="col-md-4"></div>
                             <div class="col-md-4"></div>
@@ -60,8 +66,8 @@
                                 <button @click="add_variz_info()" class="btn btn-success">
                                     <i class="fa fa-plus ml-2"></i>ثبت اطلاعات واریزی برای این فاکتور
                                 </button> 
-                                <div >
-                                     
+                                <div class="my-3" >
+                                     {% include "utility/includes/message.html" %}
                                 </div>
                             </div>
                         </div>

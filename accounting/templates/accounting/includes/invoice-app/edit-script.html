@@ -29,6 +29,7 @@ let invoice_edit_app_event_time= invoice_edit_app_event_datetime.substring(10,19
       invoice_lines: invoice_lines_for_edit_invoice_app,
 
       discount: parseInt("{{invoice.discount}}"),
+      variz_info: (`{{invoice.variz_info}}`),
       tax_percentage: parseInt("{{invoice.tax_percentage}}"),
       shipping_fee: parseInt("{{invoice.shipping_fee}}"),
 
@@ -123,6 +124,7 @@ let invoice_edit_app_event_time= invoice_edit_app_event_datetime.substring(10,19
           status: invoice_edit_app.status,
           payment_method: invoice_edit_app.payment_method,
           title: invoice_edit_app.title,
+          variz_info: invoice_edit_app.variz_info,
           discount: parseInt(this.discount),
           tax_percentage: parseInt(this.tax_percentage),
           shipping_fee: parseInt(this.shipping_fee),

@@ -2945,9 +2945,13 @@ class InvoiceRepo(FinancialEventRepo):
     
         if invoice is None:
             message="فاکتور پیدا نشد."
-            return result,message,invoice
-        if 'title' in kwargs:
+            return result,message,invoice 
+
+        if 'title' in kwargs and kwargs['title']:
             invoice.title=kwargs['title'] 
+
+        if 'variz_info' in kwargs and kwargs['variz_info']:
+            invoice.variz_info=kwargs['variz_info'] 
 
 
 
