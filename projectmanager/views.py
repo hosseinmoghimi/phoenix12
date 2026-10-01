@@ -190,7 +190,7 @@ class ProjectTreeChartView(View):
                 'id': project.id,
                 'pre_title': "",
                 'color': project.color,
-                'sub_title':to_price(project.amount),
+                'sub_title':to_price(project.amount) if project.amount>0  else "",
                 })
 
         context['pages_s'] = json.dumps(pages)
