@@ -87,6 +87,8 @@ class Page(models.Model,LinkHelper,DateTimeHelper,ImageHelper):
             self.class_name="page"
         if self.app_name is None or self.app_name=="":
             self.app_name="core"
+        if self.color is None or self.color=="":
+            self.color="primary"
         super(Page,self).save()
         page=self
         message=''
