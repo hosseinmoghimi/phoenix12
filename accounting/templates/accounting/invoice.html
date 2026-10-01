@@ -18,14 +18,15 @@
             {% include 'accounting/includes/add-invoice-line-app/template.html' %}
           </div>
         {% endif %}
-        {% if add_variz_info_form %}
+       
+        <div class="col-md-12">
+          {% include 'accounting/includes/invoice-lines-app/template.html' %}
+        </div>
+         {% if add_variz_info_form %}
           <div class="col-md-12">
             {% include 'accounting/includes/add-variz-info-app/template.html' %}
           </div>
         {% endif %}
-        <div class="col-md-12">
-          {% include 'accounting/includes/invoice-lines-app/template.html' %}
-        </div>
         {% if warehouse_sheets %}
           
         <div class="col-md-12">

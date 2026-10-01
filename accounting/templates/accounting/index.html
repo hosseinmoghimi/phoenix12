@@ -1,5 +1,33 @@
 {% extends "accounting/layout.html" %} {% load static %} {% block content %}
 <div class="row rtl farsi">
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:new_invoice'  %}">
+      <img
+        src="{% static 'accounting/img/invoice.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">فاکتور جدید</h6>
+    </a>
+  </div>
+</div>
+<hr>
+  <div class="row rtl">
+ 
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:invoices'  %}">
+      <img
+        src="{% static 'accounting/img/invoice.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">فاکتور ها</h6>
+    </a>
+  </div> 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:products'  %}">
       <img
@@ -11,6 +39,51 @@
       <h6 class="text-center">کالا ها</h6>
     </a>
   </div>
+   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:person_accounts' %}">
+      <img
+        src="{% static 'accounting/img/person.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">حساب های اشخاص</h6>
+    </a>
+  </div>
+ <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:bank_accounts' %}">
+      <img
+        src="{% static 'core/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">حساب های بانکی</h6>
+    </a>
+  </div>
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'accounting:cheques'  %}">
+      <img
+        src="{% static 'accounting/img/cheques.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">چک ها</h6>
+    </a>
+  </div>
+  
+</div>
+
+
+<hr>
+
+  <div class="row rtl">
+ 
+
+ 
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:categories' %}">
@@ -71,17 +144,7 @@
     </a>
   </div>
 
-  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'accounting:person_accounts' %}">
-      <img
-        src="{% static 'accounting/img/person.png' %}"
-        width="64em"
-        class="mb-2"
-        alt=""
-      />
-      <h6 class="text-center">حساب های اشخاص</h6>
-    </a>
-  </div>
+ 
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:banks' %}">
@@ -95,17 +158,7 @@
     </a>
   </div>
 
-  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'accounting:bank_accounts' %}">
-      <img
-        src="{% static 'core/img/logo.png' %}"
-        width="64em"
-        class="mb-2"
-        alt=""
-      />
-      <h6 class="text-center">حساب های بانکی</h6>
-    </a>
-  </div>
+ 
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:assets' %}">
@@ -178,30 +231,9 @@
     </a>
   </div>
 
-  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'accounting:invoices'  %}">
-      <img
-        src="{% static 'accounting/img/invoice.png' %}"
-        width="64em"
-        class="mb-2"
-        alt=""
-      />
-      <h6 class="text-center">فاکتور ها</h6>
-    </a>
-  </div>
+
 
   
-  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'accounting:new_invoice'  %}">
-      <img
-        src="{% static 'accounting/img/invoice.png' %}"
-        width="64em"
-        class="mb-2"
-        alt=""
-      />
-      <h6 class="text-center">فاکتور جدید</h6>
-    </a>
-  </div>
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:financial_events'  %}">
@@ -230,17 +262,6 @@
 
 
   
-  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'accounting:cheques'  %}">
-      <img
-        src="{% static 'accounting/img/cheques.png' %}"
-        width="64em"
-        class="mb-2"
-        alt=""
-      />
-      <h6 class="text-center">چک ها</h6>
-    </a>
-  </div>
 
   <!-- <div class="col-6 col-md-3 col-lg-2 text-center my-3">
         <a href="{% url 'accounting:add_financial_event'  %}">
@@ -264,6 +285,10 @@
   </div>
 
 
+</div>
+<hr>
+
+  <div class="row rtl">
   
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'accounting:report'  %}">
@@ -276,6 +301,14 @@
       <h6 class="text-center">گزارش</h6>
     </a>
   </div>
+
+
+  
+</div>
+<hr>
+
+  <div class="row rtl">
+ 
 
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
