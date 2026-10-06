@@ -83,7 +83,27 @@ def AddOilingMaintenanceDetailContext(request):
     context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
     context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
     return context
+
  
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+    
+
+    vehicles=VehicleRepo(request=request).list(search_for=search_for)
+    
+    if len(vehicles)>0:
+        context['vehicles']=vehicles
+        context['expand_vehicles']=True
+        context['vehicles_s']=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        WAS_FOUND=True
+
+ 
+
+
+    context['WAS_FOUND']=WAS_FOUND
+    return context
+
 class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

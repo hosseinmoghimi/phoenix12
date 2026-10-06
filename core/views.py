@@ -270,9 +270,10 @@ class SearchView(View):
                 context.update(blog_SearchContext(request=request,search_for=search_for))
                  
         
-            
-            
-             
+            if app_name=='transport' or SEARCH_IN_ALL_APPS:
+                from transport.views import SearchContext as transport_SearchContext
+                context.update(transport_SearchContext(request=request,search_for=search_for))
+
         context['message']=message
         context['search_for']=search_for
         context['log']=log
