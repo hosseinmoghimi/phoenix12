@@ -1,0 +1,24 @@
+<script>
+    let issues_for_issues_app=[]
+
+</script>
+{% if issues_s %}
+  <script>
+
+      issues_for_issues_app=JSON.parse("{{issues_s|escapejs}}")
+  </script>
+{% endif %}
+<script>
+    
+    let issues_app = new Vue({
+        el: "#issues-app",
+        data: {
+            issues: issues_for_issues_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

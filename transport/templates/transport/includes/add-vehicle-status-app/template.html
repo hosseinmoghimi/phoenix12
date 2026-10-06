@@ -1,0 +1,217 @@
+<div id="accordion-add-oiling" class="rtl text-right farsi">
+  <div class="card" id="add-vehicle-status-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-oiling"
+          aria-expanded="true"
+          aria-controls="collapse-add-oiling"
+        >
+
+          افزودن وضعیت دستگاه
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-oiling"
+      class="collapse {% if expand_new_vehicle_status %} show {% endif %}"
+      aria-labelledby="heading-add-oiling"
+      data-parent="#accordion-add-oiling"
+    >
+      <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+          <div class="form-group">
+            <label for="">دستگاه</label>
+            <input
+              placeholder="کد دستگاه"
+              type="text"
+              required
+              class="form-control"
+              v-model="vehicle_code"
+            />
+            <select v-model="vehicle_code" type="text" class="form-control">
+              {% for vehicle in vehicles %}
+              <option value="{{vehicle.vehicle_code}}">
+                {{vehicle.vehicle_code}} - {{vehicle.title}}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">کیلومتر  
+                <span v-text="separate(kilometer)"></span>
+              </label>
+              <input v-model="kilometer" type="number" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">ساعت دستگاه  
+                <span v-text="separate(hour)"></span>
+              </label>
+              <input v-model="hour" type="number" class="form-control" />
+            </div>
+          </div>
+
+          
+                
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ</label>
+              <date-picker v-model="event_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="event_date"
+              />
+            </div>
+           
+            <div class="form-group">
+              <label for="exampleInputDate">زمان</label>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="event_time"
+              />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">موقعیت مکانی</label>
+              <input v-model="location" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">موتور</label>
+              <input v-model="motor" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">گیربکس</label>
+              <input v-model="gear_box" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">زیروبند</label>
+              <input v-model="ziroband" type="text" class="form-control" />
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">کابین</label>
+              <input v-model="cabin" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">کولر</label>
+              <input v-model="cooler" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">بخاری</label>
+              <input v-model="heater" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">سیم کشی</label>
+              <input v-model="wiring" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">چراغ ها</label>
+              <input v-model="light" type="text" class="form-control" />
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">هیدرولیک</label>
+              <input v-model="hydrolic" type="text" class="form-control" />
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">پاکت</label>
+              <input v-model="pakat" type="text" class="form-control" />
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">کمپرس</label>
+              <input v-model="compress" type="text" class="form-control" />
+            </div>
+          </div>
+          
+         
+
+          
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">توضیحات</label>
+              <input v-model="description" type="text" class="form-control" />
+            </div>
+          </div>
+
+
+          <div class="col-12">
+            <button class="btn btn-success" @click="add_vehicle_status()">
+              افزودن
+            </button>
+          </div>
+         
+
+
+          <div class="col-md-12">
+
+            <div class="mx-3 my-3">
+              {% include "utility/includes/message.html" %}
+            </div>
+          </div>
+ 
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

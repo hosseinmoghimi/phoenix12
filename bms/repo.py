@@ -66,8 +66,6 @@ class FeederRepo():
         return SUCCEED,'',[]
     
 
-
-
 def json_to_feeder(json_data):
     from .models import Feeder
     new={}
@@ -82,7 +80,6 @@ def json_to_feeder(json_data):
     feeder=Feeder(**new)
     return feeder
   
- 
 
 def json_to_relay(json_data):
     from .models import Relay
@@ -113,7 +110,6 @@ def json_to_command(json_data):
     command=Command(**new)
     return command
   
- 
 
 class LogRepo():
      

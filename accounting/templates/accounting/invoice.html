@@ -18,9 +18,15 @@
             {% include 'accounting/includes/add-invoice-line-app/template.html' %}
           </div>
         {% endif %}
+       
         <div class="col-md-12">
           {% include 'accounting/includes/invoice-lines-app/template.html' %}
         </div>
+         {% if add_variz_info_form %}
+          <div class="col-md-12">
+            {% include 'accounting/includes/add-variz-info-app/template.html' %}
+          </div>
+        {% endif %}
         {% if warehouse_sheets %}
           
         <div class="col-md-12">
@@ -83,6 +89,7 @@
 {% endblock %} 
 {% block script %}
 {% include 'accounting/includes/invoice-app/script.html' %}
+{% include 'accounting/includes/add-variz-info-app/script.html' %}
 {% if warehouse_sheets %}
   
 {% include 'warehouse/includes/warehouse-sheets-app/script.html' %} 

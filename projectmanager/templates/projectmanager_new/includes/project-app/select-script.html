@@ -1,0 +1,30 @@
+<script>
+    select_project_by_id = function (project_id) {
+        let payload2 = { csrfmiddlewaretoken: csrfmiddlewaretoken, project_id: project_id  }
+        return $.post("{% url 'projectmanager:select_project' %}", payload2)
+    }
+</script>
+
+
+<script>
+    let select_project_app=new Vue({
+        el:"#select-project-app",
+        data:{
+            project_id:0,
+            project:{},
+        },
+        methods:{
+            select_project:function(){
+                select_project_by_id(select_project_app.project_id).done(data=>{
+                    if(data.result==='SUCCEED'){
+                        select_project_app.project=data.project
+                    }
+                    else{
+                        select_project_app.project={}
+
+                    }
+                })
+            }
+        }
+    })
+</script>

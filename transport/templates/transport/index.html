@@ -1,21 +1,123 @@
 {% extends "core/layout.html" %} {% load static %} {% block content %}
 <div class="row rtl farsi">
+  
+
+  
+  
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'transport:vehicles' %}">
+    <a href="{% url 'transport:new_service' %}">
       <img
-        src="{% static 'transport/img/logo.png' %}"
+        src="{% static 'transport/img/oil-service.png' %}"
         width="64em"
         class="mb-2"
         alt=""
       />
-      <h6 class="text-center">وسایل نقلیه</h6>
+      <h6 class="text-center">افزودن گزارش سرویس روغن و گریس دستگاه</h6>
     </a>
   </div>
+
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:new_anbar_product' %}">
+      <img
+        src="{% static 'transport/img/anbar.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">افزودن برگه انبار</h6>
+    </a>
+  </div>
+
+ 
+   
+
+   
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:new_work_shift' %}">
+      <img
+        src="{% static 'transport/img/work-shift.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">شیفت کاری جدید</h6>
+    </a>
+  </div>
+
+
+
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:new_vehicle_status' %}">
+      <img
+        src="{% static 'transport/img/status.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">افزودن گزارش وضعیت دستگاه</h6>
+    </a>
+  </div>
+
+    
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:new_maintenance' %}">
+      <img
+        src="{% static 'transport/img/repair.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">افزودن گزارش تعمیر و نگهداری دستگاه</h6>
+    </a>
+  </div>
+
+
+   
+   
+
+
+</div>
+
+<hr>
+<div class="row rtl farsi">
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:vehicles' %}">
+      <img
+        src="{% static 'transport/img/dumpers.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">دستگاه ها</h6>
+    </a>
+  </div>
+
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:drivers' %}">
+      <img
+        src="{% static 'transport/img/driver.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">راننده ها</h6>
+    </a>
+  </div>
+
+
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'transport:service_mans' %}">
       <img
-        src="{% static 'transport/img/logo.png' %}"
+        src="{% static 'transport/img/service-man.png' %}"
         width="64em"
         class="mb-2"
         alt=""
@@ -24,21 +126,122 @@
     </a>
   </div>
 
-   
+
+  
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
-    <a href="{% url 'transport:maintenances' %}">
+    <a href="{% url 'transport:services' %}">
       <img
-        src="{% static 'transport/img/logo.png' %}"
+        src="{% static 'transport/img/oil-service.png' %}"
         width="64em"
         class="mb-2"
         alt=""
       />
-      <h6 class="text-center">تعمیر و نگهداری</h6>
+      <h6 class="text-center">گزارشات سرویسکار روغن و گریسکاری</h6>
     </a>
   </div>
 
 
+  
+ 
+
+   
+
+
+
+   
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:vehicle_events' %}">
+      <img
+        src="{% static 'transport/img/event.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">رویداد های دستگاه ها</h6>
+    </a>
+  </div>
+
+
+   
+ 
+
+
+
+   
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:maintenances' %}">
+      <img
+        src="{% static 'transport/img/repair.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">تعمیر و نگهداری ها</h6>
+    </a>
+  </div>
+   
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:work_shifts' %}">
+      <img
+        src="{% static 'transport/img/work-shift.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">شیفت های کاری دستگاه ها</h6>
+    </a>
+  </div>
+
+ 
+
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:vehicle_statuses' %}">
+      <img
+        src="{% static 'transport/img/status.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">وضعیت دستگاه ها</h6>
+    </a>
+  </div>
+
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:anbar_products' %}">
+      <img
+        src="{% static 'transport/img/anbar.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">گزارشات انبار</h6>
+    </a>
+  </div>
 </div>
+<hr>
+<div class="row rtl">
+  
+  <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'transport:report' %}">
+      <img
+        src="{% static 'transport/img/report.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">گزارش گیری</h6>
+    </a>
+  </div>
+
+
+
+</div>
+
 {% endblock content %} {% block script %}
 <script>
   console.log("name1: {{name1}}");

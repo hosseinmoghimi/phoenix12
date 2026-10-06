@@ -80,7 +80,7 @@ def PersonContext(request,*args, **kwargs):
     context={}
     person=PersonRepo(request=request).person(*args, **kwargs)
     if request.user.has_perm('authentication.change_person'):
-        if person.user is not None: 
+        if person is not None and person.user is not None: 
             context['login_as_form']=True 
     context['person']=person
     person_s=json.dumps(PersonSerializer(person).data)

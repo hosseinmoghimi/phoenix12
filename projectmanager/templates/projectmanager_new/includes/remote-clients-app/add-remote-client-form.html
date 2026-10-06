@@ -1,0 +1,374 @@
+<div class="text-right">
+
+    <div v-if="!show_form">
+        <button class="btn btn-info" @click="show_form=true">
+            <i class="fa fa-plus"></i>
+            افزودن
+        </button>
+    </div>
+
+    <div v-if="show_form">
+        <button class="btn btn-secondary" @click="show_form=false">
+            <i class="fa fa-plus"></i>
+            انصراف
+        </button>
+    </div>
+
+    <div v-if="show_form">
+
+        <div class="row rtl">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">شناسه</label>
+                    <input type="number" class="form-control" v-model="remote_client_id">
+                </div>
+            </div>
+
+             <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">نام</label>
+                    <input type="text" class="form-control" v-model="name">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">سیستم عامل</label>
+                    <select name="" id="" class="form-control" v-model="os">
+                        {% for os in operating_systems %}
+                        <option value="{{os}}">{{os}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="">توضیحات</label>
+                    <textarea rows="6" class="form-control" v-model="description"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <h3>
+            ویندوز
+        </h3>
+        <div class="row rtl">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">active_directory</label>
+                    <input type="text" class="form-control" v-model="active_directory">
+                </div>
+            </div>
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">work_group</label>
+                    <input type="text" class="form-control" v-model="work_group">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">url</label>
+                    <input type="text" class="form-control" v-model="url">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">local ip</label>
+                    <input type="text" class="form-control" v-model="local_ip">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">remote ip</label>
+                    <input type="text" class="form-control" v-model="remote_ip">
+                </div>
+            </div>
+        </div>
+
+        <hr>
+         <h3>
+
+            لاگین
+        </h3>
+        <div class="row rtl">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">username</label>
+                    <input type="text" class="form-control" v-model="username">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">password</label>
+                    <input type="password" class="form-control" v-model="password">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">pattern</label>
+                    <input type="text" class="form-control" v-model="pattern">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">identity</label>
+                    <input type="text" class="form-control" v-model="identity">
+                </div>
+            </div>
+
+        </div>
+        <hr>
+        <h3>
+
+            AnyDesk
+        </h3>
+        <div class="row rtl">
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">any_desk_address</label>
+                    <input type="text" class="form-control" v-model="any_desk_address">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">any_desk_password</label>
+                    <input type="password" class="form-control" v-model="any_desk_password">
+                </div>
+            </div>
+
+        </div>
+        <hr>
+
+        <h3>
+
+            Dorsan Desk
+        </h3>
+        <div class="row rtl">
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">dorsan_desk_address</label>
+                    <input type="text" class="form-control" v-model="dorsan_desk_address">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">dorsan_desk_password</label>
+                    <input type="password" class="form-control" v-model="dorsan_desk_password">
+                </div>
+            </div>
+
+        </div>
+        <hr>
+
+
+       
+        <h3>
+
+            مشخصات وایرلس
+        </h3>
+        <div class="row rtl">
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">wireless_mode</label>
+                    <input type="text" class="form-control" v-model="wireless_mode">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">wireless_band</label>
+                    <input type="text" class="form-control" v-model="wireless_band">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">SSID</label>
+                    <input type="text" class="form-control" v-model="ssid">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">preshared key</label>
+                    <input type="text" class="form-control" v-model="preshared_key">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">frequency</label>
+                    <input type="text" class="form-control" v-model="frequency">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">wireless protocol</label>
+                    <input type="text" class="form-control" v-model="protocol">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">channel_width</label>
+                    <input type="text" class="form-control" v-model="channel_width">
+                </div>
+            </div>
+
+
+
+        </div>
+        <hr>
+        <h3>
+
+            مشخصات بسته کالا
+        </h3>
+        <div class="row rtl">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">برند</label>
+                    <select class="form-control" v-model="brand_id">
+                        <option value="0">-</option>
+
+                        {% for brand in brands %}
+
+                        
+                        <option value="{{brand.id}}">{{brand.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">کد کالا</label>
+                    <input type="number" class="form-control" v-model="product_id">
+                </div>
+            </div>
+
+            
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">model_name</label>
+                    <input type="text" class="form-control" v-model="model_name">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">part_no</label>
+                    <input type="text" class="form-control" v-model="part_no">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">mac_address</label>
+                    <input type="text" class="form-control" v-model="mac_address">
+                </div>
+            </div>
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">id_name</label>
+                    <input type="text" class="form-control" v-model="id_name">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">serial_no</label>
+                    <input type="text" class="form-control" v-model="serial_no">
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+        <hr>
+        <h3>
+
+            اشتراک ADSL
+        </h3>
+        <div class="row rtl">
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">adsl_username</label>
+                    <input type="text" class="form-control" v-model="adsl_username">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">adsl_password</label>
+                    <input type="password" class="form-control" v-model="adsl_password">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">telephone</label>
+                    <input type="text" class="form-control" v-model="telephone">
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="">contact</label>
+                    <input type="text" class="form-control" v-model="contact">
+                </div>
+            </div>
+
+        </div>
+        <div class=" ">
+            <button class="btn btn-success" @click="add_remote_client()">
+                <i class="fa fa-plus"></i>افزودن</button>
+        </div>
+    </div>
+
+
+
+
+    <div class="my-3 text-right" v-if="message.show">
+        <span :class="'alert alert-'+message.color">
+            <span class="farsi" v-html="message.body"></span>
+        </span>
+    </div>
+</div>

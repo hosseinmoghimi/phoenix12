@@ -37,6 +37,33 @@
     </div>
     {% endif %}
     
+    {% if vehicles %} 
+          <div class="col-md-12">
+
+        
+        {% include "transport/includes/vehicles-app/template.html" %}
+ 
+     
+    </div>
+    {% endif %}
+    {% if drivers %} 
+          <div class="col-md-12">
+
+        
+        {% include "transport/includes/drivers-app/template.html" %}
+ 
+     
+    </div>
+    {% endif %}
+     {% if service_mans %}  
+
+          <div class="col-md-12">
+        
+        {% include "transport/includes/service-mans-app/template.html" %}
+ 
+    </div>
+      
+    {% endif %}
     {% if financial_documents %}
          
     <div class="col-md-12 ">
@@ -289,6 +316,32 @@
       
         {% include "accounting/includes/bank-accounts-app/script.html" %}
     {% endif %}
+     {% if vehicles %}  
+
+        
+        {% include "transport/includes/vehicles-app/script.html" %}
+ 
+      
+    {% endif %}
+
+    
+     {% if drivers %}  
+
+        
+        {% include "transport/includes/drivers-app/script.html" %}
+ 
+      
+    {% endif %}
+    
+     {% if service_mans %}  
+
+        
+        {% include "transport/includes/service-mans-app/script.html" %}
+ 
+      
+    {% endif %}
+
+
 <script>
     let log = '{{log}}'
     let WAS_FOUND = '{{WAS_FOUND}}'

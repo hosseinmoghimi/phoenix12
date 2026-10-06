@@ -1,0 +1,79 @@
+<div id="accordion-add-variz-info" class="rtl text-right farsi">
+
+    <div class="card" id="add-variz-info-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-variz-info"
+                    aria-expanded="true" aria-controls="collapse-add-variz-info">
+                    افزودن اطلاعات واریز
+
+
+                </button>
+            </h5>
+        </div>
+        <div id="collapse-add-variz-info" class="collapse " aria-labelledby="heading-add-variz-info"
+            data-parent="#accordion-add-variz-info">
+
+            <div class="card-body">
+                
+                        <div class="row">
+                            
+ 
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">حساب بانکی</label>
+                                    <select @input="change1()" name="" class="form-control" v-model="bank_account">
+                                        <option v-for="bank_account in bank_accounts" :value="bank_account" v-text="bank_account.title"></option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">شماره کارت</label>
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.card_no">
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">شماره حساب</label>
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.account_no">
+                                </div>
+                            </div>
+
+                            
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">شماره شبا</label>
+                                    <input @input="change2()" type="text" class="form-control" v-model="bank_account.shaba_no">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="">اطلاعات واریزی</label>
+                                    <input type="text" class="form-control" v-model="variz_info">
+                                     
+                                </div>
+                            </div>
+                         
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-12">
+                                <button @click="add_variz_info()" class="btn btn-success">
+                                    <i class="fa fa-plus ml-2"></i>ثبت اطلاعات واریزی برای این فاکتور
+                                </button> 
+                                <div class="my-3" >
+                                     {% include "utility/includes/message.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    
+                 
+            </div>
+        </div>
+    </div>
+</div>

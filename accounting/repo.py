@@ -20,7 +20,16 @@ from .server_settings import ACCOUNT_LEVEL_NAMES
 from authentication.models import Person
 
 from utility.repo import leolog,Repo
- 
+def MiscAccount():
+    MISC="متفرقه"
+    acc=Account.objects.filter(title=MISC).first()
+    if acc is None:
+        acc=Account()
+        acc.title=MISC
+        acc.level=1
+        acc.code="0"
+        acc.save()
+    return acc 
 class InvoiceLineItemUnitRepo:
     def __init__(self,request,*args, **kwargs):
         self.request=request
@@ -723,17 +732,26 @@ class PersonAccountRepo(Repo):
             message="دسترسی غیر مجاز"
             return result,message,person_account
         person_account=PersonAccount()
+        person_account.parent_id=None
         
         
     
+    
+        if 'title' in kwargs and kwargs['title']:
+            person_account.title=kwargs['title']
 
         if 'person' in kwargs:
             person_account.person=kwargs['person']
 
         if 'nature' in kwargs:
             person_account.nature=kwargs['nature']
-        if 'person_id' in kwargs:
+
+        if 'person_id' in kwargs and kwargs['person_id']:
             person_account.person_id=kwargs['person_id']
+
+        if 'parent_id' in kwargs and kwargs['parent_id']:
+            person_account.parent_id=kwargs['parent_id']
+
         if 'person_category' in kwargs:
             person_account.person_category=kwargs['person_category']
         if 'person_category_id' in kwargs:
@@ -2817,6 +2835,26 @@ class InvoiceRepo(FinancialEventRepo):
         objects=self.objects.filter(parent_id=None)
         return objects.all()
 
+    def add_variz_info(self,*args, **kwargs):
+        result,message,variz_info=FAILED,"",''
+        
+        if not self.request.user.has_perm(APP_NAME+".change_invoice"):
+            message="دسترسی غیر مجاز"
+            return result,message,''
+
+        if "invoice_id" in kwargs and kwargs["invoice_id"]:
+            invoice_id=kwargs['invoice_id']
+
+        if "variz_info" in kwargs:
+            variz_info=kwargs['variz_info']
+        invoice=Invoice.objects.filter(pk=invoice_id).first()
+        if invoice is not None:
+            invoice.variz_info=variz_info
+            invoice.save()
+            return SUCCEED,'اطلاعات واریزی با موفقیت ثبت شد.',variz_info
+        if invoice is None:
+            message='فاکتور مورد نظر پیدا نشد.'
+        return result,message,variz_info
     def invoice(self,*args, **kwargs):
         if "invoice_id" in kwargs and kwargs["invoice_id"] is not None:
             return self.objects.filter(pk=kwargs['invoice_id']).first()  
@@ -2907,9 +2945,13 @@ class InvoiceRepo(FinancialEventRepo):
     
         if invoice is None:
             message="فاکتور پیدا نشد."
-            return result,message,invoice
-        if 'title' in kwargs:
+            return result,message,invoice 
+
+        if 'title' in kwargs and kwargs['title']:
             invoice.title=kwargs['title'] 
+
+        if 'variz_info' in kwargs and kwargs['variz_info']:
+            invoice.variz_info=kwargs['variz_info'] 
 
 
 

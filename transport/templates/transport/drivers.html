@@ -1,0 +1,41 @@
+
+{% extends "transport/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+     
+
+    {% if add_driver_form %}
+      <div class="col-md-12">
+          {% include "transport/includes/add-driver-app/template.html" %}
+
+      </div>
+       <div class="col-md-12">
+          {% include "transport/includes/import-drivers-from-excel-app/template.html" %}
+
+      </div>
+
+      
+    {% endif %}
+
+    <div class="col-md-12">
+
+        
+        {% include "transport/includes/drivers-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "transport/includes/drivers-app/script.html" %}
+ 
+
+    {% if add_driver_form %}
+          {% include "transport/includes/add-driver-app/script.html" %}
+
+          {% include "transport/includes/import-drivers-from-excel-app/script.html" %}
+      
+    {% endif %}
+{% endblock script %}

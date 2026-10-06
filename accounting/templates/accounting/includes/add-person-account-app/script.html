@@ -31,6 +31,7 @@
             person:person,
             person_id:person_id,
             priority: 100,
+            title:"",
             type: "",
             nature: "بدون کنترل",
             color: 'success',
@@ -41,7 +42,6 @@
             select_person:function(){
                 select_person_by_id(this.person_id).done(data => {
                     if (data.result === "SUCCEED") {
-                        leolog(data.account)
                         add_person_account_app.person = data.person
                         console.log(data.person)
                     }
@@ -72,9 +72,10 @@
                 const url = "{% url 'accounting:add_person_account'  %}"
                 const payload = {
                     csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    title: (this.title),
                     priority: parseInt(this.priority),
                     parent_id:0, 
-                    person_id: parseInt(this.person.id),
+                    person_id: parseInt(this.person_id),
                     person_category_id: parseInt(this.person_category_id),
                     color: this.color,
                     // type: this.type,

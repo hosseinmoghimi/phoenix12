@@ -1,0 +1,27 @@
+
+{% extends "restaurant/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_food_form %}
+      <div class="col-md-12">
+          {% include "restaurant/includes/add-food-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "restaurant/includes/foods-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "restaurant/includes/foods-app/script.html" %}
+{% if add_food_form %}
+{% include "restaurant/includes/add-food-app/script.html" %}
+{% endif %}
+{% endblock script %}

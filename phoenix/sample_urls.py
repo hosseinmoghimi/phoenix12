@@ -42,6 +42,7 @@ else:
         path('transport/', include('transport.urls')),
         path('archive/', include('archive.urls')),
         path('academy/', include('academy.urls')),
+        path('restaurant/', include('restaurant.urls')),
         
 
         re_path(r'^qrcode/(?P<path>.*)$', serve, {'document_root': QRCODE_ROOT}),

@@ -42,7 +42,6 @@ class ImportFromJsonApi(APIView):
                 json_file = request.FILES['file1']
                 cd=import_from_excel_form.cleaned_data
                 cd['json_file']=json_file
-                leolog(cd=cd)
                 result,message,feeders=FeederRepo(request=request).import_from_json(**cd)
                 if feeders is not None:
                     context['feeders']=FeederSerializer(feeders,many=True).data

@@ -1,0 +1,14 @@
+{% include 'projectmanager/includes/ticket-app/media-simple-content.html' %}
+
+{% if ticket.sub_tickets.all %}
+    <div class="mt-2 mr-5 mb-5">
+
+        {% for ticket in ticket.sub_tickets.all %}
+        <div class="my-3">
+
+            {% include 'projectmanager/includes/ticket-app/media-simple.html' %}
+        </div>
+        
+        {% endfor %}
+    </div>
+    {% endif %}

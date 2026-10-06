@@ -1,0 +1,63 @@
+ {% include "accounting/includes/person-account-app/select-script.html" %}
+<script>
+  let add_driver_app = new Vue({
+    el: "#add-driver-app",
+    data: {
+      driver_code:"",
+      license_no:"",
+      full_name:"",
+      level:"",
+      year:2000,
+      account_code:"",
+      account:{},
+      message:{show:false},
+      waiting:false,
+    },
+    methods: {
+      select_account: function () {
+        select_person_account_by_code(add_driver_app.account_code).done((data) => {
+          if (data.result === "SUCCEED") {
+            leolog(data.person_account);
+            add_driver_app.account = data.person_account;
+          }
+
+          if (data.result === "FAILED") {
+            add_driver_app.account={};
+          }
+        });
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " ";
+      },
+
+      add_driver: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          account_id: this.account.id,
+          driver_code: this.driver_code, 
+          license_no: this.license_no,
+          full_name: this.full_name,
+          level: this.level,      
+          year: this.year,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_driver' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof drivers_app != "undefined") {
+              drivers_app.drivers.push(data.driver);
+            }
+            show_message(add_driver_app,'موفق',data.message,'success',3000)
+          }
+          else{
+            show_message(add_driver_app,'خطا',data.message,'danger',3000)
+          }
+        });
+      },
+    },
+  });
+</script>

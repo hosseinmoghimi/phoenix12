@@ -4,12 +4,35 @@
     let vehicles_app = new Vue({
         el: "#vehicles-app",
         data: {
-            vehicles: vehicles_for_vehicles_app
+            vehicles: vehicles_for_vehicles_app,
+            search_for:"",
         },
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+            filter:function(){
+                console.log(vehicles_app.search_for)
+                vehicles_app.vehicles=vehicles_for_vehicles_app.filter(function(vehicle){
+                    if(vehicle.vehicle_code==vehicles_app.search_for){
+                        return true
+                    }
+
+                    if(vehicle.title.indexOf(vehicles_app.search_for)>-1){
+                        return true
+                    }
+
+                    
+                    if(vehicle.id===vehicles_app.search_for){
+                        return true
+                    }
+
+                    return false
+                })
+
+
+
+            },
         }
     })
 </script>

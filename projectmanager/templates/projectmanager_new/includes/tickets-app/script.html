@@ -1,0 +1,24 @@
+<script>
+    let tickets_for_tickets_app=[]
+
+</script>
+{% if tickets_s %}
+  <script>
+
+      tickets_for_tickets_app=JSON.parse("{{tickets_s|escapejs}}")
+  </script>
+{% endif %}
+<script>
+    
+    let tickets_app = new Vue({
+        el: "#tickets-app",
+        data: {
+            tickets: tickets_for_tickets_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

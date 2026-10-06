@@ -1,0 +1,21 @@
+{% extends "transport/layout.html" %} {% block content %} {% load to_persian_date %} {% include "core/includes/page-app/navbar.html" %}
+<div class="row rtl">
+ 
+  <div class="col-md-12">
+    <div class="row rtl">
+      <div class="col-md-12">
+       
+    {% include "transport/includes/vehicle-status-app/template.html" %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/vehicle-status-images-app/template.html" %}
+    
+  </div>
+</div>
+
+{% endblock content %} {% block script %} 
+    {% include "transport/includes/vehicle-status-images-app/script.html" %}
+
+    {% endblock script %}  

@@ -1,0 +1,44 @@
+<!-- sub-projects-app  -->
+<!-- #################################################################################### -->
+
+<script>
+    let projects = JSON.parse(`{{projects_s|escapejs}}`)
+    let sub_projects_app = new Vue({
+        el: "#sub-projects-app",
+        data: {
+            new_project_title: "",
+            projects: projects,
+            waiting: false,
+            show_detail: false,
+            message:{show:false},
+        },
+        methods: {
+            to_price: function (value) {
+                return to_price(value)
+            },
+            add_project: function () {
+                sub_projects_app.waiting = true
+                let url = "{% url 'projectmanager:add_sub_project' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    parent_id: parseInt('{{project.id}}'),
+                    title: this.new_project_title,
+                }
+                console.log(payload)
+                let posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    sub_projects_app.waiting = false
+                    if (data.result === 'SUCCEED') {
+
+                        sub_projects_app.projects.push(data.project)
+                        sub_projects_app.new_project_title = ""
+                    }
+                    else{
+                        show_message(sub_projects_app,'خطا',data.message,'danger',3000)
+                    }
+                })
+            },
+        }
+    })
+</script>

@@ -220,6 +220,9 @@ class ShopRepo(Repo):
         if 'unit_price' in kwargs:
             if kwargs["unit_price"]>0:
                 shop.unit_price=kwargs["unit_price"]
+        if 'coef' in kwargs:
+            shop.coef=kwargs["coef"]
+            
         if 'unit_name' in kwargs:
             shop.unit_name=kwargs["unit_name"]
          
@@ -447,10 +450,8 @@ class CustomerRepo():
             customer.regions.add(kwargs["region_id"])
         if 'groups_ids' in kwargs:
             groups_ids=(kwargs["groups_ids"])
-            leolog(groups_ids=groups_ids)
             for group_id in groups_ids:
                 group_id=int(group_id)
-                leolog(group_id=group_id)
                 customer.groups.add(group_id)
  
         return result,message,customer
@@ -656,7 +657,11 @@ class CartItemRepo():
             invoice_data={}
             invoice_data['bedehkar_id']=customer.person_account.id
             invoice_data['bestankar_id']=supplier.person_account.id
-            invoice_data['title']="فاکتور خرید از فروشگاه"
+            title="فاکتور خرید از فروشگاه"
+            if 'title' in kwargs:
+                if kwargs['title']:
+                    title=kwargs['title']
+            invoice_data['title']=title
             invoice_data['amount']=0
             invoice_data['description']=description
             if 'address' in kwargs:

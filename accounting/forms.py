@@ -13,6 +13,10 @@ class EditPersonCategoryForm(forms.Form):
     code_length=forms.IntegerField(required=True)
 
     
+class AddVarizInfoForm(forms.Form):
+    variz_info=forms.CharField(max_length=200, required=True)
+    invoice_id=forms.IntegerField(required=True) 
+
 
 class EditFinancialDocumentLineForm(forms.Form):
     financial_document_line_id=forms.IntegerField(required=True)
@@ -180,6 +184,8 @@ class AddPersonCategoryForm(forms.Form):
 class EditInvoiceForm(EditFinancialEventForm):
     invoice_id=forms.IntegerField(required=True)
     invoice_lines=forms.CharField(max_length=2000, required=False)
+    variz_info=forms.CharField(max_length=200, required=True)
+
 
 class AddProductSpecificationForm(forms.Form):
     priority=forms.IntegerField(required=False)

@@ -1,0 +1,115 @@
+<script>
+  let add_service_app = new Vue({
+    el: "#add-service-app",
+    data: { 
+        vehicle_code: "",
+        driver_code: "",
+        service_man_id: 0,
+
+        grease:0,
+        vehicle_hour:0,
+        gasoil_liter:0,
+        oil_liter:0,
+        oil_type:"",
+
+        filter_type:"",
+        filter_action:"",
+ 
+        shift_date: current_date,
+        shift: "",
+         
+        description: "", 
+
+        waiting: false,
+        message: { show: false },
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: { 
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_service: function () {
+        let pass=true
+        let message=""
+        if(this.vehicle_code.length<1){
+          message+='<br>'+'کد دستگاه را مشخص کنید.' 
+          pass=false
+        }
+        if(this.driver_code.length<1){
+          message+='<br>'+'کد راننده را مشخص کنید.' 
+          pass=false
+        }
+        if(this.service_man_id<1){
+          message+='<br>'+'سرویسکار را مشخص کنید.' 
+          pass=false
+        }
+        if(this.shift.length<1){
+          message+='<br>'+'شیفت را مشخص کنید.' 
+          pass=false
+        }
+        if(!pass){
+          show_message(add_service_app,'خطا',message,'danger',3000)
+          return
+        }
+        let payload = {
+            csrfmiddlewaretoken: csrfmiddlewaretoken,
+
+            driver_code:  (this.driver_code),
+            vehicle_code:  (this.vehicle_code), 
+            service_man_id: parseInt(this.service_man_id), 
+
+            shift_date: this.shift_date,  
+            shift: this.shift,
+            vehicle_hour: parseFloat(this.vehicle_hour),
+
+            grease:parseInt(this.grease),
+            
+            oil_type:this.oil_type,
+            oil_liter:parseInt(this.oil_liter),
+            gasoil_liter:parseInt(this.gasoil_liter),
+
+            filter_type:this.filter_type,
+            filter_action:this.filter_action,
+
+            description: this.description,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_service' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_service_app.title = "";
+            show_message(
+              add_service_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+            if (typeof services_app != "undefined") {
+              services_app.services.push(data.service);
+            }
+            else{
+              //location.href = data.service.get_absolute_url
+            }
+          } else {
+            show_message(
+              add_service_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

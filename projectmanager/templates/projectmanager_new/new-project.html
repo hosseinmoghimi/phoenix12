@@ -1,0 +1,382 @@
+{% extends "projectmanager/layout.html" %} {% load static %} {% load to_persian_date %}{% block content %}
+ 
+  <nav class="mb-3" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="#!">Page 1</a></li>
+      <li class="breadcrumb-item"><a href="#!">Page 2</a></li>
+      <li class="breadcrumb-item active">Default</li>
+    </ol>
+  </nav>
+  <h2 class="mb-4">ایجاد پروژه جدید</h2>
+  <div class="row" id="add-project-app">
+    <div class="col-xl-9">
+      <div  class="row g-3 mb-6">
+        <div class="col-sm-6 col-md-8">
+          <div class="form-floating">
+            <input v-model="title"
+              class="form-control"
+              id="floatingInputGrid"
+              type="text"
+              placeholder="عنوان پروژه"
+            /><label for="floatingInputGrid">عنوان پروژه</label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select v-model="status" class="form-select" id="floatingSelectTask">
+
+              <!-- <option selected="selected">سسسس</option> -->
+                {% for status in project_statuses %}
+                  
+                <option value="{{status}}">{{status}}</option>
+                {% endfor %}
+            </select>
+              <label for="floatingSelectTask">وضعیت پروژه</label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select 
+                  type="text" v-model="contractor_id" class="form-select" type="text" id="floatingSelectPrivacy1"> 
+                     <option
+                    v-for="organization in organizations"
+                    :value="organization.id"
+                    v-text="organization.title"
+                  ></option>
+            </select
+            ><label for="floatingSelectPrivacy">پیمانکار</label>
+
+
+
+
+            
+
+          </div>
+        </div>
+
+
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select v-model="employer_id" class="form-select" id="floatingSelectPrivacy"> 
+                    <option v-for="organization in organizations" :value="organization.id" v-text="organization.title"></option>
+            </select
+            ><label for="floatingSelectPrivacy">کارفرما</label>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+
+            <date-picker v-model="start_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="start_date"
+                />
+
+            <label for="floatingSelectTeam">تاریخ شروع </label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+
+            <date-picker v-model="end_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="end_date"
+                />
+
+            <label for="floatingSelectTeam">تاریخ پایان </label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select class="form-select" id="floatingSelectTeam">
+              <option selected="selected">Select team</option>
+              <option value="1">Team One</option>
+              <option value="2">Team Two</option>
+              <option value="3">Team Three</option></select
+            ><label for="floatingSelectTeam">Team </label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select class="form-select" id="floatingSelectAssignees">
+              <option selected="selected">Select assignees</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option></select
+            ><label for="floatingSelectAssignees">People </label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="form-floating">
+            <select class="form-select" id="floatingSelectAdmin">
+              <option selected="selected">Select admin</option>
+              <option value="1">Data Privacy One</option>
+              <option value="2">Data Privacy Two</option>
+              <option value="3">Data Privacy Three</option></select
+            ><label for="floatingSelectAdmin">Project Lead</label>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="flatpickr-input-container">
+            <div class="form-floating">
+              <input
+                class="form-control datetimepicker flatpickr-input"
+                id="floatingInputStartDate"
+                type="text"
+                placeholder="end date"
+                data-options='{"disableMobile":true}'
+                readonly="readonly"
+              /><label class="ps-6" for="floatingInputStartDate"
+                >Start date</label
+              ><span
+                class="uil uil-calendar-alt flatpickr-icon text-body-tertiary"
+              ></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="flatpickr-input-container">
+            <div class="form-floating">
+              <input
+                class="form-control datetimepicker flatpickr-input"
+                id="floatingInputDeadline"
+                type="text"
+                placeholder="deadline"
+                data-options='{"disableMobile":true}'
+                readonly="readonly"
+              /><label class="ps-6" for="floatingInputDeadline">Deadline</label
+              ><span
+                class="uil uil-calendar-alt flatpickr-icon text-body-tertiary"
+              ></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 gy-6">
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              id="floatingProjectOverview"
+              placeholder="Leave a comment here"
+              style="height: 100px"
+            ></textarea
+            ><label for="floatingProjectOverview">project overview</label>
+          </div>
+        </div>
+        <div class="col-md-6 gy-6">
+          <div class="form-floating">
+            <select class="form-select" id="floatingSelectClient">
+              <option selected="selected">Select client</option>
+              <option value="1">Client One</option>
+              <option value="2">Client Two</option>
+              <option value="3">Client Three</option></select
+            ><label for="floatingSelectClient">client</label>
+          </div>
+        </div>
+        <div class="col-md-6 gy-md-6">
+          <div class="form-floating">
+            <input
+            v-model="percentage_completed"
+              class="form-control"
+              id="floatingInputPercentageCompleted"
+              type="text"
+              placeholder="درصد پیشرفت پروژه"
+            /><label for="floatingInputPercentageCompleted">درصد پیشرفت پروژه</label>
+          </div>
+        </div>
+
+        <div class="col-md-6 gy-md-6">
+          <div class="form-floating">
+            <input
+            v-model="weight"
+              class="form-control"
+              id="floatingInputWeight"
+              type="text"
+              placeholder="وزن پروژه"
+            /><label for="floatingInputWeight">وزن پروژه</label>
+          </div>
+        </div>
+
+
+        <div class="col-12 gy-6">
+          <div class="form-floating form-floating-advance-select">
+            <label>Add tags</label>
+            <div
+              class="choices"
+              data-type="select-multiple"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <div class="choices__inner">
+                <select
+                  class="form-select choices__input"
+                  id="organizerMultiple"
+                  data-choices="data-choices"
+                  multiple="multiple"
+                  data-options='{"removeItemButton":true,"placeholder":true}'
+                  hidden=""
+                  tabindex="-1"
+                  data-choice="active"
+                >
+                  <option selected="">Stupidity</option>
+                  <option>Jerry</option>
+                  <option>Not_the_mouse</option>
+                  <option>Rick</option>
+                  <option>Biology</option>
+                  <option>Neurology</option>
+                  <option>Brainlessness</option>
+                </select>
+                <div
+                  class="choices__list choices__list--multiple"
+                  role="listbox"
+                >
+                  <div
+                    class="choices__item choices__item--selectable"
+                    data-item=""
+                    data-id="1"
+                    data-value="Stupidity"
+                    aria-selected="true"
+                    role="option"
+                    data-deletable=""
+                  >
+                    Stupidity<button
+                      type="button"
+                      class="choices__button"
+                      aria-label="Remove item: Stupidity"
+                      data-button=""
+                    >
+                      Remove item
+                    </button>
+                  </div>
+                </div>
+                <input
+                  type="search"
+                  class="choices__input choices__input--cloned"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  aria-autocomplete="list"
+                  style="min-width: 1ch; width: 1ch"
+                />
+              </div>
+              <div
+                class="choices__list choices__list--dropdown"
+                aria-expanded="false"
+              >
+                <div
+                  class="choices__list"
+                  aria-multiselectable="true"
+                  role="listbox"
+                >
+                  <div
+                    id="choices--organizerMultiple-item-choice-5"
+                    class="choices__item choices__item--choice choices__item--selectable is-highlighted"
+                    role="option"
+                    data-choice=""
+                    data-id="5"
+                    data-value="Biology"
+                    data-choice-selectable=""
+                    aria-selected="true"
+                  >
+                    Biology
+                  </div>
+                  <div
+                    id="choices--organizerMultiple-item-choice-7"
+                    class="choices__item choices__item--choice choices__item--selectable"
+                    role="option"
+                    data-choice=""
+                    data-id="7"
+                    data-value="Brainlessness"
+                    data-choice-selectable=""
+                  >
+                    Brainlessness
+                  </div>
+                  <div
+                    id="choices--organizerMultiple-item-choice-2"
+                    class="choices__item choices__item--choice choices__item--selectable"
+                    role="option"
+                    data-choice=""
+                    data-id="2"
+                    data-value="Jerry"
+                    data-choice-selectable=""
+                  >
+                    Jerry
+                  </div>
+                  <div
+                    id="choices--organizerMultiple-item-choice-6"
+                    class="choices__item choices__item--choice choices__item--selectable"
+                    role="option"
+                    data-choice=""
+                    data-id="6"
+                    data-value="Neurology"
+                    data-choice-selectable=""
+                  >
+                    Neurology
+                  </div>
+                  <div
+                    id="choices--organizerMultiple-item-choice-3"
+                    class="choices__item choices__item--choice choices__item--selectable"
+                    role="option"
+                    data-choice=""
+                    data-id="3"
+                    data-value="Not_the_mouse"
+                    data-choice-selectable=""
+                  >
+                    Not_the_mouse
+                  </div>
+                  <div
+                    id="choices--organizerMultiple-item-choice-4"
+                    class="choices__item choices__item--choice choices__item--selectable"
+                    role="option"
+                    data-choice=""
+                    data-id="4"
+                    data-value="Rick"
+                    data-choice-selectable=""
+                  >
+                    Rick
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 gy-6">
+          <div class="row g-3 justify-content-end">
+            <div class="col-auto">
+              <button class="btn btn-phoenix-primary px-5">Cancel</button>
+            </div>
+            <div class="col-auto">
+              <button @click="add_project()" class="btn btn-primary px-5 px-sm-15">
+                ایجاد پروژه جدید
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <div class="col-md-12">
+              <div v-if="message.show">
+                <div :class="'my-2 alert alert-'+message.color">
+                  <h5 v-text="message.title"></h5>
+                  <div v-html="message.body"></div>
+                </div>
+              </div>
+  </div>
+  
+  {% endblock content %} {% block script %} 
+  <script src="{{STATIC_URL}}phoenix-theme/vendors/choices/choices.min.js"></script>
+  {% if add_project_form %}
+{% include "projectmanager/includes/add-project-app/script.html" %}
+
+{% endif %}
+{% endblock script %}

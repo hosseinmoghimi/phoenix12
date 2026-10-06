@@ -1,0 +1,17 @@
+{% extends "transport/layout.html" %} {% block content %}
+  <div class="row">
+    <div class="col-md-12">
+
+        {% include "transport/includes/add-service-app/template.html" %} 
+    </div>
+    <div class="col-md-12">
+{% include "transport/includes/services-app/template.html" %} 
+
+    </div>
+  </div>
+{% endblock content %} {% block script %} 
+ 
+{% include "transport/includes/add-service-app/script.html" %} 
+{% include "transport/includes/services-app/script.html" %} 
+
+{% endblock script %}

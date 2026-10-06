@@ -24,7 +24,7 @@
           :data-parent="`#accordion-menu`+menu.id"
         >
           <div class="card-body">
-            <table class="table rtl">
+            <table class="table {% if DARK_THEME %}table-dark {% endif %}rtl">
               <tr  v-for="shop in menu.shops" >
                 <td>
                   <div class="media">

@@ -1,0 +1,112 @@
+<script>
+  let add_karkerd_app = new Vue({
+    el: "#add-karkerd-app",
+    data: {
+        title: "", 
+        vehicle_id: 0,
+        driver_id: 0,
+
+        area_name: "", 
+        project_name: "", 
+        description: "", 
+        start_date: current_date,
+        start_time: current_time,
+        start_datetime: current_datetime,
+
+        
+        end_date: current_date,
+        end_time: current_time,
+        end_datetime: current_datetime,
+
+        event_date: current_date,
+        event_time: current_time,
+        event_datetime: current_datetime,
+
+
+ 
+        start_hour:0,
+        end_hour:0,
+        
+        start_kilometer:0,
+        end_kilometer:0,
+
+        load:"",
+        count:0,
+
+        waiting: false,
+        message: { show: false },
+
+
+
+
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      separate: (vall) => to_price(parseInt(vall), ""),
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_karkerd: function () {
+        let payload = {
+            csrfmiddlewaretoken: csrfmiddlewaretoken,
+            title: this.title,
+            driver_id: parseInt(this.driver_id),
+            vehicle_id: parseInt(this.vehicle_id), 
+            project_name: this.project_name,
+            area_name: this.area_name,
+            description: this.description,
+
+            start_kilometer: parseInt(this.start_kilometer),
+            end_kilometer: parseInt(this.end_kilometer),
+
+            start_hour: parseInt(this.start_hour), 
+            end_hour: parseInt(this.end_hour), 
+
+            load:this.load,
+            count:parseInt(this.count),
+
+            event_datetime: this.event_date + " " + this.event_time,
+            start_datetime: this.start_date + " " + this.start_time,
+            end_datetime: this.end_date + " " + this.end_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_karkerd' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            // add_karkerd_app.title = "";
+            show_message(
+              add_karkerd_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+            if (typeof karkerds_app != "undefined") {
+              karkerds_app.karkerds.push(data.karkerd);
+            }
+            else{
+              //location.href = data.karkerd.get_absolute_url
+            }
+          } else {
+            show_message(
+              add_karkerd_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

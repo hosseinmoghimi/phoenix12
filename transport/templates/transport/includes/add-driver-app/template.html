@@ -1,0 +1,118 @@
+<div id="accordion-add-driver" class="rtl text-right farsi">
+  <div class="card" id="add-driver-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-driver"
+          aria-expanded="true"
+          aria-controls="collapse-add-driver"
+        >
+          افزودن راننده
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-driver"
+      class="collapse"
+      aria-labelledby="heading-add-driver"
+      data-parent="#accordion-add-driver"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_driver()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">نام کامل</label>
+                <input v-model="full_name" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+               
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">پایه</label>
+                <select v-model="level" class="form-control">
+                  <option value="پایه یک">پایه یک</option>
+                  <option value="پایه دو">پایه دو</option>
+                  <option value="پایه سه">پایه سه</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">شماره کواهینامه</label>
+                <input v-model="license_no" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">کد راننده</label>
+                <input v-model="driver_code" type="text" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">سال تولد</label>
+                <input v-model="year" type="number" class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-md-12"></div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">کد حساب</label>
+                <input
+                  v-model="account_code"
+                  type="number"
+                  class="form-control"
+                  @input="select_account()"
+                />
+              </div>
+              <a :href="account.get_absolute_url" v-if="account.name">
+                <div class="media">
+                  <img :src="account.thumbnail" width="64" alt="" />
+                  <div class="mr-2 media-body">
+                    <h5 class="my-2">
+                      <span v-text="account.name"></span>
+                    </h5>
+                    <h6>
+                      <span v-text="account.code"></span>
+                    </h6>
+
+                    <h6>
+                      <small v-text="account.full_name"></small>
+                    </h6>
+                  </div>
+                </div>
+              </a>
+
+              <div v-if="!account.full_name">
+                <h5 class="text-danger">حساب انتخاب نشده است.</h5>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+
+            <div class="my-3 mx-3">
+              {% include "utility/includes/message.html" %}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

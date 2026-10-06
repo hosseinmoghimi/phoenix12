@@ -54,12 +54,14 @@
   let cart_app = new Vue({
     el: "#cart-app",
     data: {
+      title:'',
       address: `{% if customer.person_account.person.address %}{{customer.person_account.person.address}}{% endif %}`,
       postal_code: `{% if customer.person_account.person.postal_code %}{{customer.person_account.person.postal_code}}{% endif %}`,
       description:"",
       message: { show: false },
       waiting: false,
       cart_items: cart_items,
+      can_checkout:true,
     },
     components: {
       cart_item_component,
@@ -107,12 +109,15 @@
       },
       to_price: (vv) => to_price(vv),
       checkout_cart: function () {
+        this.can_checkout=false
+        this.waiting=true
+
         let cart_items=[]
         this.cart_items.forEach(cart_item => {
-            cart_items.push({
-                shop_id:cart_item.shop.id,
-                quantity:cart_item.quantity,
-            })
+          cart_items.push({
+            shop_id:cart_item.shop.id,
+            quantity:cart_item.quantity,
+          })
         });
         cart_items=JSON.stringify(cart_items)
         let payload = {
@@ -120,12 +125,16 @@
           address: this.address,
           postal_code: this.postal_code,
           description: this.description,
+          title: this.title,
           cart_items: (cart_items),
           csrfmiddlewaretoken: csrfmiddlewaretoken,
         };
         let url = "{% url 'market:checkout_cart' %}";
         $.post(url, payload).done((data) => {
+          this.waiting=false
           if (data.result === "SUCCEED") {
+
+            this.can_checkout=false
             show_message(
               cart_app,
               "موفق",
@@ -138,6 +147,8 @@
               location.href = "/accounting/invoice/print/"+data.invoices[0].id+"/"
             }
           } else {
+            this.can_checkout=true
+
             show_message(
               cart_app,
               "خطا",

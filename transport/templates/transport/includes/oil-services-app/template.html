@@ -1,0 +1,190 @@
+{% load static %}
+<div id="accordion-oil-services" class="rtl text-right farsi">
+  <div class="card" id="oil-services-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-oil-services"
+          aria-expanded="true"
+          aria-controls="collapse-oil-services"
+        >
+سرویس های روغن
+<small>
+
+  (
+    گزارشات راننده
+    )
+  </small>
+<span v-if="oil_services.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="oil_services.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-oil-services"
+      class="collapse {% if expand_oil_services %} show {% endif %}"
+      aria-labelledby="heading-oil-services"
+      data-parent="#accordion-oil-services"
+    >
+      <div class="card-body">
+        <div class="table-responsive" v-if="oil_services.length>0">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead>
+              
+              {% if not work_shift %}
+                <th>
+                  شیفت
+                </th>
+                <th>
+                  دستگاه
+                </th>
+                <th>
+                  راننده
+                </th>
+              {% endif %}
+                
+              <th>نوع روغن</th>
+              <th>سرویس روغن</th>
+              <th>لیتراژ روغن</th>
+              <th>ساعت دستگاه</th>
+              <th>برآورد هزینه</th>
+              <th>توضیحات</th> 
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="oil_service in oil_services">
+                
+              {% if not work_shift %}
+                <td>
+                 
+                    <span v-text="oil_service.persian_shift_date"></span>
+                    <div>
+
+                      <span v-text="oil_service.shift"></span>
+                    </div>
+                 
+
+                </td>
+
+                
+                <td>
+           
+                    <span v-text="oil_service.vehicle_title"></span>
+                 
+
+                </td>
+
+                
+                <td>
+                    <span v-text="oil_service.driver_full_name"></span>
+                   
+                   
+                </td>
+              {% endif %}
+                <td>
+                 <div class="media">
+                    <a :href="oil_service.get_absolute_url">
+                      <img src="{% static 'transport/img/motor-oil.png' %}" width="32" class="rounded-circle" alt="">
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="oil_service.oil_type.get_absolute_url">
+                        <span v-text="oil_service.oil_type"></span>
+                    </a>
+                </div>
+            </div>
+                </td>
+
+                <td>
+                  
+                <h6 v-text="oil_service.oil_action"></h6>
+                </td>
+
+
+                
+                <td> 
+                  <img src="{% static 'transport/img/motor-oil.png' %}" width="28" alt="">   
+                  <span v-text="oil_service.oil_liter"></span>
+
+                </td>
+                   <td>
+                     <div v-if="oil_service.vehicle_hour" >
+
+                         <img src="{% static 'transport/img/timer.png' %}" width="28" alt="">   
+                        <span v-text="to_price(oil_service.vehicle_hour)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+                
+                   <td>
+                     <div v-if="oil_service.cost" >
+
+                         <img src="{% static 'leo/img/rial.png' %}" width="28" alt="{{CURRENCY}}">   
+                        <span v-text="to_price(oil_service.cost)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+                 <td>
+                        <h6 v-text="oil_service.description"></h6>
+                </td>
+
+
+<td>
+  
+{% if perms.transport.change_oilservice %}
+  <a target="_blank" title="ویرایش" class="btn btn-link text-warning"  :href="oil_service.get_edit_url">
+    <i class="fa fa-edit text-warning"></i>
+  </a>
+{% endif %}
+
+{% if perms.transport.delete_oilservice %}
+    <a target="_blank" title="حذف" class="btn btn-link text-danger"  :href="oil_service.get_delete_url">
+    <i class="fa fa-trash text-danger"></i>
+  </a>
+{% endif %}
+</td>
+               
+              </tr>
+            </tbody>
+            <tfoot>
+              
+              <th></th>
+              <th></th>
+              <th>
+                <span v-text="sum_oil()"></span>
+              </th>
+              <th></th>
+              <th>
+                <span v-text="sum_cost()"></span>
+                {{CURRENCY}}
+
+              </th>
+              <th> </th> 
+
+              
+            </tfoot>
+          </table>
+        </div>
+        <div v-else>
+          <p class="text-center">
+
+            لیست خالی می باشد.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

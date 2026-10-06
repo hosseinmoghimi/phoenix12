@@ -154,7 +154,9 @@ def AccountContext(request,account,*args, **kwargs):
     context.update(AddFinancialDocumentLineContext(request=request,account=account))       
     person_account=PersonAccountRepo(request=request).person_account(pk=account.pk)
     if person_account is not None:
-        context.update(PersonContext(request=request,person=person_account.person))
+        if person_account.person is not None:
+
+            context.update(PersonContext(request=request,person=person_account.person))
         account=person_account
 
     bank_account=BankAccountRepo(request=request).bank_account(pk=account.pk)
@@ -1628,7 +1630,11 @@ class InvoiceView(View):
         context['invoice_s']=invoice_s
         context.update(InvoiceContext(request=request,invoice=invoice,warehouse=True))
 
-        
+        bank_accounts=BankAccountRepo(request=request).list()
+        bank_accounts_s=json.dumps(BankAccountSerializer(bank_accounts,many=True).data)
+        context['bank_accounts_s']=bank_accounts_s
+  
+        context['add_variz_info_form']=AddVarizInfoForm()
   
 
         return render(request,TEMPLATE_ROOT+"invoice.html",context)

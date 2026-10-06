@@ -1,0 +1,230 @@
+{% extends "transport/layout.html" %} {% block content %}
+<div id="report-app">
+  <div class="card">
+    <div class="card-header">
+      <h5>گزارش گیری</h5>
+    </div>
+    <div class="card-body">
+      <div class="row rtl">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">کد دستگاه</label>
+            <input type="text" v-model="vehicle_code" class="form-control" />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">از تاریخ</label>
+            <date-picker v-model="from_shift_date"></date-picker>
+
+            <input type="text" required class="form-control" v-model="from_shift_date" />
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">تا تاریخ</label>
+            <date-picker v-model="to_shift_date"></date-picker>
+
+            <input type="text" required class="form-control" v-model="to_shift_date" />
+          </div>
+        </div>
+
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">جستجوی عبارت</label>
+
+            <input type="text" required class="form-control" v-model="search_for" />
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="exampleInputDate">موقعیت</label>
+
+            <input type="text" required class="form-control" v-model="location" />
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">شیفت</label>
+            <select v-model="shift" class="form-control">
+              <option value="">کامل</option>
+              <option value="روز">روز</option>
+              <option value="شب">شب</option>
+            </select>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="">کد راننده</label>
+            <input v-model="driver_code" type="text" class="form-control"/>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-12">
+          <button class="btn btn-info" @click="get_report()">گزارش بگیر</button>
+        </div>
+        <div class="my-3">
+
+          {% include "utility/includes/message.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row rtl">
+  <div class="col-md-12">
+    {% include "transport/includes/work-shifts-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/oil-services-app/report.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/filter-services-app/report.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/tavaghofs-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/products-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/services-app/template.html" %}
+  </div>
+  <div class="col-md-12">
+    {% include "transport/includes/anbar-products-app/template.html" %}
+  </div>
+   <div class="col-md-12">
+          {% include 'transport/includes/maintenances-app/template.html' %}
+    </div>
+   <div class="col-md-12">
+          {% include 'transport/includes/maintenance-invoices-app/template.html' %}
+    </div>
+</div>
+{% endblock content %} {% block script %}
+<script>
+  let report_app = new Vue({
+    el: "#report-app",
+    data: {
+      vehicle_code: "",
+      from_shift_date: current_date,
+      to_shift_date: current_date,
+      shift: "",
+      location: "",
+      driver_id: 0,
+      search_for:"",
+      message: { show: false },
+      waiting: false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      get_report: () => {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          vehicle_code: report_app.vehicle_code,
+          from_shift_date: report_app.from_shift_date,
+          to_shift_date: report_app.to_shift_date,
+          shift: report_app.shift,
+
+          location: report_app.location,
+          search_for: report_app.search_for ,
+
+          driver_code: (report_app.driver_code),
+
+        }
+        console.log(payload)
+        let url = "{% url 'transport:get_report' %}"
+        report_app.waiting = true
+        report_app.message.show = false
+        $.post(url, payload).done(data => {
+          report_app.waiting = false
+
+          console.log(data)
+          if (data.result === "SUCCEED") {
+            show_message(report_app, 'موفق', data.message, 'success', 10000)
+            if (typeof work_shifts_app != 'undefined') {
+              work_shifts_app.work_shifts = data.work_shifts
+            }
+
+            if (typeof anbar_products_app != 'undefined') {
+              anbar_products_app.anbar_products = data.anbar_products
+            }
+
+            if (typeof services_app != 'undefined') {
+              services_app.services = data.services
+            }
+
+            
+            if (typeof oil_services_app != 'undefined') {
+              oil_services_app.oil_services = data.oil_services
+            }
+
+            
+            if (typeof filter_services_app != 'undefined') {
+              filter_services_app.filter_services = data.filter_services
+            }
+
+            
+            if (typeof tavaghofs_app != 'undefined') {
+              tavaghofs_app.tavaghofs = data.tavaghofs
+            }
+
+            
+            if (typeof products_app != 'undefined') {
+              products_app.products = data.products
+            }
+
+            
+            if (typeof maintenance_invoices_app != 'undefined') {
+              maintenance_invoices_for_maintenance_invoices_app=data.maintenance_invoices
+              maintenance_invoices_app.maintenance_invoices = data.maintenance_invoices
+            }
+
+            if (typeof maintenances_app != 'undefined') {
+              maintenances_for_maintenances_app=data.maintenances
+              maintenances_app.maintenances = data.maintenances
+            }
+
+             
+          }
+
+
+          if (data.result === "FAILED") {
+
+          }
+        })
+      },
+    }
+  });
+</script>
+
+{% include "transport/includes/work-shifts-app/script.html" %}
+{% include "transport/includes/services-app/script.html" %}
+
+{% include "transport/includes/anbar-products-app/script.html" %}
+
+
+
+{% include "transport/includes/oil-services-app/script.html" %}
+{% include "transport/includes/filter-services-app/script.html" %}
+{% include "transport/includes/tavaghofs-app/script.html" %}
+{% include "transport/includes/products-app/script.html" %}
+{% include 'transport/includes/maintenance-invoices-app/script.html' %}
+{% include 'transport/includes/maintenances-app/script.html' %}
+ 
+
+{% endblock script %}

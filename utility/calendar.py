@@ -207,3 +207,10 @@ class PersianCalendar:
                 # delta3=datetime.timedelta(hours=5)
                 # a=JalaliDatetime(datetime.datetime(year_, month_, day_, hour_, min_, sec_, 0, TehranTimezone())+delta+delta3+delta2)
         return a.strftime(strftime)
+
+
+def convert(date_time):
+    format = "%Y/%m/%d %H:%M:%S"
+    datetime_str = datetime.datetime.strptime(date_time, format)
+
+    return datetime_str

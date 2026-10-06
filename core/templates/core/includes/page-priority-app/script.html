@@ -26,7 +26,6 @@
                 }
                 let posting = $.post("{% url 'core:set_page_priority' %}", payload)
                 posting.done(data => {
-                    leolog(data)
                 })
             },
         }

@@ -7,6 +7,7 @@ from django.db.models import TextChoices
 class PARAMETER_NAME_ENUM(TextChoices):
     FARSI_FONT='نام فونت فارسی',_('نام فونت فارسی')
     WIDE_LAYOUT='پنل گسترده تمام صفحه',_('پنل گسترده تمام صفحه')   
+    THEME="تم",_("تم")   
      
 class EventStatusEnum(TextChoices):
     DRAFT="پیش نویس",_("پیش نویس")

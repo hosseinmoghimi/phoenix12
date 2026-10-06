@@ -74,7 +74,10 @@
 
         <div>
             <small class="text-muted">سطح : </small>
-            {{account.level}}
+            <label for="">
+                {{account.level}}
+            </label>
+            
         </div>
         {% if person %}
         <div>
@@ -86,11 +89,17 @@
         {% endif %}
         <div>
             <small class="text-muted">نوع : </small>
+            <label for="">
+
             {{account.type}}
+            </label>
         </div>
         <div>
             <small class="text-muted">ماهیت : </small>
+            <label for="">
+
             {{account.nature}}
+            </label>
         </div>
       
     </div>

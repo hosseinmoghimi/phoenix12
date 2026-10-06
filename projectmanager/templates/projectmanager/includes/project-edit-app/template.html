@@ -38,15 +38,15 @@
               </div>
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> شروع پروژه </span>
+              <label class="farsi text-right"> شروع پروژه </label>
               <date-picker v-model="start_datetime"></date-picker>
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> پایان پروژه </span>
+              <label class="farsi text-right"> پایان پروژه </label>
               <date-picker v-model="end_datetime"></date-picker>
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> درصد پیشرفت پروژه </span>
+              <label class="farsi text-right"> درصد پیشرفت پروژه </label>
 
               <input
                 required
@@ -57,7 +57,7 @@
             </div>
 
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> کارفرما </span>
+              <label class="farsi text-right"> کارفرما </label>
               <select
                 required
                 name=""
@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> پیمانکار </span>
+              <label class="farsi text-right"> پیمانکار </label>
               <select
                 required
                 name=""
@@ -88,7 +88,7 @@
               </select>
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> وزن پروژه </span>
+              <label class="farsi text-right"> وزن پروژه </label>
 
               <input
                 required
@@ -98,7 +98,7 @@
               />
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> ترتیب </span>
+              <label class="farsi text-right"> ترتیب </label>
 
               <input
                 required
@@ -108,7 +108,7 @@
               />
             </div>
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> وضعیت </span>
+              <label class="farsi text-right"> وضعیت </label>
               <select
                 required
                 name=""
@@ -123,7 +123,7 @@
             </div>
 
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> رنگ </span>
+              <label class="farsi text-right"> رنگ </label>
               <select
                 required
                 name=""
@@ -138,7 +138,7 @@
             </div>
 
             <div class="col-4 text-right mb-3">
-              <span class="farsi text-right"> شناسه ی سوپر پروژه </span>
+              <label class="farsi text-right"> شناسه ی سوپر پروژه </label>
               <input
                 required
                 @input="get_super_project()"
@@ -156,7 +156,7 @@
             </div>
 
             <div class="col-4 text-right mb-3 farsi">
-              <span class="text-right"> سوپر پروژه </span>
+              <label class="text-right"> سوپر پروژه </label>
 
               <div>
                 <a
@@ -164,7 +164,7 @@
                   target="_blank"
                   :href="super_project.get_absolute_url"
                 >
-                  <span v-text="super_project.title"></span>
+                  <label v-text="super_project.title"></label>
                 </a>
               </div>
             </div>

@@ -1,19 +1,72 @@
 from core.serializers import serializers
-from .models import Vehicle,MaintenanceInvoice,ServiceMan,Maintenance
+from .models import OilService,Tavaghof,FilterService,Product,Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
 from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
+from .models import Service,AnbarProduct,MaintenanceInvoice
+
+from .models import VehicleEvent,Tavaghof
+from accounting.serializers import AccountSerializer
+
+class DriverSerializer(serializers.ModelSerializer):
+    person_account=PersonAccountSerializer()
+    class Meta:
+        model=Driver
+        fields=['id','full_name','driver_code','level','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
+  
+
+
 class VehicleSerializer(serializers.ModelSerializer):
     owner=PersonAccountSerializer()
     class Meta:
         model=Vehicle
-        fields=['id','owner', 'title','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id','vehicle_code','plaque' ,'owner', 'title','description','thumbnail','get_absolute_url',  'get_edit_url','get_delete_url']
+
+class MaintenanceInvoiceSerializer(serializers.ModelSerializer):
+       bedehkar=AccountSerializer()
+       bestankar=AccountSerializer()
+       vehicle=VehicleSerializer()
+       class Meta:
+        model = MaintenanceInvoice
+        fields = ['id','title','maintenance_title','vehicle','valid','get_print_url','balance','thumbnail','bedehkar','status' ,'bestankar','manual_amount','shipping_fee','persian_event_datetime','get_absolute_url','get_edit_url','get_delete_url']
+  
+  
+class VehicleSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model=Vehicle
+        fields=['id','vehicle_code','thumbnail',  'title', 'get_absolute_url']
   
  
+class VehicleStatusSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=VehicleStatus
+        fields=['id','vehicle','hour','kilometer','persian_status_datetime','short_desc', 'get_absolute_url','get_edit_url','get_delete_url' ]
+  
+  
 
+class TavaghofSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Tavaghof
+        fields=['id','cause','duration','vehicle_hour','descriptin', 'get_edit_url','get_delete_url', ]
+      
+
+class TavaghofSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model=Tavaghof
+        fields=['id','driver_full_name','vehicle_title','persian_shift_date','shift','cause','duration','vehicle_hour','descriptin', 'get_edit_url','get_delete_url', ]
+      
+
+class VehicleEventSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer()
+    class Meta:
+        model=VehicleEvent
+        fields=['id','vehicle','project_name','area_name','vehicle_event_type','title','persian_event_datetime','persian_start_datetime','persian_end_datetime','short_description', 'get_edit_url','get_delete_url','get_absolute_url' ]
+
+        
 class ServiceManSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:
         model=ServiceMan
-        fields=['id', 'title','person_account','get_absolute_url',  'get_edit_url','get_delete_url']
+        fields=['id', 'full_name','person_account','get_absolute_url',  'get_edit_url','get_delete_url']
  
   
 class MaintenanceSerializer(serializers.ModelSerializer):
@@ -21,6 +74,54 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     service_man=ServiceManSerializer()
     class Meta:
         model=Maintenance
-        fields=['id', 'title','vehicle','kilometer','sum','service_man','persian_event_datetime','persian_end_datetime','persian_start_datetime','get_absolute_url',  'get_edit_url','get_delete_url']
- 
- 
+        fields=['id', 'title','hour','vehicle','kilometer','sum','service_man','persian_event_datetime','persian_end_datetime','persian_start_datetime','get_absolute_url',  'get_edit_url','get_delete_url']
+  
+
+class WorkShiftSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer2()
+    driver=DriverSerializer()
+    class Meta:
+        model=WorkShift
+        fields=['id','vehicle_karkerd','start_hour','end_hour','vehicle_start_hour','vehicle_end_hour','location','bar','bar_count','shift','vehicle_code','vehicle','title','gasoil_liter','oil_liter','tavaghof','persian_shift_date','driver','get_absolute_url', 'get_edit_url','get_delete_url']
+
+   
+class FilterServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=FilterService
+        fields=['id','cost','count','filter_type','filter_action','description', 'get_edit_url','get_delete_url']
+
+   
+class OilServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=OilService
+        fields=['id','vehicle_hour','oil_action','oil_liter','oil_type','description','cost', 'get_edit_url','get_delete_url']
+
+
+class OilServiceSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model=OilService
+        fields=['id','driver_full_name','vehicle_title','persian_shift_date','shift','vehicle_hour','oil_action','oil_liter','oil_type','description','cost', 'get_edit_url','get_delete_url']
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Product
+        fields=['id','name','anbar','service_man','unit_price','quantity','description']
+
+   
+class ServiceSerializer(serializers.ModelSerializer):
+    driver=DriverSerializer()
+    service_man=ServiceManSerializer()
+    vehicle=VehicleSerializer2()
+
+    class Meta:
+        model=Service
+        fields=['id','driver','shift','vehicle','persian_shift_date','grease','oil_type','oil_liter','gasoil_liter','service_man','filter_type','filter_action','description','get_absolute_url',  'get_edit_url','get_delete_url']
+
+   
+class AnbarProductSerializer(serializers.ModelSerializer):
+    vehicle=VehicleSerializer2()
+    class Meta:
+        model=AnbarProduct
+        fields=['id','vehicle','anbar','shift_date','shift','name','unit_price','persian_shift_date','quantity','description','get_absolute_url',  'get_edit_url','get_delete_url']
+
+   

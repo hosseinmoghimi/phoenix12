@@ -1,0 +1,112 @@
+{% load static %}
+<div id="accordion-add-tavaghof-form" class="rtl text-right farsi">
+  <div class="card" id="add-tavaghof-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-tavaghof-form"
+          aria-expanded="true"
+          aria-controls="collapse-add-tavaghof-form"
+        >
+افزودن توقف
+ 
+ 
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-tavaghof-form"
+      class="collapse  "
+      aria-labelledby="heading-add-tavaghof-form"
+      data-parent="#accordion-add-tavaghof-form"
+    >
+      <div class="card-body">
+      <div class="row">
+           <div class="col-md-3">
+          <div class="form-group">
+            <label for="">علت</label>
+            <select v-model="cause" type="text" class="form-control">
+              {% for cause in tavaghof_causes %}
+              <option value="{{cause}}">{{cause}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="exampleInputDate">مدت به ساعت</label>
+
+            <input
+              type="number"
+              required
+              class="form-control"
+              v-model="duration"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="exampleInputDate">ساعت دستگاه</label>
+
+            <input
+              type="number"
+              class="form-control"
+              v-model="vehicle_hour"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-5">
+          <div class="form-group">
+            <label for="exampleInputDate">توضیحات</label>
+
+            <input
+              type="text"
+              class="form-control"
+              v-model="description"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-12"></div>
+        <div class="col-md-3 my-3">
+          <div v-if="!confirm_clear_tavaghofs">
+            <button class="btn btn-success" @click="add_tavaghof()">
+              <i class="fa fa-plus mx-2"></i>
+              افزودن توقف
+            </button>
+          </div>
+
+          <div v-if="!confirm_clear_tavaghofs" class="mt-2">
+            <button class="btn btn-danger" @click="confirm_clear_tavaghofs=true">
+              <i class="fa fa-plus mx-2"></i>
+              حذف همه
+            </button>
+          </div>
+          <div v-if="confirm_clear_tavaghofs">
+            <h5>همه توقف ها حذف شوند؟</h5>
+            <button class="btn btn-danger" @click="clear_tavaghofs()">
+              <i class="fa fa-plus mx-2"></i>
+
+              حذف کن
+            </button>
+
+            <button class="btn btn-secondary" @click="confirm_clear_tavaghofs=false">
+              <i class="fa fa-plus mx-2"></i>
+
+              خیر
+            </button>
+          </div>
+        </div>
+         
+      </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

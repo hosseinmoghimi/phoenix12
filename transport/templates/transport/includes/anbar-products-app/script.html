@@ -1,0 +1,39 @@
+<script>
+
+    let anbar_products_for_anbar_products_app = JSON.parse("{{anbar_products_s|escapejs}}")
+    let anbar_products_app = new Vue({
+        el: "#anbar-products-app",
+        data: {
+            anbar_products: anbar_products_for_anbar_products_app
+        },
+        methods: {
+            anbar_products_ids:function(){
+                let ids=[]
+                this.anbar_products.forEach(anbar_product => {
+                    ids.push(anbar_product.id)
+                });
+                return JSON.stringify(ids)
+            },
+            to_icon: function (vall) {
+                if (vall === 'روز') {
+                    return '{{STATIC_URL}}transport/img/sun.png'
+                }
+                return '{{STATIC_URL}}transport/img/moon.png'
+            },
+
+            to_price: function (vall) {
+                return to_price(vall)
+            },
+
+
+            sum_tavaghof: function () {
+                let s = 0
+                this.anbar_products.forEach(anbar_product => {
+                    s += anbar_product.tavaghof
+                });
+                return (s)
+            },
+
+        }
+    })
+</script>

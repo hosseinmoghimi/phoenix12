@@ -2,27 +2,25 @@
   <div class="card" id="add-service-man-app">
     <div class="card-header">
       <h5 class="text-center">
-        <button
-          class="btn btn-link"
-          data-toggle="collapse"
-          data-target="#collapse-add-service-man"
-          aria-expanded="true"
-          aria-controls="collapse-add-service-man"
-        >
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-add-service-man" aria-expanded="true"
+          aria-controls="collapse-add-service-man">
           افزودن سرویس کار
         </button>
       </h5>
     </div>
 
-    <div
-      id="collapse-add-service-man"
-      class="collapse"
-      aria-labelledby="heading-add-service-man"
-      data-parent="#accordion-add-service-man"
-    >
+    <div id="collapse-add-service-man" class="collapse" aria-labelledby="heading-add-service-man"
+      data-parent="#accordion-add-service-man">
       <div class="card-body">
         <form @submit.prevent="add_service_man()">
           <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">نام کامل</label>
+                <input v-model="full_name" type="text" class="form-control" />
+              </div>
+            </div>
+
             <!-- <div class="col-md-12">
               <div class="form-group">
                 <label for="">عنوان</label>
@@ -38,17 +36,10 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">حساب</label>
-                <input
-                  required
-                  v-model="person_account_code"
-                  type="number"
-                  class="form-control"
-                  @input="select_person_account()"
-                />
+                <input v-model="person_account_code" type="number" class="form-control"
+                  @input="select_person_account()" />
               </div>
-            </div>
 
-            <div class="col-6 mt-3">
               <hr />
               <a :href="person_account.get_absolute_url" v-if="person_account.name">
                 <div class="media">
@@ -61,7 +52,7 @@
                       <span v-text="person_account.code"></span>
                     </h6>
 
-                    
+
 
                     <h6>
                       <small v-text="person_account.full_name"></small>
@@ -83,18 +74,11 @@
             </div>
 
 
-             <div class="col-md-12" v-if="message.show">
-           <div :class="'alert alert-' + message.color">
-            <h5 v-text="message.title">
-
-            </h5>
-            <div v-html="message.body">
-
+            <div class="col-md-12 my-3"  >
+                {% include 'utility/includes/message.html' %}
             </div>
-           </div>
-          </div>
 
-          
+
           </div>
         </form>
       </div>

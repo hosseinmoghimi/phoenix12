@@ -1,0 +1,34 @@
+{% load static %}
+{% if images %}
+<div class="card" id="images-app">
+  <div class="card-header" id="headingpageimages">
+    <h6 class="card-title text-center">
+      تصاویر
+      <span v-if="images.length>0">
+        <small class="text-danger mx-2">
+          <span v-text="images.length"></span>
+        </small>
+      </span>
+    </h6>
+  </div>
+
+  <div class="card-body">
+    <div class="row rtl">
+      <div class="col-4 farsi text-center" v-for="image in images">
+        <h6 class="text-center">
+          <span v-text="image.title"></span>
+        </h6>
+        <h6 class="text-muted small" v-html="image.persian_date_added"></h6>
+        <img
+          :src="image.thumbnail"
+          width="100%"
+          :alt="image.title"
+          class="rounded"
+        />
+
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -3,72 +3,103 @@
 {% block content %}
 {% include "core/includes/page-app/navbar.html" %}
 <div class="row rtl">
-    <div class="col-md-3">
+    <div class="col-md-12">
         {% include "core/includes/page-app/thumbnail-card.html" %}
         {% include "core/includes/page-app/card.html" %}
 
 
     </div>
-    <div class="col-md-9">
-        <div class="row rtl">
-
-            <div class="col-md-12">
-    
-                    {% include "core/includes/page-thumbnail-header-app/template.html" %}
-            </div>
-
-            <div class="col-md-12">
-                {% include "attachments/includes/comments-app/template.html" %}
-
-            </div>
-            {% if add_maintenance_invoice_form %}
-            <div class="col-12">
-                {% include "transport/includes/add-maintenance-app/template.html" %}
-
-            </div>
-            {% endif %}
-
-            <div class="col-md-12">
-                {% include "transport/includes/maintenances-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-12">
-                {% include "attachments/includes/comments-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-4">
-                {% include "attachments/includes/links-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-4">
-                {% include "attachments/includes/downloads-app/template.html" %}
-
-            </div>
-            <div class="col-md-4">
-                {% include "attachments/includes/tags-app/template.html" %}
-
-            </div>
-            <div class="col-md-12">
-                {% include "attachments/includes/page-like-app/page-likes.html" %}
-
-            </div>
-            <div class="col-md-12">
-                {% include "attachments/includes/images-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-12">
-                {% include "core/includes/page-related-app/template.html" %}
-
-            </div>
-
-
-
-        </div>
+    {% if vehicle_status %}
+      
+    <div class="col-md-12">
+        
+        {% include "transport/includes/vehicle-status-app/template.html" %}
     </div>
+    {% endif %}
+
+    <div class="col-md-12">
+
+        {% include "transport/includes/work-shifts-app/template.html" %}
+    </div>
+
+    <div class="col-md-12">
+        {% include "transport/includes/oil-services-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+        {% include "transport/includes/filter-services-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+        {% include "transport/includes/products-app/template.html" %}
+    </div>
+
+    <div class="col-md-12">
+        {% include "transport/includes/maintenances-app/template.html" %}
+
+    </div>
+
+    <div class="col-md-12">
+        {% include 'transport/includes/maintenance-invoices-app/template.html' %}
+    </div>
+
+    <div class="col-md-12">
+
+        {% include "transport/includes/services-app/template.html" %}
+    </div>
+
+    <div class="col-md-12">
+
+        {% include "core/includes/page-thumbnail-header-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+
+        {% include "transport/includes/vehicle-statuses-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+        {% include "attachments/includes/comments-app/template.html" %}
+
+    </div>
+    {% if add_maintenance_invoice_form %}
+    <div class="col-12">
+        {% include "transport/includes/add-maintenance-app/template.html" %}
+
+    </div>
+    {% endif %}
+
+
+    <div class="col-md-12">
+        {% include "attachments/includes/comments-app/template.html" %}
+
+    </div>
+
+    <div class="col-md-4">
+        {% include "attachments/includes/links-app/template.html" %}
+
+    </div>
+
+    <div class="col-md-4">
+        {% include "attachments/includes/downloads-app/template.html" %}
+
+    </div>
+    <div class="col-md-4">
+        {% include "attachments/includes/tags-app/template.html" %}
+
+    </div>
+    <div class="col-md-12">
+        {% include "attachments/includes/page-like-app/page-likes.html" %}
+
+    </div>
+    <div class="col-md-12">
+        {% include "attachments/includes/images-app/template.html" %}
+
+    </div>
+
+    <div class="col-md-12">
+        {% include "core/includes/page-related-app/template.html" %}
+
+    </div>
+
+
+
 
 
 </div>
@@ -77,7 +108,31 @@
 
 
 {% block script %}
+
 {% include "transport/includes/vehicle-app/script.html" %}
+{% include "transport/includes/services-app/script.html" %}
 {% include "transport/includes/maintenances-app/script.html" %}
+{% include "transport/includes/vehicle-statuses-app/script.html" %}
+{% include "transport/includes/work-shifts-app/script.html" %}
+
+
+
+{% include "transport/includes/oil-services-app/script.html" %}
+{% include "transport/includes/filter-services-app/script.html" %}
+{% include "transport/includes/products-app/script.html" %}
+{% include 'transport/includes/maintenance-invoices-app/script.html' %}
 
 {% endblock script %}
+
+
+{% block style %}
+<style>
+    .tavaghof {
+        background: #fff0f0;
+    }
+
+    .karkerd {
+        background: #eafff3;
+    }
+</style>
+{% endblock style %}

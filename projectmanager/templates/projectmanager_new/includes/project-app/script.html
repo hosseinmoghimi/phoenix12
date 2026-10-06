@@ -1,0 +1,25 @@
+
+{% if add_invoice_form %}
+{% include "projectmanager/includes/add-invoice-app/script.html" %}
+
+{% endif %}
+
+{% include "projectmanager/includes/remote-clients-app/script.html" %}
+
+{% include "accounting/includes/invoices-app/script.html" %}
+{% include "core/includes/page-app/script.html" %}
+
+{% include "projectmanager/includes/project-edit-app/script.html" %}
+{% include "projectmanager/includes/sub-projects-app/script.html" %}
+{% include "accounting/includes/invoice-lines-app/script.html" %}
+<script>
+    $(document).ready(()=>{
+        
+        if(typeof add_invoice_app != 'undefined'){
+            add_invoice_app.bedehkar_code= "{{project.employer.person_account.code}}"
+            add_invoice_app.bedehkar = {code:"{{project.employer.person_account.code}}",id:parseInt("{{project.employer.person_account.id}}"),get_absolute_url:"{{project.employer.person_account.get_absolute_url}}",color:"{{project.employer.person_account.color}}",balance:to_price_colored("{{project.employer.person_account.balance}}"),name:"{{project.employer.person_account.name}}",thumbnail:"{{project.employer.person_account.thumbnail}}"}
+            add_invoice_app.bestankar_code= "{{project.contractor.person_account.code}}"
+            add_invoice_app.bestankar = {code:"{{project.contractor.person_account.code}}",id:parseInt("{{project.contractor.person_account.id}}"),get_absolute_url:"{{project.contractor.person_account.get_absolute_url}}",color:"{{project.contractor.person_account.color}}",balance:to_price_colored("{{project.contractor.person_account.balance}}"),name:"{{project.contractor.person_account.name}}",thumbnail:"{{project.contractor.person_account.thumbnail}}"}
+        }
+    })
+</script>

@@ -1,7 +1,11 @@
+
+from .enums import OilActionEnum
+from utility.currency import to_price
+from utility.views import MessageView
 from django.shortcuts import render
 from phoenix.server_settings import DEBUG,ADMIN_URL,MEDIA_URL,SITE_URL,STATIC_URL
-from .serializers import MaintenanceSerializer,VehicleSerializer,ServiceManSerializer
-from .repo import VehicleRepo,ServiceManRepo,MaintenanceRepo
+from .serializers import MaintenanceInvoiceSerializer,VehicleStatusSerializer,WorkShiftSerializer,MaintenanceSerializer,VehicleSerializer,ServiceManSerializer,DriverSerializer
+from .repo import VehicleRepo,VehicleStatusRepo,WorkShiftRepo,ServiceManRepo,MaintenanceRepo,DriverRepo,AnbarProductRepo,ServiceRepo
 from .forms import *
 from .apps import APP_NAME
 from phoenix.server_apps import phoenix_apps
@@ -10,7 +14,15 @@ import json
 from django.views import View
 from core.views import CoreContext,leolog,PageContext
 from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,InvoiceLineWithInvoiceSerializer
-from .enums import MaintenanceTypesEnum
+from .enums import MaintenanceTypesEnum,OilTypeEnum
+from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
+from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer,ServiceSerializer,AnbarProductSerializer
+
+
+from .repo import OilServiceRepo,FilterServiceRepo,TavaghofRepo,ProductRepo
+
+from .serializers import VehicleEventSerializer
+from .repo import VehicleEventRepo,TavaghofRepo
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='transport/'
 WIDE_LAYOUT="WIDE_LAYOUT"
@@ -19,6 +31,8 @@ NO_NAVBAR="NO_NAVBAR"
 
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+    context['title']="حمل و نقل"
+
     context[WIDE_LAYOUT]=False 
  
     context['LAYOUT_PARENT']=LAYOUT_PARENT
@@ -31,8 +45,15 @@ def AddMaintenanceContext(request):
     service_mans=ServiceManRepo(request=request).list()
     context['vehicles']=vehicles
     context['service_mans']=service_mans
+    drivers=DriverRepo(request=request).list()
+    context['drivers']=drivers
     maintenance_types=(i[0] for i in MaintenanceTypesEnum.choices)
     context['maintenance_types']=maintenance_types
+    return context
+ 
+def AddOilingMaintenanceContext(request):
+    context=AddMaintenanceContext(request=request)
+    context['oil_types']=(i[0] for i in OilTypeEnum.choices)
     return context
 
 def VehicleContext(request,vehicle,*args, **kwargs):
@@ -55,7 +76,55 @@ def VehicleContext(request,vehicle,*args, **kwargs):
 
     return context 
 
+def AddOilingMaintenanceDetailContext(request):
+    context={}
+    context['add_oiling_maintenance_detail_form']=AddOilingMaintenanceDetailForm()
+    from .enums import FilterActionEnum,FilterTypeEnum
+    context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+    context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+    return context
+
  
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+    
+
+    vehicles=VehicleRepo(request=request).list(search_for=search_for)
+    
+    if len(vehicles)>0:
+        context['vehicles']=vehicles
+        context['expand_vehicles']=True
+        context['vehicles_s']=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        WAS_FOUND=True
+
+ 
+
+    drivers=DriverRepo(request=request).list(search_for=search_for)
+    
+    if len(drivers)>0:
+        context['drivers']=drivers
+        context['expand_drivers']=True
+        context['drivers_s']=json.dumps(DriverSerializer(drivers,many=True).data)
+        WAS_FOUND=True
+
+
+
+    service_mans=ServiceManRepo(request=request).list(search_for=search_for)
+    
+    if len(service_mans)>0:
+        context['service_mans']=service_mans
+        context['expand_service_mans']=True
+        context['service_mans_s']=json.dumps(ServiceManSerializer(service_mans,many=True).data)
+        WAS_FOUND=True
+
+
+ 
+
+
+    context['WAS_FOUND']=WAS_FOUND
+    return context
+
 class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -79,26 +148,743 @@ class VehiclesView(View):
         context[WIDE_LAYOUT]=False
         if request.user.has_perm(APP_NAME+'.add_vehicle'):
             context['add_vehicle_form']=AddVehicleForm()
+            from .enums import VehicleTypeEnum,VehicleColorEnum,VehicleBrandEnum
+            context['vehicle_types']=(i[0] for i in VehicleTypeEnum.choices)
+            context['vehicle_colors']=(i[0] for i in VehicleColorEnum.choices)
+            context['brand_names']=(i[0] for i in VehicleBrandEnum.choices)
+            context['drivers']=DriverRepo(request=request).list()
         return render(request,TEMPLATE_ROOT+"vehicles.html",context) 
     
+    
+class ReportView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['title']="گزارشگیری دستگاه ها"
+
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
+        maintenance_invoices =[]
+        context['maintenance_invoices']=maintenance_invoices
+        maintenance_invoices_s=json.dumps(MaintenanceInvoiceSerializer(maintenance_invoices,many=True).data)
+        context['maintenance_invoices_s']=maintenance_invoices_s
+ 
+        maintenances =[]
+        context['maintenances']=maintenances
+        maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
+        context['maintenances_s']=maintenances_s
+        
+        work_shifts =[]
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+        
+        anbar_products =[]
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+
+        services =[]
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+        oil_services =[]
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+        filter_services =[]
+        context['filter_services']=filter_services
+        filter_services_s= json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+        tavaghofs =[]
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s= json.dumps(TavaghofSerializer(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+
+        products =[]
+        context['products']=products
+        products_s= json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+        context[WIDE_LAYOUT]=True
+        
+        return render(request,TEMPLATE_ROOT+"report.html",context) 
+
     
 class VehicleView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         vehicle =VehicleRepo(request=request).vehicle(*args, **kwargs)
-        context[WIDE_LAYOUT]=False
+        context[WIDE_LAYOUT]=True
         context['vehicle']=vehicle 
+        vehicle_status=vehicle.last_status()
+        if vehicle_status:
+            context['vehicle_status']=vehicle_status 
+
+        if vehicle is None:
+                    from core.views import MessageView
+                    mv=MessageView()
+                    return mv.get(request=request,title="پیدا نشد")
+        
         context.update(VehicleContext(request=request,vehicle=vehicle))
         maintenances=MaintenanceRepo(request=request).list(vehicle_id=vehicle.id)
         context['maintenances']=maintenances
         maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
         context['maintenances_s']=maintenances_s
-        return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
-    
 
+
+        from .repo import MaintenanceInvoiceRepo 
+        invoices=MaintenanceInvoiceRepo(request=request).list(vehicle_id=vehicle.id)
+        from .serializers import MaintenanceInvoiceSerializer
+        invoices_s=json.dumps(MaintenanceInvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['maintenance_invoices_s']=invoices_s
+
+        
+
+        vehicle_statuses=vehicle.vehiclestatus_set.all().order_by('-status_datetime')
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+
+
+        services=vehicle.service_set.all().order_by('shift_date')
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+
+         
+
+
+        work_shifts =WorkShiftRepo(request=request).list(vehicle_id=vehicle.id)
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
+
+        from .repo import OilServiceRepo,ProductRepo,FilterServiceRepo
+
+
+        oil_services =OilServiceRepo(request=request).list(vehicle_id=vehicle.id)
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =FilterServiceRepo(request=request).list(vehicle_id=vehicle.id)
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        products =ProductRepo(request=request).list(vehicle_id=vehicle.id)
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
+        return render(request,TEMPLATE_ROOT+"vehicle.html",context) 
+  
+    
+class VehicleStatusesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context[WIDE_LAYOUT]=True 
+        context['expand_vehicle_statuses']=True
+
+        
+        vehicles=VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+
+        vehicle_statuses=VehicleStatusRepo(request=request).last_statuses(*args, **kwargs)
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+        if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
+            context['add_vehicle_status_form']=AddVehicleStatusForm()
+        return render(request,TEMPLATE_ROOT+"vehicle-statuses.html",context) 
+
+
+    
+class NewVehicleStatusView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context[WIDE_LAYOUT]=True 
+        context['expand_vehicle_statuses']=True
+
+        context['expand_new_vehicle_status']=True
+        
+        vehicles=VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+
+        vehicle_statuses=[]
+        context['vehicle_statuses']=vehicle_statuses
+        vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
+        context['vehicle_statuses_s']=vehicle_statuses_s
+        if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
+            context['add_vehicle_status_form']=AddVehicleStatusForm()
+        return render(request,TEMPLATE_ROOT+"new-vehicle-status.html",context) 
+
+
+class WorkShiftsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        work_shifts_excel_form=WorkShiftsExcelForm(request.POST)
+        if not work_shifts_excel_form.is_valid():
+            return context
+        log=333
+        cd=work_shifts_excel_form.cleaned_data
+        cd['work_shift_ids']=json.loads(cd['work_shift_ids'])
+        work_shifts=WorkShiftRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        oil_services=OilServiceRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        filter_services=FilterServiceRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        tavaghofs=TavaghofRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+        products=ProductRepo(request=request).list(work_shift_id__in=cd['work_shift_ids'])
+
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        from utility.excel import ReportWorkBook,get_style
+        from utility.templatetags.to_normal_number import to_normal_number
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+     
+# work shifts
+# ###########################################################################
+   
+
+        lines=[]
+        for i,work_shift in enumerate(work_shifts,start=1):
+            line={
+                'row':i,
+                'vehicle':work_shift.vehicle.title,      
+                'driver':work_shift.driver.full_name,      
+                'location':work_shift.location,  
+                'shift_date':PersianCalendar().from_gregorian(work_shift.shift_date)[:10],      
+                'shift':work_shift.shift,   
+                'start_hour':work_shift.start_hour,   
+                'end_hour':work_shift.end_hour,   
+                'vehicle_start_hour':work_shift.vehicle_start_hour,   
+                'vehicle_end_hour':work_shift.vehicle_end_hour,  
+                'vehicle_karkerd':work_shift.vehicle_karkerd(),   
+                'bar_count':work_shift.bar_count,   
+                'bar':work_shift.bar,   
+                'gasoil_liter':work_shift.gasoil_liter,   
+                'oil_liter':work_shift.oil_liter(),   
+                'tavaghof':work_shift.tavaghof(),   
+                'description':work_shift.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'دستگاه',
+                 'راننده',
+                 'مکان',
+                 'تاریخ',
+                 'شیفت',
+                 'ساعت شروع شیفت',
+                 'ساعت پایان شیفت',
+                 'ساعت شروع دستگاه',
+                 'ساعت پایان دستگاه',
+                 'میزان کارکرد دستگاه',
+                 'تعداد سرویس',
+                 'بار',
+                 'لیتراژ گازوئیل',
+                 'لیتراژ روغن',
+                 'توقف',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='work_shifts',
+            title='work_shifts',
+
+        )
+
+
+
+
+
+# oil services
+# ###########################################################################
+
+        
+        lines=[]
+        for i,oil_service in enumerate(oil_services,start=1):
+            line={
+                'row':i, 
+                'shift_date':PersianCalendar().from_gregorian(oil_service.work_shift.shift_date)[:10],      
+                'shift':oil_service.work_shift.shift,  
+                'vehicle':oil_service.work_shift.vehicle.title,      
+                'driver':oil_service.work_shift.driver.full_name,      
+                'location':oil_service.work_shift.location,  
+
+                'oil_type':oil_service.oil_type,    
+                'oil_action':oil_service.oil_action,  
+                'oil_liter':oil_service.oil_liter,   
+                'cost':oil_service.cost,   
+                'vehicle_hour':oil_service.vehicle_hour,  
+                'description':oil_service.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'تاریخ',
+                 'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
+                 'نوع روغن',
+                 'خدمات',
+                 'لیتر روغن',
+                 'هزینه',
+                 'ساعت دستگاه',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='oil_services',
+            title='oil_services',
+
+        )
+
+
+
+
+
+# filter services
+# ###########################################################################
+
+
+        lines=[]
+        for i,filter_service in enumerate(filter_services,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(filter_service.work_shift.shift_date)[:10],      
+                'shift':filter_service.work_shift.shift, 
+                'vehicle':filter_service.work_shift.vehicle.title,      
+                'driver':filter_service.work_shift.driver.full_name,      
+                'location':filter_service.work_shift.location,  
+
+                'filter_type':filter_service.filter_type,    
+                'filter_action':filter_service.filter_action,  
+                'count':filter_service.count,   
+                'cost':filter_service.cost,    
+                'description':filter_service.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'تاریخ',
+                 'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
+                 'نوع فیلتر',
+                 'خدمات',
+                 'تعداد',
+                 'هزینه', 
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='filter_services',
+            title='filter_services',
+
+        )
+
+
+
+
+
+
+# tavaghofs
+# ###########################################################################
+
+        
+
+        lines=[]
+        for i,tavaghof in enumerate(tavaghofs,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(tavaghof.work_shift.shift_date)[:10],      
+                'shift':tavaghof.work_shift.shift,    
+                
+                'vehicle':tavaghof.work_shift.vehicle.title,      
+                'driver':tavaghof.work_shift.driver.full_name,      
+                'location':tavaghof.work_shift.location,  
+
+                'cause':tavaghof.cause,    
+                'duration':tavaghof.duration,  
+                'vehicle_hour':tavaghof.vehicle_hour,   
+                'description':tavaghof.descriptin,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'تاریخ',
+                 'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+                 
+                 'علت توقف',
+                 'مدت توقف',
+                 'ساعت دستگاه',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='tavaghofs',
+            title='tavaghofs',
+
+        )
+
+
+
+# products
+# ###########################################################################
+
+        from utility.currency import to_price
+        lines=[]
+        for i,product in enumerate(products,start=1):
+            line={
+                'row':i,  
+                'shift_date':PersianCalendar().from_gregorian(product.work_shift.shift_date)[:10],      
+                'shift':product.work_shift.shift,  
+                'vehicle':product.work_shift.vehicle.title,      
+                'driver':product.work_shift.driver.full_name,      
+                'location':product.work_shift.location,  
+
+                'product':product.name,    
+                'quantity':product.quantity,  
+                'unit_price':(product.unit_price),  
+                'total':(product.unit_price*product.quantity),  
+                'anbar':product.anbar,   
+                'service_man':product.service_man, 
+                'description':product.description,      
+            }
+            lines.append(line)
+        headers=['ردیف', 
+                 'تاریخ',
+                 'شیفت',
+                 'دستگاه',
+                 'راننده',
+                 'موقعیت',
+
+                 'قطعه',
+                 'تعداد',
+                 'قیمت واحد',
+                 'مبلغ',
+                 'انبار',
+                 'تعمیرکار',
+                 'توضیحات'
+        ]
+                
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='products',
+            title='products',
+
+        )
+
+            
+        file_name=f"""Phoenix Transport work_shifts {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+ 
+class VehicleStatusesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        vehicle_statuses_excel_form=VehicleStatusesExcelForm(request.POST)
+        if vehicle_statuses_excel_form.is_valid():
+            log=333
+            cd=vehicle_statuses_excel_form.cleaned_data
+            if 'vehicle_status_ids' in cd:
+                leolog(sdsds=cd['vehicle_status_ids'])
+                cd['vehicle_status_ids']=json.loads(cd['vehicle_status_ids'])
+            vehicle_statuses=VehicleStatusRepo(request=request).list(**cd)
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,vehicle_status in enumerate(vehicle_statuses,start=1):
+            line={
+                'row':i,
+                'vehicle_code':vehicle_status.vehicle.vehicle_code,      
+                'vehicle':vehicle_status.vehicle.title,      
+                'datetime':PersianCalendar().from_gregorian(vehicle_status.status_datetime)[:10],      
+                'location':vehicle_status.location,  
+                'kilometer':vehicle_status.kilometer,   
+                'hour':vehicle_status.hour,   
+                'motor':vehicle_status.motor,   
+                'ziroband':vehicle_status.ziroband,   
+                'cabin':vehicle_status.cabin,   
+                'compress':vehicle_status.compress,   
+                'hydrolic':vehicle_status.hydrolic,   
+                'pakat':vehicle_status.pakat,   
+                'cooler':vehicle_status.cooler,   
+                'heater':vehicle_status.heater,   
+                'gear_box':vehicle_status.gear_box,   
+                'wiring':vehicle_status.wiring,   
+                'light':vehicle_status.light,   
+                'description':vehicle_status.description,      
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'کد',
+                 'دستگاه',
+                 'تاریخ',
+                 'مکان',
+                 'کیلومتر',
+                 'ساعت',
+                 'موتور',
+                 'زیروبند',
+                 'کابین',
+                 'کمپرس',
+                 'هیدرولیک',
+                 'پاکت',
+                 'کولر',
+                 'بخاری',
+                 'گیربکس',
+                 'سیم کشی', 
+                 'لامپ',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='statuses',
+            title='vehicle_statuses',
+
+        )
+            
+        file_name=f"""Phoenix Transport Statuses {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      
+class DriversExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        drivers_excel_form=DriversExcelForm(request.POST)
+        if drivers_excel_form.is_valid():
+            log=333
+            cd=drivers_excel_form.cleaned_data
+            drivers=DriverRepo(request=request).list(**cd)
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,driver in enumerate(drivers,start=1):
+
+            
+            
+            line={
+                'row':i,
+                'driver_code':driver.driver_code,      
+                # 'datetime':PersianCalendar().from_gregorian(driver.status_datetime)[:10],      
+                'full_name':driver.full_name,  
+                'license_no':driver.license_no,   
+                'year':driver.year,   
+                'level':driver.level,
+                # 'description':driver.description,    
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'کد',
+                 'نام کامل',
+                 'شماره گواهینامه',
+                 'سال',
+                 'پایه',
+                #  'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='drivers',
+            title='drivers',
+
+        )
+            
+        file_name=f"""Phoenix Transport Drivers {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+ 
+
+class VehicleStatusView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+        vehicle_status=VehicleStatusRepo(request=request).vehicle_status(*args, **kwargs)
+        if vehicle_status is None:
+            from core.views import MessageView
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
+
+
+
+
+        vehicle=vehicle_status.vehicle
+        context.update(PageContext(request=request,page=vehicle))
+
+
+        images=vehicle_status.images.all()
+        leolog(images=images)
+        from attachments.serializer import ImageSerializer
+        images_s=json.dumps(ImageSerializer(images,many=True).data)
+        context['images']=images
+        context['images_s']=images_s
+
+        context['vehicle']=vehicle
+        context['vehicle_status']=vehicle_status
+        vehicle_status_s=json.dumps(VehicleStatusSerializer(vehicle_status,many=False).data)
+        context['vehicle_status_s']=vehicle_status_s
+        return render(request,TEMPLATE_ROOT+"vehicle-status.html",context) 
+  
+
+class VehicleEventsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        context[WIDE_LAYOUT]=True 
+
+        vehicle_events=VehicleEventRepo(request=request).list()
+        context['vehicle_events']=vehicle_events
+        vehicle_events_s=json.dumps(VehicleEventSerializer(vehicle_events,many=True).data)
+        context['vehicle_events_s']=vehicle_events_s
+
+        return render(request,TEMPLATE_ROOT+"vehicle-events.html",context) 
+  
+    
+class NewOilingMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        if request.user.has_perm(APP_NAME+'.add_maintenance'):
+            context.update(AddMaintenanceContext(request=request))
+            context['add_oiling_maintenance_form']=AddOilingMaintenanceForm()
+            context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        return render(request,TEMPLATE_ROOT+"new-oiling-maintenance.html",context) 
+
+    
 class MaintenanceInvoicesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        
         maintenance_invoices =MaintenanceInvoiceRepo(request=request).list(*args, **kwargs)
         context['maintenance_invoices']=maintenance_invoices
         maintenance_invoices_s=json.dumps(MaintenanceInvoiceSerializer(maintenance_invoices,many=True).data)
@@ -113,6 +899,7 @@ class MaintenanceInvoicesView(View):
 class MaintenanceInvoiceView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+        from .repo import MaintenanceInvoiceRepo
         maintenance_invoice =MaintenanceInvoiceRepo(request=request).maintenance_invoice(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['maintenance_invoice']=maintenance_invoice
@@ -152,9 +939,10 @@ class MaintenanceView(View):
 
         
         invoices=maintenance.invoices.order_by('-event_datetime')
-        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        from .serializers import MaintenanceInvoiceSerializer
+        invoices_s=json.dumps(MaintenanceInvoiceSerializer(invoices,many=True).data)
         context['invoices']=invoices
-        context['invoices_s']=invoices_s
+        context['maintenance_invoices_s']=invoices_s
 
 
 
@@ -171,7 +959,148 @@ class MaintenanceView(View):
             context.update(AddInvoiceContext(request=request))
 
         return render(request,TEMPLATE_ROOT+"maintenance.html",context) 
+
+
+class NewMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        maintenances =[]
+        context['maintenances']=maintenances
+        maintenances_s=json.dumps(MaintenanceSerializer(maintenances,many=True).data)
+        context['maintenances_s']=maintenances_s
+ 
+        context['expand_new_maintenance']=True
+        context[WIDE_LAYOUT]=False
+        if request.user.has_perm(APP_NAME+'.add_maintenance'):
+            context.update(AddMaintenanceContext(request=request))
+        return render(request,TEMPLATE_ROOT+"new-maintenance.html",context) 
     
+    
+class OilingMaintenanceDetailsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        oiling_maintenance_details =OilingMaintenanceDetailRepo(request=request).list(*args, **kwargs)
+        
+        context[WIDE_LAYOUT]=True
+        context['oiling_maintenance_details']=oiling_maintenance_details 
+        oiling_maintenance_details_s=json.dumps(OilingMaintenanceDetailSerializer(oiling_maintenance_details,many=True).data)
+        context['oiling_maintenance_details_s']=oiling_maintenance_details_s 
+
+        context['expand_oiling_maintenance_details']=True
+          
+
+        if request.user.has_perm('accounting.add_oilingmaintenancedetail'):
+            context.update(AddOilingMaintenanceDetailContext(request=request))
+        return render(request,TEMPLATE_ROOT+"oiling-maintenance-details.html",context) 
+    
+
+class OilingMaintenancesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        oiling_maintenances =OilingMaintenanceRepo(request=request).list(*args, **kwargs)
+        context['oiling_maintenances']=oiling_maintenances
+        oiling_maintenances_s=json.dumps(OilingMaintenanceSerializer(oiling_maintenances,many=True).data)
+        context['oiling_maintenances_s']=oiling_maintenances_s
+ 
+        context[WIDE_LAYOUT]=False
+        if request.user.has_perm(APP_NAME+'.add_oilingmaintenance'):
+            context.update(AddOilingMaintenanceContext(request=request))
+        return render(request,TEMPLATE_ROOT+"oiling-maintenances.html",context) 
+
+        
+class OilingMaintenanceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        oiling_maintenance =OilingMaintenanceRepo(request=request).oiling_maintenance(*args, **kwargs)
+        if oiling_maintenance is None:
+            from core.views import MessageView
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
+        context[WIDE_LAYOUT]=True
+        context['oiling_maintenance']=oiling_maintenance 
+        context['expand_oiling_maintenance_details']=True 
+        maintenance=oiling_maintenance
+        context['maintenance']=maintenance 
+        maintenance_s=json.dumps(MaintenanceSerializer(maintenance,many=False).data)
+        context['maintenance_s']=maintenance_s 
+        context.update(PageContext(request=request,page=maintenance))
+
+
+        
+        invoices=maintenance.invoices.order_by('-event_datetime')
+        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['invoices_s']=invoices_s
+
+
+
+
+        
+        invoice_lines=maintenance.all_invocie_lines().order_by('invoice_line_item__title')
+        invoice_lines_s=json.dumps(InvoiceLineWithInvoiceSerializer(invoice_lines,many=True).data)
+        context['invoice_lines']=invoice_lines
+        context['invoice_lines_s']=invoice_lines_s
+        
+        oiling_maintenance_details=oiling_maintenance.oilingmaintenancedetail_set.all()
+        oiling_maintenance_details_s=json.dumps(OilingMaintenanceDetailSerializer(oiling_maintenance_details,many=True).data)
+        context['oiling_maintenance_details']=oiling_maintenance_details
+        context['oiling_maintenance_details_s']=oiling_maintenance_details_s
+
+        if request.user.has_perm('accounting.add_invoice'):
+            context['add_invoice_to_maintenance_form']=AddInvoiceToMaintenanceForm()
+            context['add_invoice_form']=AddInvoiceForm()
+            context.update(AddInvoiceContext(request=request))
+
+        if request.user.has_perm('accounting.add_oilingmaintenancedetail'):
+            context.update(AddOilingMaintenanceDetailContext(request=request))
+        return render(request,TEMPLATE_ROOT+"oiling-maintenance.html",context) 
+
+    
+class OilingMaintenancePrintView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        oiling_maintenance =OilingMaintenanceRepo(request=request).oiling_maintenance(*args, **kwargs)
+        if oiling_maintenance is None:
+            from core.views import MessageView
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
+        context[WIDE_LAYOUT]=True
+        context['oiling_maintenance']=oiling_maintenance 
+        maintenance=oiling_maintenance
+        context['NO_FOOTER']=True 
+        context['NO_NAVBAR']=True 
+        context['maintenance']=maintenance 
+        maintenance_s=json.dumps(MaintenanceSerializer(maintenance,many=False).data)
+        context['maintenance_s']=maintenance_s 
+        context.update(PageContext(request=request,page=maintenance))
+        invoices=maintenance.invoices.order_by('-event_datetime')
+        invoices_s=json.dumps(InvoiceSerializer(invoices,many=True).data)
+        context['invoices']=invoices
+        context['invoices_s']=invoices_s
+
+
+
+
+        
+        invoice_lines=maintenance.all_invocie_lines().order_by('invoice_line_item__title')
+        invoice_lines_s=json.dumps(InvoiceLineWithInvoiceSerializer(invoice_lines,many=True).data)
+        context['invoice_lines']=invoice_lines
+        context['invoice_lines_s']=invoice_lines_s
+        
+        oiling_maintenance_details=oiling_maintenance.oilingmaintenancedetail_set.all()
+        oiling_maintenance_details_s=json.dumps(OilingMaintenanceDetailSerializer(oiling_maintenance_details,many=True).data)
+        context['oiling_maintenance_details']=oiling_maintenance_details
+        context['oiling_maintenance_details_s']=oiling_maintenance_details_s
+
+        if request.user.has_perm('accounting.add_invoice'):
+            context['add_invoice_to_maintenance_form']=AddInvoiceToMaintenanceForm()
+            context['add_invoice_form']=AddInvoiceForm()
+            context.update(AddInvoiceContext(request=request))
+
+        if request.user.has_perm('accounting.add_oilingmaintenancedetail'):
+            context.update(AddOilingMaintenanceDetailContext(request=request))
+        return render(request,TEMPLATE_ROOT+"oiling-maintenance-print.html",context) 
+            
 
 class ServiceMansView(View):
     def get(self,request,*args, **kwargs):
@@ -185,7 +1114,89 @@ class ServiceMansView(View):
         if request.user.has_perm(APP_NAME+'.add_serviceman'):
             context['add_service_man_form']=AddServiceManForm()
         return render(request,TEMPLATE_ROOT+"service-mans.html",context) 
+
  
+class OilingMaintenanceDetailsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        oiling_maintenance_details_excel_form=OilingMaintenanceDetailsExcelForm(request.POST)
+        if oiling_maintenance_details_excel_form.is_valid():
+            log=333
+            cd=oiling_maintenance_details_excel_form.cleaned_data
+            oiling_maintenance_details=OilingMaintenanceDetailRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,oiling_maintenance_detail in enumerate(oiling_maintenance_details,start=1):
+            line={
+                'row':i,
+                'vehicle':oiling_maintenance_detail.vehicle.title,      
+                'datetime':oiling_maintenance_detail.oiling_maintenance.persian_event_datetime()[:10],      
+                'service_man':oiling_maintenance_detail.oiling_maintenance.service_man.person_account.person.full_name,      
+                'filter_type':oiling_maintenance_detail.filter_type,      
+                'filter_action':oiling_maintenance_detail.filter_action,      
+                'count':oiling_maintenance_detail.count,      
+                'cost':oiling_maintenance_detail.cost,      
+                'description':oiling_maintenance_detail.description,      
+            }
+            lines.append(line)
+        headers=['ردیف',
+                 'ماشین',
+                 'تاریخ',
+                 'سرویسکار',
+                 'فیلتر',
+                 'سرویس',
+                 'تعداد', 
+                 'برآورد هزینه',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='oiling_maintenance_details',
+            title='oiling_maintenance_details',
+
+        )
+            
+        file_name=f"""Phoenix OilingMaintenanceDetails {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
     
 class ServiceManView(View):
     def get(self,request,*args, **kwargs):
@@ -193,7 +1204,10 @@ class ServiceManView(View):
         service_man =ServiceManRepo(request=request).service_man(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['service_man']=service_man
+        if service_man is None:
 
+            mv=MessageView()
+            return mv.get(request=request,title="پیدا نشد")
 
         maintenances =MaintenanceRepo(request=request).list(service_man_id=service_man.id)
         context['maintenances']=maintenances
@@ -201,4 +1215,571 @@ class ServiceManView(View):
         context['maintenances_s']=maintenances_s
  
 
+        services=service_man.service_set.all().order_by('shift_date')
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+        context[WIDE_LAYOUT]=True
+
+
         return render(request,TEMPLATE_ROOT+"service-man.html",context) 
+
+    
+class NewKarkerdView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        if not request.user.has_perm(APP_NAME+".add_karkerd"):
+            
+            mv=MessageView()
+            return mv.get(request=request,title="دسترسی غیر مجاز")
+
+        context['add_karkerd_form']=AddKarkerdForm()
+
+        vehicles =VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
+        from attachments.repo import AreaRepo
+        areas=AreaRepo(request=request).list()
+        context['areas']=areas
+
+        from projectmanager.views import ProjectRepo
+        projects=ProjectRepo(request=request).list()
+        context['projects']=projects
+ 
+        drivers=DriverRepo(request=request).list()
+        context['drivers']=drivers
+
+        return render(request,TEMPLATE_ROOT+"new-karkerd.html",context) 
+
+
+class NewWorkShiftView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        if not request.user.has_perm(APP_NAME+".add_workshift"):
+            mv=MessageView()
+            return mv.get(request=request,title="دسترسی غیر مجاز")
+
+        context['add_work_shift_form']=AddKarkerdForm()
+ 
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+
+        
+        drivers =DriverRepo(request=request).list(*args, **kwargs)
+        context['drivers']=drivers
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['oil_actions']=(i[0] for i in OilActionEnum.choices)
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+
+
+        locations=[
+            'سنگ شکن',
+            'ققنوس',
+            'محدوده یک',
+            'محدوده دو',
+            'محدوده سه',
+            'محدوده چهار',
+            'محدوده پنج', 
+        ]
+        context['locations']=locations
+
+
+        work_shifts =[]
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+        context['expand_work_shifts']=True
+
+
+
+        return render(request,TEMPLATE_ROOT+"new-work-shift.html",context) 
+
+
+class WorkShiftView(View):
+    def get(self,request,*args, **kwargs):
+        work_shift =WorkShiftRepo(request=request).work_shift(*args, **kwargs)
+        if work_shift is None:
+            mv=MessageView()
+            return mv.get(request=request,title="وجود ندارد")
+
+ 
+        context=getContext(request=request)
+
+        
+
+ 
+        context['work_shift']=work_shift
+
+        oil_services =work_shift.oilservice_set.all()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+
+
+
+        filter_services =work_shift.filterservice_set.all()
+        context['filter_services']=filter_services
+        filter_services_s=json.dumps(FilterServiceSerializer(filter_services,many=True).data)
+        context['filter_services_s']=filter_services_s
+
+
+
+
+
+        tavaghofs =work_shift.tavaghof_set.all()
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s=json.dumps(TavaghofSerializer(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+
+
+
+
+
+        products =work_shift.product_set.all()
+        context['products']=products
+        products_s=json.dumps(ProductSerializer(products,many=True).data)
+        context['products_s']=products_s
+
+
+
+
+        context['expand_oil_services']=True
+        context['expand_filter_services']=True
+        context['expand_tavaghofs']=True
+        context['expand_products']=True
+
+
+
+
+        
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['oil_actions']=(i[0] for i in OilActionEnum.choices)
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['filter_actions']=(i[0] for i in FilterActionEnum.choices)
+        context['tavaghof_causes']=(i[0] for i in TavaghofCausesEnum.choices)
+
+
+        context[WIDE_LAYOUT]=True
+        if request.user.has_perm(APP_NAME+".add_oilservice"):
+            context['add_oil_service_form']=AddOilServiceForm()
+
+            
+        if request.user.has_perm(APP_NAME+".add_filterservice"):
+            context['add_filter_service_form']=AddFilterServiceForm()
+
+            
+        if request.user.has_perm(APP_NAME+".add_tavaghof"):
+            context['add_tavaghof_form']=AddTavaghofForm()
+
+        if request.user.has_perm(APP_NAME+".add_product"):
+            context['add_product_form']=AddProductForm()
+
+        return render(request,TEMPLATE_ROOT+"work-shift.html",context) 
+
+
+class WorkShiftsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        work_shifts =WorkShiftRepo(request=request).list(*args, **kwargs).order_by('-start_hour').order_by('-shift_date')
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
+         
+        context['expand_work_shifts']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"work-shifts.html",context) 
+
+
+class OilServicesView(View):
+    def get(self,request,*args, **kwargs):
+        
+ 
+        context=getContext(request=request)
+
+        from .serializers import OilServiceSerializer2
+
+  
+        oil_services =OilServiceRepo(request=request).list()
+        context['oil_services']=oil_services
+        oil_services_s=json.dumps(OilServiceSerializer2(oil_services,many=True).data)
+        context['oil_services_s']=oil_services_s
+
+
+ 
+        context['expand_oil_services']=True 
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"oil-services.html",context) 
+
+
+
+ 
+
+class TavaghofsView(View):
+    def get(self,request,*args, **kwargs):
+
+        context=getContext(request=request)
+        from .serializers import TavaghofSerializer2
+        tavaghofs =TavaghofRepo(request=request).list()
+        context['tavaghofs']=tavaghofs
+        tavaghofs_s=json.dumps(TavaghofSerializer2(tavaghofs,many=True).data)
+        context['tavaghofs_s']=tavaghofs_s
+        context['expand_tavaghofs']=True 
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"tavaghofs.html",context) 
+
+
+class NewAnbarProductView(View):
+    def get(self,request,*args, **kwargs):
+ 
+        context=getContext(request=request)
+
+        context['expand_add_anbar_product']=True
+        vehicles =VehicleRepo(request=request).list()
+        context['vehicles']=vehicles
+        vehicles_s=json.dumps(VehicleSerializer(vehicles,many=True).data)
+        context['vehicles_s']=vehicles_s
+
+        anbar_products =[]
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+
+        if request.user.has_perm(APP_NAME+".add_anbarproduct"):
+            context['add_anbar_product_form']=AddAnbarProductForm()
+
+        context['expand_anbar_products']=True
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"new-anbar-product.html",context) 
+
+
+class AnbarProductView(View):
+    def get(self,request,*args, **kwargs):
+        anbar_product =AnbarProductRepo(request=request).anbar_product(*args, **kwargs)
+        if anbar_product is None:
+            mv=MessageView()
+            return mv.get(request=request,title="وجود ندارد")
+ 
+        context=getContext(request=request)
+        context['anbar_product']=anbar_product
+          
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"anbar-product.html",context) 
+
+
+class AnbarProductsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        anbar_products =AnbarProductRepo(request=request).list(*args, **kwargs) 
+        context['anbar_products']=anbar_products
+        anbar_products_s=json.dumps(AnbarProductSerializer(anbar_products,many=True).data)
+        context['anbar_products_s']=anbar_products_s
+         
+        context['expand_anbar_products']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"anbar-products.html",context) 
+
+ 
+class AnbarProductsExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        anbar_products_excel_form=AnbarProductsExcelForm(request.POST)
+        if anbar_products_excel_form.is_valid():
+            log=333
+            cd=anbar_products_excel_form.cleaned_data
+            if 'anbar_products_ids' in cd and cd['anbar_products_ids']:
+                cd['anbar_products_ids']=json.loads(cd['anbar_products_ids'])
+            anbar_products=AnbarProductRepo(request=request).list(**cd)
+
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,anbar_product in enumerate(anbar_products,start=1):
+            line={
+                'row':i,
+                'id':anbar_product.id,
+                'shift_date':PersianCalendar().from_gregorian(anbar_product.shift_date)[:10],      
+                'shift':anbar_product.shift,  
+                'name':anbar_product.name,  
+                'quantity':anbar_product.quantity,   
+                'unit_price':(anbar_product.unit_price),   
+                'total':(anbar_product.quantity*anbar_product.unit_price),   
+                'anbar':anbar_product.anbar,   
+                'vehicle_code':anbar_product.vehicle.vehicle_code,   
+                'vehicle':anbar_product.vehicle.title,   
+                'description':anbar_product.description,      
+            }
+            lines.append(line)
+
+        headers=['ردیف',
+                'شناسه',
+                'تاریخ',
+                'شیفت',
+                'قطعه',
+                'تعداد',
+                'قیمت جزء',
+                'جمع',
+                'انبار',
+                'کد دستگاه',
+                'دستگاه',
+                'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='anbar_products',
+            title='anbar_products',
+        )
+        file_name=f"""Phoenix Transport anbar_products {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+       
+class ServiceView(View):
+    def get(self,request,*args, **kwargs):
+      
+ 
+        context=getContext(request=request)
+
+        service =ServiceRepo(request=request).service(*args, **kwargs)
+        context['service']=service
+        service_s=json.dumps(ServiceSerializer(service,many=False).data)
+        context['service_s']=service_s
+  
+        context[WIDE_LAYOUT]=True
+
+        return render(request,TEMPLATE_ROOT+"service.html",context) 
+
+
+class ServicesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        services =ServiceRepo(request=request).list(*args, **kwargs) 
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+
+
+         
+        context['expand_services']=True
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"services.html",context) 
+
+
+class NewServiceView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+
+        drivers =DriverRepo(request=request).list(*args, **kwargs)
+        context['drivers']=drivers
+        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        context['vehicles']=vehicles
+        service_mans =ServiceManRepo(request=request).list(*args, **kwargs)
+        context['service_mans']=service_mans
+         
+        context['filter_types']=(i[0] for i in FilterTypeEnum.choices)
+        context['oil_types']=(i[0] for i in OilTypeEnum.choices)
+        context['expand_services']=True
+
+        
+        services =[]
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+        
+        
+        context[WIDE_LAYOUT]=True
+        return render(request,TEMPLATE_ROOT+"new-service.html",context) 
+
+ 
+class VehiclesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        vehicles_excel_form=VehiclesExcelForm(request.POST)
+        if vehicles_excel_form.is_valid():
+            log=333
+            cd=vehicles_excel_form.cleaned_data
+            vehicles=VehicleRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,vehicle in enumerate(vehicles,start=1):
+            line={
+                'row':i,
+                'id':vehicle.id,
+                'vehicle_code':vehicle.vehicle_code,   
+                'vehicle_type':vehicle.vehicle_type,      
+                'title':vehicle.title,   
+                'year':vehicle.year,   
+                'plaque':vehicle.plaque,   
+                'vehicle_color':vehicle.vehicle_color,   
+                'kilometer':vehicle.kilometer,   
+                'description':vehicle.description,      
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'شناسه',
+                 'کد',
+                 'نوع',
+                 'ماشین',
+                 'سال',
+                 'پلاک',
+                 'رنگ',
+                 'کیلومتر',
+                 'توضیحات'
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'transport.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        # sheet1=ReportSheet(
+        #     data=lines,
+        #     start_row=3,
+        #     start_col=1,
+        #     table_has_header=False,
+        #     table_headers=None,
+        #     style=style,
+        #     sheet_name='links',
+            
+        # )
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='vehicles',
+            title='vehicles',
+        )
+        file_name=f"""Phoenix Transport vehicles {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+      
+class DriverView(View):
+    def get(self,request,*args, **kwargs):
+      
+ 
+        context=getContext(request=request)
+
+         
+
+        driver =DriverRepo(request=request).driver(*args, **kwargs)
+        context['driver']=driver
+        driver_s=json.dumps(DriverSerializer(driver,many=False).data)
+        context['driver_s']=driver_s
+  
+        context[WIDE_LAYOUT]=True
+
+
+ 
+        services =ServiceRepo(request=request).list(driver_id=driver.id)
+        context['services']=services
+        services_s=json.dumps(ServiceSerializer(services,many=True).data)
+        context['services_s']=services_s
+
+
+        work_shifts =WorkShiftRepo(request=request).list(driver_id=driver.id).order_by('-start_hour').order_by('-shift_date')
+        context['work_shifts']=work_shifts
+        work_shifts_s=json.dumps(WorkShiftSerializer(work_shifts,many=True).data)
+        context['work_shifts_s']=work_shifts_s
+
+
+
+         
+
+
+
+        return render(request,TEMPLATE_ROOT+"driver.html",context) 
+
+
+class DriversView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+ 
+        drivers =DriverRepo(request=request).list(*args, **kwargs) 
+        context['drivers']=drivers
+        drivers_s=json.dumps(DriverSerializer(drivers,many=True).data)
+        context['drivers_s']=drivers_s
+
+
+
+         
+        context['expand_drivers']=True
+        context[WIDE_LAYOUT]=True
+        
+        if request.user.has_perm(APP_NAME+".add_driver"):
+            context['add_driver_form']=AddDriverForm()
+        return render(request,TEMPLATE_ROOT+"drivers.html",context) 
+
+ 

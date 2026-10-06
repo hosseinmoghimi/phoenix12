@@ -1,0 +1,69 @@
+{% include "accounting/includes/account-app/select-script.html" %}
+<script>
+  let add_food_app = new Vue({
+    el: "#add-food-app",
+    data: {
+    title: "",
+    code:"",
+    event_date: current_date,
+    event_time: "00:00:00",
+    event_datetime: current_datetime,
+    message:{show:false},
+    waiting:false,
+      
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+
+      swap: function () {
+        let bed = add_food_app.bedehkar;
+        let bes = add_food_app.bestankar;
+        add_food_app.bedehkar = bes;
+        add_food_app.bestankar = bed;
+      },
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      
+      add_food: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          code: this.code,
+        };
+
+        console.log(payload);
+        let url = "{% url 'restaurant:add_food' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {  
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof foods_app != "undefined") {
+              foods_app.foods.push(data.food);
+            }
+          }
+        });
+      },
+    },
+  });
+</script>

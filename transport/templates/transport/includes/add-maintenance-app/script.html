@@ -3,9 +3,11 @@
     el: "#add-maintenance-app",
     data: {
       title: "",
-      kilometer: 0,
-      vehicle_id: 0,
+      kilometer: 0, 
+      vehicle_code: '',
+      driver_id: 0,
       service_man_id: 0,
+      hour: 0,
       description: "",
       maintenance_type: "",
       event_date: current_date,
@@ -43,11 +45,13 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: this.title,
-          vehicle_id: this.vehicle_id,
-          service_man_id: this.service_man_id,
+          vehicle_code: this.vehicle_code,
+          driver_id: parseInt(this.driver_id),
+          service_man_id: parseInt(this.service_man_id),
           maintenance_type: this.maintenance_type,
           description: this.description,
-          kilometer: this.kilometer,
+          hour: parseInt(this.hour),
+          kilometer: parseInt(this.kilometer),
           event_datetime: this.event_date + " " + this.event_time,
         };
 

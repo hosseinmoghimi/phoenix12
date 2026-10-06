@@ -14,9 +14,11 @@
       </h5>
     </div>
 
+
+  
     <div
       id="collapse-add-maintenance"
-      class="collapse"
+      class="collapse {% if expand_new_maintenance %}show {% endif %} "
       aria-labelledby="heading-add-maintenance"
       data-parent="#accordion-add-maintenance"
     >
@@ -40,6 +42,16 @@
 
           <div class="col-md-4">
             <div class="form-group">
+              <label for="">ساعت  
+                <span v-text="separate(hour)"></span>
+              </label>
+              <input v-model="hour" type="number" class="form-control" />
+            </div>
+          </div>
+
+
+          <div class="col-md-4">
+            <div class="form-group">
               <label for="bedehkar_code">تعمیرکار</label>
               <select v-model="service_man_id" class="form-control">
                 {% for service_man in service_mans %}
@@ -53,9 +65,10 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">وسیله نقلیه</label>
-              <select v-model="vehicle_id" class="form-control">
+              <input type="text" v-model="vehicle_code" class="form-control">
+              <select v-model="vehicle_code" class="form-control">
                 {% for vehicle in vehicles %}
-                <option value="{{vehicle.id}}">{{vehicle}}</option>
+                <option value="{{vehicle.vehicle_code}}">{{vehicle}}</option>
                 {% endfor %}
               </select>
             </div>
@@ -113,12 +126,7 @@
           <div class="col-md-4"></div>
 
           <div class="col-md-12">
-            <div v-if="message.show">
-              <div :class="'my-2 alert alert-'+message.color">
-                <h5 v-text="message.title"></h5>
-                <div v-html="message.body"></div>
-              </div>
-            </div>
+            
 
             <button
               class="btn btn-success"
@@ -129,6 +137,9 @@
               <i class="fa fa-plus"></i>
               افزودن
             </button>
+            <div class="my-3">
+              {% include "utility/includes/message.html" %}
+            </div>
           </div>
         </div>
       </div>

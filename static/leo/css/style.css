@@ -15,3 +15,15 @@
 table{
     direction: rtl;
 }
+
+
+
+.field_name{
+    text-align: left;
+    color: #a2a2a2;
+    font-size: 0.8rem;
+}
+
+.field_value{
+    text-align: right;
+}

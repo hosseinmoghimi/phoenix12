@@ -4,17 +4,17 @@
 
 
  
-<div class="text-center rtl">
+<div class="text-right rtl">
   
   {% if category.parent %}
   
-  {{category.get_market_breadcrumb_link|safe}}
+  {{category.parent.get_market_breadcrumb_link|safe}}
   {% else %}
   <a href="{% url 'market:home' %}">خانه</a>
   {% endif %}
 </div>
 
-<h4 class="text-center rtl">
+<h3 class="mt-1 text-right rtl">
     {{category.title}}
     {% if perms.accounting.change_category %}
       <a target="_blank" href="{{category.get_edit_url}}" title="ویرایش">
@@ -25,7 +25,7 @@
         <i class="fa fa-edit text-info"></i>
       </a>
     {% endif %}
-</h4>
+</h3>
  
  
 

@@ -1,0 +1,236 @@
+{% load static %}
+<div id="services-app">
+  <div id="accordion-services">
+    <div class="card">
+      <div class="card-header" id="heading-services">
+        <h5 class="text-center">
+          <button
+            class="btn btn-link"
+            data-toggle="collapse"
+            data-target="#collapse-services"
+            aria-expanded="true"
+            aria-controls="collapse-services"
+          >
+ 
+    گزارشات سرویس کار
+    
+            <span v-if="services.length>0">
+              <small class="text-danger mx-2">
+                <span v-text="services.length"></span>
+              </small>
+            </span>
+          </button>
+        </h5>
+      </div>
+
+      <div
+        id="collapse-services"
+        class="collapse {% if expand_services %} show{% endif %}"
+        aria-labelledby="heading-services"
+        data-parent="#accordion-services"
+      >
+        <div class="card-body">
+          <div class="table-responsive" v-if="services.length>0">
+            <table
+              class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl"
+            >
+              <thead>
+                <th>تاریخ</th>
+                <th>دستگاه</th>
+                <th>تعمیرکار / راننده</th>
+
+                <th>گازوئیل</th>
+                
+                <th>لیتراژ روغن</th>
+                <th>گریس</th>
+
+                <th>خدمات فیلتر</th>
+
+                <th></th>
+              </thead>
+              <tbody>
+                <tr v-for="service in services">
+                  <td>
+                    <a :href="service.get_absolute_url">
+
+                      <div>
+                        
+                        <span v-text="service.persian_shift_date"></span>
+                      </div>
+                      <div>
+                        شیفت
+                        <span v-text="service.shift"></span>
+                      </div>
+                    </a>
+                  </td>
+                  <td>
+                    <a :href="service.vehicle.get_absolute_url">
+                      <span v-text="service.vehicle.code"></span>
+
+                      <span v-text="service.vehicle.title"></span>
+                    </a>
+                  </td>
+                  <td>
+                    <div>
+                      <a :href="service.service_man.get_absolute_url">
+                        <span
+                          v-text="service.service_man.full_name"
+                        ></span>
+                      </a>
+                    </div>
+                    <div>
+                      <a :href="service.driver.get_absolute_url"> 
+                        
+                        <span
+                          v-text="service.driver.driver_code"
+                        ></span> 
+                        
+                        <span
+                          v-text="service.driver.full_name"
+                        ></span>
+                  
+                          
+                 
+                      </a>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div v-if="service.gasoil_liter>0">
+
+                    <img
+                      src="{% static 'transport/img/gasoil.png' %}"
+                      width="32"
+                      alt=""
+                    />
+                    <span v-text="service.gasoil_liter"></span>
+                     
+                    <small class="text-muted">
+
+                      لیتر
+                    </small>
+                    
+                    </div>
+                  </td>
+                  <td>
+
+                    <div v-if="service.oil_liter>0">
+
+
+                    <img
+                      src="{% static 'transport/img/motor-oil.png' %}"
+                      width="32"
+                      alt=""
+                    />
+                    <span v-text="service.oil_liter"></span>
+                     <small class="text-muted">
+
+                      لیتر
+                      <span v-text="service.oil_type"></span>
+                    </small>
+ 
+                    </div>
+
+                  </td>
+
+                  <td>
+                    <div v-if="service.grease>0">
+
+                    <img
+                      src="{% static 'transport/img/grease.png' %}"
+                      width="32"
+                      alt=""
+                    />
+
+                    <span v-text="service.grease"></span>
+                    </div>
+
+                  </td>
+
+                  <td>
+                    <span v-text="service.filter_action"></span>
+                    <span v-text="service.filter_type"></span>
+                  </td>
+
+                  <td>
+                     <a
+                      target="_blank"
+                      :href="service.get_absolute_url"
+                      title="جزئیات"
+                    >
+                      <i class="fa fa-edit text-info"></i>
+                      جزئیات
+                    </a>
+
+                    {% if perms.market.change_service %}
+                    <a
+                      target="_blank"
+                      :href="service.get_edit_url"
+                      title="ویرایش"
+                    >
+                      <i class="fa fa-edit text-warning"></i>
+                    </a>
+                    {% endif %} {% if perms.market.delete_service %}
+                    <a
+                      target="_blank"
+                      :href="service.get_delete_url"
+                      title="حذف"
+                    >
+                      <i class="fa fa-trash text-danger"></i>
+                    </a>
+                    {% endif %}
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <th></th>
+
+                <th></th>
+
+                <th></th>
+
+                <th>
+                  <img
+                    src="{% static 'transport/img/gasoil.png' %}"
+                    width="32"
+                    alt=""
+                  />
+                  مجموعا
+                  <span v-text="sum_gasoil()"></span>
+                  لیتر
+                </th>
+
+                <th>
+                  <img
+                    src="{% static 'transport/img/motor-oil.png' %}"
+                    width="32"
+                    alt=""
+                  />
+                  مجموعا
+                  <span v-text="sum_oil()"></span>
+                  لیتر
+                </th>
+
+
+                <th>
+                  <img
+                    src="{% static 'transport/img/grease.png' %}"
+                    width="32"
+                    alt=""
+                  />
+
+                  <span v-text="sum_grease()"></span>
+                </th>
+                <th></th>
+                <th></th>
+              </tfoot>
+            </table>
+          </div>
+          <div v-else>
+            <h5 class="text-center rtl">گزارش تعمیر وجود ندارد.</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

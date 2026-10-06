@@ -42,11 +42,9 @@ class BlogRepo(Repo):
 
     def __init__(self,request,*args, **kwargs):
         super(BlogRepo,self).__init__(request,app_name=APP_NAME,*args, **kwargs)
-        self.me=None
-        self.my_accounts=[]
+         
         self.request=request
-        # self.objects=Blog.objects.filter(id=0)
-        self.objects=Blog.objects
+        self.objects=Blog.objects.filter(pk__gt=0) 
                 
     def list(self,*args, **kwargs):
         objects=self.objects

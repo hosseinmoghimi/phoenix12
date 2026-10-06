@@ -1,0 +1,118 @@
+{% extends "restaurant/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row rtl">
+    <div class="col-md-12">
+        <div class="card" id="settings-app">
+            <div class="card-header">
+                <h6>
+                    تنظیمات
+                </h6>
+            </div>
+            <div class="card-body text-right">
+                <div class="my-2">
+                    <button v-if="!show_delete" class="btn btn-danger my-2 farsi" @click="show_delete=!show_delete">
+                        حذف همه غذا ها
+                    </button>
+                    <div v-if="show_delete">
+                        <label for="">
+
+                            همه غذا ها حذف شوند؟
+                        </label>
+                        <button class="btn btn-danger farsi" @click="delete_all_foods()">
+                            همه غذا ها
+                            را حذف کن
+                        </button>
+                        <button class="btn btn-secondary farsi" @click="show_delete=false">
+                            انصراف
+                        </button>
+                    </div>
+                </div>
+                <button class="my-2 btn btn-success farsi" @click="initial_default_foods()">
+                    افزودن غذا های های پیش فرض
+                </button>
+
+                  
+  
+                <div class="mt-2">
+                    {% include "utility/includes/message.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if import_from_excel_form %}
+
+    <div class="col-md-6">
+        {% include "restaurant/includes/import-from-excel/template.html" %}
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    let settings_app = new Vue({
+        el: "#settings-app",
+        data: {
+            message: { show: false },
+            waiting: false,
+            show_delete: false,
+        },
+        methods: {
+            delete_all_foods:function(){
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'restaurant:delete_all_foods' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result === "SUCCEED") {
+                        let title = "موفق" 
+                        show_message(settings_app, title, data.message , "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+
+             
+            
+            initial_default_foods: function () {
+                settings_app.message.show = false
+                settings_app.waiting = true
+                let url = "{% url 'restaurant:initial_default_foods' %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                }
+                posting = $.post(url, payload)
+                posting.done((data) => {
+                    console.log(data)
+                    settings_app.waiting = false
+
+                    // settings_app.waiting = false
+                    if (data.result=== "SUCCEED") { 
+                        show_message(settings_app, "موفق", data.message, "success", 20000)
+                    }
+                    else {
+                        show_message(settings_app, "ناموفق", data.message, "danger", 20000)
+                    }
+                })
+            },
+            
+         }
+    })
+</script>
+{% if import_from_excel_form %}
+
+{% include "restaurant/includes/import-from-excel/script.html" %}
+{% endif %}
+{% endblock script %}

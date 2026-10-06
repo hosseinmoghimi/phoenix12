@@ -21,7 +21,7 @@ LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='projectmanager/'
 WIDE_LAYOUT="WIDE_LAYOUT"
 NO_FOOTER="NO_FOOTER"
-NO_NAVBAR="NO_NAVBAR"
+NO_NAVBAR="NO_NAVBAR" 
  
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
@@ -190,7 +190,7 @@ class ProjectTreeChartView(View):
                 'id': project.id,
                 'pre_title': "",
                 'color': project.color,
-                'sub_title':to_price(project.amount),
+                'sub_title':to_price(project.amount) if project.amount>0  else "",
                 })
 
         context['pages_s'] = json.dumps(pages)
@@ -362,6 +362,13 @@ class ProjectsView(View):
 
         context['expand_projects']=True
         context['projects']=projects
+        context['PROJECTS_NAV_ACTIVE']=True
+
+        from utility.repo import ParameterRepo
+        parameter_repo=ParameterRepo(request=request,app_name=APP_NAME)
+        param1=parameter_repo.parameter(name="تعداد پروژه برای هر صفحه از لیست",default=5)
+        context['projects_per_page']=param1.int_value
+        
         projects_s=json.dumps(ProjectSerializer(projects,many=True).data)
         context['projects_s']=projects_s
         if request.user.has_perm(APP_NAME+".add_project"):
@@ -370,6 +377,42 @@ class ProjectsView(View):
             organizations_s=json.dumps(OrganizationalUnitSerializer(organizations,many=True).data)
             context['organizations_s']=organizations_s
         return render(request,TEMPLATE_ROOT+"projects.html",context)
+
+
+class ProjectsCardView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['WIDE_LAYOUT']=True
+        projects = ProjectRepo(request=request).list(parent_id=None,*args, **kwargs)
+
+        context['expand_projects']=True
+        context['projects']=projects
+        context['PROJECTS_CARD_NAV_ACTIVE']=True
+
+        projects_s=json.dumps(ProjectSerializer(projects,many=True).data)
+        context['projects_s']=projects_s
+        
+        return render(request,TEMPLATE_ROOT+"projects-card.html",context)
+
+
+class NewProjectView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['WIDE_LAYOUT']=True
+        projects = ProjectRepo(request=request).list(parent_id=None,*args, **kwargs)
+
+        context['expand_projects']=True
+        context['projects']=projects
+        context['NEW_PROJECT_NAV_ACTIVE']=True
+        projects_s=json.dumps(ProjectSerializer(projects,many=True).data)
+        context['projects_s']=projects_s
+        if request.user.has_perm(APP_NAME+".add_project"):
+            context['add_project_form']=AddProjectForm
+            context['project_statuses']=(i[0] for i in ProjectStatusEnum.choices)
+            organizations=OrganizationalUnitRepo(request=request).list()
+            organizations_s=json.dumps(OrganizationalUnitSerializer(organizations,many=True).data)
+            context['organizations_s']=organizations_s
+        return render(request,TEMPLATE_ROOT+"new-project.html",context)
 
 
 class AllProjectsView(View):

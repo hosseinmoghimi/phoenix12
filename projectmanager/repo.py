@@ -257,6 +257,9 @@ class ProjectRepo():
             project.contractor_id=kwargs["contractor_id"]
         if 'type' in kwargs:
             project.type=kwargs["type"]
+        if 'status' in kwargs:
+            if kwargs['status']:
+                project.status=kwargs["status"]
         if 'weight' in kwargs:
             project.weight=kwargs["weight"]
         if 'percentage_completed' in kwargs:
@@ -355,6 +358,7 @@ class ProjectRepo():
         if old is not None:
             project.invoices.remove(invoice)
             project.save() 
+            project.normalize()
             result=SUCCEED
             message='با موفقیت حذف شد.'
             return result,message,invoice
@@ -363,6 +367,7 @@ class ProjectRepo():
             
         project.invoices.add(invoice.id) 
         result=SUCCEED
+        project.normalize()
         message='با موفقیت اضافه شد.'
         return result,message,invoice
 

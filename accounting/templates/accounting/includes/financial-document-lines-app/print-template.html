@@ -34,7 +34,7 @@
 
   <div class="card-body">
       <div v-if="financial_document_lines.length>0">
-        <table class="table table-striped rtl">
+        <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl">
           <thead>
             <th>ردیف</th>
             <th>شرح</th>

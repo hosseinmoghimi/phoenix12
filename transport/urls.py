@@ -6,23 +6,89 @@ app_name=APP_NAME
 urlpatterns = [
     path('',login_required(views.IndexView.as_view()),name="index"),
     path('settings/',login_required(views.IndexView.as_view()),name="settings"),
+    path('report/',login_required(views.ReportView.as_view()),name="report"),
+    path('get-report/',login_required(apis.GetReportApiw.as_view()),name="get_report"),
+
+    path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
     path('vehicles/',login_required(views.VehiclesView.as_view()),name="vehicles"),
     path('vehicle/<int:pk>/',login_required(views.VehicleView.as_view()),name="vehicle"),
-    path('add-vehicle/',login_required(apis.AddVehicleApi.as_view()),name="add_vehicle"),
+    path('vehicles_excel/',login_required(views.VehiclesExcelView.as_view()),name="vehicles_excel"),
+    path('import-vehicles-from-excel/',login_required(apis.ImportVehicleFromExcelApi.as_view()),name="import_vehicles_from_excel"),
 
+    path('anbar_products_excel/',login_required(views.AnbarProductsExcelView.as_view()),name="anbar_products_excel"),
+    path('anbar-products/',login_required(views.AnbarProductsView.as_view()),name="anbar_products"),
+    path('anbar-product/<int:pk>/',login_required(views.AnbarProductView.as_view()),name="anbarproduct"),
+    path('new-anbar-product/',login_required(views.NewAnbarProductView.as_view()),name="new_anbar_product"),
+    path('add-anbar-product/',login_required(apis.AddAnbarProductApi.as_view()),name="add_anbar_product"),
+
+    
+    path('add-service/',login_required(apis.AddServiceApi.as_view()),name="add_service"),
+    path('new-service/',login_required(views.NewServiceView.as_view()),name="new_service"),
+    path('services/',login_required(views.ServicesView.as_view()),name="services"),
+    path('service/<int:pk>/',login_required(views.ServiceView.as_view()),name="service"),
+
+    
+    path('import-drivers-from-excel/',login_required(apis.ImportDriverFromExcelApi.as_view()),name="import_drivers_from_excel"),
+    path('drivers-excel/',login_required(views.DriversExcelView.as_view()),name="drivers_excel"),
+    path('drivers/',login_required(views.DriversView.as_view()),name="drivers"),
+    path('driver/<int:pk>/',login_required(views.DriverView.as_view()),name="driver"),
+    path('add-driver/',login_required(apis.AddDriverApi.as_view()),name="add_driver"),
+ 
+
+    path('maintenance-invoice/<int:pk>/',login_required(views.MaintenanceInvoiceView.as_view()),name="maintenanceinvoice"),
+    path('maintenance-invoices/',login_required(views.MaintenanceInvoicesView.as_view()),name="maintenanceinvoices"),
+    path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
     path('add-invoice-to-maintenance/',login_required(apis.AddInvoiceToMaintenanceApi.as_view()),name="add_invoice_to_maintenance"),
 
     
-    path('add-invoice/',login_required(apis.AddInvoiceApi.as_view()),name="add_invoice"),
-  
+   
+    path('new-maintenance/',login_required(views.NewMaintenanceView.as_view()),name="new_maintenance"),
     path('maintenances/',login_required(views.MaintenancesView.as_view()),name="maintenances"),
     path('maintenance/<int:pk>/',login_required(views.MaintenanceView.as_view()),name="maintenance"),
     path('add-maintenance/',login_required(apis.AddMaintenanceApi.as_view()),name="add_maintenance"),
 
+    path('add-filter-service/',login_required(apis.AddFilterServiceApi.as_view()),name="add_filter_service"),
+
+    path('oil-services/',login_required(views.OilServicesView.as_view()),name="oil_services"),
+    path('add-oil-service/',login_required(apis.AddOilServiceApi.as_view()),name="add_oil_service"),
+    path('add-product/',login_required(apis.AddProductApi.as_view()),name="add_product"),
+    path('add-tavaghof/',login_required(apis.AddTavaghofApi.as_view()),name="add_tavaghof"),
+    path('tavaghofs/',login_required(views.TavaghofsView.as_view()),name="tavaghofs"),
+
+    path('work-shifts/',login_required(views.WorkShiftsView.as_view()),name="work_shifts"),
+    path('new-work-shift/',login_required(views.NewWorkShiftView.as_view()),name="new_work_shift"),
+    path('add-work-shift/',login_required(apis.AddWorkShiftApi.as_view()),name="add_work_shift"),
+    path('delete-work-shift/',login_required(apis.DeleteWorkShiftApi.as_view()),name="delete_work_shift"),
+    path('work-shift/<int:pk>/',login_required(views.WorkShiftView.as_view()),name="workshift"),
+    path('work-shifts-excel/',login_required(views.WorkShiftsExcelView.as_view()),name="work_shifts_excel"),
+    
+    
+    path('new-karkerd/',login_required(views.NewKarkerdView.as_view()),name="new_karkerd"),
+    path('add-karkerd/',login_required(apis.AddKarkerdApi.as_view()),name="add_karkerd"),
+ 
     path('service-mans/',login_required(views.ServiceMansView.as_view()),name="service_mans"),
     path('service-man/<int:pk>/',login_required(views.ServiceManView.as_view()),name="serviceman"),
     path('add-service-man/',login_required(apis.AddServiceManApi.as_view()),name="add_service_man"),
 
+
+    path('vehicle-events/',login_required(views.VehicleEventsView.as_view()),name="vehicle_events"), 
+    path('tavaghof/<int:pk>/',login_required(views.ServiceManView.as_view()),name="tavaghof"),
+
+
+
+    path('vehicle-statuses/',login_required(views.VehicleStatusesView.as_view()),name="vehicle_statuses"),
+    path('new-vehicle-status/',login_required(views.NewVehicleStatusView.as_view()),name="new_vehicle_status"),
+    path('add-vehicle-status/',login_required(apis.AddVehicleStatusApi.as_view()),name="add_vehicle_status"),
+    path('add-vehicle-status-image/',login_required(apis.AddVehicleStatusImageApi.as_view()),name="add_vehicle_status_image"),
+    path('vehicle-status/<int:pk>/',login_required(views.VehicleStatusView.as_view()),name="vehiclestatus"),
+    path('import-vehicle-statuses-from-excel/',login_required(apis.ImportVehicleStatusFromExcelApi.as_view()),name="import_vehicle_statuses_from_excel"),
+    path('vehicle-statuses-excel/',login_required(views.VehicleStatusesExcelView.as_view()),name="vehicle_statuses_excel"),
+
+
+   
+
+
+   
 
 
 ]

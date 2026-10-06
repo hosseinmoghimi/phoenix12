@@ -1,0 +1,168 @@
+{% load static %}
+<div id="accordion-tavaghofs" class="rtl text-right farsi">
+  <div class="card" id="tavaghofs-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-tavaghofs"
+          aria-expanded="true"
+          aria-controls="collapse-tavaghofs"
+        >
+            توقف دستگاه
+
+            <span v-if="tavaghofs.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="tavaghofs.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-tavaghofs"
+      class="collapse {% if expand_tavaghofs %} show {% endif %}"
+      aria-labelledby="heading-tavaghofs"
+      data-parent="#accordion-tavaghofs"
+    >
+      <div class="card-body">
+        <div class="table-responsive" v-if="tavaghofs.length>0">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead>
+
+                {% if not work_shift %}
+                <th>
+                 
+                    شیفت
+                 
+
+                </th>
+
+                
+                <th>
+           
+                  دستگاه
+
+                </th>
+
+                
+                <th>
+                   راننده
+                   
+                </th>
+              {% endif %}
+
+              <th>علت</th>
+              <th>مدت زمان به ساعت</th>
+              <th>ساعت دستگاه</th>
+              <th>توضیحات</th> 
+            </thead>
+            <tbody>
+              <tr v-for="tavaghof in tavaghofs">
+
+                  {% if not work_shift %}
+                <td>
+                 
+                    <span v-text="tavaghof.persian_shift_date"></span>
+                    <div>
+
+                      <span v-text="tavaghof.shift"></span>
+                    </div>
+                 
+
+                </td>
+
+                
+                <td>
+           
+                    <span v-text="tavaghof.vehicle_title"></span>
+                 
+
+                </td>
+
+                
+                <td>
+                    <span v-text="tavaghof.driver_full_name"></span>
+                   
+                   
+                </td>
+              {% endif %}
+
+                <td>
+                 <div class="media">
+                      <img src="{% static 'transport/img/stop.png' %}" width="32" class="rounded-circle" alt="">
+                    <div class="media-body mr-2">
+                        <span v-text="tavaghof.cause"></span>
+                </div>
+            </div>
+                </td>
+
+                <td>
+                  
+                <h6>
+                  <span v-text="tavaghof.duration">
+
+                  </span>
+                  <small class="text-muted">
+                    ساعت
+                  </small>
+                </h6>
+                </td>
+
+
+                 
+                   
+
+                
+                   <td>
+                     <div v-if="tavaghof.vehicle_hour" >
+
+                        <span v-text="to_price(tavaghof.vehicle_hour)">
+                            
+                        </span>
+                    </div>
+
+                        
+                </td>
+
+                 
+
+
+                 <td>
+                        <h6 v-text="tavaghof.descriptin"></h6>
+                </td>
+
+
+
+               
+              </tr>
+            </tbody>
+            <tfoot>
+              <th></th>
+              <th>
+                
+                 <small class="text-muted">
+                  جمع
+                </small>
+                <span v-text="sum_duration()"></span>
+                   <small class="text-muted">
+                  ساعت
+                </small>
+
+              </th>
+              <th></th>
+            </tfoot>
+          </table>
+        </div>
+        <div v-else>
+          <p class="text-center">
+
+            لیست خالی می باشد.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

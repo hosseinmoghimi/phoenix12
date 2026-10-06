@@ -1,0 +1,80 @@
+{% extends "transport/layout.html" %} {% block content %}
+{% load static %} {% load to_normal_number %}
+{% load to_persian_date %}
+<div class="row rtl farsi">
+  <div class="col-md-9">
+    
+    <h5 class="text-center">شیفت کارکرد ماشین</h5>
+    {% include 'transport/includes/work-shift-app/card.html' %}
+  </div>
+  <div class="col-md-3">
+    
+    {% if perms.transport.delete_work_shift %}
+       
+    {% include 'transport/includes/work-shift-app/delete.html' %}
+
+        {% endif %}
+  </div>
+ 
+
+  {% if add_oil_service_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/oil-services-app/form.html" %}
+  </div>
+  {% endif %}
+  <div class="col-md-12">
+    {% include "transport/includes/oil-services-app/template.html" %}
+  </div>
+
+  
+  {% if add_filter_service_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/filter-services-app/form.html" %}
+  </div>
+  {% endif %}
+
+  <div class="col-md-12">
+    {% include "transport/includes/filter-services-app/template.html" %}
+  </div>
+
+
+  
+  {% if add_tavaghof_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/tavaghofs-app/form.html" %}
+  </div>
+  {% endif %}
+
+
+  <div class="col-md-12">
+    {% include "transport/includes/tavaghofs-app/template.html" %}
+  </div>
+  
+  {% if add_product_form %}
+    
+  <div class="col-md-12">
+    {% include "transport/includes/products-app/form.html" %}
+  </div>
+  {% endif %}
+
+
+
+  <div class="col-md-12">
+    {% include "transport/includes/products-app/template.html" %}
+  </div>
+
+</div>
+{% endblock content %} {% block script %}
+<script></script>
+
+{% include "transport/includes/oil-services-app/script.html" %}
+{% include "transport/includes/filter-services-app/script.html" %}
+{% include "transport/includes/tavaghofs-app/script.html" %}
+{% include "transport/includes/products-app/script.html" %} 
+{% include 'transport/includes/work-shift-app/script.html' %}
+
+
+{% endblock script %}

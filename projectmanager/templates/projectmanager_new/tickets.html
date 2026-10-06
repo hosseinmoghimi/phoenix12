@@ -1,0 +1,28 @@
+
+
+{% extends "projectmanager/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_ticket_form %}
+      <div class="col-md-12">
+          {% include "projectmanager/includes/add-ticket-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "projectmanager/includes/tickets-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "projectmanager/includes/tickets-app/script.html" %}
+{% if add_ticket_form %}
+{% include "projectmanager/includes/add-ticket-app/script.html" %}
+{% endif %}
+{% endblock script %}

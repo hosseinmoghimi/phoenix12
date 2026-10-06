@@ -62,7 +62,6 @@ class AddIssueApi(APIView):
         return JsonResponse(context)
 
    
-
 class AddTicketApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}

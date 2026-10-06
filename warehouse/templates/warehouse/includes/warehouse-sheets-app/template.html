@@ -31,7 +31,7 @@
       <div class="card-body">
        
         <div class="table-responsive" v-if="warehouse_sheets.length>0">
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>جهت</th>
               <th>تعداد</th>

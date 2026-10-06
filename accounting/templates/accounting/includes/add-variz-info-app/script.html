@@ -1,0 +1,92 @@
+<script>
+  let bank_accounts_for_add_variz_info_app = JSON.parse(
+    `{{bank_accounts_s|escapejs}}`,
+  );
+  let add_variz_info_app = new Vue({
+    el: "#add-variz-info-app",
+    data: {
+      // account_no:"",
+      // shaba_no:"",
+      // card_no:"",
+      variz_info: `{{invoice.variz_info}}`,
+      bank_accounts: bank_accounts_for_add_variz_info_app,
+      bank_account: { account_no: "", shaba_no: "", card_no: "" },
+      show_form: false,
+      message: { show: false },
+    },
+    methods: {
+      change1: function () {
+        setTimeout(() => {
+          let variz_info = "";
+          if (this.bank_account.title)
+            variz_info += " " + this.bank_account.title;
+          if (this.bank_account.card_no)
+            variz_info += " شماره کارت " + this.bank_account.card_no;
+          if (this.bank_account.account_no)
+            variz_info += " شماره حساب " + this.bank_account.account_no;
+          if (this.bank_account.shaba_no)
+            variz_info += " شماره شبا " + this.bank_account.shaba_no;
+          this.variz_info = variz_info;
+        }, 200);
+      },
+      change2: function () {
+        setTimeout(() => {
+          let variz_info = "";
+          if (this.bank_account.title)
+            variz_info += " " + this.bank_account.title;
+          if (this.bank_account.card_no)
+            variz_info += " شماره کارت " + this.bank_account.card_no;
+          if (this.bank_account.account_no)
+            variz_info += " شماره حساب " + this.bank_account.account_no;
+          if (this.bank_account.shaba_no)
+            variz_info += " شماره شبا " + this.bank_account.shaba_no;
+          this.variz_info = variz_info;
+        }, 200);
+      },
+      add_variz_info: function (bank_account_id) {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          invoice_id: parseInt("{{invoice.id}}"),
+          // bank_account_id: parseInt(bank_account_id),
+          // account_no: (this.bank_account.account_no),
+          // shaba_no: (this.bank_account.shaba_no),
+          // card_no: (this.bank_account.card_no),
+          // full_name: (this.bank_account.full_name),
+          variz_info: this.variz_info,
+        };
+        console.log(payload);
+        let url = "{% url 'accounting:add_variz_info' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            if (typeof services_app != "undefined") {
+              services_app.services.push(data.service);
+            }
+            show_message(
+              add_variz_info_app,
+              "موفقیت آمیز",
+              data.message,
+              "success",
+              5000,
+            );
+          }
+
+          if (data.result != "SUCCEED") {
+            show_message(
+              add_variz_info_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000,
+            );
+          }
+        });
+      },
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+    },
+  });
+</script>

@@ -1,0 +1,132 @@
+<div id="accordion-add-event-to-project" class="rtl text-right farsi">
+  <div class="card" id="add-event-to-project-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-event-to-project"
+          aria-expanded="true"
+          aria-controls="collapse-add-event-to-project"
+        >
+          افزودن رویداد به پروژه
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-event-to-project"
+      class="collapse"
+      aria-labelledby="heading-add-event-to-project"
+      data-parent="#accordion-add-event-to-project"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_event_to_project()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">شناسه رویداد</label>
+                <input v-model="event_id" type="number" class="form-control" />
+              </div>
+            </div> 
+
+
+            
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input v-model="title" type="text" class="form-control" />
+              </div>
+            </div> 
+
+        
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ رویداد</label>
+                <date-picker v-model="event_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_date"
+                />
+                <label for="exampleInputDate">زمان رویداد</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_time"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ شروع</label>
+                <date-picker v-model="start_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="start_date"
+                />
+                <label for="exampleInputDate">زمان شروع</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="start_time"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ پایان</label>
+                <date-picker v-model="end_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="end_date"
+                />
+                <label for="exampleInputDate">زمان پایان</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="end_time"
+                />
+              </div>
+            </div>
+
+            
+ 
+
+            <div class="col-md-12">
+              <div v-if="message.show">
+                <div :class="'my-2 alert alert-'+message.color">
+                  <h5 v-text="message.title"></h5>
+                  <div v-html="message.body"></div>
+                </div>
+              </div>
+
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

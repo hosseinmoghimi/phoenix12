@@ -1,0 +1,28 @@
+
+
+{% extends "projectmanager/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_issue_form %}
+      <div class="col-md-12">
+          {% include "projectmanager/includes/add-issue-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "projectmanager/includes/issues-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "projectmanager/includes/issues-app/script.html" %}
+{% if add_issue_form %}
+{% include "projectmanager/includes/add-issue-app/script.html" %}
+{% endif %}
+{% endblock script %}

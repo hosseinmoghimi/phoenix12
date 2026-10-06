@@ -1,0 +1,104 @@
+<script>
+  let add_oiling_maintenance_app = new Vue({
+    el: "#add-oiling-maintenance-app",
+    data: {
+      title: "",
+      kilometer: 0,
+      driver_id: 0,
+      vehicle_id: 0,
+      service_man_id: 0,
+      hour: 0,
+      description: "",
+      maintenance_type: "",
+      event_date: current_date,
+      event_time: current_time,
+      event_datetime: current_datetime,
+ 
+      oil_type: '',
+      oil_liter: 0,
+      fuel_liter: 0, 
+
+      waiting: false,
+      message: { show: false },
+    },
+
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      to_price_colored: function (vall) {
+        let colorr = "primary";
+        if (vall > 0) {
+          colorr = "success";
+        }
+
+        if (vall < 0) {
+          colorr = "danger";
+        }
+
+        return `<span class="text-${colorr}">${to_price(
+          vall
+        )} {{CURRENCY}}</span>`;
+      },
+      separate: (vall) => to_price(parseInt(vall), ""),
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_oiling_maintenance: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          driver_id: parseInt(this.driver_id),
+          vehicle_id: parseInt(this.vehicle_id),
+          service_man_id: parseInt(this.service_man_id),
+          maintenance_type: this.maintenance_type,
+          description: this.description,
+          kilometer: parseInt(this.kilometer),
+          hour: parseInt(this.hour),
+          fuel_liter:this.fuel_liter,
+          oil_liter: this.oil_liter,
+          oil_type: this.oil_type,
+
+          
+ 
+
+          event_datetime: this.event_date + " " + this.event_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'transport:add_oiling_maintenance' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+
+          if (data.result === "SUCCEED") {
+            add_oiling_maintenance_app.title = "";
+            show_message(
+              add_oiling_maintenance_app,
+              "موفق",
+              data.message,
+              "success",
+              5000
+            );
+            if (typeof oiling_maintenances_app != "undefined") {
+              oiling_maintenances_app.oiling_maintenances.push(data.oiling_maintenance);
+            }
+            else{
+              location.href = data.oiling_maintenance.get_absolute_url
+            }
+          } else {
+            show_message(
+              add_oiling_maintenance_app,
+              "خطا",
+              data.message,
+              "danger",
+              5000
+            );
+          }
+        });
+      },
+    },
+  });
+</script>

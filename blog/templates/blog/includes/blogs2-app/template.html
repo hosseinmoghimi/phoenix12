@@ -30,7 +30,7 @@
           {% include "blog/includes/blogs-app/form.html" %}
         {% endif %}
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
               <th>بلاگ</th>
               <th>

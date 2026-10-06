@@ -1,0 +1,78 @@
+
+
+
+<script>
+ 
+  let add_event_to_project_app = new Vue({
+    el: "#add-event-to-project-app",
+    data: {
+        title: "",
+        event_id:0,
+        event:{},
+
+            
+        event_date: current_date,
+        event_time: "00:00:00",
+        event_datetime: current_datetime,
+
+        start_date: current_date,
+        start_time: "00:00:00",
+        start_datetime: current_datetime,
+
+        end_date: current_date,
+        end_time: "00:00:00",
+        end_datetime: current_datetime,
+
+
+        message: { show: false },
+        waiting: false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+
+       
+        
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+      add_event_to_project: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          title: this.title,
+          project_id: parseInt(project_id),
+          event_id: parseInt(this.event_id),
+          
+          event_datetime: this.event_date + " " + this.event_time,
+          start_datetime: this.start_date + " " + this.start_time,
+          end_datetime: this.end_date + " " + this.end_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'projectmanager:add_event_to_project' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log('data');
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            if (typeof events_app != "undefined") {
+              events_app.events=(data.events);
+            }
+            show_message(
+              add_event_to_project_app,
+              "موفق",
+              data.message,
+              "success",
+              3000
+            );
+          } else {
+            show_message(add_event_to_project_app, "خطا", data.message, "danger", 3000);
+          }
+        });
+      },
+    },
+  });
+</script>
