@@ -100,6 +100,27 @@ def SearchContext(request,search_for,*args, **kwargs):
 
  
 
+    drivers=DriverRepo(request=request).list(search_for=search_for)
+    
+    if len(drivers)>0:
+        context['drivers']=drivers
+        context['expand_drivers']=True
+        context['drivers_s']=json.dumps(DriverSerializer(drivers,many=True).data)
+        WAS_FOUND=True
+
+
+
+    service_mans=ServiceManRepo(request=request).list(search_for=search_for)
+    
+    if len(service_mans)>0:
+        context['service_mans']=service_mans
+        context['expand_service_mans']=True
+        context['service_mans_s']=json.dumps(ServiceManSerializer(service_mans,many=True).data)
+        WAS_FOUND=True
+
+
+ 
+
 
     context['WAS_FOUND']=WAS_FOUND
     return context
