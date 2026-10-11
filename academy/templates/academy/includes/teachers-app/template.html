@@ -1,0 +1,80 @@
+<div id="accordion-teachers" class="rtl text-right farsi">
+  <div class="card" id="teachers-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-teachers"
+          aria-expanded="true"
+          aria-controls="collapse-teachers"
+        >
+          مربی ها
+          <span v-if="teachers.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="teachers.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-teachers"
+      class="collapse {% if expand_teachers %} show {% endif %}"
+      aria-labelledby="heading-teachers"
+      data-parent="#accordion-teachers"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead> 
+              <th>عنوان</th> 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="teacher in teachers">
+               
+                <td>
+                  <a :href="teacher.get_absolute_url">
+                    <div class="media">
+                      <img :src="teacher.person.image" class="rounded-circle" width="36" alt="">
+                      <div class="media-body mr-2">
+
+                        <span v-text="teacher.person.full_name"></span>
+                      </div>
+                    </div>
+                  </a>
+ 
+                </td>
+             
+                <td>
+                  <a
+                    target="_blank"
+                    :href="teacher.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="teacher.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

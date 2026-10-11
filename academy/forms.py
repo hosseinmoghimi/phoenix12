@@ -12,12 +12,30 @@ class SearchForm(forms.Form):
   
 class DeleteAllWordsForm(forms.Form):
     count=forms.IntegerField(required=False)
+
      
- 
+class AddCourseClassForm(forms.Form):
+    count=forms.IntegerField(required=False)
+     
+     
+class AddTeacherForm(forms.Form):
+    count=forms.IntegerField(required=False)
+
+     
+class AddStudentForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+    parent_id=forms.IntegerField(required=True)
+    
+
+class AddTeacherForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+    parent_id=forms.IntegerField(required=True)
+    
+
 class AddWordForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     parent_id=forms.IntegerField(required=True)
-     
- 
+    
+
 class ImportFromJsonForm(forms.Form):
     count=forms.IntegerField(required=True)

@@ -1,0 +1,15 @@
+<script>
+    
+    let students_for_students_app=JSON.parse("{{students_s|escapejs}}")
+    let students_app = new Vue({
+        el: "#students-app",
+        data: {
+            students: students_for_students_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

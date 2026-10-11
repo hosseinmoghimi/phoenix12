@@ -8,8 +8,8 @@ from core.views import CoreContext,MessageView,PageContext
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import CourseSerializer,WordSerializer
-from .repo import CourseRepo,WordRepo
+from .serializers import CourseSerializer,WordSerializer,CourseClassSerializer,TeacherSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import CourseRepo,WordRepo,CourseClassRepo,StudentRepo,TeacherRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -86,6 +86,27 @@ class CoursesView(View):
         return render(request,TEMPLATE_ROOT+"courses.html",context) 
  
 
+class CourseView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+        course =CourseRepo(request=request).course(*args, **kwargs) 
+        context['course']=course
+        course_s=json.dumps(CourseSerializer(course,many=False).data)
+        context['course_s']=course_s
+
+        course_classes=course.courseclass_set.all()
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+
+  
+ 
+
+        context[WIDE_LAYOUT]=True
+        # context['NOT_NAVBAR']=True
+        # context['NOT_FOOTER']=True
+        return render(request,TEMPLATE_ROOT+"course.html",context) 
+ 
 
 class SettingsView(View):
     def get(self,request,*args, **kwargs):
@@ -102,28 +123,6 @@ class SettingsView(View):
             suppliers=SupplierRepo(request=request).list()
             context['suppliers']=suppliers
         return render(request,TEMPLATE_ROOT+"settings.html",context) 
- 
-
-class CourseView(View):
-    def get(self,request,*args, **kwargs):
-        context=getContext(request=request)
-        from market.views import CustomerRepo,CartItemRepo,ShopSerializer
-        course =CourseRepo(request=request).course(*args, **kwargs) 
-        context['course']=course
-        course_s=json.dumps(CourseSerializer(course,many=False).data)
-        context['course_s']=course_s
-
-        shops=course.shops.all()
-        shops_s=json.dumps(ShopSerializer(shops,many=True).data)
-        context['shops_s']=shops_s
-
-  
- 
-
-        context[WIDE_LAYOUT]=True
-        # context['NOT_NAVBAR']=True
-        # context['NOT_FOOTER']=True
-        return render(request,TEMPLATE_ROOT+"course.html",context) 
  
 
 class WordView(View):
@@ -163,4 +162,151 @@ class WordsView(View):
         return render(request,TEMPLATE_ROOT+"words.html",context) 
  
  
+class TeacherView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        teacher =TeacherRepo(request=request).teacher(*args, **kwargs) 
+        if teacher is None:
+            mv=MessageView()
+            mv.title='sdsd'
+            mv.body='sdafdsgfdgffd'
+            return mv.get(request=request)    
+        context['teacher']=teacher
+        teacher_s=json.dumps(TeacherSerializer(teacher,many=False).data)
+        context['teacher_s']=teacher_s
 
+        
+        course_classes=teacher.courseclass_set.all()
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+        context['course_classes']=course_classes
+
+ 
+        return render(request,TEMPLATE_ROOT+"teacher.html",context) 
+
+
+class TeachersView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        teachers=TeacherRepo(request=request).list().order_by('title')
+        teachers_s=json.dumps(TeacherSerializer(teachers,many=True).data)
+        context['teachers_s']=teachers_s
+        context['teachers']=teachers
+
+
+        return render(request,TEMPLATE_ROOT+"teachers.html",context) 
+
+
+class StudentView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        student =StudentRepo(request=request).student(*args, **kwargs) 
+        if student is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+        
+        context['student']=student
+        student_s=json.dumps(StudentSerializer(student,many=False).data)
+        context['student_s']=student_s
+
+        course_classes=student.courseclass_set.all()
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+        context['course_classes']=course_classes
+
+        if request.user.has_perm(APP_NAME+".add_student"):
+            context['add_student_form']=AddStudentForm()
+        return render(request,TEMPLATE_ROOT+"student.html",context) 
+
+
+class StudentsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        students=StudentRepo(request=request).list().order_by('title')
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+        context['students']=students
+
+    
+        return render(request,TEMPLATE_ROOT+"students.html",context) 
+
+
+   
+class CourseClassesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        course_classes =CourseClassRepo(request=request).list(*args, **kwargs)
+        context['course_classes']=course_classes
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+ 
+        context[WIDE_LAYOUT]=True
+        if request.user.has_perm(APP_NAME+".add_courseclass"):
+            context['add_course_form']=AddCourseClassForm()
+        return render(request,TEMPLATE_ROOT+"course-classes.html",context) 
+ 
+
+class CourseClassView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        course_class =CourseClassRepo(request=request).course_class(*args, **kwargs) 
+        context['course_class']=course_class
+        course_class_s=json.dumps(CourseClassSerializer(course_class,many=False).data)
+        context['course_class_s']=course_class_s
+
+        teachers=course_class.teachers.all()
+        teachers_s=json.dumps(TeacherSerializer(teachers,many=True).data)
+        context['teachers_s']=teachers_s
+
+        
+        students=course_class.students.all()
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+
+
+        context[WIDE_LAYOUT]=True
+        # context['NOT_NAVBAR']=True
+        # context['NOT_FOOTER']=True
+        return render(request,TEMPLATE_ROOT+"course-class.html",context) 
+ 
+
+class EducationalYearsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        educational_years =EducationalYearRepo(request=request).list(*args, **kwargs)
+        context['educational_years']=educational_years
+        educational_years_s=json.dumps(EducationalYearSerializer(educational_years,many=True).data)
+        context['educational_years_s']=educational_years_s
+ 
+        context[WIDE_LAYOUT]=True
+        if request.user.has_perm(APP_NAME+".add_courseclass"):
+            context['add_course_form']=AddCourseClassForm()
+        return render(request,TEMPLATE_ROOT+"educational-years.html",context) 
+ 
+
+class EducationalYearView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        from market.views import CustomerRepo,CartItemRepo,ShopSerializer
+        educational_year =EducationalYearRepo(request=request).educational_year(*args, **kwargs) 
+        context['educational_year']=educational_year
+        educational_year_s=json.dumps(EducationalYearSerializer(educational_year,many=False).data)
+        context['educational_year_s']=educational_year_s
+ 
+        course_classes =educational_year.courseclass_set.all()
+        context['course_classes']=course_classes
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+
+        context[WIDE_LAYOUT]=True
+        # context['NOT_NAVBAR']=True
+        # context['NOT_FOOTER']=True
+        return render(request,TEMPLATE_ROOT+"educational-year.html",context) 
+ 

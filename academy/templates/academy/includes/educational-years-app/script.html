@@ -1,0 +1,15 @@
+<script>
+    
+    let educational_years_for_educational_years_app=JSON.parse("{{educational_years_s|escapejs}}")
+    let educational_years_app = new Vue({
+        el: "#educational-years-app",
+        data: {
+            educational_years: educational_years_for_educational_years_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

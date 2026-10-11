@@ -12,6 +12,31 @@
     </a>
   </div>
  
+ <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'academy:course_classes' %}">
+      <img
+        src="{% static 'academy/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">دروس ارائه شده</h6>
+    </a>
+  </div>
+
+  
+ <div class="col-6 col-md-3 col-lg-2 text-center my-3">
+    <a href="{% url 'academy:educational_years' %}">
+      <img
+        src="{% static 'academy/img/logo.png' %}"
+        width="64em"
+        class="mb-2"
+        alt=""
+      />
+      <h6 class="text-center">سال های تحصیلی</h6>
+    </a>
+  </div>
+
 
   <div class="col-6 col-md-3 col-lg-2 text-center my-3">
     <a href="{% url 'academy:word' pk=0 %}">
