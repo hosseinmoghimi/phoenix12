@@ -65,6 +65,21 @@
                 </td>
               </tr>
 
+               <tr>
+                <td class="field_name">خدمات روغن</td>
+                <td class="field_value"> 
+                  {% if service.oil_action %} 
+                  {{service.oil_action}} 
+                  {% else %} 
+                    <span class="text-muted">
+                      ...
+                    </span>
+                  
+                  {% endif %} 
+                </td>
+              </tr>
+
+
               <tr>
                 <td class="field_name">لیتراژ روغن</td>
                 <td class="field_value">

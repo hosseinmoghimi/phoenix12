@@ -29,6 +29,15 @@
         });
         return s; 
       },
+
+       sum_grease_count: function(){ 
+        let s = 0;
+        this.services.forEach(service11 => {
+            s+=service11.grease_count
+        });
+        return s; 
+      },
+
     },
 
   });

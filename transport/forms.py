@@ -88,7 +88,8 @@ class AddAnbarProductForm(forms.Form):
     name=forms.CharField(max_length=50, required=True)
     vehicle_code=forms.CharField(max_length=50, required=True)
     quantity=forms.IntegerField(required=False)
-    unit_price=forms.IntegerField(required=False) 
+    unit_price=forms.IntegerField(required=False)
+    unit_name=forms.CharField(max_length=50, required=True)
     description=forms.CharField(max_length=1000, required=False)
     shift=forms.CharField(max_length=50, required=True)
     shift_date=forms.CharField(max_length=50, required=True)
@@ -245,9 +246,11 @@ class ImportVehicleFromExcelForm(forms.Form):
 
 class AddServiceForm(forms.Form):
     grease=forms.IntegerField( required=False)
+    grease_count=forms.IntegerField( required=False)
     shift_date=forms.CharField(required=False, max_length=50) 
     shift=forms.CharField(required=False, max_length=50) 
     vehicle_code=forms.CharField(required=False, max_length=50)
+    oil_action=forms.CharField(required=False, max_length=50)
     service_man_id=forms.IntegerField(required=False)
     driver_code=forms.CharField(required=False, max_length=50)
     oil_type=forms.CharField(required=False, max_length=50) 

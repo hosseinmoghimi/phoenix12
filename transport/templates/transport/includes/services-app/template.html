@@ -37,9 +37,8 @@
               <thead>
                 <th>تاریخ</th>
                 <th>دستگاه</th>
-                <th>تعمیرکار / راننده</th>
-
-                <th>گازوئیل</th>
+                <th>سرویسکار / راننده</th>
+ 
                 
                 <th>لیتراژ روغن</th>
                 <th>گریس</th>
@@ -95,23 +94,7 @@
                     </div>
                   </td>
 
-                  <td>
-                    <div v-if="service.gasoil_liter>0">
-
-                    <img
-                      src="{% static 'transport/img/gasoil.png' %}"
-                      width="32"
-                      alt=""
-                    />
-                    <span v-text="service.gasoil_liter"></span>
-                     
-                    <small class="text-muted">
-
-                      لیتر
-                    </small>
-                    
-                    </div>
-                  </td>
+                  
                   <td>
 
                     <div v-if="service.oil_liter>0">
@@ -127,6 +110,7 @@
 
                       لیتر
                       <span v-text="service.oil_type"></span>
+                      <span v-text="service.oil_action"></span>
                     </small>
  
                     </div>
@@ -142,7 +126,10 @@
                       alt=""
                     />
 
+                    <span v-text="service.grease_count"></span>
+                    مرتبه
                     <span v-text="service.grease"></span>
+                    لیتر
                     </div>
 
                   </td>
@@ -189,7 +176,7 @@
 
                 <th></th>
 
-                <th>
+                <!-- <th>
                   <img
                     src="{% static 'transport/img/gasoil.png' %}"
                     width="32"
@@ -198,7 +185,7 @@
                   مجموعا
                   <span v-text="sum_gasoil()"></span>
                   لیتر
-                </th>
+                </th> -->
 
                 <th>
                   <img
@@ -219,7 +206,9 @@
                     alt=""
                   />
 
+                  <span v-text="sum_grease_count()"></span> مرتبه
                   <span v-text="sum_grease()"></span>
+                  لیتر
                 </th>
                 <th></th>
                 <th></th>

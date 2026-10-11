@@ -758,7 +758,7 @@ class VehicleRepo():
         if "owner_id" in kwargs:
             owner_id=kwargs["owner_id"]
             objects=objects.filter(owner_id=owner_id)  
-        return objects.all()
+        return objects.all().order_by('vehicle_code')
         
     def vehicle(self,*args, **kwargs):
         if "vehicle_id" in kwargs and kwargs["vehicle_id"] is not None:
@@ -1630,11 +1630,17 @@ class ServiceRepo():
             return result,message,service
          
         service=Service() 
-        if 'grease' in kwargs:
+        if 'grease' in kwargs and kwargs['grease']:
             service.grease=kwargs["grease"]
+
+        if 'grease_count' in kwargs and kwargs['grease_count']:
+            service.grease_count=kwargs["grease_count"]
           
-        if 'oil_liter' in kwargs:
+        if 'oil_liter' in kwargs and kwargs['oil_liter']:
             service.oil_liter=kwargs["oil_liter"]
+          
+        if 'oil_action' in kwargs and kwargs['oil_action']:
+            service.oil_action=kwargs["oil_action"]
         
         if 'gasoil_liter' in kwargs:
             service.gasoil_liter=kwargs["gasoil_liter"]
@@ -1775,6 +1781,9 @@ class AnbarProductRepo():
             
         if 'unit_price' in kwargs and kwargs['unit_price']:
             anbar_product.unit_price=kwargs["unit_price"]
+
+        if 'unit_name' in kwargs and kwargs['unit_name']:
+            anbar_product.unit_name=kwargs["unit_name"]
 
             
         if 'quantity' in kwargs and kwargs['quantity']:

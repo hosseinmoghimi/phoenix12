@@ -24,18 +24,45 @@
         <div class="row">
            
 
+             <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ </label>
+              <date-picker v-model="shift_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="shift_date"
+              />
+            </div>
+          </div>
+
+
+
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">دستگاه</label>
               <input type="text" v-model="vehicle_code" class="form-control">
               <select v-model="vehicle_code" class="form-control">
                 {% for vehicle in vehicles %}
-                <option value="{{vehicle.vehicle_code}}"> {{vehicle.vehicle_code}} - {{vehicle}}</option>
+                <option value="{{vehicle.vehicle_code}}"> {{vehicle.vehicle_code}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{vehicle.title}}</option>
                 {% endfor %}
               </select>
             </div>
           </div>
 
+                 <div class="col-md-4">
+            <div class="form-group">
+              <label for="bedehkar_code">شیفت</label>
+              <select v-model="shift" class="form-control">
+                <option value="روز">روز</option>
+                <option value="شب">شب</option>
+              </select>
+            </div>
+          </div>
+
+          
           <div class="col-md-4">
             <div class="form-group">
               <label for="bedehkar_code">راننده</label>
@@ -50,7 +77,7 @@
 
           <div class="col-md-4">
             <div class="form-group">
-              <label for="bedehkar_code">تعمیرکار</label>
+              <label for="bedehkar_code">سرویس کار</label>
               <select v-model="service_man_id" class="form-control">
                 {% for service_man in service_mans %}
                 <option value="{{service_man.id}}">{{service_man.full_name}}</option>
@@ -76,7 +103,9 @@
             </div>
             </div>
 
-
+<div class="col-12">
+  <hr>
+</div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="dfjvhndsjkhlury48">گریس تحویلی</label>
@@ -87,6 +116,19 @@
                 required
                 class="form-control"
                 v-model="grease"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="dfjvhndsjkhlury48">تعداد گریسکاری </label>
+
+              <input
+                id="dfjvhndsjfkhlury48"
+                type="number"
+                required
+                class="form-control"
+                v-model="grease_count"
               />
             </div>
           </div>
@@ -118,10 +160,26 @@
             </div>
           </div>
 
-<div class="col-12">
-  <hr>
-</div>
+
            <div class="col-md-4">
+            <div class="form-group">
+              <label for="exampleInputDate">خدمات روغن</label>
+
+              <select  
+                class="form-control"
+                v-model="oil_action"
+              >
+            <option value="تعویض روغن">تعویض روغن</option>
+            <option value="سرریز روغن">سرریز روغن</option>
+            </select>
+            </div>
+          </div>
+
+
+<div class="col-12">
+ 
+</div>
+           <!-- <div class="col-md-4">
             <div class="form-group">
               <label for="exampleInputDate">لیتراژ گازوئیل</label>
 
@@ -132,7 +190,7 @@
                 v-model="gasoil_liter"
               />
             </div>
-          </div>
+          </div> -->
 
 <div class="col-12">
   <hr>
@@ -162,32 +220,14 @@
           </div>
 
 
-          <div class="col-md-12"></div>
-
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="exampleInputDate">تاریخ </label>
-              <date-picker v-model="shift_date"></date-picker>
-
-              <input
-                type="text"
-                required
-                class="form-control"
-                v-model="shift_date"
-              />
-            </div>
-          </div>
+         <div class="col-12">
+  <hr>
+</div>
 
        
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="bedehkar_code">شیفت</label>
-              <select v-model="shift" class="form-control">
-                <option value="روز">روز</option>
-                <option value="شب">شب</option>
-              </select>
-            </div>
-          </div>
+
+       
+   
 <div class="col-12">
   <hr>
 </div>

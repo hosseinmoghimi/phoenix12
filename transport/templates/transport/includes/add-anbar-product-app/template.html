@@ -44,7 +44,7 @@
                         <div class="col-12">
                             <hr>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="">نام قطعه
                                 <span class="text-danger mr-2">*</span>
@@ -59,19 +59,30 @@
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="">تعداد
                                 <span class="text-danger mr-2">*</span>
 
                                 </label>
-                                <input v-model="quantity" type="text" class="form-control" />
+                                <input v-model="quantity" type="number" class="form-control" />
+                            </div>
+                        </div>
+
+                         <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">واحد
+                                <span class="text-danger mr-2">*</span>
+
+                                </label>
+                                <input v-model="unit_name" type="text" class="form-control" />
                             </div>
                         </div>
 
 
 
-                        <div class="col-md-4">
+
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="">قیمت جزء
                                     <span v-text="to_price(unit_price)"></span> {{CURRENCY}}
@@ -86,7 +97,7 @@
 
 
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for=""> جمع به {{CURRENCY}}</label>
                                 <input readonly v-model="to_price(quantity*unit_price)" type="text"
@@ -115,7 +126,7 @@
                                 <input v-model="vehicle_code" type="text" class="form-control" />
                                 <select v-model="vehicle_code"  class="form-control">
                                     {% for vehicle in vehicles %}
-                                      <option value="{{vehicle.vehicle_code}}">{{vehicle.title}}</option>
+                                      <option value="{{vehicle.vehicle_code}}"> {{vehicle.vehicle_code}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{vehicle.title}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

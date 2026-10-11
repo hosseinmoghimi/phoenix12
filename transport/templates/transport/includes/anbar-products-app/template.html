@@ -90,6 +90,7 @@
                 <td>
 
                   <span v-text="anbar_product.quantity"></span>
+                  <span v-text="anbar_product.unit_name"></span>
 
                 </td>
 
@@ -101,12 +102,13 @@
                     {{CURRENCY}}
                   </div>
                   <div >
- 
+ <small>
 
-                      <span class="text-muted" v-text="anbar_product.quantity"></span>
-                      
-                      <span class="text-muted" >*</span>
-                      <span class="text-muted" v-text="to_price(anbar_product.unit_price)"></span>
+   <span class="text-muted" v-text="anbar_product.quantity"></span>
+   
+   <span class="text-muted" >*</span>
+   <span class="text-muted" v-text="to_price(anbar_product.unit_price)"></span>
+  </small>
                     
                     
                   </div>
