@@ -1,3 +1,4 @@
+from utility.constants import SUCCEED,FAILED
 from django.db import models
 from core.models import LinkHelper,Page,reverse,STATIC_URL
 from core.models import Event
@@ -8,8 +9,8 @@ from .apps import APP_NAME
 class Course(models.Model,LinkHelper):
 
     title=models.CharField(_("title"), max_length=50)
-    level=models.IntegerField(_("level"))
-    code=models.CharField(_("code"), max_length=50)
+    level=models.IntegerField(_("level"),default=1)
+    code=models.CharField(_("code"),null=True,blank=True, max_length=50)
     
     app_name=APP_NAME
     class_name="course"
@@ -138,7 +139,6 @@ class Session(Event):
     
 class Student(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
-    
     class_name="student"
     app_name=APP_NAME
 
@@ -151,7 +151,22 @@ class Student(models.Model,LinkHelper):
     
     def full_name(self):
         return self.person.full_name
- 
+    
+    def first_name(self):
+        return self.person.first_name
+    
+    def last_name(self):
+        return self.person.last_name
+    
+    def melli_code(self):
+        return self.person.melli_code
+    
+    def save(self,*args, **kwargs):
+        super(Student,self).save()
+        message="دانش آموز ذخیره شد.."
+        return SUCCEED,message,self
+
+
 class Teacher(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
     

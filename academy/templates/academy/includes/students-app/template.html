@@ -29,7 +29,10 @@
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 
-              <th>عنوان</th> 
+              <th>نام و نام خانوادگی</th> 
+              <th>نام خانوادگی</th> 
+              <th>نام</th> 
+              <th>کد ملی</th> 
               <th>
 
               </th>
@@ -39,17 +42,33 @@
                
                 <td>
                   <a :href="student.get_absolute_url">
-                     <div class="media">
-                      <img :src="student.person.image" class="rounded-circle" width="36" alt="">
-                      <div class="media-body mr-2">
-
-                        <span v-text="student.person.full_name"></span>
-                      </div>
-                    </div>
-
+                    <span v-text="student.full_name"></span>
                   </a>
  
                 </td>
+
+                
+                <td>
+                  <a :href="student.get_absolute_url">
+                    <span v-text="student.last_name"></span>
+                  </a>
+ 
+                </td>
+
+
+                 <td>
+                  <a :href="student.get_absolute_url">
+                    <span v-text="student.first_name"></span>
+                  </a>
+ 
+                </td>
+                 <td>
+                  <a :href="student.get_absolute_url">
+                    <span v-text="student.melli_code"></span>
+                  </a>
+ 
+                </td>
+
              
                 <td>
                   <a

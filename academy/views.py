@@ -229,16 +229,16 @@ class StudentsView(View):
         context=getContext(request=request) 
         
 
-        students=StudentRepo(request=request).list().order_by('title')
+        students=StudentRepo(request=request).list().order_by('person__last_name')
         students_s=json.dumps(StudentSerializer(students,many=True).data)
         context['students_s']=students_s
         context['students']=students
-
+        if request.user.has_perm(APP_NAME+".add_student"):
+            context['add_student_form']=AddStudentForm()
     
         return render(request,TEMPLATE_ROOT+"students.html",context) 
 
 
-   
 class CourseClassesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -249,7 +249,11 @@ class CourseClassesView(View):
  
         context[WIDE_LAYOUT]=True
         if request.user.has_perm(APP_NAME+".add_courseclass"):
-            context['add_course_form']=AddCourseClassForm()
+            context['add_course_class_form']=AddCourseClassForm()
+            courses=CourseRepo(request=request).list().order_by('title')
+            context['courses']=courses
+            educational_years=EducationalYearRepo(request=request).list()
+            context['educational_years']=educational_years
         return render(request,TEMPLATE_ROOT+"course-classes.html",context) 
  
 

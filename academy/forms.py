@@ -3,7 +3,8 @@ from accounting.forms import forms
 
 class AddCourseForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
-    supplier_id=forms.IntegerField(required=True)
+    code=forms.CharField(max_length=100, required=False)
+    level=forms.IntegerField(required=True)
      
   
 class SearchForm(forms.Form):
@@ -15,7 +16,8 @@ class DeleteAllWordsForm(forms.Form):
 
      
 class AddCourseClassForm(forms.Form):
-    count=forms.IntegerField(required=False)
+    course_id=forms.IntegerField(required=False)
+    educational_year_id=forms.IntegerField(required=False)
      
      
 class AddTeacherForm(forms.Form):
@@ -23,8 +25,9 @@ class AddTeacherForm(forms.Form):
 
      
 class AddStudentForm(forms.Form):
-    title=forms.CharField(max_length=100, required=True)
-    parent_id=forms.IntegerField(required=True)
+    first_name=forms.CharField(max_length=100, required=True)
+    last_name=forms.CharField(max_length=100, required=True)
+    melli_code=forms.CharField(max_length=100, required=False)
     
 
 class AddTeacherForm(forms.Form):

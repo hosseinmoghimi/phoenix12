@@ -30,6 +30,8 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 
               <th>عنوان</th> 
+              <th>کد</th> 
+              <th>سطح</th> 
               <th>
 
               </th>
@@ -40,6 +42,20 @@
                 <td>
                   <a :href="course.get_absolute_url">
                     <span v-text="course.title"></span>
+                  </a>
+ 
+                </td>
+
+                <td>
+                  <a :href="course.get_absolute_url">
+                    <span v-text="course.code"></span>
+                  </a>
+ 
+                </td>
+
+                <td>
+                  <a :href="course.get_absolute_url">
+                    <span v-text="course.level"></span>
                   </a>
  
                 </td>

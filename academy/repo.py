@@ -110,29 +110,18 @@ class StudentRepo():
         if not self.request.user.has_perm(APP_NAME+".add_student"):
             message="دسترسی غیر مجاز"
             return result,message,student
-        student=Student()
-        if 'title' in kwargs:
-            if len(Student.objects.filter(title=kwargs["title"]))>0:
-                return FAILED,'عنوان تکراری',None
-            student.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                student.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
+        student=Student()  
+
+        if 'color' in kwargs and kwargs['color']:
             student.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            student.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            student.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            student.type=kwargs["type"]
 
-            
-        
-
-        if 'nature' in kwargs:
-            student.nature=kwargs["nature"]
-        (result,message,student)=student.save()
+        from authentication.repo import PersonRepo
+        result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
+        if result==SUCCEED:     
+            student.person=person
+            (result,message,student)=student.save()
+            return result,message,student
+         
         return result,message,student
  
   
@@ -172,21 +161,19 @@ class CourseRepo():
             message="دسترسی غیر مجاز"
             return result,message,course
         course=Course()
-        if 'title' in kwargs:
+        if 'title' in kwargs and kwargs['title']:
             if len(Course.objects.filter(title=kwargs["title"]))>0:
                 return FAILED,'عنوان تکراری',None
             course.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                course.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            course.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            course.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            course.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            course.type=kwargs["type"]
+        
+            
+        if 'level' in kwargs and kwargs['level']:
+            course.level=kwargs["level"]
+            
+        if 'code' in kwargs and kwargs['code']:
+            if len(Course.objects.filter(code=kwargs['code']))>0:
+                return FAILED,'کد تکراری',None
+            course.code=kwargs["code"]
 
             
         
@@ -236,24 +223,18 @@ class CourseClassRepo():
         if 'title' in kwargs:
             if len(CourseClass.objects.filter(title=kwargs["title"]))>0:
                 return FAILED,'عنوان تکراری',None
-            course_class.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                course_class.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            course_class.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            course_class.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            course_class.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            course_class.type=kwargs["type"]
+            course_class.title=kwargs["title"] 
 
             
-        
+        if 'course_id' in kwargs and kwargs['course_id']:
+            course_class.course_id=kwargs["course_id"]
 
-        if 'nature' in kwargs:
-            course_class.nature=kwargs["nature"]
+            
+        if 'educational_year_id' in kwargs and kwargs['educational_year_id']:
+            course_class.educational_year_id=kwargs["educational_year_id"]
+
+            
+         
         (result,message,course_class)=course_class.save()
         return result,message,course_class
  

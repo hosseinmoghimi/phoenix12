@@ -1,35 +1,52 @@
-<div id="accordion-add-course" class="rtl text-right farsi">
-  <div class="card" id="add-course-app">
+<div id="accordion-add-course-class" class="rtl text-right farsi">
+  <div class="card" id="add-course-class-app">
     <div class="card-header">
       <h5 class="text-center">
         <button
           class="btn btn-link"
           data-toggle="collapse"
-          data-target="#collapse-add-course"
+          data-target="#collapse-add-course-class"
           aria-expanded="true"
-          aria-controls="collapse-add-course"
+          aria-controls="collapse-add-course-class"
         >
-          افزودن واحد درسی
+          افزودن واحد درسی ارئه شده
           
         </button>
       </h5>
     </div>
 
     <div
-      id="collapse-add-course"
+      id="collapse-add-course-class"
       class="collapse  "
-      aria-labelledby="heading-add-course"
-      data-parent="#accordion-add-course"
+      aria-labelledby="heading-add-course-class"
+      data-parent="#accordion-add-course-class"
     >
       <div class="card-body">
-        <form @submit.prevent="add_course()">
+        <form @submit.prevent="add_course_class()">
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="">عنوان</label>
-                <input required v-model="title" type="text" class="form-control" />
+                <label for="">واحد درسی</label>
+                <select v-model="course_id" class="form-control" >
+                  {% for course in courses %}
+                    <option value="{{course.id}}">{{course.title}}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
+
+
+             <div class="col-md-12">
+              <div class="form-group">
+                <label for="">سال تحصیلی</label>
+                <select v-model="educational_year_id" class="form-control" >
+                  {% for educational_year in educational_years %}
+                    <option value="{{educational_year.id}}">{{educational_year.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
  
  
 

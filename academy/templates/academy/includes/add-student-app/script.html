@@ -1,0 +1,56 @@
+<script>
+  let add_student_app = new Vue({
+    el: "#add-student-app",
+    data: {
+    title: "",
+    first_name:"",
+    last_name:"", 
+    melli_code:"", 
+    message:{show:false},
+    waiting:false,
+    event_date: current_date,
+    event_time: "00:00:00",
+    event_datetime: current_datetime,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      add_student: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          first_name: add_student_app.first_name,
+          last_name: add_student_app.last_name,
+          melli_code: add_student_app.melli_code,
+          supplier_id: parseInt(add_student_app.supplier_id),
+          event_datetime: add_student_app.event_date+" "+add_student_app.event_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'academy:add_student' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(add_student_app,'موفق',data.message,'success',1000)
+            if (typeof students_app != "undefined") {
+              students_app.students.push(data.student);
+            }
+          }
+          else{
+
+            show_message(add_student_app,'خطا',data.message,'danger',1000)
+          }
+        });
+      },
+    },
+  });
+</script>

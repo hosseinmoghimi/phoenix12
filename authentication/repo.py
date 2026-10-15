@@ -124,6 +124,12 @@ class PersonRepo():
                 person=None
                 return result,message,person
             
+        old_person=Person.objects.filter(first_name=kwargs['first_name']).filter(last_name=kwargs['last_name']).first()
+        
+        if old_person is not None :
+            message="نام و نام خانوادگی وارد شده تکراری است."
+            return FAILED,message,None
+        
         
 
         if 'birth_date' in kwargs:

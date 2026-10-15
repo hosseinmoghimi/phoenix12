@@ -32,6 +32,7 @@ class AddCourseApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
 class AddStudentApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -46,6 +47,7 @@ class AddStudentApi(APIView):
         if add_student_form.is_valid():
             log=333
             cd=add_student_form.cleaned_data
+            leolog(cd=cd)
             result,message,student=StudentRepo(request=request).add_student(**cd)
             if student is not None:
                 context['student']=StudentSerializer(student).data
@@ -77,8 +79,7 @@ class AddTeacherApi(APIView):
         context['log']=log
         return JsonResponse(context)
  
-  
- 
+   
 class AddCourseClassApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -93,7 +94,7 @@ class AddCourseClassApi(APIView):
         if add_course_form.is_valid():
             log=333
             cd=add_course_form.cleaned_data
-            result,message,course=CourseClassRepo(request=request).add_course(**cd)
+            result,message,course=CourseClassRepo(request=request).add_course_class(**cd)
             if course is not None:
                 context['course']=CourseClassSerializer(course).data
         context['message']=message

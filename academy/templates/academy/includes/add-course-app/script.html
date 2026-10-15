@@ -3,7 +3,8 @@
     el: "#add-course-app",
     data: {
     title: "",
-    supplier_id: 0,
+    code: "",
+    level: 1,
     message:{show:false},
     
     event_date: current_date,
@@ -26,7 +27,9 @@
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           title: add_course_app.title,
+          code: add_course_app.code,
           supplier_id: parseInt(add_course_app.supplier_id),
+          level: parseInt(add_course_app.level),
           event_datetime: add_course_app.event_date+" "+add_course_app.event_time,
         };
 
