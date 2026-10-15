@@ -1,0 +1,58 @@
+<div id="accordion-get-attendances" class="rtl text-right farsi">
+  <div class="card" id="get-attendances-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-get-attendances"
+          aria-expanded="true"
+          aria-controls="collapse-get-attendances"
+        >
+          حضور و غیاب
+           
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-get-attendances"
+      class="collapse {% if expand_get_attendances %} show {% endif %}"
+      aria-labelledby="heading-get-attendances"
+      data-parent="#accordion-get-attendances"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+
+                    <tr v-for="student in students">
+                        <td>
+                            <a :href="student.get_absolute_url">
+
+                              <label for="">
+                                <span v-text="student.full_name"></span>
+                              </label>
+                            </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-success" @click="add_attendance(student.id,`حاضر`)">حاضر</button>
+
+                        </td>
+                        <td>
+
+                            <button class="btn btn-danger" @click="add_attendance(student.id,`غایب`)">غایب</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" @click="add_attendance(student.id,`تاخیر`)">تاخیر</button>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+          
+      </div>
+    </div>
+  </div>
+</div>

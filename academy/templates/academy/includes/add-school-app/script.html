@@ -1,0 +1,54 @@
+<script>
+  let add_school_app = new Vue({
+    el: "#add-school-app",
+    data: {
+    name: "",
+    address: "",
+    code: "",
+    tel: "",
+    message:{show:false},
+    
+    
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      add_school: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          name: add_school_app.name,
+          code: add_school_app.code,
+          tel: add_school_app.tel,
+          address: add_school_app.address,
+          
+        };
+
+        console.log(payload);
+        let url = "{% url 'academy:add_school' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(add_school_app,'موفق',data.message,'success',1000)
+            if (typeof schools_app != "undefined") {
+              schools_app.schools.push(data.school);
+            }
+          }
+          else{
+
+            show_message(add_school_app,'خطا',data.message,'danger',1000)
+          }
+        });
+      },
+    },
+  });
+</script>

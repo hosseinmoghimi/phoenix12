@@ -1,4 +1,4 @@
-from .models import Course,Word,CourseClass,Session,EducationalYear,Attendance,Student,Teacher
+from .models import Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -20,7 +20,7 @@ class TeacherRepo():
         self.request=request
         self.objects=Teacher.objects.filter(id=0)
         person=PersonRepo(request=request).me
-
+        self.me=Teacher.objects.filter(person_id=person.id).first()
         if person is not None:
             self.objects=Teacher.objects
             if request.user.has_perm(APP_NAME+".view_teacher"):
@@ -74,7 +74,69 @@ class TeacherRepo():
         (result,message,teacher)=teacher.save()
         return result,message,teacher
 
- 
+
+class SchoolRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=School.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=School.objects
+            if request.user.has_perm(APP_NAME+".view_school"):
+                self.objects=School.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        return objects.all()
+        
+    def school(self,*args, **kwargs):
+        if "school_id" in kwargs and kwargs["school_id"] is not None:
+            return self.objects.filter(pk=kwargs['school_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_school(self,*args,**kwargs):
+        result,message,school=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_school"):
+            message="دسترسی غیر مجاز"
+            return result,message,school
+        school=School()
+        if 'name' in kwargs and kwargs['name']:
+            if len(School.objects.filter(name=kwargs["name"]))>0:
+                return FAILED,'عنوان تکراری',None
+            school.name=kwargs["name"]
+        
+            
+        if 'tel' in kwargs and kwargs['tel']:
+            school.tel=kwargs["tel"]
+            
+        if 'code' in kwargs and kwargs['code']:
+            if len(School.objects.filter(code=kwargs['code']))>0:
+                return FAILED,'کد تکراری',None
+            school.code=kwargs["code"]
+
+            
+        
+
+        if 'address' in kwargs and kwargs['address']:
+            school.address=kwargs["address"]
+        if 'description' in kwargs and kwargs['description']:
+            school.description=kwargs["description"]
+            
+        (result,message,school)=school.save()
+        return result,message,school
+
+   
 class StudentRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -94,7 +156,7 @@ class StudentRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        return objects.all()
+        return objects.all().order_by('person__first_name').order_by('person__last_name')
         
     def student(self,*args, **kwargs):
         if "student_id" in kwargs and kwargs["student_id"] is not None:
@@ -183,7 +245,64 @@ class CourseRepo():
         (result,message,course)=course.save()
         return result,message,course
   
+
+class MajorRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Major.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Major.objects
+            if request.user.has_perm(APP_NAME+".view_major"):
+                self.objects=Major.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        return objects.all()
+        
+    def major(self,*args, **kwargs):
+        if "major_id" in kwargs and kwargs["major_id"] is not None:
+            return self.objects.filter(pk=kwargs['major_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_major(self,*args,**kwargs):
+        result,message,major=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_major"):
+            message="دسترسی غیر مجاز"
+            return result,message,major
+        major=Major()
+        if 'title' in kwargs and kwargs['title']:
+            if len(Major.objects.filter(title=kwargs["title"]))>0:
+                return FAILED,'عنوان تکراری',None
+            major.title=kwargs["title"]
+        
+            
+        if 'level' in kwargs and kwargs['level']:
+            major.level=kwargs["level"]
+            
+        if 'code' in kwargs and kwargs['code']:
+            if len(Major.objects.filter(code=kwargs['code']))>0:
+                return FAILED,'کد تکراری',None
+            major.code=kwargs["code"]
+
+            
+        
  
+        (result,message,major)=major.save()
+        return result,message,major
+
+   
 class CourseClassRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -229,10 +348,30 @@ class CourseClassRepo():
         if 'course_id' in kwargs and kwargs['course_id']:
             course_class.course_id=kwargs["course_id"]
 
+        else:
+            return FAILED,'واحد درسی را به صورت صحیح وارد کنید.',None
+            
+        if 'major_id' in kwargs and kwargs['major_id']:
+            course_class.major_id=kwargs["major_id"]
+
+        else:
+            return FAILED,'رشته تحصیلی را به صورت صحیح وارد کنید.',None
+
+            
+        if 'school_id' in kwargs and kwargs['school_id']:
+            course_class.school_id=kwargs["school_id"]
+        else:
+            return FAILED,'آموزشگاه را به صورت صحیح وارد کنید.',None
+        if 'level' in kwargs and kwargs['level'] and kwargs['level']>0:
+            course_class.level=kwargs["level"]
+        else:
+            return FAILED,'سطح را به صورت صحیح وارد کنید.',None
             
         if 'educational_year_id' in kwargs and kwargs['educational_year_id']:
             course_class.educational_year_id=kwargs["educational_year_id"]
 
+        else:
+            return FAILED,'سال تحصیلی را به صورت صحیح وارد کنید.',None
             
          
         (result,message,course_class)=course_class.save()
@@ -353,24 +492,35 @@ class SessionRepo():
         if 'title' in kwargs:
             if len(Session.objects.filter(title=kwargs["title"]))>0:
                 return FAILED,'عنوان تکراری',None
-            session.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                session.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            session.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            session.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            session.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            session.type=kwargs["type"]
+            session.title=kwargs["title"] 
 
-            
-        
+        if 'course_class_id' in kwargs and kwargs['course_class_id']:
+            session.course_class_id=kwargs["course_class_id"]
 
-        if 'nature' in kwargs:
-            session.nature=kwargs["nature"]
+
+        if 'session_no' in kwargs and kwargs['session_no']>0 :
+            session.session_no=kwargs["session_no"]
+        else:
+            return FAILED,'شماره جلسه را صحیح وارد کنید.',None
+
+        if 'class_room' in kwargs and kwargs['class_room']:
+            session.class_room=kwargs["class_room"]
+
+ 
+        if 'start_datetime' in kwargs and kwargs['start_datetime'] is not None and not kwargs['start_datetime']=='':
+            year=kwargs['start_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])
+            session.start_datetime=kwargs["start_datetime"]
+
+        if 'end_datetime' in kwargs and kwargs['end_datetime'] is not None and not kwargs['end_datetime']=='':
+            year=kwargs['end_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])
+            session.end_datetime=kwargs["end_datetime"]
+        a=Session.objects.filter(session_no=session.session_no).filter(course_class_id=session.course_class_id).first()
+        if a is not None:
+            return FAILED,'شماره جلسه تکراری است',None
         (result,message,session)=session.save()
         return result,message,session
  
@@ -435,6 +585,78 @@ class EducationalYearRepo():
         (result,message,educational_year)=educational_year.save()
         return result,message,educational_year
 
+
+
+class AttendanceRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Attendance.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Attendance.objects
+            if request.user.has_perm(APP_NAME+".view_attendance"):
+                self.objects=Attendance.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs and kwargs['search_for']:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs and kwargs['parent_id']:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+
+        if "student_id" in kwargs and kwargs['student_id']:
+            student_id=kwargs["student_id"]
+            objects=objects.filter(student_id=student_id) 
+
+        if "session_id" in kwargs and kwargs['session_id']:
+            session_id=kwargs["session_id"]
+            objects=objects.filter(session_id=session_id)  
+        return objects.all().order_by('student__person__first_name').order_by('student__person__last_name')
+        
+    def attendance(self,*args, **kwargs):
+        if "attendance_id" in kwargs and kwargs["attendance_id"] is not None:
+            return self.objects.filter(pk=kwargs['attendance_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_attendance(self,*args,**kwargs):
+        result,message,attendance,attendances=FAILED,"",None,[]
+        if not self.request.user.has_perm(APP_NAME+".add_attendance"):
+            message="دسترسی غیر مجاز"
+            return result,message,attendance,attendances
+        attendance=Attendance() 
+
+        if 'student_id' in kwargs and kwargs['student_id']:
+            attendance.student_id=kwargs["student_id"] 
+
+
+        if 'session_id' in kwargs and kwargs['session_id']:
+            attendance.session_id=kwargs["session_id"] 
+
+
+        if 'status' in kwargs and kwargs['status']:
+            attendance.status=kwargs["status"] 
+
+
+        if 'description' in kwargs and kwargs['description']:
+            attendance.description=kwargs["description"] 
+
+        teacher=TeacherRepo(request=self.request).me
+
+        if teacher is not None:
+            attendance.teacher_id=teacher.id
+
+        Attendance.objects.filter(session_id=attendance.session_id).filter(student_id=attendance.student_id).delete()
+        (result,message,attendance)=attendance.save()
+        attendances=AttendanceRepo(request=self.request).list(session_id=attendance.session.id)
+        return result,message,attendance,attendances
+ 
   
 def add_from_json(words=[],parent_id=None,new_parent_id=None): 
     if len(words)<1:

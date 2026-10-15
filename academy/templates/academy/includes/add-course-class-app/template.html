@@ -36,7 +36,7 @@
             </div>
 
 
-             <div class="col-md-12">
+             <div class="col-md-4">
               <div class="form-group">
                 <label for="">سال تحصیلی</label>
                 <select v-model="educational_year_id" class="form-control" >
@@ -46,6 +46,54 @@
                 </select>
               </div>
             </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">آموزشگاه</label>
+                <select v-model="school_id" class="form-control" >
+                  {% for school in schools %}
+                    <option value="{{school.id}}">{{school.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">رشته تحصیلی</label>
+                <select v-model="major_id" class="form-control" >
+                  {% for major in majors %}
+                    <option value="{{major.id}}">{{major.title}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">سطح</label>
+                <select v-model="level" class="form-control" >
+                  
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                
+                </select>
+              </div>
+            </div>
+
 
  
  

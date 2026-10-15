@@ -1,0 +1,78 @@
+<div id="accordion-majors" class="rtl text-right farsi">
+  <div class="card" id="majors-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-majors"
+          aria-expanded="true"
+          aria-controls="collapse-majors"
+        >
+        رشته های تحصیلی
+          <span v-if="majors.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="majors.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-majors"
+      class="collapse {% if expand_majors %} show {% endif %}"
+      aria-labelledby="heading-majors"
+      data-parent="#accordion-majors"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead> 
+              <th>عنوان</th> 
+              
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="major in majors">
+               
+                <td>
+                  <a :href="major.get_absolute_url">
+                    <span v-text="major.title"></span>
+                  </a>
+ 
+                </td>
+
+                
+ 
+             
+                <td>
+                  <a
+                    target="_blank"
+                    :href="major.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="major.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

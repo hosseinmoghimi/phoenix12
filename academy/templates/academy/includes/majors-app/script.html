@@ -1,0 +1,15 @@
+<script>
+    
+    let majors_for_majors_app=JSON.parse("{{majors_s|escapejs}}")
+    let majors_app = new Vue({
+        el: "#majors-app",
+        data: {
+            majors: majors_for_majors_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

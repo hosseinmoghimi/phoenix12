@@ -8,8 +8,8 @@ from core.views import CoreContext,MessageView,PageContext
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import CourseSerializer,WordSerializer,CourseClassSerializer,TeacherSerializer,StudentSerializer,EducationalYearSerializer
-from .repo import CourseRepo,WordRepo,CourseClassRepo,StudentRepo,TeacherRepo,SessionRepo,EducationalYearRepo
+from .serializers import CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import CourseRepo,WordRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -33,6 +33,7 @@ class IndexView(View):
 
         context['phoenix_apps']=phoenix_apps
         return render(request,TEMPLATE_ROOT+"index.html",context)
+
 
 class SearchView(View):
     def post(self,request,*args, **kwargs):
@@ -95,7 +96,7 @@ class CourseView(View):
         course_s=json.dumps(CourseSerializer(course,many=False).data)
         context['course_s']=course_s
 
-        course_classes=course.courseclass_set.all()
+        course_classes=course.courseclass_set.all().order_by('level')
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
 
@@ -177,7 +178,7 @@ class TeacherView(View):
         context['teacher_s']=teacher_s
 
         
-        course_classes=teacher.courseclass_set.all()
+        course_classes=teacher.courseclass_set.all().order_by('level').order_by('major__title')
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
         context['course_classes']=course_classes
@@ -214,10 +215,18 @@ class StudentView(View):
         student_s=json.dumps(StudentSerializer(student,many=False).data)
         context['student_s']=student_s
 
-        course_classes=student.courseclass_set.all()
+        course_classes=student.courseclass_set.all().order_by('level')
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
         context['course_classes']=course_classes
+
+
+
+        attendances=AttendanceRepo(request=request).list(student_id=student.id)
+        context['attendances']=attendances
+        attendances_s=json.dumps(AttendanceSerializer(attendances,many=True).data)
+        context['attendances_s']=attendances_s
+
 
         if request.user.has_perm(APP_NAME+".add_student"):
             context['add_student_form']=AddStudentForm()
@@ -239,6 +248,46 @@ class StudentsView(View):
         return render(request,TEMPLATE_ROOT+"students.html",context) 
 
 
+class MajorView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        major =MajorRepo(request=request).major(*args, **kwargs) 
+        if major is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+        
+        context['major']=major
+        major_s=json.dumps(MajorSerializer(major,many=False).data)
+        context['major_s']=major_s
+
+        course_classes=major.courseclass_set.all().order_by('level')
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+        context['course_classes']=course_classes
+
+
+ 
+ 
+        return render(request,TEMPLATE_ROOT+"major.html",context) 
+
+
+class MajorsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        majors=MajorRepo(request=request).list().order_by('title')
+        majors_s=json.dumps(MajorSerializer(majors,many=True).data)
+        context['majors_s']=majors_s
+        context['majors']=majors
+        if request.user.has_perm(APP_NAME+".add_major"):
+            context['add_major_form']=AddMajorForm()
+    
+        return render(request,TEMPLATE_ROOT+"majors.html",context) 
+
+
 class CourseClassesView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -254,6 +303,10 @@ class CourseClassesView(View):
             context['courses']=courses
             educational_years=EducationalYearRepo(request=request).list()
             context['educational_years']=educational_years
+            majors=MajorRepo(request=request).list()
+            context['majors']=majors
+            schools=SchoolRepo(request=request).list()
+            context['schools']=schools
         return render(request,TEMPLATE_ROOT+"course-classes.html",context) 
  
 
@@ -273,11 +326,21 @@ class CourseClassView(View):
         students=course_class.students.all()
         students_s=json.dumps(StudentSerializer(students,many=True).data)
         context['students_s']=students_s
+        
+        sessions=course_class.session_set.all().order_by('session_no')
+        sessions_s=json.dumps(SessionSerializer(sessions,many=True).data)
+        context['sessions_s']=sessions_s
 
 
         context[WIDE_LAYOUT]=True
         # context['NOT_NAVBAR']=True
         # context['NOT_FOOTER']=True
+
+        
+        if request.user.has_perm(APP_NAME+".add_session"):
+            context['add_session_form']=AddSessionForm()
+
+            
         return render(request,TEMPLATE_ROOT+"course-class.html",context) 
  
 
@@ -290,8 +353,8 @@ class EducationalYearsView(View):
         context['educational_years_s']=educational_years_s
  
         context[WIDE_LAYOUT]=True
-        if request.user.has_perm(APP_NAME+".add_courseclass"):
-            context['add_course_form']=AddCourseClassForm()
+        if request.user.has_perm(APP_NAME+".add_educationalyear"):
+            context['add_educational_year_form']=AddEducationalYearForm()
         return render(request,TEMPLATE_ROOT+"educational-years.html",context) 
  
 
@@ -304,7 +367,7 @@ class EducationalYearView(View):
         educational_year_s=json.dumps(EducationalYearSerializer(educational_year,many=False).data)
         context['educational_year_s']=educational_year_s
  
-        course_classes =educational_year.courseclass_set.all()
+        course_classes =educational_year.courseclass_set.all().order_by('level').order_by('major__title')
         context['course_classes']=course_classes
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
@@ -314,3 +377,101 @@ class EducationalYearView(View):
         # context['NOT_FOOTER']=True
         return render(request,TEMPLATE_ROOT+"educational-year.html",context) 
  
+
+class SessionView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        session =SessionRepo(request=request).session(*args, **kwargs) 
+        if session is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+
+        context.update(PageContext(request=request,page=session))
+        context['session']=session
+        session_s=json.dumps(SessionSerializer(session,many=False).data)
+        context['session_s']=session_s
+ 
+        
+        attendances=AttendanceRepo(request=request).list(session_id=session.id)
+        context['attendances']=attendances
+        attendances_s=json.dumps(AttendanceSerializer(attendances,many=True).data)
+        context['attendances_s']=attendances_s
+
+
+        teachers=session.course_class.teachers.all()
+        teachers_s=json.dumps(TeacherSerializer(teachers,many=True).data)
+        context['teachers_s']=teachers_s
+
+        
+        students=session.course_class.students.all()
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+
+
+        if request.user.has_perm(APP_NAME+".add_attendance"):
+            context['add_attendance_form']=AddAttendanceForm()
+            
+
+        return render(request,TEMPLATE_ROOT+"session.html",context) 
+
+
+class SessionsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        sessions=SessionRepo(request=request).list().order_by('person__last_name')
+        sessions_s=json.dumps(SessionSerializer(sessions,many=True).data)
+        context['sessions_s']=sessions_s
+        context['sessions']=sessions
+        if request.user.has_perm(APP_NAME+".add_session"):
+            context['add_session_form']=AddSessionForm()
+    
+        return render(request,TEMPLATE_ROOT+"sessions.html",context) 
+
+
+class SchoolView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        school =SchoolRepo(request=request).school(*args, **kwargs) 
+        if school is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+ 
+        context['school']=school
+        school_s=json.dumps(SchoolSerializer(school,many=False).data)
+        context['school_s']=school_s
+ 
+        
+        course_classes =school.courseclass_set.all().order_by('level').order_by('major__title')
+        context['course_classes']=course_classes
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+         
+
+
+        if request.user.has_perm(APP_NAME+".add_attendance"):
+            context['add_attendance_form']=AddAttendanceForm()
+            
+
+        return render(request,TEMPLATE_ROOT+"school.html",context) 
+
+
+class SchoolsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        schools=SchoolRepo(request=request).list().order_by('name')
+        schools_s=json.dumps(SchoolSerializer(schools,many=True).data)
+        context['schools_s']=schools_s
+        context['schools']=schools
+        if request.user.has_perm(APP_NAME+".add_school"):
+            context['add_school_form']=AddSchoolForm()
+    
+        return render(request,TEMPLATE_ROOT+"schools.html",context) 
+

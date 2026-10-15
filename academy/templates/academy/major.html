@@ -1,0 +1,41 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+
+<div class="text-center">
+  <h1 class="text-center rtl">{{major.title}}</h1>
+
+  {% if perms.academy.change_major %}
+  <h3>
+    <a
+      href="{{major.get_edit_url}}"
+      class="my-2 text-warning mx-2"
+      title="ویرایش"
+      target="_blank"
+      ><i class="fa fa-edit text-warning"></i
+    ></a>
+    {% endif %} {% if perms.academy.delete_major %}
+    <a
+      href="{{major.get_delete_url}}"
+      class="my-2 text-danger mx-2"
+      title="حذف"
+      target="_blank"
+      ><i class="fa fa-trash text-danger"></i
+    ></a>
+  </h3>
+  {% endif %}
+
+  <h4 class="text-center rtl">
+    <a href="{{major.supplier.get_absolute_url}}">
+      {{major.supplier.person_account.title}}
+    </a>
+  </h4>
+</div>
+<hr /> 
+        {% include "academy/includes/course-classes-app/template.html" %}
+
+ 
+{% endblock content %} {% block script %} 
+        {% include "academy/includes/course-classes-app/script.html" %}
+
+
+
+{% endblock script %}

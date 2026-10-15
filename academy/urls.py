@@ -37,6 +37,23 @@ urlpatterns = [
     path('add-student/',login_required(apis.AddStudentApi.as_view()),name="add_student"),
 
 
+    
+    path('sessions/',login_required(views.SessionsView.as_view()),name="sessions"),
+    path('session/<int:pk>/',login_required(views.SessionView.as_view()),name="session"),
+    path('add-session/',login_required(apis.AddSessionApi.as_view()),name="add_session"),
+
+    path('majors/',login_required(views.MajorsView.as_view()),name="majors"),
+    path('major/<int:pk>/',login_required(views.MajorView.as_view()),name="major"),
+    path('add-major/',login_required(apis.AddMajorApi.as_view()),name="add_major"),
+
+
+    path('schools/',login_required(views.SchoolsView.as_view()),name="schools"),
+    path('school/<int:pk>/',login_required(views.SchoolView.as_view()),name="school"),
+    path('add-school/',login_required(apis.AddSchoolApi.as_view()),name="add_school"),
+
+
+    path('add-attendance/',login_required(apis.AddAttendanceApi.as_view()),name="add_attendance"),
+
 
     path('educational_years/',login_required(views.EducationalYearsView.as_view()),name="educational_years"),
     path('educational_year/<int:pk>/',login_required(views.EducationalYearView.as_view()),name="educationalyear"),

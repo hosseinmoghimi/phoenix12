@@ -1,0 +1,32 @@
+<script>
+    let get_attendances_app=new Vue({
+        el:"#get-attendances-app",
+        data:{
+            students:students_for_students_app,
+
+        },
+        methods:{
+            add_attendance:function(student_id,status){
+                let session_id=parseInt("{{session.id}}")
+                let payload={
+                    csrfmiddlewaretoken:csrfmiddlewaretoken,
+                    session_id:session_id,
+                    student_id:student_id,
+                    status:status,
+                }
+                console.log(payload)
+                let url="{% url 'academy:add_attendance' %}"
+                let posting=$.post(url,payload)
+                posting.done(data=>{
+                    console.log(data)
+                    if(data.result==='SUCCEED'){
+                        if(typeof attendances_app != 'undefined'){
+                            attendances_app.attendances=data.attendances
+                        }
+                    }
+                })
+
+            }
+        }
+    })
+</script>

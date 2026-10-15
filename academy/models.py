@@ -8,8 +8,7 @@ from .apps import APP_NAME
 
 class Course(models.Model,LinkHelper):
 
-    title=models.CharField(_("title"), max_length=50)
-    level=models.IntegerField(_("level"),default=1)
+    title=models.CharField(_("title"), max_length=50) 
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)
     
     app_name=APP_NAME
@@ -98,6 +97,9 @@ class EducationalYear(models.Model,LinkHelper):
     
 
 class CourseClass(models.Model,LinkHelper):
+    major=models.ForeignKey("major", verbose_name=_("major"), on_delete=models.CASCADE)
+    level=models.IntegerField(_("level"))
+    school=models.ForeignKey("school", verbose_name=_("school"), on_delete=models.CASCADE)
     educational_year=models.ForeignKey("educationalyear", verbose_name=_("educational_year"), on_delete=models.CASCADE)
     course=models.ForeignKey("course", verbose_name=_("course"), on_delete=models.PROTECT)
     teachers=models.ManyToManyField("teacher",blank=True, verbose_name=_("teachers"))
@@ -116,6 +118,11 @@ class CourseClass(models.Model,LinkHelper):
     def __str__(self):
         return f'{self.educational_year} {self.course}' 
 
+    def save(self,*args, **kwargs):
+        super(CourseClass,self).save()
+        message="واحد ارائه شده ذخیره شد.."
+        return SUCCEED,message,self
+
 
 class Session(Event):
     course_class=models.ForeignKey("courseclass", verbose_name=_("courseclass"), on_delete=models.PROTECT)
@@ -126,12 +133,15 @@ class Session(Event):
         verbose_name_plural = _("Sessions")
     
     def save(self, *args, **kwargs):
-         
+        if self.title is None or self.title=="":
+            self.title=self.course_class.course.title +" جلسه "    +str(self.session_no)
         if not self.app_name:
             self.app_name = APP_NAME
         if not self.class_name:
             self.class_name = "session"
-        return super(Session, self).save(*args, **kwargs)
+        super(Session, self).save(*args, **kwargs)
+        message="جلسه ذخیره شد."
+        return SUCCEED,message,self
 
     def __str__(self):
         return f'{self.course_class} جلسه {self.session_no}'
@@ -186,17 +196,83 @@ class Teacher(models.Model,LinkHelper):
         return self.person.full_name
 
 
-class Attendance(models.Model):
+class Attendance(models.Model,LinkHelper):
     session=models.ForeignKey("session", verbose_name=_("session"), on_delete=models.CASCADE)
     student=models.ForeignKey("student", verbose_name=_("student"), on_delete=models.CASCADE)
     teacher=models.ForeignKey("teacher", verbose_name=_("teacher"), on_delete=models.CASCADE)
     date_added=models.DateTimeField(_("date_added"), auto_now=False, auto_now_add=True)
     status=models.CharField(_("status"),choices=AttendanceStatusEnum.choices,default=AttendanceStatusEnum.PRESENT, max_length=50)
     description=models.CharField(_("description"),null=True,blank=True, max_length=50)
-
+    class_name='attendance'
+    app_name=APP_NAME
     class Meta:
         verbose_name = _("Attendance")
         verbose_name_plural = _("Attendances")
 
     def __str__(self):
         return f'{self.session} {self.student} {self.status} '
+
+    def save(self,*args, **kwargs):
+        super(Attendance,self).save()
+        message="وضعیت حضور و غیاب ذخیره شد.."
+        return SUCCEED,message,self
+
+
+class Major(models.Model,LinkHelper):
+    title=models.CharField(_("title"), max_length=50)
+    
+    class_name='major'
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("Major")
+        verbose_name_plural = _("Majors")
+
+    def __str__(self):
+        return self.title
+ 
+    def save(self,*args, **kwargs):
+        super(Major,self).save()
+        message="رشته تحصیلی ذخیره شد.."
+        return SUCCEED,message,self
+
+
+class ActiveStudent(models.Model):
+    student=models.ForeignKey("student", verbose_name=_("student"), on_delete=models.CASCADE)
+    school=models.ForeignKey("school", verbose_name=_("school"), on_delete=models.CASCADE)
+    major=models.ForeignKey("major", verbose_name=_("major"), on_delete=models.CASCADE)
+    level=models.IntegerField(_("level"))
+
+    class Meta:
+        verbose_name = _("ActiveStudent")
+        verbose_name_plural = _("ActiveStudents")
+
+    def __str__(self):
+        return f'{self.student}  {self.major}  {self.level}'
+
+    def save(self,*args, **kwargs):
+        super(ActiveStudent,self).save()
+        message="دانش آموز ثبت نام شده ذخیره شد."
+        return SUCCEED,message,self
+
+    
+class School(models.Model,LinkHelper):
+    name=models.CharField(_("name"), max_length=50)
+    code=models.CharField(_("code"),null=True,blank=True, max_length=50)
+    tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
+    address=models.CharField(_("address"),null=True,blank=True, max_length=500)
+
+    class_name="school"  
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("School")
+        verbose_name_plural = _("Schools")
+
+    def __str__(self):
+        return self.name
+ 
+    def save(self,*args, **kwargs):
+        super(School,self).save()
+        message="آموزشگاه ذخیره شد."
+        return SUCCEED,message,self

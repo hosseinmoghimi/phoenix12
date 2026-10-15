@@ -1,0 +1,27 @@
+
+{% extends "academy/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    {% if add_session_form %}
+      <div class="col-md-12">
+          {% include "academy/includes/add-session-app/template.html" %}
+
+      </div>
+    {% endif %}
+    <div class="col-md-12">
+
+        
+        {% include "academy/includes/sessions-app/template.html" %}
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "academy/includes/sessions-app/script.html" %}
+{% if add_session_form %}
+{% include "academy/includes/add-session-app/script.html" %}
+{% endif %}
+{% endblock script %}

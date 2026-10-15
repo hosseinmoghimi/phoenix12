@@ -1,0 +1,143 @@
+<div id="accordion-attendances" class="rtl text-right farsi">
+  <div class="card" id="attendances-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-attendances"
+          aria-expanded="true"
+          aria-controls="collapse-attendances"
+        >
+          حضور و غیاب ها
+          <span v-if="attendances.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="attendances.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-attendances"
+      class="collapse {% if expand_attendances %} show {% endif %}"
+      aria-labelledby="heading-attendances"
+      data-parent="#accordion-attendances"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead> 
+              {% if not student %}
+                
+              <th>دانش آموز</th> 
+              {% endif %}
+{% if not session %}
+<th>جلسه</th> 
+{% endif %}
+
+              <th>وضعیت</th> 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="attendance in attendances">
+              {% if not student %}
+                 
+              <td>
+                <a :href="attendance.student.get_absolute_url" :class="'text-'+get_color(attendance.status)">
+                  <span v-text="attendance.student.full_name"></span>
+                </a>
+                
+              </td>
+              {% endif %}
+{% if not session %}
+  
+<td>
+  <a :href="attendance.session.get_absolute_url"> 
+    <div>
+
+      <span v-text="attendance.session.title"></span>
+    </div>
+     <div>
+
+      <span v-text="attendance.session.persian_start_datetime"></span>
+    </div>
+  </a>
+</td>
+{% endif %}
+
+                
+                <td>
+                    <span :class="'text-'+get_color(attendance.status)" v-text="attendance.status"></span>
+ 
+                </td>
+
+                <td>
+                  <a :href="attendance.get_absolute_url">
+                    <span v-text="attendance.level"></span>
+                  </a>
+ 
+                </td>
+             
+                <td class="small">
+                  <a
+                    target="_blank"
+                    :href="attendance.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="attendance.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <th>
+                <div class="text-success">
+
+                  حاضر
+                  <span v-text="sum_hazer()"></span>
+                </div>
+
+                
+                <div class="text-danger">
+
+                  غایب
+                  <span v-text="sum_ghayeb()"></span>
+                </div>
+
+                
+                
+              </th>
+                {% if not student %}
+                 
+             <th></th>
+
+              {% endif %}
+{% if not session %}
+  
+<th></th>
+{% endif %}
+
+              <th></th> 
+              <th></th> 
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

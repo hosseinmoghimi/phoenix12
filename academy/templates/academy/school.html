@@ -1,0 +1,44 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+
+<div class="text-center">
+  <h1 class="text-center rtl">{{school.title}}</h1>
+
+  {% if perms.academy.change_school %}
+  <h3>
+    <a
+      href="{{school.get_edit_url}}"
+      class="my-2 text-warning mx-2"
+      title="ویرایش"
+      target="_blank"
+      ><i class="fa fa-edit text-warning"></i
+    ></a>
+    {% endif %} {% if perms.academy.delete_school %}
+    <a
+      href="{{school.get_delete_url}}"
+      class="my-2 text-danger mx-2"
+      title="حذف"
+      target="_blank"
+      ><i class="fa fa-trash text-danger"></i
+    ></a>
+  </h3>
+  {% endif %}
+
+  <h4 class="text-center rtl">
+    <a href="{{school.get_absolute_url}}">
+      <small>
+        آموزشگاه
+      </small>
+      {{school.name}}
+    </a>
+  </h4>
+</div>
+<hr /> 
+        {% include "academy/includes/course-classes-app/template.html" %}
+
+ 
+{% endblock content %} {% block script %} 
+        {% include "academy/includes/course-classes-app/script.html" %}
+
+
+
+{% endblock script %}

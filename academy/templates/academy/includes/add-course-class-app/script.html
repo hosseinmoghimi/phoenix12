@@ -5,6 +5,9 @@
     data: {
     title: "",
     course_id: 0,
+    school_id: 0,
+    level:0,
+    major_id: 0,
     educational_year_id: 0,
     message:{show:false},
     waiting:false,
@@ -30,6 +33,9 @@
           csrfmiddlewaretoken: csrfmiddlewaretoken,
           educational_year_id: parseInt(add_course_class_app.educational_year_id),
           course_id: parseInt(add_course_class_app.course_id),
+          major_id: parseInt(add_course_class_app.major_id),
+          school_id: parseInt(add_course_class_app.school_id),
+          level: parseInt(add_course_class_app.level),
           event_datetime: add_course_class_app.event_date+" "+add_course_class_app.event_time,
         };
 

@@ -1,17 +1,29 @@
 from rest_framework import serializers
 from authentication.serializers import Person
-from .models import Course,Word,CourseClass,Teacher,Student,Attendance,EducationalYear,Session
+from .models import Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
  
   
 class EducationalYearSerializer(serializers.ModelSerializer): 
     class Meta:
         model=EducationalYear
         fields=['id','name', 'get_absolute_url', 'get_edit_url','get_delete_url']
-       
+
+class SchoolSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model=School
+        fields=['id','name','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
+
+
+class MajorSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model=Major
+        fields=['id','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
+
+
 class CourseSerializer(serializers.ModelSerializer): 
     class Meta:
         model=Course
-        fields=['id','title','code','level', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
   
 
 class PersonSerializer(serializers.ModelSerializer): 
@@ -36,22 +48,32 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 class CourseClassSerializer(serializers.ModelSerializer): 
     educational_year=EducationalYearSerializer()
+    major=MajorSerializer()
+    school=SchoolSerializer()
     course=CourseSerializer()
     teachers=TeacherSerializer(many=True)
     class Meta:
         model=CourseClass
-        fields=['id','title','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','title','school','major','level','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
 
            
 class SessionSerializer(serializers.ModelSerializer): 
     course_class=CourseClassSerializer()
     class Meta:
         model=Session
-        fields=['id','course_class','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','course_class','session_no','class_room','persian_event_datetime','persian_start_datetime','persian_end_datetime','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
     
      
 class WordSerializer(serializers.ModelSerializer): 
     class Meta:
         model=Word
         fields=['id','title','thumbnail', 'get_absolute_url', 'get_edit_url','get_delete_url']
+
+  
+class AttendanceSerializer(serializers.ModelSerializer): 
+    student=StudentSerializer()
+    session=SessionSerializer()
+    class Meta:
+        model=Attendance
+        fields=['id','student','status','session','get_edit_url','get_delete_url']
   

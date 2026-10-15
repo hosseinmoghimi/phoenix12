@@ -1,0 +1,42 @@
+<script>
+    
+    let attendances_for_attendances_app=JSON.parse("{{attendances_s|escapejs}}")
+    let attendances_app = new Vue({
+        el: "#attendances-app",
+        data: {
+            attendances: attendances_for_attendances_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            },
+            get_color:function(vall){
+                if(vall==='غایب')
+                    return 'danger'
+                if(vall==='حاضر')
+                    return 'success'
+                if(vall==='تاخیر')
+                    return 'warning'
+                return 'primary'
+            },
+            sum_hazer:function(){
+                let s=0
+                this.attendances.forEach(attendance => {
+                    if(attendance.status!='غایب')
+                    s+=1
+                    
+                });
+                return s
+            },
+            sum_ghayeb:function(){
+                let s=0
+                this.attendances.forEach(attendance => {
+                    if(attendance.status=='غایب')
+                    s+=1
+                    
+                });
+                return s
+            }
+        }
+    })
+</script>

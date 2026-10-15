@@ -1,0 +1,195 @@
+<div id="accordion-sessions" class="rtl text-right farsi">
+  <div class="card" id="sessions-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-sessions"
+          aria-expanded="true"
+          aria-controls="collapse-sessions"
+        >
+          جلسه های درسی
+          <span v-if="sessions.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="sessions.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-sessions"
+      class="collapse {% if expand_sessions %} show {% endif %}"
+      aria-labelledby="heading-sessions"
+      data-parent="#accordion-sessions"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            class="table {% if DARK_THEME %}table-dark {% endif %}table-striped"
+          >
+            <thead>
+              <th>جلسه</th>
+
+              {% if not course_class %}
+
+              <th>واحد درسی</th>
+              {% endif %}
+
+              <th>تاریخ</th>
+              <th>اتاق</th>
+
+              <th></th>
+            </thead>
+            <tbody>
+              <tr v-for="session in sessions">
+                <td>
+                  <a :href="session.get_absolute_url">
+                    جلسه
+                    <span v-text="session.session_no"></span>
+                  </a>
+                </td>
+                {% if not course_class %}
+
+                <td>
+                  <a :href="session.course_class.get_absolute_url">
+                    <span v-text="session.course_class.title"></span>
+                  </a>
+                </td>
+                {% endif %}
+
+                <td>
+                    <div>
+
+                        <span v-text="session.persian_start_datetime"></span>
+                    </div>
+                    <div>
+
+                        <span v-text="session.persian_end_datetime"></span>
+                    </div>
+                </td>
+
+                 <td>
+                    
+                        <span v-text="session.class_room"></span>
+                 
+                </td>
+
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="session.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="session.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% if add_session_form %}
+      <div class="card-footer">
+        <button v-if="!show_form" class="btn btn-success"  @click="show_form=true">جدید</button>
+        <button v-if="show_form"  class="btn btn-secondary" @click="show_form=false">انصراف</button>
+        <div class="row rtl" v-show="show_form">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">شماره جلسه</label>
+              <input type="number" class="form-control" v-model="session_no" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="exampleInputDate">تاریخ</label>
+              <date-picker v-model="session_date"></date-picker>
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="session_date"
+              />
+
+              
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="exampleInputDate">شروع</label>
+              
+
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="session_start_time"
+              />
+              
+            </div>
+          </div>
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="exampleInputDate">پایان</label>
+             
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="session_end_time"
+              />
+            </div>
+          </div>
+
+           <div class="col-md-3">
+            <div class="form-group">
+              <label for="exampleInputDate">اتاق</label>
+             
+              <input
+                type="text"
+                required
+                class="form-control"
+                v-model="class_room"
+              />
+            </div>
+          </div>
+<div class="col-12">
+    
+</div>
+
+          <div class="col-md-3">
+            <button @click="add_session()" class="btn btn-success">
+              <i class="fa fa-plus ml-2"></i>
+              افزودن
+            </button>
+          </div>
+          <div class="col-md-9 my-3">
+            {% include "utility/includes/message.html" %}
+          </div>
+        </div>
+        <button v-if="show_form"  class="btn btn-secondary" @click="show_form=false">انصراف</button>
+
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

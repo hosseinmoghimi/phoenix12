@@ -9,7 +9,7 @@
           aria-expanded="true"
           aria-controls="collapse-course-classes"
         >
-          دروس ارائه شده 
+          دروس ارائه شده
           <span v-if="course_classes.length>0">
             <small class="text-danger mx-2">
               <span v-text="course_classes.length"></span>
@@ -27,58 +27,89 @@
     >
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
-            <thead> 
-              <th>سال تحصیلی</th> 
-              <th>واحد درسی</th> 
-              <th>عنوان</th> 
-              <th>مربی ها</th> 
-              <th>
-
-              </th>
+          <table
+            class="table {% if DARK_THEME %}table-dark {% endif %}table-striped"
+          >
+            <thead>
+              
+              <th>عنوان</th>
+              <th>سال تحصیلی</th>
+              {% if not school %}
+                
+              <th>آموزشگاه</th>
+              {% endif %}
+              {% if not major %}
+                
+              <th>رشته تحصیلی</th>
+              {% endif %}
+              {% if not course %}
+                
+              <th>واحد درسی</th>
+              {% endif %}
+              <th>سطح</th>
+              <th>مربی ها</th>
+              <th></th>
             </thead>
             <tbody>
               <tr v-for="course_class in course_classes">
-               
-                <td>
-                  <a :href="course_class.educational_year.get_absolute_url">
-                    <span v-text="course_class.educational_year.name"></span>
-                  </a>
- 
-                </td>
-
-                 <td>
-                  <a :href="course_class.course.get_absolute_url">
-                    <span v-text="course_class.course.title"></span>
-                  </a>
- 
-                </td>
-
                  <td>
                   <a :href="course_class.get_absolute_url">
                     <span v-text="course_class.title"></span>
                   </a>
- 
                 </td>
 
                 <td>
-                  <div class="mb-2" v-for="teacher in course_class.teachers" >
+                  <a :href="course_class.educational_year.get_absolute_url">
+                    <span v-text="course_class.educational_year.name"></span>
+                  </a>
+                </td>
+              {% if not school %}
 
+                <td>
+                  <a :href="course_class.school.get_absolute_url">
+                    <span v-text="course_class.school.name"></span>
+                  </a>
+                </td> 
+              {% endif %}
+              {% if not major %}
+                 <td>
+                  <a :href="course_class.major.get_absolute_url">
+                    <span v-text="course_class.major.title"></span>
+                  </a>
+                </td>   
+              {% endif %}
+              {% if not course %}
+                      <td>
+                  <a :href="course_class.course.get_absolute_url">
+                    <span v-text="course_class.course.title"></span>
+                  </a>
+                </td>        
+              {% endif %}
+                
+                <td> 
+                    <span v-text="course_class.level"></span>
+           
+                </td>
+               
+
+                <td>
+                  <div class="mb-2" v-for="teacher in course_class.teachers">
                     <a :href="teacher.get_absolute_url">
                       <div class="media">
-                      <img :src="teacher.person.image" class="rounded-circle" width="48" alt="">
-                      <div class="media-body mr-2">
-                        <span v-text="teacher.full_name"></span>
-
+                        <img
+                          :src="teacher.person.image"
+                          class="rounded-circle"
+                          width="48"
+                          alt=""
+                        />
+                        <div class="media-body mr-2">
+                          <span v-text="teacher.full_name"></span>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                    </div>
- 
+                    </a>
+                  </div>
                 </td>
 
-
-             
                 <td>
                   <a
                     target="_blank"

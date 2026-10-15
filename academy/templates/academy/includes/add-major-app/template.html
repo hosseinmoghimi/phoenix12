@@ -1,0 +1,62 @@
+<div id="accordion-add-major" class="rtl text-right farsi">
+  <div class="card" id="add-major-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-major"
+          aria-expanded="true"
+          aria-controls="collapse-add-major"
+        >
+          افزودن رشته تحصیلی
+          
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-major"
+      class="collapse  "
+      aria-labelledby="heading-add-major"
+      data-parent="#accordion-add-major"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_major()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input required v-model="title" type="text" class="form-control" />
+              </div>
+            </div>
+ 
+ 
+
+               
+
+             
+
+          
+
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="my-2 mx-2">
+
+                {% include "utility/includes/message.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

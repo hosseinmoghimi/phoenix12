@@ -1,0 +1,55 @@
+<script>
+  let sessions_for_sessions_app = JSON.parse("{{sessions_s|escapejs}}");
+  let sessions_app = new Vue({
+    el: "#sessions-app",
+    data: {
+      sessions: sessions_for_sessions_app,
+
+      show_form: false,
+      date: current_date,
+      session_no: 0,
+      class_room: "",
+
+      session_date: current_date,
+      session_start_time: "08:00:00",
+      session_end_time: "10:00:00",
+      message: { show: false },
+      waiting: false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      add_session: function () {
+        let session_start_date_time =
+          this.session_date + "  " + this.session_start_time;
+        let session_end_date_time =
+          this.session_date + "  " + this.session_end_time;
+        let course_class_id = parseInt("{{course_class.id}}");
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          course_class_id: course_class_id,
+          start_datetime: session_start_date_time,
+          end_datetime: session_end_date_time,
+          session_no: parseInt(this.session_no),
+          class_room: this.class_room,
+        };
+        console.log(payload);
+        $.post("{% url 'academy:add_session' %}", payload).done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            sessions_app.sessions.push(data.session);
+            show_message(sessions_app,'موفق',data.message,'success',2000)
+        }
+        else{
+
+            show_message(sessions_app,'خطا',data.message,'danger',2000)
+        }
+        });
+      },
+    },
+  });
+</script>
