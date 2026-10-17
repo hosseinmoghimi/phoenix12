@@ -38,6 +38,10 @@
                 
               <th>آموزشگاه</th>
               {% endif %}
+              {% if not group %}
+                
+              <th>گروه</th>
+              {% endif %}
               {% if not major %}
                 
               <th>رشته تحصیلی</th>
@@ -68,6 +72,14 @@
                 <td>
                   <a :href="course_class.school.get_absolute_url">
                     <span v-text="course_class.school.name"></span>
+                  </a>
+                </td> 
+              {% endif %}
+              {% if not group %}
+
+                <td>
+                  <a v-if="course_class.group" :href="course_class.group.get_absolute_url">
+                    <span v-text="course_class.group.title"></span>
                   </a>
                 </td> 
               {% endif %}

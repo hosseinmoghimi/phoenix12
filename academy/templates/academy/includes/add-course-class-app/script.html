@@ -6,6 +6,7 @@
     title: "",
     course_id: 0,
     school_id: 0,
+    group_id: 0,
     level:0,
     major_id: 0,
     educational_year_id: 0,
@@ -34,6 +35,7 @@
           educational_year_id: parseInt(add_course_class_app.educational_year_id),
           course_id: parseInt(add_course_class_app.course_id),
           major_id: parseInt(add_course_class_app.major_id),
+          group_id: parseInt(add_course_class_app.group_id),
           school_id: parseInt(add_course_class_app.school_id),
           level: parseInt(add_course_class_app.level),
           event_datetime: add_course_class_app.event_date+" "+add_course_class_app.event_time,
@@ -46,8 +48,8 @@
           console.log(data);
           if (data.result === "SUCCEED") {
             show_message(add_course_class_app,'موفق',data.message,'success',1000)
-            if (typeof courses_app != "undefined") {
-              courses_app.courses.push(data.course);
+            if (typeof course_classes_app != "undefined") {
+              course_classes_app.course_classes.push(data.course_class);
             }
           }
           else{

@@ -4,7 +4,6 @@ from accounting.forms import forms
 class AddCourseForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=False)
-    level=forms.IntegerField(required=True)
 
      
 class AddMajorForm(forms.Form):
@@ -33,14 +32,17 @@ class SearchForm(forms.Form):
 class DeleteAllWordsForm(forms.Form):
     count=forms.IntegerField(required=False)
 
+
 class AddEducationalYearForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
-     
+
+
 class AddCourseClassForm(forms.Form):
     level=forms.IntegerField(required=True)
     course_id=forms.IntegerField(required=True)
     major_id=forms.IntegerField(required=True)
     school_id=forms.IntegerField(required=True)
+    group_id=forms.IntegerField(required=False)
     educational_year_id=forms.IntegerField(required=True)
      
      
@@ -69,7 +71,11 @@ class AddSchoolForm(forms.Form):
 class AddWordForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     parent_id=forms.IntegerField(required=True)
-    
+
+
+class AddGroupForm(forms.Form):
+    title=forms.CharField(max_length=100, required=True)
+
 
 class ImportFromJsonForm(forms.Form):
     count=forms.IntegerField(required=True)

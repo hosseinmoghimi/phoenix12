@@ -1,4 +1,4 @@
-from .models import Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
+from .models import Group,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -354,6 +354,8 @@ class CourseClassRepo():
         if 'major_id' in kwargs and kwargs['major_id']:
             course_class.major_id=kwargs["major_id"]
 
+        if 'group_id' in kwargs and kwargs['group_id']:
+            course_class.group_id=kwargs["group_id"]
         else:
             return FAILED,'رشته تحصیلی را به صورت صحیح وارد کنید.',None
 
@@ -586,6 +588,69 @@ class EducationalYearRepo():
         return result,message,educational_year
 
 
+
+class GroupRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Group.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Group.objects
+            if request.user.has_perm(APP_NAME+".view_group"):
+                self.objects=Group.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs and kwargs['search_for']:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs and kwargs['parent_id']:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+
+        if "student_id" in kwargs and kwargs['student_id']:
+            student_id=kwargs["student_id"]
+            objects=objects.filter(student_id=student_id) 
+
+        if "session_id" in kwargs and kwargs['session_id']:
+            session_id=kwargs["session_id"]
+            objects=objects.filter(session_id=session_id)  
+        return objects.all().order_by('title')
+        
+    def group(self,*args, **kwargs):
+        if "group_id" in kwargs and kwargs["group_id"] is not None:
+            return self.objects.filter(pk=kwargs['group_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_group(self,*args,**kwargs):
+        result,message,group,groups=FAILED,"",None,[]
+        if not self.request.user.has_perm(APP_NAME+".add_group"):
+            message="دسترسی غیر مجاز"
+            return result,message,group,groups
+        olds=Group.objects.filter(title=kwargs['title'])
+        if len(olds)>0:
+            return FAILED,'عنوان تکراری',None
+        group=Group() 
+
+       
+
+        if 'title' in kwargs and kwargs['title']:
+            group.title=kwargs["title"] 
+
+
+        if 'description' in kwargs and kwargs['description']:
+            group.description=kwargs["description"] 
+ 
+        (result,message,group)=group.save()
+         
+        return result,message,group
+ 
+  
 
 class AttendanceRepo():
     def __init__(self,request,*args, **kwargs):

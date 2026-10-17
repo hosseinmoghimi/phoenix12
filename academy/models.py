@@ -104,6 +104,7 @@ class CourseClass(models.Model,LinkHelper):
     course=models.ForeignKey("course", verbose_name=_("course"), on_delete=models.PROTECT)
     teachers=models.ManyToManyField("teacher",blank=True, verbose_name=_("teachers"))
     students=models.ManyToManyField("student",blank=True, verbose_name=_("students"))
+    group=models.ForeignKey("group", verbose_name=_("group"),null=True,blank=True, on_delete=models.CASCADE)
     class_name="courseclass"
     app_name=APP_NAME
     
@@ -254,6 +255,29 @@ class ActiveStudent(models.Model):
         super(ActiveStudent,self).save()
         message="دانش آموز ثبت نام شده ذخیره شد."
         return SUCCEED,message,self
+
+
+
+class Group(models.Model,LinkHelper): 
+    title=models.CharField(_("title"), max_length=50)
+    students=models.ManyToManyField("student",blank=True, verbose_name=_("students"))
+    
+    class_name="group"
+    app_name=APP_NAME
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _("Group")
+        verbose_name_plural = _("Groups")
+
+
+    def save(self,*args, **kwargs):
+        super(Group,self).save()
+        message="گروه ذخیره شد."
+        return SUCCEED,message,self
+
 
     
 class School(models.Model,LinkHelper):

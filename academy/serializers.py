@@ -1,12 +1,17 @@
 from rest_framework import serializers
 from authentication.serializers import Person
-from .models import Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
+from .models import Group,Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
  
   
 class EducationalYearSerializer(serializers.ModelSerializer): 
     class Meta:
         model=EducationalYear
         fields=['id','name', 'get_absolute_url', 'get_edit_url','get_delete_url']
+  
+class GroupSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model=Group
+        fields=['id','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
 
 class SchoolSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -48,13 +53,14 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 class CourseClassSerializer(serializers.ModelSerializer): 
     educational_year=EducationalYearSerializer()
+    group=GroupSerializer()
     major=MajorSerializer()
     school=SchoolSerializer()
     course=CourseSerializer()
     teachers=TeacherSerializer(many=True)
     class Meta:
         model=CourseClass
-        fields=['id','title','school','major','level','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','group','title','school','major','level','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
 
            
 class SessionSerializer(serializers.ModelSerializer): 

@@ -1,0 +1,62 @@
+<div id="accordion-add-group" class="rtl text-right farsi">
+  <div class="card" id="add-group-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-group"
+          aria-expanded="true"
+          aria-controls="collapse-add-group"
+        >
+          افزودن گروه
+          
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-group"
+      class="collapse  "
+      aria-labelledby="heading-add-group"
+      data-parent="#accordion-add-group"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_group()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">عنوان</label>
+                <input required v-model="title" type="text" class="form-control" />
+              </div>
+            </div>
+ 
+ 
+
+               
+
+            
+
+             
+
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="my-2 mx-2">
+
+                {% include "utility/includes/message.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

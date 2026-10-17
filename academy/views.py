@@ -8,8 +8,8 @@ from core.views import CoreContext,MessageView,PageContext
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
-from .repo import CourseRepo,WordRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
+from .serializers import GroupSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import GroupRepo,CourseRepo,WordRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -211,6 +211,12 @@ class StudentView(View):
             return mv.get(request=request)
 
         
+        groups=student.group_set.all()
+        groups_s=json.dumps(GroupSerializer(groups,many=True).data)
+        context['groups_s']=groups_s
+        context['groups']=groups
+
+
         context['student']=student
         student_s=json.dumps(StudentSerializer(student,many=False).data)
         context['student_s']=student_s
@@ -305,6 +311,8 @@ class CourseClassesView(View):
             context['educational_years']=educational_years
             majors=MajorRepo(request=request).list()
             context['majors']=majors
+            groups=GroupRepo(request=request).list()
+            context['groups']=groups
             schools=SchoolRepo(request=request).list()
             context['schools']=schools
         return render(request,TEMPLATE_ROOT+"course-classes.html",context) 
@@ -474,4 +482,56 @@ class SchoolsView(View):
             context['add_school_form']=AddSchoolForm()
     
         return render(request,TEMPLATE_ROOT+"schools.html",context) 
+
+
+
+class GroupView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        group =GroupRepo(request=request).group(*args, **kwargs) 
+        if group is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+ 
+        context['group']=group
+        group_s=json.dumps(GroupSerializer(group,many=False).data)
+        context['group_s']=group_s
+ 
+
+
+        
+        course_classes =group.courseclass_set.all()
+        context['course_classes']=course_classes
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+
+        students =group.students.all().order_by('person__last_name') 
+        context['students']=students
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+         
+
+
+        if request.user.has_perm(APP_NAME+".add_attendance"):
+            context['add_attendance_form']=AddAttendanceForm()
+            
+
+        return render(request,TEMPLATE_ROOT+"group.html",context) 
+
+
+class GroupsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        groups=GroupRepo(request=request).list().order_by('title')
+        groups_s=json.dumps(GroupSerializer(groups,many=True).data)
+        context['groups_s']=groups_s
+        context['groups']=groups
+        if request.user.has_perm(APP_NAME+".add_group"):
+            context['add_group_form']=AddGroupForm()
+    
+        return render(request,TEMPLATE_ROOT+"groups.html",context) 
 

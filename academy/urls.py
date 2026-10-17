@@ -52,6 +52,11 @@ urlpatterns = [
     path('add-school/',login_required(apis.AddSchoolApi.as_view()),name="add_school"),
 
 
+    path('groups/',login_required(views.GroupsView.as_view()),name="groups"),
+    path('group/<int:pk>/',login_required(views.GroupView.as_view()),name="group"),
+    path('add-group/',login_required(apis.AddGroupApi.as_view()),name="add_group"),
+
+
     path('add-attendance/',login_required(apis.AddAttendanceApi.as_view()),name="add_attendance"),
 
 

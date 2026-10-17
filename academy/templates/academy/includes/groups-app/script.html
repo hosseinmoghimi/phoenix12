@@ -1,0 +1,15 @@
+<script>
+    
+    let groups_for_groups_app=JSON.parse("{{groups_s|escapejs}}")
+    let groups_app = new Vue({
+        el: "#groups-app",
+        data: {
+            groups: groups_for_groups_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

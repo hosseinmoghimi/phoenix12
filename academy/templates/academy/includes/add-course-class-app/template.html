@@ -69,6 +69,18 @@
               </div>
             </div>
 
+              <div class="col-md-4">
+              <div class="form-group">
+                <label for="">گروه</label>
+                <select v-model="group_id" class="form-control" >
+                  {% for group in groups %}
+                    <option value="{{group.id}}">{{group.title}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+
 
             <div class="col-md-4">
               <div class="form-group">

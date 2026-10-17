@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Course,Word,Teacher,Student,School,Session,CourseClass,EducationalYear,Attendance,Major,ActiveStudent
+from .models import Group,Course,Word,Teacher,Student,School,Session,CourseClass,EducationalYear,Attendance,Major,ActiveStudent
 
+admin.site.register(Group) 
 admin.site.register(Course) 
 admin.site.register(Word)
 admin.site.register(Student)

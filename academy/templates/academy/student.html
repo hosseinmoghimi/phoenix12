@@ -53,6 +53,11 @@
  
   </div> 
 
+  <div class="col-md-12">
+
+        
+        {% include "academy/includes/groups-app/template.html" %}
+    </div>
    <div class="col-md-12">
 
         
@@ -68,5 +73,6 @@
 {% endblock content %} {% block script %} 
         {% include "academy/includes/course-classes-app/script.html" %}
                 {% include "academy/includes/attendances-app/script.html" %}
+        {% include "academy/includes/groups-app/script.html" %}
 
 {% endblock script %}
