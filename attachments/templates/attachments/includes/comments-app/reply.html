@@ -9,7 +9,7 @@
             </a>
             <span class="farsi small text-secondary mr-2 text-right" v-text="comment.persian_datetime_added"></span>
         </div>
-        <div class="alert alert-light farsi  text-right fade show" role="alert">
+        <div   >
             
             {% if not page %}
             <a :href="comment.page.get_absolute_url"  class="mt-3">
@@ -23,8 +23,8 @@
             </a>
             {% endif %}
                 
-            <div class="small farsi text-dark text-right" v-html="comment.comment">
-            </div>
+            <p class="small farsi text-right" v-html="comment.comment">
+            </p>
             <div>
                  
                 {% if me_person or perms.attachments.delete_comment%}
