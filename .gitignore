@@ -9,6 +9,7 @@ server_apps.py
 
 _run.bat
 _migrate.bat
+_make_migrations.bat
 _collectstatic.bat
 _activate.bat
 _check.bat
