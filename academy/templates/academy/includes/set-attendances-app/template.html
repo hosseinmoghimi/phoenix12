@@ -1,13 +1,13 @@
-<div id="accordion-get-attendances" class="rtl text-right farsi">
-  <div class="card" id="get-attendances-app">
+<div id="accordion-set-attendances" class="rtl text-right farsi">
+  <div class="card" id="set-attendances-app">
     <div class="card-header">
       <h5 class="text-center">
         <button
           class="btn btn-link"
           data-toggle="collapse"
-          data-target="#collapse-get-attendances"
+          data-target="#collapse-set-attendances"
           aria-expanded="true"
-          aria-controls="collapse-get-attendances"
+          aria-controls="collapse-set-attendances"
         >
           حضور و غیاب
            
@@ -16,14 +16,33 @@
     </div>
 
     <div
-      id="collapse-get-attendances"
+      id="collapse-set-attendances"
       class="collapse {% if expand_get_attendances %} show {% endif %}"
-      aria-labelledby="heading-get-attendances"
-      data-parent="#accordion-get-attendances"
+      aria-labelledby="heading-set-attendances"
+      data-parent="#accordion-set-attendances"
     >
       <div class="card-body">
         <div class="table-responsive">
             <table class="table">
+              <thead>
+                <th>
+                  دانش آموز
+                </th>
+
+
+                
+                <th colspan="3">
+                  
+                </th>
+
+                
+                <th>
+                  
+                </th>
+
+ 
+
+              </thead>
                 <tbody>
 
                     <tr v-for="student in students">
@@ -46,6 +65,10 @@
                         <td>
                             <button class="btn btn-warning" @click="add_attendance(student.id,`تاخیر`)">تاخیر</button>
 
+                        </td>
+                        <td>
+                           
+                         
                         </td>
                     </tr>
                 </tbody>

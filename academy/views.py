@@ -394,7 +394,7 @@ class SessionView(View):
         context['session_s']=session_s
  
         
-        attendances=AttendanceRepo(request=request).list(session_id=session.id)
+        attendances=AttendanceRepo(request=request).list(session_id=session.id).order_by('student__person__last_name')
         context['attendances']=attendances
         attendances_s=json.dumps(AttendanceSerializer(attendances,many=True).data)
         context['attendances_s']=attendances_s
@@ -422,7 +422,7 @@ class SessionsView(View):
         context=getContext(request=request) 
         
 
-        sessions=SessionRepo(request=request).list().order_by('person__last_name')
+        sessions=SessionRepo(request=request).list().order_by('start_datetime')
         sessions_s=json.dumps(SessionSerializer(sessions,many=True).data)
         context['sessions_s']=sessions_s
         context['sessions']=sessions

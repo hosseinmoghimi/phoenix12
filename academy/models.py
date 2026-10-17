@@ -127,7 +127,7 @@ class CourseClass(models.Model,LinkHelper):
 class Session(Event):
     course_class=models.ForeignKey("courseclass", verbose_name=_("courseclass"), on_delete=models.PROTECT)
     session_no=models.IntegerField(_("session_no"))
-    class_room=models.CharField(_("class_room"), max_length=50)
+    class_room=models.CharField(_("class_room"),null=True,blank=True, max_length=50)
     class Meta:
         verbose_name = _("Session")
         verbose_name_plural = _("Sessions")

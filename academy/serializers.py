@@ -61,7 +61,7 @@ class SessionSerializer(serializers.ModelSerializer):
     course_class=CourseClassSerializer()
     class Meta:
         model=Session
-        fields=['id','course_class','session_no','class_room','persian_event_datetime','persian_start_datetime','persian_end_datetime','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','thumbnail','course_class','session_no','class_room','persian_event_datetime','persian_start_datetime','persian_end_datetime','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
     
      
 class WordSerializer(serializers.ModelSerializer): 

@@ -234,7 +234,10 @@ def class_title(*args, **kwargs):
     class_title = "صفحه"
 
  
-
+ 
+    if class_name == "session":
+        class_title = "جلسه"
+         
     if class_name == "maintenanceinvoice":
         class_title = "فاکتور تعمیر و نگهداری"
     if class_name == "exam":

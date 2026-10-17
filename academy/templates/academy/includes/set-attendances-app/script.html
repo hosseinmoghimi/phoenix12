@@ -1,11 +1,20 @@
 <script>
-    let get_attendances_app=new Vue({
-        el:"#get-attendances-app",
+    let set_attendances_app=new Vue({
+        el:"#set-attendances-app",
         data:{
             students:students_for_students_app,
-
+            statuses:[],
         },
         methods:{
+            get_status:function(student_id){
+                let status='حاضر'
+                this.statuses.forEach(status => {
+                    if(status.student.id==student_id)
+                    status= status.status
+                    
+                });
+                return status
+            },
             add_attendance:function(student_id,status){
                 let session_id=parseInt("{{session.id}}")
                 let payload={
@@ -18,6 +27,8 @@
                 let url="{% url 'academy:add_attendance' %}"
                 let posting=$.post(url,payload)
                 posting.done(data=>{
+                    set_attendances_app.statuses.push({student:{id:student_id},status:status})
+                    $("#status_"+student_id).text=status
                     console.log(data)
                     if(data.result==='SUCCEED'){
                         if(typeof attendances_app != 'undefined'){

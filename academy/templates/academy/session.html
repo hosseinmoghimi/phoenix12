@@ -82,6 +82,11 @@
 
             </div>
 
+              <div class="col-md-12">
+                {% include "academy/includes/students-app/template.html" %}
+
+            </div>
+
             {% if add_attendance_form %}
               
             <div class="col-md-12">
@@ -138,6 +143,7 @@
 {% block script %}
 {% include "core/includes/page-app/script.html" %}
                 {% include "academy/includes/students-app/script.html" %}
+
 
             {% if add_attendance_form %}
               

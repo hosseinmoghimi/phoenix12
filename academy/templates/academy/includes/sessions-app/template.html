@@ -47,8 +47,14 @@
               <tr v-for="session in sessions">
                 <td>
                   <a :href="session.get_absolute_url">
-                    جلسه
-                    <span v-text="session.session_no"></span>
+                    <div class="media">
+                      <img :src="session.thumbnail" width="48" class="rounded" alt="">
+                      <div class="media-body mr-2">
+                        جلسه
+                        <span v-text="session.session_no"></span>
+                        
+                      </div>
+                    </div>
                   </a>
                 </td>
                 {% if not course_class %}

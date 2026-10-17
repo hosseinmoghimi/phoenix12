@@ -614,7 +614,7 @@ class AttendanceRepo():
         if "session_id" in kwargs and kwargs['session_id']:
             session_id=kwargs["session_id"]
             objects=objects.filter(session_id=session_id)  
-        return objects.all().order_by('student__person__first_name').order_by('student__person__last_name')
+        return objects.all().order_by('student__person__last_name')
         
     def attendance(self,*args, **kwargs):
         if "attendance_id" in kwargs and kwargs["attendance_id"] is not None:
