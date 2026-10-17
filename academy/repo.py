@@ -652,6 +652,31 @@ class GroupRepo():
  
   
 
+    def add_student_to_group(self,*args,**kwargs):
+        result,message,group,groups=FAILED,"",None,[]
+        if not self.request.user.has_perm(APP_NAME+".add_group"):
+            message="دسترسی غیر مجاز"
+            return result,message,group,groups 
+        group_id=kwargs['group_id']
+        student_id=kwargs['student_id'] 
+
+        group=Group.objects.filter(pk=group_id).first() 
+        student=Student.objects.filter(pk=student_id).first() 
+
+       
+
+        if group is not None:
+            if student is not None:
+                group.students.add(student.id)
+                result=SUCCEED
+                message='اضافه شد'
+            for course_class in CourseClass.objects.filter(group_id=group.id):
+                course_class.students.add(student.id)
+         
+        return result,message,group
+ 
+  
+
 class AttendanceRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None

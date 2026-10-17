@@ -238,6 +238,31 @@ class StudentView(View):
             context['add_student_form']=AddStudentForm()
         return render(request,TEMPLATE_ROOT+"student.html",context) 
 
+class AddStudentToGroupView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        students=StudentRepo(request=request).list().order_by('person__last_name')
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+        context['students']=students
+
+        
+        groups=GroupRepo(request=request).list().order_by('title')
+        groups_s=json.dumps(GroupSerializer(groups,many=True).data)
+        context['groups_s']=groups_s
+        context['groups']=groups
+
+        if request.user.has_perm(APP_NAME+".add_student"):
+            context['add_student_to_group_form']=AddStudentToGroupForm()
+    
+        return render(request,TEMPLATE_ROOT+"add-student-to-group.html",context) 
+    def post(self,request,*args, **kwargs):
+        from .apis import AddStudentToGroupApi
+        return AddStudentToGroupApi().post(request=request)
+
+
 
 class StudentsView(View):
     def get(self,request,*args, **kwargs):

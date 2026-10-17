@@ -24,6 +24,10 @@ class AddAttendanceForm(forms.Form):
     student_id=forms.IntegerField(required=True)
     session_id=forms.IntegerField(required=True)
 
+  
+class AddStudentToGroupForm(forms.Form):
+    student_id=forms.IntegerField(required=True)
+    group_id=forms.IntegerField(required=True)
      
 class SearchForm(forms.Form):
     search_for=forms.CharField(max_length=100, required=True)

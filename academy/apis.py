@@ -55,6 +55,27 @@ class AddGroupApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+class AddStudentToGroupApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_student_to_group_form=AddStudentToGroupForm(request.POST)
+        if add_student_to_group_form.is_valid():
+            log=333
+            cd=add_student_to_group_form.cleaned_data
+            result,message,group=GroupRepo(request=request).add_student_to_group(**cd)
+            if group is not None:
+                context['group']=GroupSerializer(group).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
 
 class AddStudentApi(APIView):
     def post(self,request,*args, **kwargs):

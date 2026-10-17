@@ -32,6 +32,7 @@ urlpatterns = [
     path('teacher/<int:pk>/',login_required(views.TeacherView.as_view()),name="teacher"),
     path('add-teacher/',login_required(apis.AddTeacherApi.as_view()),name="add_teacher"),
     
+    path('add-student-to-group/',login_required(views.AddStudentToGroupView.as_view()),name="add_student_to_group"),
     path('students/',login_required(views.StudentsView.as_view()),name="students"),
     path('student/<int:pk>/',login_required(views.StudentView.as_view()),name="student"),
     path('add-student/',login_required(apis.AddStudentApi.as_view()),name="add_student"),

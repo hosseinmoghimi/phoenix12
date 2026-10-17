@@ -531,10 +531,8 @@ class Service(models.Model,LinkHelper):
 
 
     grease=models.FloatField(_("grease"),default=0)
-    grease_count=models.FloatField(_("grease_count"),default=0)
 
     oil_type=models.CharField(_("oil_type"), max_length=50)
-    oil_action=models.CharField(_("oil_action"),default='تعویض روغن', max_length=50)
     gasoil_liter=models.FloatField(_("gasoil_liter"),default=0)
     oil_liter=models.FloatField(_("oil_liter"),default=0)
     service_man=models.ForeignKey("serviceman", verbose_name=_("service man"), on_delete=models.PROTECT)
@@ -575,11 +573,9 @@ class AnbarProduct(models.Model,LinkHelper):
     vehicle=models.ForeignKey("vehicle", verbose_name=_("vehicle"), on_delete=models.CASCADE)
     name=models.CharField(_("name"), max_length=50)
     quantity=models.IntegerField(_("quantity"),default=0)
-    unit_name=models.CharField(_("unit_name"),default="عدد", max_length=50)
     unit_price=models.IntegerField(_("unit_price"),default=0)
     anbar=models.CharField(_("anbar"),max_length=50)
     description=models.CharField(_("description"),null=True,blank=True,max_length=50)
-
     @property
     def line_total(self):
         return self.unit_price*self.quantity
