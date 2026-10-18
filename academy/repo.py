@@ -377,6 +377,8 @@ class CourseClassRepo():
             
          
         (result,message,course_class)=course_class.save()
+        for student in course_class.group.students.all():
+            course_class.students.add(student.id)
         return result,message,course_class
  
 
@@ -588,7 +590,6 @@ class EducationalYearRepo():
         return result,message,educational_year
 
 
-
 class GroupRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -761,8 +762,7 @@ class ParentRepo():
              
         students=parent.students.all() 
         return result,message,students
- 
-    
+  
 
 class AttendanceRepo():
     def __init__(self,request,*args, **kwargs):
