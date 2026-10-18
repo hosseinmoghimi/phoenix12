@@ -27,29 +27,45 @@
     >
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
-            <thead> 
-              <th>عنوان</th> 
-              <th>
-
-              </th>
+          <table
+            class="table {% if DARK_THEME %}table-dark {% endif %}table-striped"
+          >
+            <thead>
+              <th>کد</th>
+              <th>عنوان</th>
+              <th>تعداد دانش آموزان</th>
+              <th></th>
             </thead>
             <tbody>
               <tr v-for="group in groups">
-               
+                <td>
+                  <label for="">
+                    <span v-text="group.code"></span>
+                  </label>
+                </td>
+
                 <td>
                   <a :href="group.get_absolute_url">
                     <div class="media">
-                      <img :src="group.thumbnail" class="rounded-circle" width="36" alt="">
+                      <img
+                        :src="group.thumbnail"
+                        class="rounded-circle"
+                        width="36"
+                        alt=""
+                      />
                       <div class="media-body mr-2">
-
                         <span v-text="group.title"></span>
                       </div>
                     </div>
                   </a>
- 
                 </td>
-             
+
+                <td>
+                  <label for="">
+                    <span v-text="group.student_count"></span>
+                  </label>
+                </td>
+
                 <td>
                   <a
                     target="_blank"

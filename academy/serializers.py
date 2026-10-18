@@ -11,7 +11,7 @@ class EducationalYearSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer): 
     class Meta:
         model=Group
-        fields=['id','title', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','title','code','student_count', 'get_absolute_url', 'get_edit_url','get_delete_url']
 
 class SchoolSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -28,7 +28,7 @@ class MajorSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer): 
     class Meta:
         model=Course
-        fields=['id','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','class_count','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
   
 
 class PersonSerializer(serializers.ModelSerializer): 

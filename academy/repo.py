@@ -639,12 +639,17 @@ class GroupRepo():
 
        
 
-        if 'title' in kwargs and kwargs['title']:
+        if 'title' in kwargs and kwargs['title'] :
             group.title=kwargs["title"] 
-
+            if kwargs['title'] is None or kwargs['title']=="":
+                return FAILED,'عنوان را وارد کنید.',None
 
         if 'description' in kwargs and kwargs['description']:
             group.description=kwargs["description"] 
+ 
+
+        if 'code' in kwargs and kwargs['code']:
+            group.code=kwargs["code"] 
  
         (result,message,group)=group.save()
          

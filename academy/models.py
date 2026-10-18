@@ -25,6 +25,9 @@ class Course(models.Model,LinkHelper):
         return SUCCEED,'واحد درسی با موفقیت ذخیره شد.',self
 
 
+    def class_count(self):
+        return len(self.courseclass_set.all())
+
 class Word(Page):
      
 
@@ -260,10 +263,13 @@ class ActiveStudent(models.Model):
 
 class Group(models.Model,LinkHelper): 
     title=models.CharField(_("title"), max_length=50)
+    code=models.CharField(_("code"),null=True,blank=True, max_length=50)
     students=models.ManyToManyField("student",blank=True, verbose_name=_("students"))
     
     class_name="group"
     app_name=APP_NAME
+    def student_count(self):
+        return len(self.students.all())
 
     def __str__(self):
         return self.title

@@ -1,27 +1,21 @@
-
-{% extends "academy/layout.html" %}
+{% extends 'academy/layout.html' %}
 {% load static %}
 {% block content %}
-<div class="row rtl farsi">
-    {% if add_group_form %}
-      <div class="col-md-12">
-          {% include "academy/includes/add-group-app/template.html" %}
-
-      </div>
-    {% endif %}
+  <div class="row rtl farsi">
     <div class="col-md-12">
-
-        
-        {% include "academy/includes/groups-app/template.html" %}
+      {% if add_group_form %}
+        {% include 'academy/includes/add-group-app/template.html' %}
+      {% endif %}
     </div>
-
-</div>
-{% endblock content %}
-
+    <div class="col-md-12">
+      {% include 'academy/includes/groups-app/template.html' %}
+    </div>
+  </div>
+{% endblock %}
 
 {% block script %}
-{% include "academy/includes/groups-app/script.html" %}
-{% if add_group_form %}
-{% include "academy/includes/add-group-app/script.html" %}
-{% endif %}
-{% endblock script %}
+  {% include 'academy/includes/groups-app/script.html' %}
+  {% if add_group_form %}
+    {% include 'academy/includes/add-group-app/script.html' %}
+  {% endif %}
+{% endblock %}

@@ -30,7 +30,8 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 
               <th>عنوان</th> 
-              <th>کد</th>  
+              <th>کد</th>   
+              <th>ارائه</th>  
               <th>
 
               </th>
@@ -51,7 +52,13 @@
                   </a>
  
                 </td>
+                <td>
+                  <label for="">
 
+                    <span v-text="course.class_count"></span>
+                  </label>
+ 
+                </td>
                
              
                 <td>
