@@ -94,7 +94,7 @@ class AddStudentApi(APIView):
             log=333
             cd=add_student_form.cleaned_data
             result,message,student=StudentRepo(request=request).add_student(**cd)
-            if student is not None:
+            if result==SUCCEED:
                 context['student']=StudentSerializer(student).data
         context['message']=message
         context['result']=result
