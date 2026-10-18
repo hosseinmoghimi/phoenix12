@@ -50,8 +50,20 @@ class AddCourseClassForm(forms.Form):
     educational_year_id=forms.IntegerField(required=True)
      
      
+class AddParentForm(forms.Form):
+    first_name=forms.CharField(max_length=100, required=True)
+    last_name=forms.CharField(max_length=100, required=True)
+    melli_code=forms.CharField(max_length=100, required=False)
+    
+class SetStudentsForParentForm(forms.Form):
+    parent_id=forms.IntegerField(required=True)
+    students_ids=forms.CharField(max_length=500,required=True)
+
 class AddTeacherForm(forms.Form):
-    count=forms.IntegerField(required=False)
+    first_name=forms.CharField(max_length=100, required=True)
+    last_name=forms.CharField(max_length=100, required=True)
+    melli_code=forms.CharField(max_length=100, required=False)
+    
 
      
 class AddStudentForm(forms.Form):
@@ -63,8 +75,7 @@ class AddStudentForm(forms.Form):
 class AddTeacherForm(forms.Form):
     title=forms.CharField(max_length=100, required=True)
     parent_id=forms.IntegerField(required=True)
-
-
+ 
 class AddSchoolForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)
     code=forms.CharField(max_length=100, required=False)

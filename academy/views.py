@@ -8,8 +8,8 @@ from core.views import CoreContext,MessageView,PageContext
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import GroupSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
-from .repo import GroupRepo,CourseRepo,WordRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
+from .serializers import GroupSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import GroupRepo,CourseRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -237,6 +237,7 @@ class StudentView(View):
         if request.user.has_perm(APP_NAME+".add_student"):
             context['add_student_form']=AddStudentForm()
         return render(request,TEMPLATE_ROOT+"student.html",context) 
+
 
 class AddStudentToGroupView(View):
     def get(self,request,*args, **kwargs):
@@ -507,6 +508,62 @@ class SchoolsView(View):
             context['add_school_form']=AddSchoolForm()
     
         return render(request,TEMPLATE_ROOT+"schools.html",context) 
+
+
+class ParentView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        parent =ParentRepo(request=request).parent(*args, **kwargs) 
+        if parent is None:
+            mv=MessageView()
+            return mv.get(request=request)
+
+ 
+        context['parent']=parent
+        parent_s=json.dumps(ParentSerializer(parent,many=False).data)
+        context['parent_s']=parent_s
+ 
+        students =parent.students.all()
+        context['students']=students
+        students_s=json.dumps(StudentSerializer(students,many=True).data)
+        context['students_s']=students_s
+         
+        
+        attendances=AttendanceRepo(request=request).list(student_id__in=(st.id for st in students)).order_by('-session__start_datetime')
+        attendances=attendances
+        context['attendances']=attendances
+        attendances_s=json.dumps(AttendanceSerializer(attendances,many=True).data)
+        context['attendances_s']=attendances_s
+
+        
+
+        if request.user.has_perm(APP_NAME+".add_student"):
+            context['set_students_for_parent']=SetStudentsForParentForm()
+            parents=ParentRepo(request=request).list()
+            context['parents']=parents
+            students=StudentRepo(request=request).list()
+            context['students']=students
+        if request.user.has_perm(APP_NAME+".add_attendance"):
+            context['add_attendance_form']=AddAttendanceForm()
+            
+
+        return render(request,TEMPLATE_ROOT+"parent.html",context) 
+
+
+class ParentsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        parents=ParentRepo(request=request).list().order_by('person__last_name')
+        parents_s=json.dumps(ParentSerializer(parents,many=True).data)
+        context['parents_s']=parents_s
+        context['parents']=parents
+        if request.user.has_perm(APP_NAME+".add_parent"):
+            context['add_parent_form']=AddParentForm()
+    
+        return render(request,TEMPLATE_ROOT+"parents.html",context) 
 
 
 

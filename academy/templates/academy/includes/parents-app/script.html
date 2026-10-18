@@ -1,0 +1,15 @@
+<script>
+    
+    let parents_for_parents_app=JSON.parse("{{parents_s|escapejs}}")
+    let parents_app = new Vue({
+        el: "#parents-app",
+        data: {
+            parents: parents_for_parents_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>

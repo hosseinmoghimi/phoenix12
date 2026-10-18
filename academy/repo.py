@@ -1,4 +1,4 @@
-from .models import Group,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
+from .models import Parent,Group,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -680,7 +680,89 @@ class GroupRepo():
          
         return result,message,group
  
+
+class ParentRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Parent.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Parent.objects
+            if request.user.has_perm(APP_NAME+".view_group"):
+                self.objects=Parent.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs and kwargs['search_for']:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs and kwargs['parent_id']:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+
+        if "student_id" in kwargs and kwargs['student_id']:
+            student_id=kwargs["student_id"]
+            objects=objects.filter(student_id=student_id) 
+
+        if "session_id" in kwargs and kwargs['session_id']:
+            session_id=kwargs["session_id"]
+            objects=objects.filter(session_id=session_id)  
+        return objects.all().order_by('person__last_name')
+        
+    def parent(self,*args, **kwargs):
+        if "parent_id" in kwargs and kwargs["parent_id"] is not None:
+            return self.objects.filter(pk=kwargs['parent_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_parent(self,*args,**kwargs):
+        result,message,parent,parents=FAILED,"",None,[]
+        if not self.request.user.has_perm(APP_NAME+".add_parent"):
+            message="دسترسی غیر مجاز"
+            return result,message,parent,parents
+         
+        from authentication.repo import PersonRepo
+        result,message,person=PersonRepo(request=self.request).add_person(*args,**kwargs)
+        parent=Parent(person=person) 
+        if person is None:
+            return FAILED,message,None
+        (result,message,parent)=parent.save()
+         
+        return result,message,parent
+ 
   
+
+    def set_students_for_parent(self,*args,**kwargs):
+        result,message,parent,parents=FAILED,"",None,[]
+        if not self.request.user.has_perm(APP_NAME+".add_parent"):
+            message="دسترسی غیر مجاز"
+            return result,message,parent,parents 
+        parent_id=kwargs['parent_id']
+        students_ids=kwargs['students_ids'] 
+
+        parent=Parent.objects.filter(pk=parent_id).first() 
+        students=Student.objects.filter(pk__in=students_ids)
+        if students is None:
+        
+            result=FAILED
+            message='دانش آموزی انتخاب نشده است'
+            return FAILED,message,None
+
+        # parent.students.clear()
+        if parent is not None:
+            for student in students:
+                parent.students.add(student.id)
+                result=SUCCEED
+                message='اضافه شد'
+             
+        students=parent.students.all() 
+        return result,message,students
+ 
+    
 
 class AttendanceRepo():
     def __init__(self,request,*args, **kwargs):
@@ -706,6 +788,9 @@ class AttendanceRepo():
             student_id=kwargs["student_id"]
             objects=objects.filter(student_id=student_id) 
 
+        if "student_id__in" in kwargs and kwargs['student_id__in']:
+            student_id__in=kwargs["student_id__in"]
+            objects=objects.filter(student_id__in=student_id__in) 
         if "session_id" in kwargs and kwargs['session_id']:
             session_id=kwargs["session_id"]
             objects=objects.filter(session_id=session_id)  

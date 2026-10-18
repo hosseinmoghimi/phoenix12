@@ -28,6 +28,7 @@ class Course(models.Model,LinkHelper):
     def class_count(self):
         return len(self.courseclass_set.all())
 
+
 class Word(Page):
      
 
@@ -178,6 +179,38 @@ class Student(models.Model,LinkHelper):
     def save(self,*args, **kwargs):
         super(Student,self).save()
         message="دانش آموز ذخیره شد.."
+        return SUCCEED,message,self
+
+
+    
+class Parent(models.Model,LinkHelper):
+    person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
+    students=models.ManyToManyField("student", verbose_name=_("students"))
+    class_name="parent"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("Parent")
+        verbose_name_plural = _("Parents")
+
+    def __str__(self):
+        return f'{self.person}'
+    
+    def full_name(self):
+        return self.person.full_name
+    
+    def first_name(self):
+        return self.person.first_name
+    
+    def last_name(self):
+        return self.person.last_name
+    
+    def melli_code(self):
+        return self.person.melli_code
+    
+    def save(self,*args, **kwargs):
+        super(Parent,self).save()
+        message="ولی دانش آموز ذخیره شد."
         return SUCCEED,message,self
 
 

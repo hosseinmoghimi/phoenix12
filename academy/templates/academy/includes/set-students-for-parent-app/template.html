@@ -1,0 +1,107 @@
+<div id="accordion-set-students-for-parent" class="rtl text-right farsi">
+  <div class="card" id="set-students-for-parent-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-set-students-for-parent"
+          aria-expanded="true"
+          aria-controls="collapse-set-students-for-parent"
+        >
+          افزودن دانش آموز
+          به والدین
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-set-students-for-parent"
+      class="collapse"
+      aria-labelledby="heading-set-students-for-parent"
+      data-parent="#accordion-set-students-for-parent"
+    >
+      <div class="card-body">
+        <form @submit.prevent="set_students_for_parent()">
+          <div class="row">
+            
+            
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">ولی دانش آموز</label>
+                <select 
+                  v-model="parent_id"
+                  class="form-control"
+                >
+                {% for parent in parents %}
+                  <option value="{{parent.id}}">{{parent.person.full_name}}</option>
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+
+             
+            
+             
+ <div class="col-md-12">
+              <div class="form-group">
+                <label for="">دانش آموز</label>
+                <select 
+                  v-model="student_id"
+                  class="form-control"
+                >
+                {% for student in students %}
+                  <option value="{{student.id}}">{{student.person.full_name}}</option>
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+
+             
+
+            <!-- <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">تاریخ</label>
+                <date-picker v-model="event_date"></date-picker>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_date"
+                />
+              </div>
+            </div> -->
+
+            <!-- <div class="col-md-4">
+              <div class="form-group">
+                <label for="exampleInputDate">زمان</label>
+
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  v-model="event_time"
+                />
+              </div>
+            </div> -->
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="my-2 mx-2">
+                {% include "utility/includes/message.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

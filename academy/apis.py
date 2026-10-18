@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import CourseRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
-from .serializers import CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
+from .repo import ParentRepo,CourseRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
+from .serializers import ParentSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
 from django.http import JsonResponse
 from .forms import *
     
@@ -55,6 +55,7 @@ class AddGroupApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
+
 class AddStudentToGroupApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -76,6 +77,7 @@ class AddStudentToGroupApi(APIView):
         context['result']=result
         context['log']=log
         return JsonResponse(context)
+
 
 class AddStudentApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -99,7 +101,6 @@ class AddStudentApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
- 
 
 class AddMajorApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -194,7 +195,55 @@ class AddTeacherApi(APIView):
         context['log']=log
         return JsonResponse(context)
  
-   
+    
+class AddParentApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_parent_form=AddParentForm(request.POST)
+        if add_parent_form.is_valid():
+            log=333
+            cd=add_parent_form.cleaned_data
+            result,message,parent=ParentRepo(request=request).add_parent(**cd)
+            if parent is not None:
+                context['parent']=ParentSerializer(parent).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+    
+class SetStudentsForParentApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        set_syudents_for_parent_form=SetStudentsForParentForm(request.POST)
+        if set_syudents_for_parent_form.is_valid():
+            log=333
+            cd=set_syudents_for_parent_form.cleaned_data
+            cd['students_ids']=json.loads(cd['students_ids'])
+            result,message,students=ParentRepo(request=request).set_students_for_parent(**cd)
+            if students is not None:
+                context['students']=StudentSerializer(students,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+    
+    
 
  
 class AddSessionApi(APIView):

@@ -4,7 +4,9 @@
     let courses_app = new Vue({
         el: "#courses-app",
         data: {
-            courses: courses_for_courses_app
+            courses: courses_for_courses_app,
+            waiting:false,
+            message:{show:false},
         },
         methods: {
             to_price: function(vall) { 

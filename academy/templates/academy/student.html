@@ -22,6 +22,12 @@
             </small>
             {{student.full_name}}
         </h6>
+         <a href="{{student.person.get_absolute_url}}">
+            <h6>
+
+                پروفایل
+            </h6>
+        </a>
 
         <div>
             <img src="{{student.person.image}}" class="rounded-circle" width="64" alt="">

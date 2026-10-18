@@ -1,0 +1,49 @@
+<script>
+  let set_students_for_parent_app = new Vue({
+    el: "#set-students-for-parent-app",
+    data: { 
+    parent_id:parseInt("{{parent.id}}"), 
+    student_id:0, 
+    message:{show:false},
+    waiting:false, 
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      set_students_for_parent: function () {
+        let students_ids=JSON.stringify([this.student_id])
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          students_ids: students_ids,
+          parent_id: set_students_for_parent_app.parent_id,
+        };
+
+        console.log(payload);
+        let url = "{% url 'academy:set_students_for_parent' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(set_students_for_parent_app,'موفق',data.message,'success',1000)
+            if (typeof students_app != "undefined") {
+              students_app.students=data.students
+            }
+          }
+          else{
+
+            show_message(set_students_for_parent_app,'خطا',data.message,'danger',1000)
+          }
+        });
+      },
+    },
+  });
+</script>
