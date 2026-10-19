@@ -13,6 +13,12 @@
             <small>دانش آموز :</small>
             {{ student.full_name }}
           </h6>
+
+          <h6>
+            <small>کد ملی :</small>
+            {{ student.melli_code }}
+          </h6>
+
           <a href="{{ student.person.get_absolute_url }}"><h6>پروفایل</h6></a>
 
           <div>
