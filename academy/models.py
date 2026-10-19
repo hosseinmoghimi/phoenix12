@@ -171,7 +171,16 @@ class Session(Event):
 
     def __str__(self):
         return f'{self.course_class} جلسه {self.session_no}'
+    @property
+    def thumbnail(self):
+        from core.models import STATIC_URL,MEDIA_URL         
+        thumbnail=""
+        if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
+            return self.course_class.course.thumbnail
+        else:
+            thumbnail= f"{MEDIA_URL}{self.thumbnail_origin}"
 
+        return thumbnail
     
 class Student(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
