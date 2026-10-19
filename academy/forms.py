@@ -67,14 +67,16 @@ class AddTeacherForm(forms.Form):
 
      
 class AddStudentForm(forms.Form):
-    first_name=forms.CharField(max_length=100, required=True)
-    last_name=forms.CharField(max_length=100, required=True)
+    first_name=forms.CharField(max_length=100, required=False)
+    last_name=forms.CharField(max_length=100, required=False)
     melli_code=forms.CharField(max_length=100, required=False)
-    
+    person_id=forms.IntegerField(required=False)
 
 class AddTeacherForm(forms.Form):
-    title=forms.CharField(max_length=100, required=True)
-    parent_id=forms.IntegerField(required=True)
+    first_name=forms.CharField(max_length=100, required=False)
+    last_name=forms.CharField(max_length=100, required=False)
+    melli_code=forms.CharField(max_length=100, required=False)
+    person_id=forms.IntegerField(required=False)
  
 class AddSchoolForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)

@@ -43,35 +43,30 @@ class TeacherRepo():
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         
-        
+         
     def add_teacher(self,*args,**kwargs):
         result,message,teacher=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_teacher"):
             message="دسترسی غیر مجاز"
             return result,message,teacher
-        teacher=Teacher()
-        if 'title' in kwargs:
-            if len(Teacher.objects.filter(title=kwargs["title"]))>0:
-                return FAILED,'عنوان تکراری',None
-            teacher.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                teacher.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            teacher.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            teacher.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            teacher.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            teacher.type=kwargs["type"]
+        teacher=Teacher()  
 
-            
+        if 'person_id' in kwargs and kwargs['person_id']:
+            old=Teacher.objects.filter(person__id=kwargs["person_id"]).first()
+            if old is not None:
+                message='برای این شخص قبلا دبیر ایجاد شده است.'
+                return FAILED,message,None
+            teacher.person_id=kwargs["person_id"]
+            if teacher.person is not None:
+                (result,message,teacher)=teacher.save()
+                return result,message,teacher
+        from authentication.repo import PersonRepo
+        result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
+        if result==SUCCEED:     
+            teacher.person=person
+            (result,message,teacher)=teacher.save()
+            return result,message,teacher
         
-
-        if 'nature' in kwargs:
-            teacher.nature=kwargs["nature"]
-        (result,message,teacher)=teacher.save()
         return result,message,teacher
 
 
@@ -177,6 +172,19 @@ class StudentRepo():
         if 'color' in kwargs and kwargs['color']:
             student.color=kwargs["color"]
 
+
+
+        if 'person_id' in kwargs and kwargs['person_id']:
+            old=Student.objects.filter(person__id=kwargs["person_id"]).first()
+            if old is not None:
+                message='برای این شخص قبلا دانش آموز ایجاد شده است.'
+                return FAILED,message,None
+            student.person_id=kwargs["person_id"]
+            if student.person is not None:
+                (result,message,student)=student.save()
+                return result,message,student
+
+            
         from authentication.repo import PersonRepo
         result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
         if result==SUCCEED:     

@@ -232,6 +232,10 @@ class Teacher(models.Model,LinkHelper):
     def full_name(self):
         return self.person.full_name
 
+    def save(self,*args, **kwargs):
+        super(Teacher,self).save()
+        message="دبیر ذخیره شد."
+        return SUCCEED,message,self
 
 class Attendance(models.Model,LinkHelper):
     session=models.ForeignKey("session", verbose_name=_("session"), on_delete=models.CASCADE)

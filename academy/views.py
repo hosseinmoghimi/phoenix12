@@ -192,12 +192,13 @@ class TeachersView(View):
         context=getContext(request=request) 
         
 
-        teachers=TeacherRepo(request=request).list().order_by('title')
+        teachers=TeacherRepo(request=request).list().order_by('person__last_name')
         teachers_s=json.dumps(TeacherSerializer(teachers,many=True).data)
         context['teachers_s']=teachers_s
         context['teachers']=teachers
-
-
+        if request.user.has_perm(APP_NAME+".add_teacher"):
+            context['add_teacher_form']=AddTeacherForm()
+            
         return render(request,TEMPLATE_ROOT+"teachers.html",context) 
 
 

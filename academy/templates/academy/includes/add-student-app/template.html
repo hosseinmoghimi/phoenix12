@@ -23,6 +23,23 @@
       <div class="card-body">
         <form @submit.prevent="add_student()">
           <div class="row">
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">شناسه فرد
+
+                  <a href="{% url 'authentication:persons' %}" target="_blank"> همه افراد</a>
+                </label>
+                <input
+                   
+                  v-model="person_id"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            
             <div class="col-md-12">
               <div class="form-group">
                 <label for="">نام</label>
