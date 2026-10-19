@@ -422,6 +422,7 @@ class SessionView(View):
             mv=MessageView()
             return mv.get(request=request)
 
+        context[WIDE_LAYOUT]=True
 
         context.update(PageContext(request=request,page=session))
         context['session']=session

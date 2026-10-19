@@ -22,9 +22,10 @@
             sum_hazer:function(){
                 let s=0
                 this.attendances.forEach(attendance => {
-                    if(attendance.status!='غایب')
+                    if(attendance.status=='حاضر')
                     s+=1
-                    
+                      if(attendance.status=='تاخیر')
+                    s+=1
                 });
                 return s
             },
@@ -33,7 +34,8 @@
                 this.attendances.forEach(attendance => {
                     if(attendance.status=='غایب')
                     s+=1
-                    
+                     if(attendance.status=='غایب موجه')
+                    s+=1
                 });
                 return s
             }

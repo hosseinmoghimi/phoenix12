@@ -5,14 +5,50 @@
       <div class="card-header">
         <h6>
           <small> جلسه : </small>
+          {{session.session_no}} -
           {{session.title}}
         </h6>
       </div>
       <div class="card-body">
         <h6>
+          <small> شماره جلسه : </small>
+          {{session.session_no}}
+        </h6>
+
+           <h6>
           <small> جلسه : </small>
           {{session.title}}
         </h6>
+
+
+        <h6>
+          <small> درس ارائه شده : </small>
+          <a href="{{session.course_class.get_absolute_url}}">
+
+            {{session.course_class.title}}
+          </a>
+        </h6>
+
+         <h6>
+          <small> واحد درسی  : </small>
+          <a href="{{session.course_class.course.get_absolute_url}}">
+
+            {{session.course_class.course.title}}
+          </a>
+        </h6>
+
+        {% for teacher in session.course_class.teachers.all %}
+          
+        <h6>
+          <small> دبیر  : </small>
+          <a href="{{teacher.get_absolute_url}}">
+            <img src="{{teacher.person.image}}" class="rounded-circle" width="32" alt="">
+            {{teacher.person.full_name}}
+          </a>
+        </h6>
+        {% endfor %}
+
+
 
         <div>
           <img
@@ -56,7 +92,6 @@
     <div class="col-md-3">
         {% include "core/includes/page-app/thumbnail-card.html" %}
         {% include "core/includes/page-app/card.html" %}
-        {% include "core/includes/page-thumbnail-header-app/template.html" %}
 
 
         
@@ -109,6 +144,10 @@
             
             <div class="col-md-12">
                 {% include "attachments/includes/comments-app/template.html" %}
+ </div>
+            
+            <div class="col-md-12">
+        {% include "core/includes/page-thumbnail-header-app/template.html" %}
 
             </div>
             

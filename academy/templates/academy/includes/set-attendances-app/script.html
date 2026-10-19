@@ -7,7 +7,7 @@
         },
         methods:{
             get_status:function(student_id){
-                let status='حاضر'
+                let status='غایب'
                 this.statuses.forEach(status => {
                     if(status.student.id==student_id)
                     status= status.status
