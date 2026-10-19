@@ -26,6 +26,7 @@
       data-parent="#accordion-students"
     >
       <div class="card-body">
+        <input type="text" class="form-control" placeholder="جستجو ..." v-model="search_for" @input="search()">
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 

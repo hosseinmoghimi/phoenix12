@@ -4,12 +4,27 @@
     let students_app = new Vue({
         el: "#students-app",
         data: {
+            search_for:"",
             students: students_for_students_app
         },
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+            search:function(){
+                this.students=students_for_students_app.filter(function(student){
+                        if(student.person.first_name.indexOf(students_app.search_for)>-1)
+                            return true
+                        if(student.person.melli_code.indexOf(students_app.search_for)>-1)
+                            return true
+                        if(student.person.last_name.indexOf(students_app.search_for)>-1)
+                            return true
+                        if(student.person.full_name.indexOf(students_app.search_for)>-1)
+                            return true
+                        return false
+
+                })
+            },
         }
     })
 </script>
