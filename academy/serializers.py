@@ -28,7 +28,7 @@ class MajorSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer): 
     class Meta:
         model=Course
-        fields=['id','class_count','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','thumbnail','class_count','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
  
 class PersonSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -59,7 +59,7 @@ class CourseClassSerializer(serializers.ModelSerializer):
     teachers=TeacherSerializer(many=True)
     class Meta:
         model=CourseClass
-        fields=['id','group','title','school','major','level','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','group','title','school','student_count','major','level','teachers','course','educational_year', 'get_absolute_url', 'get_edit_url','get_delete_url']
 
            
 class SessionSerializer(serializers.ModelSerializer): 
@@ -81,7 +81,8 @@ class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model=Attendance
         fields=['id','student','status','session','get_edit_url','get_delete_url']
-  
+
+
 class ParentSerializer(serializers.ModelSerializer): 
     person=PersonSerializer()
     students=StudentSerializer(many=True)

@@ -40,9 +40,23 @@
               <tr v-for="course in courses">
                
                 <td>
-                  <a :href="course.get_absolute_url">
-                    <span v-text="course.title"></span>
-                  </a>
+
+                  <div class="media">
+                    <a :href="course.get_absolute_url">
+                      <img
+                        :src="course.thumbnail"
+                        class="rounded"
+                        width="48"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="course.get_absolute_url">
+                        <h6 v-text="course.title"></h6>
+                      </a>
+                    </div>
+                  </div>
+                   
  
                 </td>
 

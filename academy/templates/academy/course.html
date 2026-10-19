@@ -1,6 +1,7 @@
 {% extends "academy/layout.html" %} {% load static %} {% block content %}
 
 <div class="text-center">
+  <img src="{{course.thumbnail}}" width="256" alt="">
   <h1 class="text-center rtl">{{course.title}}</h1>
 
   {% if perms.academy.change_course %}

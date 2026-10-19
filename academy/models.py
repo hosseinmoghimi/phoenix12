@@ -1,18 +1,36 @@
 from utility.constants import SUCCEED,FAILED
 from django.db import models
-from core.models import LinkHelper,Page,reverse,STATIC_URL
+from core.models import LinkHelper,ImageHelper,Page,reverse,STATIC_URL
 from core.models import Event
 from .enums import AttendanceStatusEnum
 from django.utils.translation import gettext as _ 
 from .apps import APP_NAME
+IMAGE_FOLDER = APP_NAME+"/images/"
 
 class Course(models.Model,LinkHelper):
 
     title=models.CharField(_("title"), max_length=50) 
+    thumbnail_origin = models.ImageField(_("تصویر کوچک"), upload_to=IMAGE_FOLDER+'page/thumbnail/',null=True, blank=True, height_field=None, width_field=None, max_length=None)
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)
+
     
     app_name=APP_NAME
     class_name="course"
+
+    @property
+    def thumbnail(self):
+        from core.models import STATIC_URL,MEDIA_URL         
+        thumbnail=""
+        if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
+            try:
+                thumbnail= f"{STATIC_URL}{self.app_name}/img/course.jpg/"
+            except:
+                pass
+        else:
+            thumbnail= f"{MEDIA_URL}{self.thumbnail_origin}"
+
+        return thumbnail
+
     class Meta:
         verbose_name = _("Course")
         verbose_name_plural = _("Courses")
@@ -128,7 +146,10 @@ class CourseClass(models.Model,LinkHelper):
         message="واحد ارائه شده ذخیره شد.."
         return SUCCEED,message,self
 
+    def student_count(self):
+        return len(self.students.all())
 
+    
 class Session(Event):
     course_class=models.ForeignKey("courseclass", verbose_name=_("courseclass"), on_delete=models.PROTECT)
     session_no=models.IntegerField(_("session_no"))

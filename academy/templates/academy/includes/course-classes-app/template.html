@@ -31,35 +31,44 @@
             class="table {% if DARK_THEME %}table-dark {% endif %}table-striped"
           >
             <thead>
-              
               <th>عنوان</th>
               <th>سال تحصیلی</th>
               {% if not school %}
-                
+
               <th>آموزشگاه</th>
-              {% endif %}
-              {% if not group %}
-                
+              {% endif %} {% if not group %}
+
               <th>گروه</th>
-              {% endif %}
-              {% if not major %}
-                
+              {% endif %} {% if not major %}
+
               <th>رشته تحصیلی</th>
-              {% endif %}
-              {% if not course %}
-                
+              {% endif %} {% if not course %}
+
               <th>واحد درسی</th>
               {% endif %}
               <th>سطح</th>
               <th>مربی ها</th>
+              <th>دانش آموزان</th>
               <th></th>
             </thead>
             <tbody>
               <tr v-for="course_class in course_classes">
-                 <td>
-                  <a :href="course_class.get_absolute_url">
-                    <span v-text="course_class.title"></span>
-                  </a>
+                <td>
+                  <div class="media">
+                    <a :href="course_class.get_absolute_url">
+                      <img
+                        :src="course_class.course.thumbnail"
+                        class="rounded"
+                        width="48"
+                        alt=""
+                      />
+                    </a>
+                    <div class="media-body mr-2">
+                      <a :href="course_class.get_absolute_url">
+                        <h6 v-text="course_class.title"></h6>
+                      </a>
+                    </div>
+                  </div>
                 </td>
 
                 <td>
@@ -67,42 +76,40 @@
                     <span v-text="course_class.educational_year.name"></span>
                   </a>
                 </td>
-              {% if not school %}
+                {% if not school %}
 
                 <td>
                   <a :href="course_class.school.get_absolute_url">
                     <span v-text="course_class.school.name"></span>
                   </a>
-                </td> 
-              {% endif %}
-              {% if not group %}
+                </td>
+                {% endif %} {% if not group %}
 
                 <td>
-                  <a v-if="course_class.group" :href="course_class.group.get_absolute_url">
+                  <a
+                    v-if="course_class.group"
+                    :href="course_class.group.get_absolute_url"
+                  >
                     <span v-text="course_class.group.title"></span>
                   </a>
-                </td> 
-              {% endif %}
-              {% if not major %}
-                 <td>
+                </td>
+                {% endif %} {% if not major %}
+                <td>
                   <a :href="course_class.major.get_absolute_url">
                     <span v-text="course_class.major.title"></span>
                   </a>
-                </td>   
-              {% endif %}
-              {% if not course %}
-                      <td>
+                </td>
+                {% endif %} {% if not course %}
+                <td>
                   <a :href="course_class.course.get_absolute_url">
                     <span v-text="course_class.course.title"></span>
                   </a>
-                </td>        
-              {% endif %}
-                
-                <td> 
-                    <span v-text="course_class.level"></span>
-           
                 </td>
-               
+                {% endif %}
+
+                <td>
+                  <span v-text="course_class.level"></span>
+                </td>
 
                 <td>
                   <div class="mb-2" v-for="teacher in course_class.teachers">
@@ -115,13 +122,19 @@
                           alt=""
                         />
                         <div class="media-body mr-2">
-                          <span v-text="teacher.full_name"></span>
+                          <h6>
+                            <span v-text="teacher.full_name"></span>
+                          </h6>
                         </div>
                       </div>
                     </a>
                   </div>
                 </td>
-
+                <td>
+                  <h6 v-if="course_class.student_count>0">
+                    <span v-text="course_class.student_count"></span>
+                  </h6>
+                </td>
                 <td>
                   <a
                     target="_blank"

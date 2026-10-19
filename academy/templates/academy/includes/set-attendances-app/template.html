@@ -59,15 +59,16 @@
 
                         </td>
                         <td>
+                            <button class="btn btn-warning" @click="add_attendance(student.id,`تاخیر`)">تاخیر</button>
+
+                        </td>
+                        <td>
 
                             <button class="btn btn-danger" @click="add_attendance(student.id,`غایب`)">غایب</button>
                         </td>
+                        
                         <td>
                             <button class="btn btn-primary" @click="add_attendance(student.id,`غایب موجه`)">غایب موجه</button>
-                        </td>
-                        <td>
-                            <button class="btn btn-warning" @click="add_attendance(student.id,`تاخیر`)">تاخیر</button>
-
                         </td>
                         <td>
                            
