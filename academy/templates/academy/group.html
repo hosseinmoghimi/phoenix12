@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
   <div class="text-center">
+    <h1 class="text-center rtl">{{ group.code }}</h1>
     <h1 class="text-center rtl">{{ group.title }}</h1>
     <h3>
       {% if perms.academy.change_group %}
@@ -23,12 +24,18 @@
       {% include 'academy/includes/students-app/template.html' %}
     </div>
 
+    {% if add_student_to_group_form %}
+      <div class="col-md-12">
+        {% include 'academy/includes/add-student-to-group-app/template.html' %}
+      </div>
+    {% endif %}
     <div class="col-md-12">
       {% include 'academy/includes/course-classes-app/template.html' %}
     </div>
   </div>
 {% endblock %}
 {% block script %}
+  {% include 'academy/includes/add-student-to-group-app/script.html' %}
   {% include 'academy/includes/students-app/script.html' %}
   {% include 'academy/includes/course-classes-app/script.html' %}
 {% endblock %}

@@ -1,9 +1,25 @@
 <script>
+  let student_melli_code_for_add_student_to_group_app=""
+  let group_code_for_add_student_to_group_app=""
+</script>
+{% if group %}
+  <script>
+  group_code_for_add_student_to_group_app=("{{group.code}}")
+</script>
+{% endif %}
+{% if student %}
+  <script>
+  student_melli_code_for_add_student_to_group_app=("{{student.melli_code}}")
+</script>
+{% endif %}
+<script>
   let add_student_to_group_app = new Vue({
     el: "#add-student-to-group-app",
     data: { 
     group_id:0, 
     student_id:0, 
+    student_melli_code:student_melli_code_for_add_student_to_group_app,
+    group_code:group_code_for_add_student_to_group_app,
     message:{show:false},
     waiting:false, 
     },
@@ -22,6 +38,8 @@
       add_student_to_group: function () {
         let payload = {
           csrfmiddlewaretoken: csrfmiddlewaretoken,
+          student_melli_code: add_student_to_group_app.student_melli_code,
+          group_code: add_student_to_group_app.group_code,
           student_id: add_student_to_group_app.student_id,
           group_id: add_student_to_group_app.group_id,
         };

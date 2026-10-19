@@ -23,11 +23,28 @@
       <div class="card-body">
         <form @submit.prevent="add_parent()">
           <div class="row">
+
+            
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="">شناسه فرد
+
+                  <a href="{% url 'authentication:persons' %}" target="_blank"> همه افراد</a>
+                </label>
+                <input
+                   
+                  v-model="person_id"
+                  type="number"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+
             <div class="col-md-12">
               <div class="form-group">
                 <label for="">نام</label>
                 <input
-                  required
                   v-model="first_name"
                   type="text"
                   class="form-control"
@@ -39,7 +56,6 @@
               <div class="form-group">
                 <label for="">نام خانوادگی</label>
                 <input
-                  required
                   v-model="last_name"
                   type="text"
                   class="form-control"

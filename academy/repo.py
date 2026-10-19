@@ -13,7 +13,6 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from .enums import * 
 
-
 class TeacherRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
@@ -51,16 +50,19 @@ class TeacherRepo():
             return result,message,teacher
         teacher=Teacher()  
 
-        if 'person_id' in kwargs and kwargs['person_id']:
+        if 'person_id' in kwargs and kwargs['person_id'] and kwargs['person_id']>0:
             old=Teacher.objects.filter(person__id=kwargs["person_id"]).first()
             if old is not None:
                 message='برای این شخص قبلا دبیر ایجاد شده است.'
                 return FAILED,message,None
-            teacher.person_id=kwargs["person_id"]
-            if teacher.person is not None:
+            person = PersonRepo(request=self.request).person(pk=kwargs['person_id'])
+            if person is not None:
+                teacher.person_id=person.id
                 (result,message,teacher)=teacher.save()
                 return result,message,teacher
-        from authentication.repo import PersonRepo
+            else:
+                return FAILED,'شناسه شخص صحیح نمی باشد.',None
+ 
         result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
         if result==SUCCEED:     
             teacher.person=person
@@ -155,12 +157,26 @@ class StudentRepo():
         
     def student(self,*args, **kwargs):
         if "student_id" in kwargs and kwargs["student_id"] is not None:
-            return self.objects.filter(pk=kwargs['student_id']).first()  
+            student= self.objects.filter(pk=kwargs['student_id']).first()  
+            if student is not None:
+                return student
         if "pk" in kwargs and kwargs["pk"] is not None:
-            return self.objects.filter(pk=kwargs['pk']).first() 
+            student= self.objects.filter(pk=kwargs['pk']).first() 
+            if student is not None:
+                return student
         if "id" in kwargs and kwargs["id"] is not None:
-            return self.objects.filter(pk=kwargs['id']).first() 
-        
+            student= self.objects.filter(pk=kwargs['id']).first() 
+            if student is not None:
+                return student
+        if "melli_code" in kwargs and kwargs["melli_code"] is not None:
+            student= self.objects.filter(person__melli_code=kwargs['melli_code']).first() 
+            if student is not None:
+                return student
+        if "student_melli_code" in kwargs and kwargs["student_melli_code"] is not None:
+            student= self.objects.filter(person__melli_code=kwargs['student_melli_code']).first() 
+            if student is not None:
+                return student
+        return None    
         
     def add_student(self,*args,**kwargs):
         result,message,student=FAILED,"",None
@@ -174,18 +190,20 @@ class StudentRepo():
 
 
 
-        if 'person_id' in kwargs and kwargs['person_id']:
+        if 'person_id' in kwargs and kwargs['person_id'] and kwargs['person_id']>0:
             old=Student.objects.filter(person__id=kwargs["person_id"]).first()
             if old is not None:
                 message='برای این شخص قبلا دانش آموز ایجاد شده است.'
                 return FAILED,message,None
-            student.person_id=kwargs["person_id"]
-            if student.person is not None:
+                        
+            person = PersonRepo(request=self.request).person(pk=kwargs['person_id'])
+            if person is not None:
+                student.person_id=person.id
                 (result,message,student)=student.save()
                 return result,message,student
-
-            
-        from authentication.repo import PersonRepo
+            else:
+                return FAILED,'شناسه شخص صحیح نمی باشد.',None
+             
         result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
         if result==SUCCEED:     
             student.person=person
@@ -628,12 +646,27 @@ class GroupRepo():
         return objects.all().order_by('title')
         
     def group(self,*args, **kwargs):
+        if "code" in kwargs and kwargs["code"] is not None:
+            group= self.objects.filter(code=kwargs['code']).first()  
+            if group is not None:
+                return group
+        if "group_code" in kwargs and kwargs["group_code"] is not None:
+            group= self.objects.filter(code=kwargs['group_code']).first()  
+            if group is not None:
+                return group
+         
         if "group_id" in kwargs and kwargs["group_id"] is not None:
-            return self.objects.filter(pk=kwargs['group_id']).first()  
+            group= self.objects.filter(pk=kwargs['group_id']).first() 
+            if group is not None:
+                return group 
         if "pk" in kwargs and kwargs["pk"] is not None:
-            return self.objects.filter(pk=kwargs['pk']).first() 
+            group= self.objects.filter(pk=kwargs['pk']).first() 
+            if group is not None:
+                return group
         if "id" in kwargs and kwargs["id"] is not None:
-            return self.objects.filter(pk=kwargs['id']).first() 
+            group= self.objects.filter(pk=kwargs['id']).first() 
+            if group is not None:
+                return group
         
         
     def add_group(self,*args,**kwargs):
@@ -670,22 +703,23 @@ class GroupRepo():
         result,message,group,groups=FAILED,"",None,[]
         if not self.request.user.has_perm(APP_NAME+".add_group"):
             message="دسترسی غیر مجاز"
-            return result,message,group,groups 
-        group_id=kwargs['group_id']
-        student_id=kwargs['student_id'] 
-
-        group=Group.objects.filter(pk=group_id).first() 
-        student=Student.objects.filter(pk=student_id).first() 
-
+            return result,message,group,groups  
+        leolog(sdsdsdsdsd=kwargs)
+        group=GroupRepo(request=self.request).group(**kwargs) 
+        student=StudentRepo(request=self.request).student(**kwargs) 
        
-
-        if group is not None:
-            if student is not None:
-                group.students.add(student.id)
-                result=SUCCEED
-                message='اضافه شد'
-            for course_class in CourseClass.objects.filter(group_id=group.id):
-                course_class.students.add(student.id)
+        
+        if group is None:
+            return FAILED,'گروه انتخاب نشده است.',None
+        
+        if student is None:
+            return FAILED,'دانش آموز انتخاب نشده است.',None
+            
+        group.students.add(student.id)
+        result=SUCCEED
+        message='اضافه شد'
+        for course_class in CourseClass.objects.filter(group_id=group.id):
+            course_class.students.add(student.id)
          
         return result,message,group
  
@@ -733,10 +767,24 @@ class ParentRepo():
         if not self.request.user.has_perm(APP_NAME+".add_parent"):
             message="دسترسی غیر مجاز"
             return result,message,parent,parents
+
          
-        from authentication.repo import PersonRepo
+        parent=Parent() 
+        if 'person_id' in kwargs and kwargs['person_id'] and kwargs['person_id']>0:
+            old=Parent.objects.filter(person__id=kwargs["person_id"]).first()
+            if old is not None:
+                message='برای این شخص قبلا ولی دانش آموز ایجاد شده است.'
+                return FAILED,message,None
+             
+            person = PersonRepo(request=self.request).person(pk=kwargs['person_id'])
+            if person is not None:
+                parent.person_id=person.id
+                (result,message,parent)=parent.save()
+                return result,message,parent
+            else:
+                return FAILED,'شناسه شخص صحیح نمی باشد.',None 
         result,message,person=PersonRepo(request=self.request).add_person(*args,**kwargs)
-        parent=Parent(person=person) 
+        parent.person=person
         if person is None:
             return FAILED,message,None
         (result,message,parent)=parent.save()

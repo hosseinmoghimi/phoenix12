@@ -599,7 +599,8 @@ class GroupView(View):
 
         if request.user.has_perm(APP_NAME+".add_attendance"):
             context['add_attendance_form']=AddAttendanceForm()
-            
+        if request.user.has_perm(APP_NAME+".add_student"):
+            context['add_student_to_group_form']=AddStudentToGroupForm()
 
         return render(request,TEMPLATE_ROOT+"group.html",context) 
 

@@ -26,9 +26,13 @@ class AddAttendanceForm(forms.Form):
 
   
 class AddStudentToGroupForm(forms.Form):
-    student_id=forms.IntegerField(required=True)
-    group_id=forms.IntegerField(required=True)
-     
+    student_melli_code=forms.CharField(max_length=100, required=False)
+    group_code=forms.CharField(max_length=100, required=False)
+    student_id=forms.IntegerField(required=False)
+    group_id=forms.IntegerField(required=False)
+
+
+      
 class SearchForm(forms.Form):
     search_for=forms.CharField(max_length=100, required=True)
      
@@ -51,13 +55,16 @@ class AddCourseClassForm(forms.Form):
      
      
 class AddParentForm(forms.Form):
-    first_name=forms.CharField(max_length=100, required=True)
-    last_name=forms.CharField(max_length=100, required=True)
+    first_name=forms.CharField(max_length=100, required=False)
+    last_name=forms.CharField(max_length=100, required=False)
     melli_code=forms.CharField(max_length=100, required=False)
-    
+    person_id=forms.IntegerField(required=False)
+
+
 class SetStudentsForParentForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
     students_ids=forms.CharField(max_length=500,required=True)
+
 
 class AddTeacherForm(forms.Form):
     first_name=forms.CharField(max_length=100, required=True)
@@ -72,11 +79,13 @@ class AddStudentForm(forms.Form):
     melli_code=forms.CharField(max_length=100, required=False)
     person_id=forms.IntegerField(required=False)
 
+
 class AddTeacherForm(forms.Form):
     first_name=forms.CharField(max_length=100, required=False)
     last_name=forms.CharField(max_length=100, required=False)
     melli_code=forms.CharField(max_length=100, required=False)
     person_id=forms.IntegerField(required=False)
+
  
 class AddSchoolForm(forms.Form):
     name=forms.CharField(max_length=100, required=True)

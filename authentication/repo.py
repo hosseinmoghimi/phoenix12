@@ -5,6 +5,7 @@ from utility.log import leolog
 
  
 class PersonRepo():
+    
     def __init__(self,request,*args, **kwargs):
         self.me=None
         self.request=request
@@ -14,6 +15,7 @@ class PersonRepo():
                 self.objects=Person.objects.all()
             else:
                 self.objects=Person.objects.filter(user_id=request.user.id)  
+    
     def user(self,*args, **kwargs):
         user_id=0
         self.objects=Person.objects.filter(pk=0)
@@ -21,6 +23,7 @@ class PersonRepo():
             user_id=kwargs['user_id']
             return User.objects.filter(pk=user_id).first()
         return User.objects.filter(pk=0).first()
+    
     def list(self,*args, **kwargs):
         objects=self.objects
         from django.db.models import Q
@@ -28,6 +31,7 @@ class PersonRepo():
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(full_name__contains=search_for)  | Q(melli_code__contains=search_for) )
         return objects.all()
+    
     def change_image(self,person_id,image):
         person=self.person(person_id=person_id)
         if person is not None:
@@ -69,6 +73,7 @@ class PersonRepo():
                         return a
                 except:
                     pass
+    
     def change_password(self,request,*args, **kwargs):
         result,message=FAILED,'خطا'
         if self.request.user.has_perm(APP_NAME+".change_person"):
@@ -86,9 +91,7 @@ class PersonRepo():
                 result=SUCCEED
                 message='با موفقیت تغییر یافت.'
             return (request,user,result,message)
-
     
-
     def delete_all(self,*args,**kwargs):
         result,message=FAILED,''
         if not self.request.user.has_perm(APP_NAME+".delete_person"):
@@ -198,7 +201,6 @@ class PersonRepo():
  
         return result,message,person
 
-
     def edit_person(self,*args,**kwargs):
         result,message,person=FAILED,"",None
         person=Person.objects.filter(id=kwargs['person_id']).first()
@@ -285,12 +287,12 @@ class PersonRepo():
  
         return result,message,person
 
-
     def logout(self,*args, **kwargs):
         if 'request' in kwargs:
             logout(request=kwargs['request'])
         else:
             logout(request=self.request)
+    
     def login(self,*args, **kwargs):
         request=self.request
         url=None
