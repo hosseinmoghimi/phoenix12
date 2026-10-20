@@ -8,9 +8,9 @@
     <div class="card" id="commands-app">
         <div class="card-header" id="heading-commands">
             <h5 class="text-center">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-commands" aria-expanded="true"
-                    aria-controls="collapse-commands">
-                  فرمان ها
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-commands"
+                    aria-expanded="true" aria-controls="collapse-commands">
+                    فرمان ها
 
 
                     <span v-if="commands.length>0">
@@ -22,10 +22,11 @@
 
                 </button>
             </h5>
- 
-           
+
+
         </div>
-        <div id="collapse-commands" class="collapse show" aria-labelledby="heading-commands" data-parent="#accordion-commands">
+        <div id="collapse-commands" class="collapse show" aria-labelledby="heading-commands"
+            data-parent="#accordion-commands">
 
 
             <div class="card-body">
@@ -49,22 +50,23 @@
                         <thead>
                             <th>
                                 فرمان
-                            </th>
-
-                            <th>
+                          جاوااسکریپت
 
                             </th>
+
+                           
                         </thead>
                         <tbody>
 
 
-                            <tr v-for="command in commands">
-                             
+                            <!-- <tr v-for="command in commands">
+
 
                                 <td>
-                                    <span >
+                                    <span>
 
-                                        <button :class="'mx-2 my-2 btn btn-'+command.color" @click="execute_command(command.id)">
+                                        <button :class="'mx-2 my-2 btn btn-'+command.color"
+                                            @click="execute_command(command.id)">
                                             <span v-text="command.name"></span>
                                         </button>
                                     </span>
@@ -72,7 +74,55 @@
 
                                 </td>
                                 <td></td>
+                            </tr> -->
+
+                            {% for command in commands %}
+                            <tr>
+                                <td>
+
+                                    <button class="btn btn-{{command.color}}"
+                                        @click="execute_command2(`http://{{command.relay.feeder.ip}}:{{command.relay.feeder.port}}/execute_command/`,`{{command.relay.register}}`,`{{command.relay.pin}}`,`{{command.relay.pin}}`,`{{command.value}}`)">
+                                        {{command.name}}  
+                                    </button>
+                                </td>
                             </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+     <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped rtl  farsi">
+                        <thead>
+                            <th>
+                                فرمان
+                                لوکال
+                            </th>
+
+                           
+                        </thead>
+                        <tbody>
+
+
+                             <tr v-for="command in commands">
+
+
+                                <td>
+                                    <span>
+
+                                        <button :class="'mx-2 my-2 btn btn-'+command.color"
+                                            @click="execute_command(command.id)">
+                                            <span v-text="command.name"></span>
+                                        </button>
+                                    </span>
+
+
+                                </td>
+                                <td></td>
+                            </tr>  
+
+                            
+
+
                         </tbody>
                     </table>
                 </div>

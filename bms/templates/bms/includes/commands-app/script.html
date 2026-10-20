@@ -30,7 +30,7 @@
                 posting.done(data => {
                     console.log(data)
                     if (data.result === 'SUCCEED') {
-                        if (typeof feeder_app!="undefined") {
+                        if (typeof feeder_app != "undefined") {
 
                             feeder_app.feeder.relays.forEach(relay => {
                                 data.registers.forEach(register => {
@@ -43,7 +43,19 @@
                 })
             },
 
-
+            execute_command2: function execute_command(url, register, pin, key, command) {
+                let payload = {
+                    register: register,
+                    pin: pin,
+                    key: key,
+                    command: command,
+                };
+                console.log(url)
+                console.log(payload)
+                $.post(url, payload).done(data => {
+                    console.log(data)
+                })
+            },
 
         }
     })
