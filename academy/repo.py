@@ -153,6 +153,10 @@ class StudentRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "ids" in kwargs:
+                    ids=kwargs["ids"]
+                    objects=objects.filter(id__in=ids)  
+                
         return objects.all().order_by('person__first_name').order_by('person__last_name')
         
     def student(self,*args, **kwargs):
@@ -164,6 +168,7 @@ class StudentRepo():
             student= self.objects.filter(pk=kwargs['pk']).first() 
             if student is not None:
                 return student
+        
         if "id" in kwargs and kwargs["id"] is not None:
             student= self.objects.filter(pk=kwargs['id']).first() 
             if student is not None:

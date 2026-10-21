@@ -11,6 +11,13 @@
             to_price: function(vall) { 
                 return  to_price(vall) 
             },
+            ids:function(){
+                let ids=[]
+                this.students.forEach(student => {
+                    ids.push(student.id)
+                });
+                return JSON.stringify(ids)
+            },
             search:function(){
                 this.students=students_for_students_app.filter(function(student){
                         if(student.person.first_name.indexOf(students_app.search_for)>-1)

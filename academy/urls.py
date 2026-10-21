@@ -36,6 +36,7 @@ urlpatterns = [
     path('students/',login_required(views.StudentsView.as_view()),name="students"),
     path('student/<int:pk>/',login_required(views.StudentView.as_view()),name="student"),
     path('add-student/',login_required(apis.AddStudentApi.as_view()),name="add_student"),
+    path('students-excel/',login_required(views.StudentsExcelView.as_view()),name="students_excel"),
 
 
     

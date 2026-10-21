@@ -32,6 +32,9 @@ class AddStudentToGroupForm(forms.Form):
     group_id=forms.IntegerField(required=False)
 
 
+class StudentsExcelForm(forms.Form):
+    ids=forms.CharField( max_length=10000, required=False)
+
       
 class SearchForm(forms.Form):
     search_for=forms.CharField(max_length=100, required=True)

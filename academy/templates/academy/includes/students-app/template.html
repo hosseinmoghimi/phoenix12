@@ -96,6 +96,18 @@
           </table>
         </div>
       </div>
+      <div class="card-footer">
+        <div class="my-3">
+          <form method="POST" action="{% url 'academy:students_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست دانش آموز ها در قالب فایل اکسل
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

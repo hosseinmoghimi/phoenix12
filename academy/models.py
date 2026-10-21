@@ -211,6 +211,23 @@ class Student(models.Model,LinkHelper):
         message="دانش آموز ذخیره شد.."
         return SUCCEED,message,self
 
+    @property
+    def parent(self):
+        parents=self.parent_set.all()
+        from authentication.models import GenderEnum
+        parent=None
+        if len(parents)>0:
+            parent=parents.filter(person__gender=GenderEnum.MALE).first()
+            if parent is None:
+                parent=parents.first()
+        
+        return parent
+    # @property
+    # def father_name(self):
+    #     parents=self.parent_set.all()
+    #     if len(parents)==1:
+    #         return self.parent.person.first_name
+    #     return ""
 
     
 class Parent(models.Model,LinkHelper):
@@ -266,6 +283,7 @@ class Teacher(models.Model,LinkHelper):
         super(Teacher,self).save()
         message="دبیر ذخیره شد."
         return SUCCEED,message,self
+
 
 class Attendance(models.Model,LinkHelper):
     session=models.ForeignKey("session", verbose_name=_("session"), on_delete=models.CASCADE)
