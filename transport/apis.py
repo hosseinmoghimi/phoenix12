@@ -56,7 +56,7 @@ class AddVehicleApi(APIView):
         return JsonResponse(context)
 
 
-class ImportVehicleFromExcelApi(APIView):
+class ImportVehiclesFromExcelApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
         result=FAILED

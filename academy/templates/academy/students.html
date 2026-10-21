@@ -8,6 +8,10 @@
           {% include "academy/includes/add-student-app/template.html" %}
 
       </div>
+      <div class="col-md-12">
+          {% include "academy/includes/import-students-from-excel-app/template.html" %}
+
+      </div>
     {% endif %}
     <div class="col-md-12">
 
@@ -23,5 +27,6 @@
 {% include "academy/includes/students-app/script.html" %}
 {% if add_student_form %}
 {% include "academy/includes/add-student-app/script.html" %}
+{% include "academy/includes/import-students-from-excel-app/script.html" %}
 {% endif %}
 {% endblock script %}

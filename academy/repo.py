@@ -12,6 +12,7 @@ from utility.calendar import PersianCalendar
 from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from .enums import * 
+EXCEL_STUDENTS_DATA_START_ROW=4
 
 class TeacherRepo():
     def __init__(self,request,*args, **kwargs):
@@ -145,6 +146,7 @@ class StudentRepo():
             self.objects=Student.objects
             if request.user.has_perm(APP_NAME+".view_student"):
                 self.objects=Student.objects
+    
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -153,12 +155,107 @@ class StudentRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
-        if "ids" in kwargs:
-                    ids=kwargs["ids"]
-                    objects=objects.filter(id__in=ids)  
+        if "ids" in kwargs and kwargs['ids']:
+                ids=kwargs["ids"]
+                objects=objects.filter(id__in=ids)  
                 
         return objects.all().order_by('person__first_name').order_by('person__last_name')
+       
+
+    def import_students_from_excel(self,*args,**kwargs):
+        result,message,students=FAILED,"",[]
+        excel_file=kwargs['excel_file']
+         
+        import openpyxl 
+
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['students']
+            
+
+        except:
+            message='فایل شما برگه دانش آموزان را ندارد.<br>' \
+            'نام شیت باید عبارت \"students\"' \
+            'باشد'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه دانش آموزان ، تعداد ندارد.'
+            return result,message,None 
+
+        students_to_import=[]
+
+        START_ROW=EXCEL_STUDENTS_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            student={}
+            
+            i=str(i) 
+            # product['id']=ws['A'+str(i)].value
+            iiiddd=ws['B'+i].value
+            if iiiddd is not None:
+                id=0
+                try:
+                    id=int(ws['B'+i].value)
+                except:
+                    pass
+
+                melli_code=str(ws['C'+i].value)
+                first_name=(ws['D'+i].value)
+                last_name=(ws['E'+i].value)
+                father_name=(ws['F'+i].value)
+                mobile=(ws['G'+i].value)
+                tel=(ws['H'+i].value)
+                address=(ws['I'+i].value)
+ 
+                student['id']=id 
+                student['first_name']=first_name
+                student['last_name']=last_name
+                student['father_name']=father_name
+                student['melli_code']=melli_code
+                student['tel']=tel
+                student['address']=address
+                student['mobile']=mobile 
+                # student['thumbnail_origin']=ws['F'+str(i)].value
+                students_to_import.append(student) 
+        modified=added=0
+
+        for student in students_to_import:
+            old_student=Student.objects.filter(person__melli_code=student["melli_code"]).first()
+            if old_student is not None:
+                old_student.person.first_name=student["first_name"] 
+                old_student.person.last_name=student["last_name"] 
+                old_student.person.tel=student["tel"] 
+                old_student.person.address=student["address"]  
+                old_student.person.save()
+                modified+=1
+            else:
+                result,message,new_student=self.add_student(**student)
+          
+                if result==SUCCEED:
+                    added+=1
+        result=SUCCEED
+        message=f"""{added} دانش آموز اضافه شد.
+                    <br>
+                    {modified} دانش آموز ویرایش شد. """
+        services=self.list()
+
         
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("academy:students")
+            log_data['title']="بازیابی دانش آموز ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+        return result,message,services
+
+ 
     def student(self,*args, **kwargs):
         if "student_id" in kwargs and kwargs["student_id"] is not None:
             student= self.objects.filter(pk=kwargs['student_id']).first()  

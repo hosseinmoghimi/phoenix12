@@ -282,7 +282,10 @@ class StudentsExcelView(View):
         if students_excel_form.is_valid():
             log=333
             cd=students_excel_form.cleaned_data
-            cd['ids']=json.loads(cd['ids'])
+            if 'ids' in kwargs:
+                ids=cd['ids']
+                if ids is not None and not ids=="":
+                    cd['ids']=json.loads(cd['ids'])
             students=StudentRepo(request=request).list(**cd)
  
         now=PersianCalendar().date
@@ -298,10 +301,9 @@ class StudentsExcelView(View):
                 'first_name':student.person.first_name,      
                 'last_name':student.person.last_name,   
                 'father_name':student.parent.person.first_name if student.parent is not None else "",    
-                # 'father_name':student.father_name,
                 'mobile':student.person.mobile,   
-                'address':student.person.address,   
                 'tel':student.person.tel,    
+                'address':student.person.address,   
             }
             lines.append(line)
  
@@ -312,8 +314,8 @@ class StudentsExcelView(View):
                  'نام خانوادگی',
                  'نام پدر', 
                  'موبایل',
-                 'آدرس',
                  'تلفن',
+                 'آدرس',
         ]
                 
         from utility.excel import ReportWorkBook,get_style
