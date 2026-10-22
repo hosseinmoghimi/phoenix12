@@ -418,6 +418,100 @@ class StudentsExcelView(View):
         return response
 
      
+class AttendancesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        attendances_excel_form=AttendancesExcelForm(request.POST)
+        if attendances_excel_form.is_valid():
+            log=333
+            cd=attendances_excel_form.cleaned_data
+            if 'ids' in kwargs:
+                ids=cd['ids']
+                if ids is not None and not ids=="":
+                    cd['ids']=json.loads(cd['ids'])
+            attendances=AttendanceRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,attendance in enumerate(attendances,start=1):
+            line={
+                'row':i,
+                'id':attendance.id,
+                'school':attendance.session.course_class.school.name,   
+                'course':attendance.session.course_class.course.title,   
+                'session_no':attendance.session.session_no,   
+                'date_time':attendance.session.persian_start_datetime(),   
+                'class_room':attendance.session.class_room,   
+                'teacher':attendance.session.course_class.teachers.first().person.full_name if attendance.session.course_class.teachers.first() is not None else "",   
+                'first_name':attendance.student.person.first_name,      
+                'last_name':attendance.student.person.last_name,   
+                'status':attendance.status,   
+                'father_name':attendance.student.parent.person.first_name if attendance.student.parent is not None else "",    
+                # 'course_class':attendance.session.course_class.title,   
+                # 'date_added':attendance.persian_date_added(),   
+                'melli_code':attendance.student.person.melli_code,   
+                'mobile':attendance.student.person.mobile,   
+                'tel':attendance.student.person.tel,    
+                'address':attendance.student.person.address,   
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'شناسه',
+                 'آموزشگاه',
+                 'واحد درسی',
+                 'شماره جلسه',
+                 'تاریخ جلسه',
+                 'اتاق',
+                 'دبیر',
+                 'نام',
+                 'نام خانوادگی',
+                 'وضعیت',
+                 'نام پدر', 
+                #  'درس ارائه شده',
+                #  'تاریخ ایجاد',
+                 'کد ملی',
+                 'موبایل',
+                 'تلفن',
+                 'آدرس',
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'academy.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='attendances',
+            title='attendances',
+        )
+        file_name=f"""Phoenix Academy Attendances {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+     
 class StudentsView(View):
 
     def get(self,request,*args, **kwargs):

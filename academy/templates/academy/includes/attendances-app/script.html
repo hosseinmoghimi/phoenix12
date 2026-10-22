@@ -7,6 +7,30 @@
             attendances: attendances_for_attendances_app
         },
         methods: {
+            filter:function(status){
+                if(status===""){
+                    this.attendances=attendances_for_attendances_app
+                    return
+                }
+                else{
+                    this.attendances=attendances_for_attendances_app.filter(attendance => {
+                        if(attendance.status==status){
+                            return true
+                        }
+                    });
+                }
+            }, 
+            count:function(){
+                return attendances_for_attendances_app.length
+            },
+            ids:function(){
+                let ids=[]
+                this.attendances.forEach(attendance => {
+                    ids.push(attendance.id)
+                    
+                });
+                return JSON.stringify(ids)
+            },
             to_price: function(vall) { 
                 return  to_price(vall) 
             },
@@ -21,19 +45,35 @@
             },
             sum_hazer:function(){
                 let s=0
-                this.attendances.forEach(attendance => {
+                attendances_for_attendances_app.forEach(attendance => {
                     if(attendance.status=='حاضر')
+                    s+=1 
+                });
+                return s
+            },
+
+            sum_takhir:function(){
+                let s=0
+                attendances_for_attendances_app.forEach(attendance => {
+                    if(attendance.status=='تاخیر')
                     s+=1
-                      if(attendance.status=='تاخیر')
-                    s+=1
+                      
                 });
                 return s
             },
             sum_ghayeb:function(){
                 let s=0
-                this.attendances.forEach(attendance => {
+                attendances_for_attendances_app.forEach(attendance => {
                     if(attendance.status=='غایب')
-                    s+=1
+                    s+=1 
+                });
+                return s
+            },
+            
+            sum_ghayeb_m:function(){
+                let s=0
+                attendances_for_attendances_app.forEach(attendance => {
+                     
                      if(attendance.status=='غایب موجه')
                     s+=1
                 });

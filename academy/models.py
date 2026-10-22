@@ -1,3 +1,4 @@
+from utility.calendar import PersianCalendar
 from utility.constants import SUCCEED,FAILED
 from django.db import models
 from core.models import LinkHelper,ImageHelper,Page,reverse,STATIC_URL
@@ -307,7 +308,8 @@ class Attendance(models.Model,LinkHelper):
         message="وضعیت حضور و غیاب ذخیره شد.."
         return SUCCEED,message,self
 
-
+    def persian_date_added(self):
+        return PersianCalendar().from_gregorian(self.date_added)
 class Major(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=50)
     

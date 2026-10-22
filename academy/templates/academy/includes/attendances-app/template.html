@@ -26,6 +26,37 @@
       data-parent="#accordion-attendances"
     >
       <div class="card-body">
+        <div class="row rtl my-2">
+          <div class="col-md-2">
+            <button class="btn btn-success" @click="filter(``)">همه
+
+              <span v-text="count()"></span>
+            </button>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-success" @click="filter('حاضر')">حاضر
+
+              <span v-text="sum_hazer()"></span>
+            </button>
+          </div>
+
+          
+
+          <div class="col-md-2">
+            <button class="btn btn-danger" @click="filter('غایب')">غایب
+              <span v-text="sum_ghayeb()"></span></button>
+          </div>
+
+          <div class="col-md-2">
+            <button class="btn btn-primary" @click="filter('غایب موجه')">غایب موجه
+              <span v-text="sum_ghayeb_m()"></span></button>
+          </div>
+
+          <div class="col-md-2">
+            <button class="btn btn-warning" @click="filter('تاخیر')">تاخیر
+              <span v-text="sum_takhir()"></span></button>
+          </div>
+        </div>
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %} table-striped">
             <thead> 
@@ -105,18 +136,23 @@
               </tr>
             </tbody>
             <tfoot>
+              <th></th>
               <th>
-                <div class="text-success">
+                <div class="text-success" v-if="(sum_hazer()+sum_takhir())>0">
 
-                  حاضر
-                  <span v-text="sum_hazer()"></span>
+                  تعداد حاضرین
+                  =
+                  <span v-text="sum_hazer()+sum_takhir()"></span>
+                  <!-- نفر -->
                 </div>
-
                 
-                <div class="text-danger">
-
-                  غایب
-                  <span v-text="sum_ghayeb()"></span>
+                
+                <div class="text-danger" v-if="(sum_ghayeb()+sum_ghayeb_m())>0">
+                  
+                  تعداد غایبین
+                  =
+                  <span v-text="sum_ghayeb()+sum_ghayeb_m()"></span>
+                  <!-- نفر -->
                 </div>
 
                 
@@ -138,6 +174,21 @@
           </table>
         </div>
       </div>
+
+      
+      <div class="card-footer">
+        <div class="my-3">
+          <form method="POST" action="{% url 'academy:attendances_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست حضور و غیاب در قالب فایل اکسل
+            </button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

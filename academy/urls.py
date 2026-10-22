@@ -67,6 +67,7 @@ urlpatterns = [
 
 
     path('add-attendance/',login_required(apis.AddAttendanceApi.as_view()),name="add_attendance"),
+    path('attendances-excel/',login_required(views.AttendancesExcelView.as_view()),name="attendances_excel"),
 
 
     path('educational_years/',login_required(views.EducationalYearsView.as_view()),name="educational_years"),
