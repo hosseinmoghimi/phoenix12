@@ -1058,6 +1058,12 @@ class AttendanceRepo():
         if "search_for" in kwargs and kwargs['search_for']:
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "ids" in kwargs and kwargs['ids']:
+            ids=kwargs["ids"] 
+            objects=objects.filter(id__in=ids)
+        if "id__in" in kwargs and kwargs['id__in']:
+            id__in=kwargs["id__in"]
+            objects=objects.filter(id__in=id__in)
         if "parent_id" in kwargs and kwargs['parent_id']:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  

@@ -33,7 +33,7 @@ class AddStudentToGroupForm(forms.Form):
 
 
 class AttendancesExcelForm(forms.Form):
-    ids=forms.CharField( max_length=10000, required=False)
+    ids=forms.CharField(max_length=10000, required=False)
 
 
 class ImportStudentFromExcelForm(forms.Form):

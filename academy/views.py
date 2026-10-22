@@ -218,7 +218,7 @@ class TeachersExcelView(View):
         if teachers_excel_form.is_valid():
             log=333
             cd=teachers_excel_form.cleaned_data
-            if 'ids' in kwargs:
+            if 'ids' in cd:
                 ids=cd['ids']
                 if ids is not None and not ids=="":
                     cd['ids']=json.loads(cd['ids'])
@@ -357,7 +357,7 @@ class StudentsExcelView(View):
         if students_excel_form.is_valid():
             log=333
             cd=students_excel_form.cleaned_data
-            if 'ids' in kwargs:
+            if 'ids' in cd:
                 ids=cd['ids']
                 if ids is not None and not ids=="":
                     cd['ids']=json.loads(cd['ids'])
@@ -433,10 +433,10 @@ class AttendancesExcelView(View):
         if attendances_excel_form.is_valid():
             log=333
             cd=attendances_excel_form.cleaned_data
-            if 'ids' in kwargs:
+            if 'ids' in cd:
                 ids=cd['ids']
                 if ids is not None and not ids=="":
-                    cd['ids']=json.loads(cd['ids'])
+                    cd['ids']=json.loads(ids)
             attendances=AttendanceRepo(request=request).list(**cd)
  
         now=PersianCalendar().date
