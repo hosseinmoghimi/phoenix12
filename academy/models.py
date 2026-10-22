@@ -181,6 +181,7 @@ class Session(Event):
             thumbnail= f"{MEDIA_URL}{self.thumbnail_origin}"
 
         return thumbnail
+
     
 class Student(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
@@ -263,7 +264,7 @@ class Parent(models.Model,LinkHelper):
 
 class Teacher(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
-    
+    personneli_code=models.CharField(_("personneli_code"),null=True,blank=True, max_length=50)
     
     class_name="teacher"
     app_name=APP_NAME
@@ -275,7 +276,7 @@ class Teacher(models.Model,LinkHelper):
     def __str__(self):
         return f'{self.person}'
 
-    
+     
     def full_name(self):
         return self.person.full_name
 

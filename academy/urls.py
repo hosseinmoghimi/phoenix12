@@ -31,6 +31,8 @@ urlpatterns = [
     path('teachers/',login_required(views.TeachersView.as_view()),name="teachers"),
     path('teacher/<int:pk>/',login_required(views.TeacherView.as_view()),name="teacher"),
     path('add-teacher/',login_required(apis.AddTeacherApi.as_view()),name="add_teacher"),
+    path('teachers-excel/',login_required(views.TeachersExcelView.as_view()),name="teachers_excel"),
+    path('import-teachers-from-excel/',login_required(apis.ImportTeachersFromExcelApi.as_view()),name="import_teachers_from_excel"),
     
     path('add-student-to-group/',login_required(views.AddStudentToGroupView.as_view()),name="add_student_to_group"),
     path('students/',login_required(views.StudentsView.as_view()),name="students"),

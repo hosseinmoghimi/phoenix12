@@ -24,7 +24,7 @@
         <form @submit.prevent="add_teacher()">
           <div class="row">
             
-            <div class="col-md-12">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">شناسه فرد
 
@@ -38,9 +38,19 @@
                 />
               </div>
             </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="">شماره پرسنلی</label>
+                <input 
+                  v-model="personneli_code"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
 
             
-            <div class="col-md-12">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">نام</label>
                 <input 
@@ -50,7 +60,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">نام خانوادگی</label>
                 <input 
@@ -61,7 +71,7 @@
               </div>
             </div>
 
-             <div class="col-md-12">
+             <div class="col-md-3">
               <div class="form-group">
                 <label for="">کد ملی</label>
                 <input
@@ -100,7 +110,7 @@
               </div>
             </div> -->
 
-            <div class="col-md-4"></div>
+            <div class="col-md-12"></div>
 
             <div class="col-md-12">
               <button class="btn btn-success" type="submit">

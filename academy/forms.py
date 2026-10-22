@@ -39,6 +39,14 @@ class ImportStudentFromExcelForm(forms.Form):
 class StudentsExcelForm(forms.Form):
     ids=forms.CharField( max_length=10000, required=False)
 
+
+class ImportTeacherFromExcelForm(forms.Form):
+    count=forms.IntegerField( required=False)
+
+
+class TeachersExcelForm(forms.Form):
+    ids=forms.CharField( max_length=10000, required=False)
+
       
 class SearchForm(forms.Form):
     search_for=forms.CharField(max_length=100, required=True)
@@ -71,13 +79,7 @@ class AddParentForm(forms.Form):
 class SetStudentsForParentForm(forms.Form):
     parent_id=forms.IntegerField(required=True)
     students_ids=forms.CharField(max_length=500,required=True)
-
-
-class AddTeacherForm(forms.Form):
-    first_name=forms.CharField(max_length=100, required=True)
-    last_name=forms.CharField(max_length=100, required=True)
-    melli_code=forms.CharField(max_length=100, required=False)
-    
+ 
 
      
 class AddStudentForm(forms.Form):
@@ -92,6 +94,7 @@ class AddTeacherForm(forms.Form):
     last_name=forms.CharField(max_length=100, required=False)
     melli_code=forms.CharField(max_length=100, required=False)
     person_id=forms.IntegerField(required=False)
+    personneli_code=forms.CharField(max_length=12, required=False)
 
  
 class AddSchoolForm(forms.Form):

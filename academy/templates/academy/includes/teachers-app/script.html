@@ -7,6 +7,14 @@
             teachers: teachers_for_teachers_app
         },
         methods: {
+            ids:function(){
+                let ids=[]
+                this.teachers.forEach(teacher => {
+                    ids.push(teacher.id)
+                    
+                });
+                return JSON.stringify(ids)
+            },
             to_price: function(vall) { 
                 return  to_price(vall) 
             }

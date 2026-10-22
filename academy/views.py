@@ -202,6 +202,83 @@ class TeachersView(View):
         return render(request,TEMPLATE_ROOT+"teachers.html",context) 
 
 
+
+class TeachersExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        teachers_excel_form=TeachersExcelForm(request.POST)
+        if teachers_excel_form.is_valid():
+            log=333
+            cd=teachers_excel_form.cleaned_data
+            if 'ids' in kwargs:
+                ids=cd['ids']
+                if ids is not None and not ids=="":
+                    cd['ids']=json.loads(cd['ids'])
+            teachers=TeacherRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,teacher in enumerate(teachers,start=1):
+            line={
+                'row':i,
+                'id':teacher.id,
+                'melli_code':teacher.person.melli_code,   
+                'personneli_code':teacher.personneli_code,      
+                'first_name':teacher.person.first_name,      
+                'last_name':teacher.person.last_name,   
+                'mobile':teacher.person.mobile,   
+                'tel':teacher.person.tel,    
+                'address':teacher.person.address,   
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'شناسه',
+                 'کد ملی',
+                 'کد پرسنلی',
+                 'نام',
+                 'نام خانوادگی',
+                 'موبایل',
+                 'تلفن',
+                 'آدرس',
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'academy.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='teachers',
+            title='teachers',
+        )
+        file_name=f"""Phoenix Academy Teachers {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+
 class StudentView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
@@ -263,8 +340,6 @@ class AddStudentToGroupView(View):
     def post(self,request,*args, **kwargs):
         from .apis import AddStudentToGroupApi
         return AddStudentToGroupApi().post(request=request)
-
-
 
  
 class StudentsExcelView(View):
@@ -343,7 +418,6 @@ class StudentsExcelView(View):
         return response
 
      
-
 class StudentsView(View):
 
     def get(self,request,*args, **kwargs):
@@ -645,7 +719,6 @@ class ParentsView(View):
             context['add_parent_form']=AddParentForm()
     
         return render(request,TEMPLATE_ROOT+"parents.html",context) 
-
 
 
 class GroupView(View):

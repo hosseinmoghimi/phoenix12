@@ -119,7 +119,6 @@ class PersonRepo():
         #         message="کد پروفایل وارد شده تکراری است."
         #         person=None
         #         return result,message,person
-        leolog(nnnnnnn=kwargs)
         if 'melli_code' in kwargs:
             melli_code=kwargs['melli_code']
 

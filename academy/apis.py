@@ -56,8 +56,6 @@ class AddGroupApi(APIView):
         return JsonResponse(context)
 
 
-
-
 class ImportStudentsFromExcelApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -101,6 +99,32 @@ class AddStudentToGroupApi(APIView):
             result,message,group=GroupRepo(request=request).add_student_to_group(**cd)
             if group is not None:
                 context['group']=GroupSerializer(group).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+class ImportTeachersFromExcelApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        import_teachers_form=ImportTeacherFromExcelForm(request.POST,request.FILES)
+        if import_teachers_form.is_valid():
+            log=333
+            cd=import_teachers_form.cleaned_data
+            
+            excel_file = request.FILES['file1']
+            cd['excel_file']=excel_file
+            result,message,teachers=TeacherRepo(request=request).import_teachers_from_excel(**cd)
+            if teachers is not None:
+                context['teachers']=TeacherSerializer(teachers,many=True).data
         context['message']=message
         context['result']=result
         context['log']=log
@@ -176,7 +200,6 @@ class AddAttendanceApi(APIView):
         context['log']=log
         return JsonResponse(context)
 
-
  
 class AddSchoolApi(APIView):
     def post(self,request,*args, **kwargs):
@@ -247,7 +270,6 @@ class AddParentApi(APIView):
         return JsonResponse(context)
 
 
-    
 class SetStudentsForParentApi(APIView):
     def post(self,request,*args, **kwargs):
         context={}
@@ -271,8 +293,6 @@ class SetStudentsForParentApi(APIView):
         context['log']=log
         return JsonResponse(context)
     
-    
-
  
 class AddSessionApi(APIView):
     def post(self,request,*args, **kwargs):

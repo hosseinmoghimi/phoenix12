@@ -31,6 +31,7 @@
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead>
                
+              <th>کد ملی</th>
               <th>نام </th>
               <th>نام کاربری</th>
               <th>تماس</th>
@@ -42,6 +43,18 @@
             <tbody>
               <tr v-for="person in persons">
                 
+                <td>
+
+                  <a :href="person.get_absolute_url">
+                  
+                        <span v-text="person.melli_code"></span>
+ 
+                  </a>
+
+                  
+
+ 
+                </td>
                 <td>
 
                   <a :href="person.get_absolute_url">

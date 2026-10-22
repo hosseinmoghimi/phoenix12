@@ -9,7 +9,7 @@
           aria-expanded="true"
           aria-controls="collapse-teachers"
         >
-          مربی ها
+          دبیر ها
           <span v-if="teachers.length>0">
             <small class="text-danger mx-2">
               <span v-text="teachers.length"></span>
@@ -29,7 +29,9 @@
         <div class="table-responsive">
           <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
             <thead> 
-              <th>عنوان</th> 
+              <th>نام و نام خانوادگی</th> 
+              <th>کد پرسنلی</th> 
+              <th>کد ملی</th> 
               <th>
 
               </th>
@@ -49,6 +51,26 @@
                   </a>
  
                 </td>
+             
+                <td>
+                  <a :href="teacher.get_absolute_url">
+                     
+                        <span v-text="teacher.personneli_code"></span>
+                      
+                  </a>
+ 
+                </td>
+
+
+                <td>
+                  <a :href="teacher.person.get_absolute_url">
+                     
+                        <span v-text="teacher.person.melli_code"></span>
+                      
+                  </a>
+ 
+                </td>
+
              
                 <td>
                   <a
@@ -75,6 +97,20 @@
           </table>
         </div>
       </div>
+
+      <div class="card-footer">
+        <div class="my-3">
+          <form method="POST" action="{% url 'academy:teachers_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست دبیر ها در قالب فایل اکسل
+            </button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

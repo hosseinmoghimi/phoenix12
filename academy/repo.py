@@ -13,6 +13,7 @@ from utility.constants import FAILED,SUCCEED
 from utility.log import leolog
 from .enums import * 
 EXCEL_STUDENTS_DATA_START_ROW=4
+EXCEL_TEACHERS_DATA_START_ROW=4
 
 class TeacherRepo():
     def __init__(self,request,*args, **kwargs):
@@ -43,19 +44,136 @@ class TeacherRepo():
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
         
+     
+    def import_teachers_from_excel(self,*args,**kwargs):
+        result,message,teachers=FAILED,"",[]
+        excel_file=kwargs['excel_file']
          
-    def add_teacher(self,*args,**kwargs):
+        import openpyxl 
+
+        wb = openpyxl.load_workbook(excel_file)
+        try:
+            ws = wb['teachers']
+            
+
+        except:
+            message='فایل شما برگه دبیران را ندارد.<br>' \
+            'نام شیت باید عبارت \"teachers\"' \
+            'باشد'
+            return result,message,None
+        count=kwargs['count']
+        try:
+            count=int(ws.cell(row=1, column=2).value)
+        except:
+            
+            message='فایل برگه دبیران ، تعداد ندارد.'
+            return result,message,None 
+
+        teachers_to_import=[]
+
+        START_ROW=EXCEL_TEACHERS_DATA_START_ROW
+        for i in range(START_ROW,count+START_ROW):
+            teacher={}
+            
+            i=str(i) 
+            # product['id']=ws['A'+str(i)].value
+            iiiddd=ws['B'+i].value
+            if iiiddd is not None:
+                id=0
+                try:
+                    id=int(ws['B'+i].value)
+                except:
+                    pass
+
+                melli_code=str(ws['C'+i].value)
+                personneli_code=(ws['D'+i].value)
+                first_name=(ws['E'+i].value)
+                last_name=(ws['F'+i].value)
+                mobile=(ws['G'+i].value)
+                tel=(ws['H'+i].value)
+                address=(ws['I'+i].value)
+ 
+                teacher['id']=id 
+                teacher['melli_code']=melli_code
+                teacher['personneli_code']=personneli_code
+                teacher['first_name']=first_name
+                teacher['last_name']=last_name
+                teacher['tel']=tel
+                teacher['address']=address
+                teacher['mobile']=mobile 
+                # teacher['thumbnail_origin']=ws['F'+str(i)].value
+                teachers_to_import.append(teacher) 
+        modified=added=failed=0
+
+        for teacher in teachers_to_import:
+            old_teacher=Student.objects.filter(person__melli_code=teacher["melli_code"]).first()
+            if old_teacher is not None:
+                old_teacher.person.first_name=teacher["first_name"] 
+                old_teacher.person.last_name=teacher["last_name"] 
+                old_teacher.person.tel=teacher["tel"] 
+                old_teacher.person.address=teacher["address"]  
+                old_teacher.person.save()
+                modified+=1
+            else:
+                result,message,new_teacher=self.add_teacher(**teacher)
+          
+                if result!=SUCCEED:
+                    failed+=1
+                if result==SUCCEED:
+                    added+=1
+
+        result=SUCCEED
+        message=f"""{added} دبیر اضافه شد.
+                    <br>
+                    {failed} مورد با خطا مواجه شد. 
+                    <br>
+                    {modified} دبیر ویرایش شد. """
+        services=self.list()
+
+        
+        if True:
+            log_data={}
+            from log.repo import LogRepo
+            log_data['person_id']=PersonRepo(request=self.request).me.id
+            log_data['url']=reverse("academy:teachers")
+            log_data['title']="بازیابی دبیر ها"
+            log_data['description']=message
+            log_data['app_name']=APP_NAME
+            LogRepo(request=self.request).add_log(**log_data)
+
+        return result,message,services
+
+    def add_teacher(self,*args,**kwargs): 
+
         result,message,teacher=FAILED,"",None
         if not self.request.user.has_perm(APP_NAME+".add_teacher"):
             message="دسترسی غیر مجاز"
             return result,message,teacher
         teacher=Teacher()  
 
+        if 'personneli_code'  in kwargs and kwargs['personneli_code']:
+            teacher.personneli_code=kwargs['personneli_code']
+
+            old=Teacher.objects.filter(personneli_code=kwargs["personneli_code"]).first()
+            if old is not None:
+                message='کد پرسنلی تکراری ، برای این شخص قبلا دبیر ایجاد شده است.'
+                return FAILED,message,None
+            
+        if 'melli_code' in kwargs and kwargs['melli_code'] and not kwargs['melli_code']=="":
+
+            old=Teacher.objects.filter(person__melli_code=kwargs["melli_code"]).first()
+            if old is not None:
+                message='کد ملی تکراری ، برای این شخص قبلا دبیر ایجاد شده است.'
+                return FAILED,message,None
+            
         if 'person_id' in kwargs and kwargs['person_id'] and kwargs['person_id']>0:
             old=Teacher.objects.filter(person__id=kwargs["person_id"]).first()
             if old is not None:
-                message='برای این شخص قبلا دبیر ایجاد شده است.'
+                message='شناسه شخص تکراری ، برای این شخص قبلا دبیر ایجاد شده است.'
                 return FAILED,message,None
+
+            
+            
             person = PersonRepo(request=self.request).person(pk=kwargs['person_id'])
             if person is not None:
                 teacher.person_id=person.id
@@ -63,14 +181,17 @@ class TeacherRepo():
                 return result,message,teacher
             else:
                 return FAILED,'شناسه شخص صحیح نمی باشد.',None
- 
+
+         
         result,message,person=PersonRepo(request=self.request).add_person(**kwargs)
+      
+
         if result==SUCCEED:     
             teacher.person=person
             (result,message,teacher)=teacher.save()
             return result,message,teacher
         
-        return result,message,teacher
+        return FAILED,message,None
 
 
 class SchoolRepo():
@@ -161,7 +282,6 @@ class StudentRepo():
                 
         return objects.all().order_by('person__first_name').order_by('person__last_name')
        
-
     def import_students_from_excel(self,*args,**kwargs):
         result,message,students=FAILED,"",[]
         excel_file=kwargs['excel_file']
@@ -255,7 +375,7 @@ class StudentRepo():
 
         return result,message,services
 
- 
+
     def student(self,*args, **kwargs):
         if "student_id" in kwargs and kwargs["student_id"] is not None:
             student= self.objects.filter(pk=kwargs['student_id']).first()  
