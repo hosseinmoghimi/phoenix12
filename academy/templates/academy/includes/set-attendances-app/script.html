@@ -1,17 +1,49 @@
 <script>
+    let attendances_for_set_attendances_app=[]
+    </script>
+    {% if attendances_s %}
+      <script>
+        attendances_for_set_attendances_app=JSON.parse(`{{attendances_s|escapejs}}`)
+      </script>
+    {% endif %}
+<script>
+    $(document).ready(function(data){
+        console.log(data)
+                
+        set_attendances_app.get_statuses()
+    } 
+     )
+
     let set_attendances_app=new Vue({
         el:"#set-attendances-app",
         data:{
             students:students_for_students_app,
-            statuses:[],
+            attendances:attendances_for_set_attendances_app,
         },
         methods:{
-            get_status:function(student_id){
-                let status='غایب'
-                this.statuses.forEach(status => {
-                    if(status.student.id==student_id)
-                    status= status.status
-                    
+            get_statuses:function( ){ 
+                this.attendances.forEach(attendance => { 
+                    ell=document.getElementById("status_"+attendance.student.id)
+                    console.log(ell)
+                    ell.innerHTML =attendance.status
+                    ell.classList=[]
+                                            
+                    if(attendance.status==='حاضر'){ 
+                        ell.classList.add("text-success")
+                    }
+
+                    if(attendance.status==='غایب'){ 
+                        ell.classList.add("text-danger")
+                    }
+
+
+                    if(attendance.status==='تاخیر'){ 
+                        ell.classList.add("text-warning")
+                    }
+
+                    if(attendance.status==='غایب موجه'){ 
+                        ell.classList.add("text-primary")
+                    }
                 });
                 return status
             },
@@ -23,18 +55,37 @@
                     student_id:student_id,
                     status:status,
                 }
-                console.log(payload)
                 let url="{% url 'academy:add_attendance' %}"
                 let posting=$.post(url,payload)
                 posting.done(data=>{
-                    set_attendances_app.statuses.push({student:{id:student_id},status:status})
+                    set_attendances_app.attendances.push(data.attendances)
                     $("#status_"+student_id).text=status
-                    console.log(data)
                     if(data.result==='SUCCEED'){
                         if(typeof attendances_app != 'undefined'){
                             attendances_app.attendances=data.attendances
                             attendances_for_attendances_app=data.attendances
                         }
+                        ell=document.getElementById("status_"+student_id)
+                        ell.innerHTML =status
+                        ell.classList=[]
+                        if(status==='حاضر'){ 
+                                ell.classList.add("text-success")
+                        }
+
+                        if(status==='غایب'){ 
+                                ell.classList.add("text-danger")
+                        }
+
+
+                        if(status==='تاخیر'){ 
+                                ell.classList.add("text-warning")
+                        }
+
+                        if(status==='غایب موجه'){ 
+                                ell.classList.add("text-primary")
+                        }
+
+
                     }
                 })
 
