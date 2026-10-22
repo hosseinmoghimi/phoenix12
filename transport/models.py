@@ -369,6 +369,7 @@ class WorkShift(models.Model,LinkHelper):
     def persian_shift_date(self):
         return PersianCalendar().from_gregorian(self.shift_date)[0:10]
 
+
 class WorkShiftDetailHelper: 
     @property
     def persian_shift_date(self):
