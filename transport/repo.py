@@ -287,15 +287,13 @@ class VehicleStatusRepo():
 
 class WorkShiftRepo():
     def __init__(self,request,*args, **kwargs):
-        self.me=None
-        self.my_accounts=[]
+        self.me=None 
         self.request=request
         self.objects=WorkShift.objects.filter(id=0)
         profile=PersonRepo(request=request).me
         if profile is not None:
             if request.user.has_perm(APP_NAME+".view_vehicle"):
-                self.objects=WorkShift.objects
-                self.my_accounts=self.objects 
+                self.objects=WorkShift.objects 
 
     def list(self,*args, **kwargs):
         objects=self.objects
@@ -350,6 +348,7 @@ class WorkShiftRepo():
         if "shift" in kwargs and kwargs['shift']:
             objects=objects.filter(shift=kwargs["shift"])  
         return objects.all()
+    
     def delete_work_shift(self,*args, **kwargs):
         
         result,message=FAILED,""
@@ -381,7 +380,6 @@ class WorkShiftRepo():
             return self.objects.filter(pk=kwargs['pk']).first() 
         if "id" in kwargs and kwargs["id"] is not None:
             return self.objects.filter(pk=kwargs['id']).first() 
-        
         
     def add_work_shift(self,*args,**kwargs):
         result,message,work_shift=FAILED,"",None
@@ -741,10 +739,11 @@ class VehicleRepo():
         self.me=None
         self.my_accounts=[]
         self.request=request
+        show_all=kwargs['show_all'] if 'show_all' in kwargs else False
         self.objects=Vehicle.objects.filter(id=0)
         profile=PersonRepo(request=request).me
-        if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_vehicle"):
+        if profile is not None :
+            if request.user.has_perm(APP_NAME+".view_vehicle") or show_all:
                 self.objects=Vehicle.objects
                 self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
@@ -928,18 +927,18 @@ class VehicleRepo():
 
         return result,message,services
 
-
+        
 class DriverRepo():
     def __init__(self,request,*args, **kwargs):
         self.me=None
-        self.my_accounts=[]
+        
+        show_all=kwargs['show_all'] if 'show_all' in kwargs else False
         self.request=request
         self.objects=Driver.objects.filter(id=0)
         profile=PersonRepo(request=request).me
         if profile is not None:
-            if request.user.has_perm(APP_NAME+".view_vehicle"):
+            if request.user.has_perm(APP_NAME+".view_vehicle") or show_all:
                 self.objects=Driver.objects
-                self.my_accounts=self.objects 
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs and kwargs['search_for']:

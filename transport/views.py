@@ -17,7 +17,7 @@ from accounting.views import AssetContext,AddInvoiceContext,InvoiceSerializer,In
 from .enums import MaintenanceTypesEnum,OilTypeEnum
 from .enums import FilterTypeEnum,FilterActionEnum,TavaghofCausesEnum
 from .serializers import OilServiceSerializer,FilterServiceSerializer,ProductSerializer,TavaghofSerializer,ServiceSerializer,AnbarProductSerializer
-
+from .constants import *
 
 from .repo import OilServiceRepo,FilterServiceRepo,TavaghofRepo,ProductRepo
 
@@ -31,6 +31,13 @@ NO_NAVBAR="NO_NAVBAR"
 
 def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
+
+ 
+    if context['me_person'] is not None:
+        from django.contrib.auth.models import Group
+        # group1 = Group.objects.get_or_create(name = ADD_WORK_SHIFT_GROUP_NAME)
+        group2 = Group.objects.get_or_create(name = ADD_FORM_GROUP_NAME)
+        
     context['title']="حمل و نقل"
 
     context[WIDE_LAYOUT]=False 
@@ -324,20 +331,27 @@ class VehicleStatusesView(View):
 class NewVehicleStatusView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
+
+        if not request.user.has_perm(APP_NAME+".add_vehiclestatus"):
+            add_work_shift_group=context['me_person'].user.groups.filter(name=ADD_FORM_GROUP_NAME).first()
+            if add_work_shift_group is None:
+                mv=MessageView()
+                return mv.get(request=request,title="دسترسی غیر مجاز")  
+   
+
+        context['add_vehicle_status_form']=AddVehicleStatusForm() 
         context[WIDE_LAYOUT]=True 
         context['expand_vehicle_statuses']=True
 
         context['expand_new_vehicle_status']=True
         
-        vehicles=VehicleRepo(request=request).list()
+        vehicles=VehicleRepo(request=request,show_all=True).list()
         context['vehicles']=vehicles
 
         vehicle_statuses=[]
         context['vehicle_statuses']=vehicle_statuses
         vehicle_statuses_s=json.dumps(VehicleStatusSerializer(vehicle_statuses,many=True).data)
         context['vehicle_statuses_s']=vehicle_statuses_s
-        if request.user.has_perm(APP_NAME+".add_vehiclestatus"):
-            context['add_vehicle_status_form']=AddVehicleStatusForm()
         return render(request,TEMPLATE_ROOT+"new-vehicle-status.html",context) 
 
 
@@ -1258,16 +1272,18 @@ class NewWorkShiftView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         if not request.user.has_perm(APP_NAME+".add_workshift"):
-            mv=MessageView()
-            return mv.get(request=request,title="دسترسی غیر مجاز")
+            # add_work_shift_group=context['me_person'].user.groups.filter(name=ADD_FORM_GROUP_NAME).first()
+            # if add_work_shift_group is None:
+                mv=MessageView()
+                return mv.get(request=request,title="دسترسی غیر مجاز")
 
         context['add_work_shift_form']=AddKarkerdForm()
  
-        vehicles =VehicleRepo(request=request).list(*args, **kwargs)
+        vehicles =VehicleRepo(request=request,show_all=True).list(*args, **kwargs)
         context['vehicles']=vehicles
 
         
-        drivers =DriverRepo(request=request).list(*args, **kwargs)
+        drivers =DriverRepo(request=request,show_all=True).list(*args, **kwargs)
         context['drivers']=drivers
         context['oil_types']=(i[0] for i in OilTypeEnum.choices)
         context['oil_actions']=(i[0] for i in OilActionEnum.choices)
@@ -1294,6 +1310,8 @@ class NewWorkShiftView(View):
         context['work_shifts_s']=work_shifts_s
         context['expand_work_shifts']=True
 
+
+        
 
 
         return render(request,TEMPLATE_ROOT+"new-work-shift.html",context) 

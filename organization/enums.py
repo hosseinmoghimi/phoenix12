@@ -8,3 +8,4 @@ class EmployeeJobEnum(TextChoices):
     GUARD="نگهبان",_("نگهبان")
     WORKMAN="کارگر",_("کارگر")
     ACCOUNTANT="حسابدار",_("حسابدار") 
+    OPERATOR="اپراتور",_("اپراتور") 

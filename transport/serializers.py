@@ -1,17 +1,16 @@
 from core.serializers import serializers
 from .models import OilService,Tavaghof,FilterService,Product,Vehicle,MaintenanceInvoice,WorkShift,VehicleStatus,ServiceMan,Maintenance,Driver
-from accounting.serializers import PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
+from accounting.serializers import AccountSerializer,PersonAccountSerializer,AccountBriefSerializer,InvoiceSerializer
 from .models import Service,AnbarProduct,MaintenanceInvoice
 
 from .models import VehicleEvent,Tavaghof
-from accounting.serializers import AccountSerializer
+from organization.serializers import OrganizationalUnitSerializer
 
 class DriverSerializer(serializers.ModelSerializer):
     person_account=PersonAccountSerializer()
     class Meta:
         model=Driver
         fields=['id','full_name','driver_code','level','person_account', 'get_absolute_url',  'get_edit_url','get_delete_url']
-  
 
 
 class VehicleSerializer(serializers.ModelSerializer):

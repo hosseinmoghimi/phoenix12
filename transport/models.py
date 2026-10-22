@@ -14,7 +14,7 @@ from core.models import  Page,ColorEnum,Event
 from django.shortcuts import reverse
 from django.utils.translation import gettext as _
 from .apps import APP_NAME 
-from .enums import * 
+from .enums import *
 from accounting.models import Invoice,InvoiceLine
 
 
