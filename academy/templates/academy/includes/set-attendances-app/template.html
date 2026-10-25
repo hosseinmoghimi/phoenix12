@@ -31,6 +31,10 @@
 
 
                 
+                <th>
+                  
+                </th>
+                
                 <th colspan="4">
                   
                 </th>
@@ -53,6 +57,9 @@
                                 <span v-text="student.full_name"></span>
                               </label>
                             </a>
+                        </td>
+                        <td>
+                          <input type="text" :id="'desc_'+student.id" class="form-control">
                         </td>
                         <td>
                             <button class="btn btn-success" @click="add_attendance(student.id,`حاضر`)">حاضر</button>

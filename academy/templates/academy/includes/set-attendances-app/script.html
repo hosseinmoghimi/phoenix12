@@ -23,8 +23,8 @@
         methods:{
             get_statuses:function( ){ 
                 this.attendances.forEach(attendance => { 
-                    ell=document.getElementById("status_"+attendance.student.id)
-                    console.log(ell)
+                    let ell=document.getElementById("status_"+attendance.student.id)
+                 
                     ell.innerHTML =attendance.status
                     ell.classList=[]
                                             
@@ -48,12 +48,15 @@
                 return status
             },
             add_attendance:function(student_id,status){
+                let description_input=document.getElementById("desc_"+student_id)
+                description=description_input.value
                 let session_id=parseInt("{{session.id}}")
                 let payload={
                     csrfmiddlewaretoken:csrfmiddlewaretoken,
                     session_id:session_id,
                     student_id:student_id,
                     status:status,
+                    description:description,
                 }
                 let url="{% url 'academy:add_attendance' %}"
                 let posting=$.post(url,payload)

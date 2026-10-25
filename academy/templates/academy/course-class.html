@@ -2,9 +2,16 @@
 
 <div class="text-center">
   <h1 class="text-center rtl">{{course_class.title}}</h1>
+  <h4 class="text-center rtl"> واحد درسی
+    
+    <a href="{{course_class.course.get_absolute_url}}">
+    {{course_class.course.title}}
+
+  </a>
+  </h4>
 
   {% if perms.academy.change_classclass %}
-  <h3>
+  <h5>
     <a
       href="{{course_class.get_edit_url}}"
       class="my-2 text-warning mx-2"
@@ -20,7 +27,7 @@
       target="_blank"
       ><i class="fa fa-trash text-danger"></i
     ></a>
-  </h3>
+  </h5>
   {% endif %}
 
   

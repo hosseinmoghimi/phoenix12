@@ -80,7 +80,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
     session=SessionSerializer()
     class Meta:
         model=Attendance
-        fields=['id','student','status','session','get_edit_url','get_delete_url']
+        fields=['id','student','status','description','session','get_edit_url','get_delete_url']
 
 
 class ParentSerializer(serializers.ModelSerializer): 
