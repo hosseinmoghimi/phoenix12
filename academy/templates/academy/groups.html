@@ -2,11 +2,11 @@
 {% load static %}
 {% block content %}
   <div class="row rtl farsi">
-    <div class="col-md-12">
-      {% if add_group_form %}
+    {% if add_group_form %}
+      <div class="col-md-12">
         {% include 'academy/includes/add-group-app/template.html' %}
-      {% endif %}
-    </div>
+      </div>
+    {% endif %}
     <div class="col-md-12">
       {% include 'academy/includes/groups-app/template.html' %}
     </div>
