@@ -28,7 +28,11 @@
             
             <div class="col-md-12">
               <div class="form-group">
-                <label for="">کد ملی دانش آموز</label>
+                <label for="">کد ملی دانش آموز
+                  <a target="_blank" href="{% url 'academy:students' %}"> همه دانش آموزان</a>
+
+
+                </label>
                  <input type="text" class="form-control" v-model="student_melli_code">
               </div>
             </div>
@@ -37,7 +41,10 @@
             
             <div class="col-md-12">
               <div class="form-group">
-                <label for="">کد گروه</label>
+                <label for="">کد گروه
+                  <a target="_blank" href="{% url 'academy:groups' %}"> همه گروه ها</a>
+
+                </label>
                 <input 
                   v-model="group_code"
                   class="form-control"

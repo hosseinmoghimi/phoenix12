@@ -899,6 +899,11 @@ class GroupRepo():
         olds=Group.objects.filter(title=kwargs['title'])
         if len(olds)>0:
             return FAILED,'عنوان تکراری',None
+
+        olds=Group.objects.filter(code=kwargs['code'])
+        if len(olds)>0:
+            return FAILED,'کد تکراری',None
+        
         group=Group() 
 
        
