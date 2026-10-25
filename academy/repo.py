@@ -813,27 +813,12 @@ class EducationalYearRepo():
             message="دسترسی غیر مجاز"
             return result,message,educational_year
         educational_year=EducationalYear()
-        if 'title' in kwargs:
-            if len(EducationalYear.objects.filter(title=kwargs["title"]))>0:
-                return FAILED,'عنوان تکراری',None
-            educational_year.title=kwargs["title"]
-        if 'parent_id' in kwargs:
-            if kwargs["parent_id"]>0:
-                educational_year.parent_id=kwargs["parent_id"]
-        if 'color' in kwargs:
-            educational_year.color=kwargs["color"]
-        if 'supplier_id' in kwargs:
-            educational_year.supplier_id=kwargs["supplier_id"]
-        if 'priority' in kwargs:
-            educational_year.priority=kwargs["priority"]
-        if 'type' in kwargs:
-            educational_year.type=kwargs["type"]
-
-            
-        
-
-        if 'nature' in kwargs:
-            educational_year.nature=kwargs["nature"]
+        if 'name' in kwargs and kwargs['name']:
+            if len(EducationalYear.objects.filter(name=kwargs["name"]))>0:
+                return FAILED,'سال تکراری',None
+            educational_year.name=kwargs["name"]
+         
+         
         (result,message,educational_year)=educational_year.save()
         return result,message,educational_year
 

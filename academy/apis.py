@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import ParentRepo,CourseRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
-from .serializers import ParentSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
+from .repo import ParentRepo,CourseRepo,EducationalYearRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
+from .serializers import ParentSerializer,EducationalYearSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
 from django.http import JsonResponse
 from .forms import *
     
@@ -148,6 +148,29 @@ class AddStudentApi(APIView):
             result,message,student=StudentRepo(request=request).add_student(**cd)
             if result==SUCCEED:
                 context['student']=StudentSerializer(student).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+
+class AddEducationalYearApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_educational_year_form=AddEducationalYearForm(request.POST)
+        if add_educational_year_form.is_valid():
+            log=333
+            cd=add_educational_year_form.cleaned_data
+            result,message,educational_year=EducationalYearRepo(request=request).add_educational_year(**cd)
+            if result==SUCCEED:
+                context['educational_year']=EducationalYearSerializer(educational_year).data
         context['message']=message
         context['result']=result
         context['log']=log
@@ -335,29 +358,6 @@ class AddCourseClassApi(APIView):
             result,message,course_class=CourseClassRepo(request=request).add_course_class(**cd)
             if course_class is not None:
                 context['course_class']=CourseClassSerializer(course_class).data
-        context['message']=message
-        context['result']=result
-        context['log']=log
-        return JsonResponse(context)
-
-  
-class AddEducationalYearApi(APIView):
-    def post(self,request,*args, **kwargs):
-        context={}
-        result=FAILED
-        message=""
-        log=111
-        context['result']=FAILED 
-        log=222
-        from utility.message import INVALID_FORM_VALUE_MESSAGE
-        message=INVALID_FORM_VALUE_MESSAGE
-        add_course_form=AddCourseClassForm(request.POST)
-        if add_course_form.is_valid():
-            log=333
-            cd=add_course_form.cleaned_data
-            result,message,course=CourseClassRepo(request=request).add_course(**cd)
-            if course is not None:
-                context['course']=CourseClassSerializer(course).data
         context['message']=message
         context['result']=result
         context['log']=log

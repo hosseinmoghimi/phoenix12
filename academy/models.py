@@ -118,6 +118,13 @@ class EducationalYear(models.Model,LinkHelper):
     def __str__(self):
         return self.name
     
+    
+    def save(self,*args, **kwargs):
+       
+        super(EducationalYear,self).save()
+        return SUCCEED,'سال تحصیلی با موفقیت ذخیره شد.',self
+    
+    
 
 class CourseClass(models.Model,LinkHelper):
     major=models.ForeignKey("major", verbose_name=_("major"), on_delete=models.CASCADE)

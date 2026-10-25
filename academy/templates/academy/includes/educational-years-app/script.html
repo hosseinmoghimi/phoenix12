@@ -1,15 +1,55 @@
 <script>
-    
-    let educational_years_for_educational_years_app=JSON.parse("{{educational_years_s|escapejs}}")
-    let educational_years_app = new Vue({
-        el: "#educational-years-app",
-        data: {
-            educational_years: educational_years_for_educational_years_app
-        },
-        methods: {
-            to_price: function(vall) { 
-                return  to_price(vall) 
-            }
-        }
-    })
+  let educational_years_for_educational_years_app = JSON.parse(
+    "{{educational_years_s|escapejs}}",
+  );
+  let educational_years_app = new Vue({
+    el: "#educational-years-app",
+    data: {
+      educational_years: educational_years_for_educational_years_app,
+      name: "",
+      waiting: false,
+      message: { show: false },
+      show_form: false,
+    },
+    methods: {
+      to_price: function (vall) {
+        return to_price(vall);
+      },
+      add_educational_year: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          name: this.name,
+        };
+        educational_years_app.waiting = true;
+        console.log(payload);
+        let url = "{% url 'academy:add_educational_year' %}";
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          educational_years_app.waiting = false;
+          if (data.result === "SUCCEED") {
+            show_message(
+              educational_years_app,
+              "موفق",
+              data.message,
+              "success",
+              1000,
+            );
+
+            educational_years_app.educational_years.push(data.educational_year);
+            educational_years_app.name = "";
+            educational_years_app.show_form = false;
+          } else {
+            show_message(
+              educational_years_app,
+              "خطا",
+              data.message,
+              "danger",
+              1000,
+            );
+          }
+        });
+      },
+    },
+  });
 </script>

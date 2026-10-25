@@ -1,3 +1,4 @@
+{% load static %}
 <div id="accordion-educational_years" class="rtl text-right farsi">
   <div class="card" id="educational-years-app">
     <div class="card-header">
@@ -67,6 +68,27 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div v-if="!show_form">
+          <button class="btn btn-success" @click="show_form=true">ایجاد سال جدید</button>
+        </div>
+        <div v-if="show_form">
+          <div class="row rtl"> 
+            <div class="col-md-4">
+          <input type="text" placeholder="عنوان سال تحصیلی جدید" v-model="name" class="form-control">
+
+            </div>
+            <div class="col-md-4">
+          <button class="btn btn-success" @click="add_educational_year">ذخیره</button>
+
+            </div>
+          </div>
+          <div class="my-2">
+            <img src="{% static 'img/loading.gif' %}" v-if="waiting" width="32" alt="">
+            {% include "utility/includes/message.html" %}
+          </div>
         </div>
       </div>
     </div>

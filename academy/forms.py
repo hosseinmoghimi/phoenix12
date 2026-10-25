@@ -24,7 +24,11 @@ class AddAttendanceForm(forms.Form):
     student_id=forms.IntegerField(required=True)
     session_id=forms.IntegerField(required=True)
 
-  
+
+class AddEducationalYearForm(forms.Form):
+    name=forms.CharField(max_length=50, required=True)
+
+    
 class AddStudentToGroupForm(forms.Form):
     student_melli_code=forms.CharField(max_length=100, required=False)
     group_code=forms.CharField(max_length=100, required=False)
@@ -58,10 +62,6 @@ class SearchForm(forms.Form):
   
 class DeleteAllWordsForm(forms.Form):
     count=forms.IntegerField(required=False)
-
-
-class AddEducationalYearForm(forms.Form):
-    title=forms.CharField(max_length=100, required=True)
 
 
 class AddCourseClassForm(forms.Form):
