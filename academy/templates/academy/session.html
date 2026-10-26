@@ -1,193 +1,145 @@
-{% extends "academy/layout.html" %} {% load static %} {% block content %}
-<div class="row ltr">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h6>
-          <small> جلسه : </small>
-          {{session.session_no}} -
-          {{session.title}}
-        </h6>
-      </div>
-      <div class="card-body">
-        <h6>
-          <small> شماره جلسه : </small>
-          {{session.session_no}}
-        </h6>
-
-           <h6>
-          <small> جلسه : </small>
-          {{session.title}}
-        </h6>
-
-
-        <h6>
-          <small> درس ارائه شده : </small>
-          <a href="{{session.course_class.get_absolute_url}}">
-
-            {{session.course_class.title}}
-          </a>
-        </h6>
-
-         <h6>
-          <small> واحد درسی  : </small>
-          <a href="{{session.course_class.course.get_absolute_url}}">
-
-            {{session.course_class.course.title}}
-          </a>
-        </h6>
-
-        {% for teacher in session.course_class.teachers.all %}
-          
-        <h6>
-          <small> دبیر  : </small>
-          <a href="{{teacher.get_absolute_url}}">
-            <img src="{{teacher.person.image}}" class="rounded-circle" width="32" alt="">
-            {{teacher.person.full_name}}
-          </a>
-        </h6>
-        {% endfor %}
-
-
-
-        <div>
-          <img
-            src="{{session.person.image}}"
-            class="rounded-circle"
-            width="64"
-            alt=""
-          />
+{% extends 'academy/layout.html' %} {% load static %}
+{% load to_persian_date %}
+{% block content %}
+  <div class="row rtl">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h6>
+            <small>جلسه :</small>
+            {{ session.session_no }} - {{ session.title }}
+          </h6>
         </div>
-        <div class="my-2">
-          {% if perms.academy.change_session %}
-          <a
-            href="{{session.get_edit_url}}"
-            class="my-2 text-warning mx-2"
-            title="ویرایش"
-            target="_blank"
-          >
-            <i class="fa fa-edit text-warning"></i>
-            ویرایش
-          </a>
-          {% endif %} {% if perms.academy.delete_session %}
+        <div class="card-body">
+          <h6>
+            <small>شماره جلسه :</small>
+            {{ session.session_no }}
+          </h6>
 
-          <a
-            href="{{session.get_delete_url}}"
-            class="my-2 text-danger mx-2"
-            title="حذف"
-            target="_blank"
-          >
-            <i class="fa fa-trash text-danger"></i>
-            حذف
-          </a>
-          {% endif %}
+          <h6>
+            <small>تاریخ جلسه :</small>
+
+            {{ session.start_datetime|to_persian_datetime|safe }} ~
+            {{ session.end_datetime|to_persian_datetime|safe }}
+          </h6>
+
+          <h6>
+            <small>جلسه :</small>
+            {{ session.title }}
+          </h6>
+
+          <h6>
+            <small>درس ارائه شده :</small>
+            <a href="{{ session.course_class.get_absolute_url }}">{{ session.course_class.title }}</a>
+          </h6>
+
+          <h6>
+            <small>واحد درسی :</small>
+            <a href="{{ session.course_class.course.get_absolute_url }}">
+              <img src="{{ session.course_class.course.thumbnail }}" class="ml-2 rounded-circle" width="32" alt="" />
+
+              {{ session.course_class.course.title }}
+            </a>
+          </h6>
+
+          {% for teacher in session.course_class.teachers.all %}
+            <h6>
+              <small>دبیر :</small>
+              <a href="{{ teacher.get_absolute_url }}">
+                <img src="{{ teacher.person.image }}" class="rounded-circle ml-2" width="32" alt="" />
+                {{ teacher.person.full_name }}
+              </a>
+            </h6>
+          {% endfor %}
+
+          <div>
+            <img src="{{ session.person.image }}" class="rounded-circle" width="64" alt="" />
+          </div>
+          <div class="my-2">
+            {% if perms.academy.change_session %}
+              <a href="{{ session.get_edit_url }}" class="my-2 text-warning mx-2" title="ویرایش" target="_blank">
+                <i class="fa fa-edit text-warning"></i>
+                ویرایش
+              </a>
+            {% endif %} {% if perms.academy.delete_session %}
+              <a href="{{ session.get_delete_url }}" class="my-2 text-danger mx-2" title="حذف" target="_blank">
+                <i class="fa fa-trash text-danger"></i>
+                حذف
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
- 
-{% include "core/includes/page-app/navbar.html" %}
-<div class="row rtl">
+
+  {% include 'core/includes/page-app/navbar.html' %}
+  <div class="row rtl">
     <div class="col-md-3">
-        {% include "core/includes/page-app/thumbnail-card.html" %}
-        {% include "core/includes/page-app/card.html" %}
-
-
-        
+      {% include 'core/includes/page-app/thumbnail-card.html' %} {% include 'core/includes/page-app/card.html' %}
     </div>
     <div class="col-md-9">
-        <div class="row rtl">
-
-
-
-
-            <div class="col-md-4">
-                {% include "attachments/includes/links-app/template.html" %}
-
-            </div>
- 
-            <div class="col-md-4">
-                {% include "attachments/includes/downloads-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-4">
-                {% include "attachments/includes/tags-app/template.html" %}
-
-            </div>
-
-              <div class="col-md-12">
-                {% include "academy/includes/students-app/template.html" %}
-
-            </div>
-
-            {% if add_attendance_form %}
-              
-            <div class="col-md-12">
-                {% include "academy/includes/set-attendances-app/template.html" %}
-            </div>
-            {% endif %}
-
-            <div class="col-md-12">
-                {% include "academy/includes/attendances-app/template.html" %}
-            </div>
-            <div class="col-md-12">
-                {% include "core/includes/page-description-app/short-description.html" %}
-            </div>
-            
-            <div class="col-md-12">
-                {% include "core/includes/page-description-app/description.html" %}
-
-            </div>
-      
-            
-            <div class="col-md-12">
-                {% include "attachments/includes/comments-app/template.html" %}
- </div>
-            
-            <div class="col-md-12">
-        {% include "core/includes/page-thumbnail-header-app/template.html" %}
-
-            </div>
-            
-            <div class="col-md-12">
-                {% include "attachments/includes/page-like-app/page-likes.html" %}
-
-            </div>
-            <div class="col-md-12">
-                {% include "attachments/includes/images-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-12">
-                {% include "core/includes/page-related-app/template.html" %}
-
-            </div>
-
-            <div class="col-md-12">
-                {% include "attachments/includes/locations-app/template.html" %}
-            </div>
-
-
+      <div class="row rtl">
+        <div class="col-md-4">
+          {% include 'attachments/includes/links-app/template.html' %}
         </div>
+
+        <div class="col-md-4">
+          {% include 'attachments/includes/downloads-app/template.html' %}
+        </div>
+
+        <div class="col-md-4">
+          {% include 'attachments/includes/tags-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'academy/includes/students-app/template.html' %}
+        </div>
+
+        {% if add_attendance_form %}
+          <div class="col-md-12">
+            {% include 'academy/includes/set-attendances-app/template.html' %}
+          </div>
+        {% endif %}
+
+        <div class="col-md-12">
+          {% include 'academy/includes/attendances-app/template.html' %}
+        </div>
+        <div class="col-md-12">
+          {% include 'core/includes/page-description-app/short-description.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'core/includes/page-description-app/description.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/comments-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'core/includes/page-thumbnail-header-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/page-like-app/page-likes.html' %}
+        </div>
+        <div class="col-md-12">
+          {% include 'attachments/includes/images-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'core/includes/page-related-app/template.html' %}
+        </div>
+
+        <div class="col-md-12">
+          {% include 'attachments/includes/locations-app/template.html' %}
+        </div>
+      </div>
     </div>
-
-
-</div>
-
-{% endblock content %}
-
-
-{% block script %}
-{% include "core/includes/page-app/script.html" %}
-                {% include "academy/includes/students-app/script.html" %}
-
-
-            {% if add_attendance_form %}
-              
-                {% include "academy/includes/set-attendances-app/script.html" %}
-            {% endif %}
-                {% include "academy/includes/attendances-app/script.html" %}
-
-{% endblock script %}
+  </div>
+{% endblock %} {% block script %}
+  {% include 'core/includes/page-app/script.html' %} {% include 'academy/includes/students-app/script.html' %} {% if add_attendance_form %}
+    {% include 'academy/includes/set-attendances-app/script.html' %}
+  {% endif %} {% include 'academy/includes/attendances-app/script.html' %}
+{% endblock %}
