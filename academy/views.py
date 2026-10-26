@@ -605,7 +605,7 @@ class CourseClassView(View):
         context['teachers_s']=teachers_s
 
         
-        students=course_class.students.all()
+        students=course_class.students.all().order_by('person__first_name').order_by('person__last_name')
         students_s=json.dumps(StudentSerializer(students,many=True).data)
         context['students_s']=students_s
         
