@@ -70,7 +70,7 @@
                 </div>
                 <div>
                   {% if not page %}
-            <div class="media">
+            <div class="media" v-if="image.page">
               <a :href="image.page.get_absolute_url" >
                 <img
                   :src="image.page.thumbnail"
