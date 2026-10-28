@@ -1132,6 +1132,9 @@ class ScoreRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "course_id" in kwargs:
+            course_id=kwargs["course_id"]
+            objects=objects.filter(course_class__course_id=course_id)  
         if "ids" in kwargs:
             ids=kwargs["ids"]
             objects=objects.filter(id__in=ids)  

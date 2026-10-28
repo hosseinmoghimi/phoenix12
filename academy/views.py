@@ -101,7 +101,12 @@ class CourseView(View):
         context['course_classes_s']=course_classes_s
 
   
- 
+        
+
+        scores=ScoreRepo(request=request).list(course_id=course.id).order_by('student__person__last_name')
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
 
         context[WIDE_LAYOUT]=True
         # context['NOT_NAVBAR']=True
@@ -200,7 +205,6 @@ class TeachersView(View):
             context['add_teacher_form']=AddTeacherForm()
             
         return render(request,TEMPLATE_ROOT+"teachers.html",context) 
-
 
 
 class TeachersExcelView(View):

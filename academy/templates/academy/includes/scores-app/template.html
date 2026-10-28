@@ -73,14 +73,14 @@
                 </td>
                 {% endif %}
                 
-                {% if not course_class %}
+                {% if not course_class   %}
                   
                  <td> 
                   
 
                      <div class="media">
                         <a :href="score.course_class.get_absolute_url">
-                            <img :src="score.course_class.course.thumbnail" class="rounded-circle" height="48" alt="">
+                            <img :src="score.course_class.course.thumbnail" class="rounded-circle" height="64" alt="">
                         </a>
                         <div class="media-body mr-2">
                             <h6>
@@ -91,6 +91,18 @@
                             <h6>
                                 <a :href="score.course_class.get_absolute_url">
                                     <span v-text="score.course_class.course.code"></span>
+                                </a>
+                            </h6>
+
+                             <h6>
+                                <a :href="score.course_class.school.get_absolute_url">
+                                    <span v-text="score.course_class.school.name"></span>
+                                </a>
+                            </h6>
+
+                             <h6>
+                                <a :href="score.course_class.educational_year.get_absolute_url">
+                                    <span v-text="score.course_class.educational_year.name"></span>
                                 </a>
                             </h6>
                             
