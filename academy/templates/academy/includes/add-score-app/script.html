@@ -4,6 +4,7 @@
     data: {
      
       student_melli_code:"{{student.person.melli_code}}",
+      student_id:parseInt("{{student.id}}"),
       course_class_id:0,
       score_type:"",
       score:"",
@@ -31,6 +32,7 @@
         {
           student:{
             melli_code:add_score_app.student_melli_code,
+            id:add_score_app.student_id,
           },
           score:{
             score_type:add_score_app.score_type,

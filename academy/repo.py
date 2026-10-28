@@ -916,7 +916,6 @@ class GroupRepo():
         if not self.request.user.has_perm(APP_NAME+".add_group"):
             message="دسترسی غیر مجاز"
             return result,message,group,groups  
-        leolog(sdsdsdsdsd=kwargs)
         group=GroupRepo(request=self.request).group(**kwargs) 
         student=StudentRepo(request=self.request).student(**kwargs) 
        
@@ -1173,7 +1172,6 @@ class ScoreRepo():
 
 
     def add_scores(self,*args,**kwargs):
-        leolog(add_scores_kwargs=kwargs)
         result,message,scores=FAILED,"",[]
         if not self.request.user.has_perm(APP_NAME+".add_score"):
             message="دسترسی غیر مجاز"
@@ -1187,19 +1185,25 @@ class ScoreRepo():
 
             if 'score' in score1['score'] and score1['score']['score']:
                 score.score=score1['score']['score']
-
+            student=None
             if 'student' in score1 and score1['student']:
-                student_melli_code=score1['student']['melli_code']
-                student=Student.objects.filter(person__melli_code=student_melli_code).first()
+                if 'melli_code' in score1['student'] and score1['student']['melli_code'] and True:
+                    student_melli_code=str(score1['student']['melli_code'])
+                    if not score1['student']['melli_code'] == "None" :
+                        leolog(student_melli_code=student_melli_code)
+                        student=Student.objects.filter(person__melli_code=student_melli_code).first()
+                if student is None and 'id' in score1['student'] and score1['student']['id']:
+                    student_id=score1['student']['id']
+                    student=Student.objects.filter(pk=student_id).first()
                 if student is None:
                     return FAILED,'دانش آموز ناصحیح',[]
                 score.student_id=student.id
-            
             if 'course_class' in score1 and score1['course_class']:
                 score.course_class_id=int(score1['course_class']['id']) 
-            (result,message,score)=score.save()
-            if result==SUCCEED:
-                scores.append(score)
+            if score.course_class is not None and score.student is not None:
+                (result,message,score)=score.save()
+                if result==SUCCEED:
+                    scores.append(score)
 
         return result,message,scores
 
