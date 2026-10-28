@@ -51,12 +51,26 @@
 
                     <tr v-for="student in students">
                         <td>
-                            <a :href="student.get_absolute_url">
 
-                              <label for="">
-                                <span v-text="student.full_name"></span>
-                              </label>
-                            </a>
+                              <div class="media">
+                        <a :href="student.get_absolute_url">
+                            <img :src="student.person.image" class="rounded-circle" height="48" alt="">
+                        </a>
+                        <div class="media-body mr-2">
+                            <h6>
+                                <a :href="student.get_absolute_url">
+                                    <span v-text="student.full_name"></span>
+                                </a>
+                            </h6>
+                            <h6>
+                                <a :href="student.get_absolute_url">
+                                    <span v-text="student.melli_code"></span>
+                                </a>
+                            </h6>
+                            
+                        </div>
+                    </div>
+
                         </td>
                         <td>
                           <input type="text" :id="'desc_'+student.id" class="form-control">

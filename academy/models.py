@@ -263,7 +263,10 @@ class Student(models.Model,LinkHelper):
     #         return self.parent.person.first_name
     #     return ""
 
-    
+    def father_name(self):
+        if self.parent is not None:
+            return self.parent.person.first_name
+
 class Parent(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
     students=models.ManyToManyField("student", verbose_name=_("students"))

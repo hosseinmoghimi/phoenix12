@@ -33,6 +33,7 @@
               <th>نام و نام خانوادگی</th> 
               <th>نام خانوادگی</th> 
               <th>نام</th> 
+              <th>نام پدر</th> 
               <th>کد ملی</th> 
               <th>
 
@@ -42,34 +43,45 @@
               <tr v-for="student in students">
                
                 <td>
-                  <a :href="student.get_absolute_url">
-                    <span v-text="student.full_name"></span>
-                  </a>
+                       <div class="media">
+                        <a :href="student.get_absolute_url">
+                            <img :src="student.person.image" class="rounded-circle" height="48" alt="">
+                        </a>
+                        <div class="media-body mr-2">
+                            <h6>
+                                <a :href="student.get_absolute_url">
+                                    <span v-text="student.full_name"></span>
+                                </a>
+                            </h6>
+                         
+                            
+                        </div>
+                    </div>
  
                 </td>
 
                 
                 <td>
-                  <a :href="student.get_absolute_url">
                     <span v-text="student.last_name"></span>
-                  </a>
  
                 </td>
 
 
                  <td>
-                  <a :href="student.get_absolute_url">
                     <span v-text="student.first_name"></span>
-                  </a>
  
                 </td>
+                 <td> 
+                    <span v-text="student.father_name"></span>
+        
+ 
+                </td>
+
                  <td> 
                     <span v-text="student.melli_code"></span>
         
  
                 </td>
-
-             
                 <td>
                   <a
                     target="_blank"

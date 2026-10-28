@@ -40,7 +40,7 @@ class StudentSerializer(serializers.ModelSerializer):
     person=PersonSerializer()
     class Meta:
         model=Student
-        fields=['id','full_name','first_name','last_name','melli_code','person', 'get_absolute_url', 'get_edit_url','get_delete_url']
+        fields=['id','full_name','first_name','last_name','father_name','melli_code','person', 'get_absolute_url', 'get_edit_url','get_delete_url']
     
     
 class TeacherSerializer(serializers.ModelSerializer): 
