@@ -124,7 +124,32 @@ class EducationalYear(models.Model,LinkHelper):
         super(EducationalYear,self).save()
         return SUCCEED,'سال تحصیلی با موفقیت ذخیره شد.',self
     
+
+class Score(models.Model,LinkHelper):
+    course_class=models.ForeignKey("courseclass", verbose_name=_("course_class"), on_delete=models.CASCADE)
+    student=models.ForeignKey("student", verbose_name=_("student"), on_delete=models.CASCADE)
+    score_type=models.CharField(_("type"), max_length=50)
+    score=models.FloatField(_("score"))    
+
+    class_name="score"
+    app_name=APP_NAME
+
+    class Meta:
+        verbose_name = _("Score")
+        verbose_name_plural = _("Scores")
+
+    def __str__(self):
+        return f"{self.student}  {self.course_class}"
+
+    def get_absolute_url(self):
+        return reverse("Score_detail", kwargs={"pk": self.pk})
     
+
+    def save(self,*args, **kwargs):
+        super(Score,self).save()
+        message=" نمره ذخیره شد."
+        return SUCCEED,message,self
+
 
 class CourseClass(models.Model,LinkHelper):
     major=models.ForeignKey("major", verbose_name=_("major"), on_delete=models.CASCADE)
@@ -317,6 +342,8 @@ class Attendance(models.Model,LinkHelper):
 
     def persian_date_added(self):
         return PersianCalendar().from_gregorian(self.date_added)
+
+
 class Major(models.Model,LinkHelper):
     title=models.CharField(_("title"), max_length=50)
     
@@ -355,7 +382,6 @@ class ActiveStudent(models.Model):
         return SUCCEED,message,self
 
 
-
 class Group(models.Model,LinkHelper): 
     title=models.CharField(_("title"), max_length=50)
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)
@@ -378,7 +404,6 @@ class Group(models.Model,LinkHelper):
         super(Group,self).save()
         message="گروه ذخیره شد."
         return SUCCEED,message,self
-
 
     
 class School(models.Model,LinkHelper):

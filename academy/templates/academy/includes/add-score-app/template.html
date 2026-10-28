@@ -1,0 +1,112 @@
+<div id="accordion-add-score" class="rtl text-right farsi">
+  <div class="card" id="add-score-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-add-score"
+          aria-expanded="true"
+          aria-controls="collapse-add-score"
+        >
+          افزودن نمره
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-add-score"
+      class="collapse show"
+      aria-labelledby="heading-add-score"
+      data-parent="#accordion-add-score"
+    >
+      <div class="card-body">
+        <form @submit.prevent="add_score()">
+          <div class="row">
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">کد ملی دانش آموز
+
+                  <a href="{% url 'academy:students' %}" target="_blank"> همه دانش آموزان</a>
+                </label>
+                <input
+                   
+                  v-model="student_melli_code"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">واحد درسی
+
+                </label>
+                
+                <select name=""
+                  v-model="course_class_id"
+                  class="form-control" id="">
+                  {% for course_class in course_classes %}
+                  <option value="{{course_class.id}}">{{course_class.course.title}}</option>
+                  {% endfor %}
+              </select>
+
+              </div>
+            </div>
+            
+
+
+           <div class="col-md-4">
+              <div class="form-group">
+                <label for="">نوع
+
+                </label>
+                
+                <select name=""
+                  v-model="score_type"
+                  class="form-control" id="">
+                  {% for score_type in score_types %}
+                  <option value="{{score_type}}">{{score_type}}</option>
+                  {% endfor %}
+              </select>
+              </div>
+            </div>
+            
+           
+           <div class="col-md-4">
+              <div class="form-group">
+                <label for="">نمره
+
+                </label>
+                
+                <input name=""
+                  type="number"
+                  v-model="score"
+                  class="form-control"  >
+              </div>
+            </div>
+            
+           
+
+               
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-12">
+              <button class="btn btn-success" type="submit">
+                <i class="fa fa-plus"></i>
+                افزودن
+              </button>
+            </div>
+            <div class="col-12">
+              <div class="my-2 mx-2">
+                {% include "utility/includes/message.html" %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

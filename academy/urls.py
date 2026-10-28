@@ -56,6 +56,13 @@ urlpatterns = [
     path('add-school/',login_required(apis.AddSchoolApi.as_view()),name="add_school"),
 
 
+    path('scores/',login_required(views.ScoresView.as_view()),name="scores"),
+    # path('score/<int:pk>/',login_required(views.ScoreView.as_view()),name="score"),
+    path('new-scores/<int:student_id>/',login_required(views.NewScoreView.as_view()),name="new_score"),
+    path('add-scores/',login_required(apis.AddScoresApi.as_view()),name="add_scores"),
+    path('scores-excel/',login_required(views.ScoresExcelView.as_view()),name="scores_excel"),
+
+
     path('groups/',login_required(views.GroupsView.as_view()),name="groups"),
     path('group/<int:pk>/',login_required(views.GroupView.as_view()),name="group"),
     path('add-group/',login_required(apis.AddGroupApi.as_view()),name="add_group"),

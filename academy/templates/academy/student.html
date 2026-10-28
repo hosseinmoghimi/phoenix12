@@ -19,6 +19,16 @@
             {{ student.melli_code }}
           </h6>
 
+
+          <h6>
+            <a href="{% url 'academy:new_score' student_id=student.id %}">
+            <small>نمره جدید </small>
+
+            </a>
+            
+          </h6>
+
+
           <a href="{{ student.person.get_absolute_url }}"><h6>پروفایل</h6></a>
 
           <div>
@@ -64,8 +74,12 @@
     <div class="col-md-12">
       {% include 'academy/includes/attendances-app/template.html' %}
     </div>
+    <div class="col-md-12">
+      {% include "academy/includes/scores-app/template.html" %} 
+    </div>
   </div>
 {% endblock %} {% block script %}
+  {% include "academy/includes/scores-app/script.html" %} 
   {% include 'academy/includes/course-classes-app/script.html' %}
   {% include 'academy/includes/attendances-app/script.html' %}
   {% include 'academy/includes/groups-app/script.html' %}

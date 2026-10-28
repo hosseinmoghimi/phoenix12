@@ -1,0 +1,74 @@
+<script>
+  let add_score_app = new Vue({
+    el: "#add-score-app",
+    data: {
+     
+      student_melli_code:"{{student.person.melli_code}}",
+      course_class_id:0,
+      score_type:"",
+      score:"",
+      message:{show:false},
+      waiting:false,
+      event_date: current_date,
+      event_time: "00:00:00",
+      event_datetime: current_datetime,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      
+      
+
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      add_score: function () {
+        let scores=[]
+        scores.push(
+        {
+          student:{
+            melli_code:add_score_app.student_melli_code,
+          },
+          score:{
+            score_type:add_score_app.score_type,
+            score:add_score_app.score,
+          },
+          course_class:{
+            id:parseInt(add_score_app.course_class_id),
+          }
+        }
+          )
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          // scores: scores,
+          scores: JSON.stringify(scores),
+          last_name: add_score_app.last_name,
+          melli_code: add_score_app.melli_code,
+          person_id: parseInt(add_score_app.person_id),
+          event_datetime: add_score_app.event_date+" "+add_score_app.event_time,
+        };
+
+        console.log(payload);
+        let url = "{% url 'academy:add_scores' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(add_score_app,'موفق',data.message,'success',1000)
+            if (typeof scores_app != "undefined") {
+              
+              scores_app.scores.push(data.scores[0]);
+            }
+          }
+          else{
+
+            show_message(add_score_app,'خطا',data.message,'danger',1000)
+          }
+        });
+      },
+    },
+  });
+</script>

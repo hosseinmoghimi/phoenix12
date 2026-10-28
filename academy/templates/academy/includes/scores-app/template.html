@@ -1,0 +1,152 @@
+<div id="accordion-scores" class="rtl text-right farsi">
+  <div class="card" id="scores-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-scores"
+          aria-expanded="true"
+          aria-controls="collapse-scores"
+        >
+            نمرات
+          <span v-if="scores.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="scores.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-scores"
+      class="collapse {% if expand_scores %} show {% endif %}"
+      aria-labelledby="heading-scores"
+      data-parent="#accordion-scores"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead>
+                {% if not student %}
+                  
+                <th>دانش آموز</th> 
+                {% endif %} 
+                {% if not course_class %}
+                  
+                <th>واحد ارائه شده</th> 
+                {% endif %}
+              <th>آزمون</th> 
+              <th>نمره</th> 
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="score in scores">
+               
+
+                {% if not student %}
+                  
+                <td>
+                    <div class="media">
+                        <a :href="score.student.get_absolute_url">
+                            <img :src="score.student.person.image" class="rounded-circle" height="48" alt="">
+                        </a>
+                        <div class="media-body mr-2">
+                            <h6>
+                                <a :href="score.student.get_absolute_url">
+                                    <span v-text="score.student.full_name"></span>
+                                </a>
+                            </h6>
+                            <h6>
+                                <a :href="score.student.get_absolute_url">
+                                    <span v-text="score.student.melli_code"></span>
+                                </a>
+                            </h6>
+                            
+                        </div>
+                    </div>
+                
+ 
+                </td>
+                {% endif %}
+                
+                {% if not course_class %}
+                  
+                 <td> 
+                  
+
+                     <div class="media">
+                        <a :href="score.course_class.get_absolute_url">
+                            <img :src="score.course_class.course.thumbnail" class="rounded-circle" height="48" alt="">
+                        </a>
+                        <div class="media-body mr-2">
+                            <h6>
+                                <a :href="score.course_class.get_absolute_url">
+                                    <span v-text="score.course_class.course.title"></span>
+                                </a>
+                            </h6>
+                            <h6>
+                                <a :href="score.course_class.get_absolute_url">
+                                    <span v-text="score.course_class.course.code"></span>
+                                </a>
+                            </h6>
+                            
+                        </div>
+                    </div>
+
+        
+ 
+                </td>
+                {% endif %}
+  
+                <td>
+                    <span v-text="score.score_type"></span>
+
+                </td>
+               <td>
+                    <span v-text="score.score"></span>
+
+                </td>
+                <td>
+                  <a
+                    target="_blank"
+                    :href="score.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="score.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="my-3">
+          <form method="POST" action="{% url 'academy:scores_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست نمرات در قالب فایل اکسل
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,11 +4,35 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import ParentRepo,CourseRepo,EducationalYearRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
-from .serializers import ParentSerializer,EducationalYearSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
+from .repo import ParentRepo,CourseRepo,ScoreRepo,EducationalYearRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
+from .serializers import ParentSerializer,ScoreSerializer,EducationalYearSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
 from django.http import JsonResponse
 from .forms import *
     
+class AddScoresApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_scores_form=AddScoresForm(request.POST)
+        if add_scores_form.is_valid():
+            log=333
+            cd=add_scores_form.cleaned_data
+            cd['scores']=json.loads(cd['scores'])
+            result,message,scores=ScoreRepo(request=request).add_scores(**cd)
+            if scores is not None:
+                context['scores']=ScoreSerializer(scores,many=True).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
+  
     
 class AddCourseApi(APIView):
     def post(self,request,*args, **kwargs):

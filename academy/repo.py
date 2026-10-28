@@ -1,4 +1,4 @@
-from .models import Parent,Group,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
+from .models import Parent,Group,Score,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -1111,7 +1111,98 @@ class AttendanceRepo():
         attendances=AttendanceRepo(request=self.request).list(session_id=attendance.session.id)
         return result,message,attendance,attendances
  
+
+
   
+class ScoreRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=Score.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            self.objects=Score.objects
+            if request.user.has_perm(APP_NAME+".view_educational_year"):
+                self.objects=Score.objects
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "ids" in kwargs:
+            ids=kwargs["ids"]
+            objects=objects.filter(id__in=ids)  
+        if "id__in" in kwargs:
+            id__in=kwargs["id__in"]
+            objects=objects.filter(id__in=id__in) 
+        if "student_id" in kwargs:
+            student_id=kwargs["student_id"]
+            objects=objects.filter(student_id=student_id) 
+        if "course_class_id" in kwargs:
+            course_class_id=kwargs["course_class_id"]
+            objects=objects.filter(course_class_id=course_class_id) 
+        return objects.all()
+        
+    def score(self,*args, **kwargs):
+        if "score_id" in kwargs and kwargs["score_id"] is not None:
+            return self.objects.filter(pk=kwargs['score_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_score(self,*args,**kwargs):
+        result,message,score=FAILED,"",None
+        if not self.request.user.has_perm(APP_NAME+".add_score"):
+            message="دسترسی غیر مجاز"
+            return result,message,score
+        score=Score()
+        if 'name' in kwargs and kwargs['name']:
+            if len(Score.objects.filter(name=kwargs["name"]))>0:
+                return FAILED,'سال تکراری',None
+            score.name=kwargs["name"]
+         
+         
+        (result,message,score)=score.save()
+        return result,message,score
+
+
+    def add_scores(self,*args,**kwargs):
+        leolog(add_scores_kwargs=kwargs)
+        result,message,scores=FAILED,"",[]
+        if not self.request.user.has_perm(APP_NAME+".add_score"):
+            message="دسترسی غیر مجاز"
+            return result,message,scores
+        for score1 in kwargs['scores']:
+            score=Score()
+         
+
+            if 'score_type' in score1['score'] and score1['score']['score_type']:
+                score.score_type=score1['score']['score_type']
+
+            if 'score' in score1['score'] and score1['score']['score']:
+                score.score=score1['score']['score']
+
+            if 'student' in score1 and score1['student']:
+                student_melli_code=score1['student']['melli_code']
+                student=Student.objects.filter(person__melli_code=student_melli_code).first()
+                if student is None:
+                    return FAILED,'دانش آموز ناصحیح',[]
+                score.student_id=student.id
+            
+            if 'course_class' in score1 and score1['course_class']:
+                score.course_class_id=int(score1['course_class']['id']) 
+            (result,message,score)=score.save()
+            if result==SUCCEED:
+                scores.append(score)
+
+        return result,message,scores
+
 def add_from_json(words=[],parent_id=None,new_parent_id=None): 
     if len(words)<1:
         return

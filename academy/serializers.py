@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from authentication.serializers import Person
-from .models import Parent,Group,Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
+from .models import Score,Parent,Group,Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
  
-  
 class EducationalYearSerializer(serializers.ModelSerializer): 
     class Meta:
         model=EducationalYear
@@ -29,6 +28,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model=Course
         fields=['id','thumbnail','class_count','title','code', 'get_absolute_url', 'get_edit_url','get_delete_url']
+
  
 class PersonSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -91,3 +91,10 @@ class ParentSerializer(serializers.ModelSerializer):
         fields=['id','person','students','get_absolute_url', 'get_edit_url','get_delete_url']
     
   
+class ScoreSerializer(serializers.ModelSerializer): 
+    student=StudentSerializer()
+    course_class=CourseClassSerializer()
+    class Meta:
+        model=Score
+        fields=['id','student','score','score_type', 'course_class', 'get_edit_url','get_delete_url']
+

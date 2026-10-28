@@ -1,0 +1,37 @@
+<script>
+    
+    let scores_for_scores_app=JSON.parse("{{scores_s|escapejs}}")
+    let scores_app = new Vue({
+        el: "#scores-app",
+        data: {
+            search_for:"",
+            scores: scores_for_scores_app
+        },
+        methods: {
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            },
+            ids:function(){
+                let ids=[]
+                this.scores.forEach(student => {
+                    ids.push(student.id)
+                });
+                return JSON.stringify(ids)
+            },
+            search:function(){
+                this.scores=scores_for_scores_app.filter(function(student){
+                        if(student.person.first_name.indexOf(scores_app.search_for)>-1)
+                            return true
+                        if(student.person.melli_code.indexOf(scores_app.search_for)>-1)
+                            return true
+                        if(student.person.last_name.indexOf(scores_app.search_for)>-1)
+                            return true
+                        if(student.person.full_name.indexOf(scores_app.search_for)>-1)
+                            return true
+                        return false
+
+                })
+            },
+        }
+    })
+</script>

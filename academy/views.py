@@ -4,12 +4,12 @@ from django.views import View
 from .forms import *
 from .apps import APP_NAME
 from core.views import CoreContext,MessageView,PageContext
-
+from .enums import *
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import GroupSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
-from .repo import GroupRepo,CourseRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
+from .serializers import GroupSerializer,ScoreSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import GroupRepo,CourseRepo,ScoreRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -305,6 +305,10 @@ class StudentView(View):
         context['course_classes']=course_classes
 
 
+        scores=ScoreRepo(request=request).list(student_id=student.id).order_by('student__person__last_name')
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
 
         attendances=AttendanceRepo(request=request).list(student_id=student.id)
         context['attendances']=attendances
@@ -614,6 +618,13 @@ class CourseClassView(View):
         context['sessions_s']=sessions_s
 
 
+
+
+        scores=ScoreRepo(request=request).list(course_class_id=course_class.id).order_by('student__person__last_name')
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
+
         context[WIDE_LAYOUT]=True
         # context['NOT_NAVBAR']=True
         # context['NOT_FOOTER']=True
@@ -713,6 +724,132 @@ class SessionsView(View):
             context['add_session_form']=AddSessionForm()
     
         return render(request,TEMPLATE_ROOT+"sessions.html",context) 
+
+ 
+class ScoresExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        scores_excel_form=ScoresExcelForm(request.POST)
+        if scores_excel_form.is_valid():
+            log=333
+            cd=scores_excel_form.cleaned_data
+            if 'ids' in cd:
+                ids=cd['ids']
+                if ids is not None and not ids=="":
+                    cd['ids']=json.loads(cd['ids'])
+            scores=ScoreRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,score in enumerate(scores,start=1):
+            line={
+                'row':i,
+                'id':score.id,
+                'melli_code':score.student.person.melli_code,   
+                'first_name':score.student.person.first_name,      
+                'last_name':score.student.person.last_name,   
+                'father_name':score.student.parent.person.first_name if score.student.parent is not None else "",    
+                'course':score.course_class.course.title,   
+                'educational_year':score.course_class.educational_year.name,    
+                'school':score.course_class.school.name,    
+                'type':score.score_type,    
+                'score':score.score,   
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'شناسه',
+                 'کد ملی',
+                 'نام',
+                 'نام خانوادگی',
+                 'نام پدر', 
+                 'واحد درسی',
+                 'سال تحصیلی',
+                 'آموزشگاه',
+                 'نوع',
+                 'نمره',
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'academy.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='scores',
+            title='scores',
+        )
+        file_name=f"""Phoenix Academy Scores {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+    
+class ScoresView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        context['expand_scores']=True
+        scores=ScoreRepo(request=request).list().order_by('student__person__last_name')
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
+    
+        return render(request,TEMPLATE_ROOT+"scores.html",context) 
+
+
+class NewScoreView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+
+        student=StudentRepo(request=request).student(**kwargs)
+        if student is None:
+            mv=MessageView()
+            return mv.get(request=request)
+        context['student']=student
+
+        context['expand_scores']=True
+        scores=ScoreRepo(request=request).list().order_by('student__person__last_name')
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
+        context['score_types']=(i[0] for i in ScoreTypeEnum.choices)
+ 
+        course_classes=student.courseclass_set.all().order_by('level')
+        course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+        context['course_classes_s']=course_classes_s
+        context['course_classes']=course_classes
+
+
+
+        scores=[]
+        scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
+        context['scores_s']=scores_s
+        context['scores']=scores 
+
+
+        return render(request,TEMPLATE_ROOT+"new-score.html",context) 
 
 
 class SchoolView(View):

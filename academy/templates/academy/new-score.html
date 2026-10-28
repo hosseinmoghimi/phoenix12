@@ -1,0 +1,17 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+<div class="row rtl">
+    <div class="col-md-12"> 
+        
+        {% include "academy/includes/add-score-app/template.html" %}
+    </div>
+    <div class="col-md-12">
+{% include "academy/includes/scores-app/template.html" %}
+
+    </div>
+ </div>
+ 
+{% endblock content %} {% block script %} 
+        {% include "academy/includes/add-score-app/script.html" %}
+{% include "academy/includes/scores-app/script.html" %}
+
+{% endblock script %}

@@ -63,6 +63,12 @@ class SearchForm(forms.Form):
 class DeleteAllWordsForm(forms.Form):
     count=forms.IntegerField(required=False)
 
+class AddScoresForm(forms.Form):
+    scores=forms.CharField( max_length=10000, required=True)
+
+
+class ScoresExcelForm(forms.Form):
+    ids=forms.CharField( max_length=10000, required=False)
 
 class AddCourseClassForm(forms.Form):
     level=forms.IntegerField(required=True)

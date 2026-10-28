@@ -96,8 +96,9 @@
         </div>
       </div>
       <div class="card-footer">
+        
         <div class="my-3">
-          <form method="POST" action="{% url 'academy:students_excel' %}">
+          <form method="POST" action="{% url 'academy:scores_excel' %}">
             {% csrf_token %}
             <input type="hidden" name="ids" :value="ids()">
             <button type="submit" class="btn btn-info">

@@ -10,3 +10,8 @@ class AttendanceStatusEnum(TextChoices):
     PRESENT="حاضر",_("حاضر")
     DELAYED="تاخیر",_("تاخیر")
  
+class ScoreTypeEnum(TextChoices):
+    FINAL="نهایی",_("نهایی")
+    MID="میان ترم",_("میان ترم")
+    INIT="ارزیابی اولیه",_("ارزیابی اولیه")
+    MISC="سایر",_("سایر")
