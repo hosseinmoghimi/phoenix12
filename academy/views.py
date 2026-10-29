@@ -303,7 +303,7 @@ class StudentView(View):
         student_s=json.dumps(StudentSerializer(student,many=False).data)
         context['student_s']=student_s
 
-        course_classes=student.courseclass_set.all().order_by('level')
+        course_classes=student.courseclass_set.all().order_by('level').order_by('-educational_year__name')
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
         context['course_classes']=course_classes
@@ -845,6 +845,11 @@ class NewScoreView(View):
         context['course_classes_s']=course_classes_s
         context['course_classes']=course_classes
 
+        educational_years=EducationalYearRepo(request=request).list()
+        educational_years_s=json.dumps(EducationalYearSerializer(educational_years,many=True).data)
+        context['educational_years_s']=educational_years_s
+        context['educational_years']=educational_years
+ 
 
 
         scores=[]

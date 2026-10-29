@@ -1,4 +1,5 @@
 <script>
+  let course_classes=JSON.parse(`{{course_classes_s|escapejs}}`)
   let add_score_app = new Vue({
     el: "#add-score-app",
     data: {
@@ -6,6 +7,8 @@
       student_melli_code:"{{student.person.melli_code}}",
       student_id:parseInt("{{student.id}}"),
       course_class_id:0,
+      educational_year_id:0,
+      course_classes:[],
       score_type:"",
       score:"",
       message:{show:false},
@@ -19,7 +22,11 @@
     },
     methods: {
       
-      
+      select_educational_year:function(){
+          setTimeout(() => {
+            add_score_app.course_classes=course_classes.filter(course_class=>course_class.educational_year.id==add_score_app.educational_year_id)
+          }, 200);
+      },
 
       to_price: function (vall) {
         return to_price(vall) + " {{CURRENCY}}";

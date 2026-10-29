@@ -38,6 +38,24 @@
                 />
               </div>
             </div>
+             <div class="col-md-4">
+              <div class="form-group">
+                <label for="">سال تحصیلی
+
+                </label>
+                
+                <select name=""
+                @input="select_educational_year()"
+                  v-model="educational_year_id"
+                  class="form-control" id="">
+                  {% for educational_year in educational_years %}
+                  <option value="{{educational_year.id}}">{{educational_year.name}}</option>
+                  {% endfor %}
+              </select>
+
+              </div>
+            </div>
+            
             <div class="col-md-4">
               <div class="form-group">
                 <label for="">واحد درسی
@@ -47,14 +65,12 @@
                 <select name=""
                   v-model="course_class_id"
                   class="form-control" id="">
-                  {% for course_class in course_classes %}
-                  <option value="{{course_class.id}}">{{course_class.course.title}}</option>
-                  {% endfor %}
+                   
+                  <option v-for="course_class in course_classes" :value="course_class.id" v-text="course_class.course.title"></option>
               </select>
 
               </div>
             </div>
-            
 
 
            <div class="col-md-4">
