@@ -23,7 +23,7 @@
       <div class="card-body">
         <form @submit.prevent="add_vehicle()">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="">عنوان</label>
                 <input
@@ -35,7 +35,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">مالک</label>
                 <input 
@@ -67,7 +67,7 @@
                 <h5 class="text-danger">مالک انتخاب نشده است.</h5>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">نوع</label>
                 <select v-model="vehicle_type" class="form-control">
@@ -79,7 +79,7 @@
               </div>
             </div>
 
-             <div class="col-md-6">
+             <div class="col-md-3">
               <div class="form-group">
                 <label for="">راننده</label>
                 <select v-model="driver_id" class="form-control">
@@ -92,7 +92,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">سایز</label>
                 <select v-model="vehicle_size" class="form-control">
@@ -101,7 +101,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">رنگ</label>
                 <select v-model="vehicle_color" class="form-control">
@@ -112,7 +112,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">کد</label>
                 <input
@@ -124,7 +124,7 @@
               </div>
             </div>
             <div class="col-6 mt-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">پلاک</label>
                 <input
@@ -136,7 +136,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">سال</label>
                 <input
@@ -149,7 +149,7 @@
             </div>
 
 
-             <div class="col-md-6">
+             <div class="col-md-3">
               <div class="form-group">
                 <label for="">کیلومتر</label>
                 <input
@@ -161,7 +161,7 @@
               </div>
             </div>
 
-              <div class="col-md-6">
+              <div class="col-md-3">
               <div class="form-group">
                 <label for="">قیمت</label>
                 <span v-text="to_price(price)"></span> {{CURRENCY}}
@@ -175,7 +175,7 @@
             </div>
 
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">برند</label>
                 <select v-model="brand_name" class="form-control">
@@ -187,7 +187,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
               <div class="form-group">
                 <label for="">مدل</label>
                 <input

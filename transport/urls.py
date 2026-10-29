@@ -71,6 +71,7 @@ urlpatterns = [
     path('add-service-man/',login_required(apis.AddServiceManApi.as_view()),name="add_service_man"),
 
 
+    path('vehicle-event/<int:pk>/',login_required(views.VehicleEventView.as_view()),name="vehicleevent"), 
     path('vehicle-events/',login_required(views.VehicleEventsView.as_view()),name="vehicle_events"), 
     path('tavaghof/<int:pk>/',login_required(views.ServiceManView.as_view()),name="tavaghof"),
 

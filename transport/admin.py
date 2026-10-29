@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Product,OilService,FilterService,Vehicle,MaintenanceInvoice
-from .models import ServiceMan,Maintenance,WorkShift,Driver,Tavaghof,VehicleStatus
+from .models import ServiceMan,Maintenance,WorkShift,Driver,Tavaghof,VehicleStatus,VehicleEvent
 from .models import AnbarProduct,Service
 admin.site.register(Vehicle) 
 admin.site.register(MaintenanceInvoice)
@@ -15,3 +15,4 @@ admin.site.register(OilService)
 admin.site.register(FilterService)
 admin.site.register(Service)
 admin.site.register(AnbarProduct)
+admin.site.register(VehicleEvent)

@@ -871,7 +871,21 @@ class VehicleStatusView(View):
         context['vehicle_status_s']=vehicle_status_s
         return render(request,TEMPLATE_ROOT+"vehicle-status.html",context) 
   
+class VehicleEventView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        context[WIDE_LAYOUT]=True 
+        vehicle_event=VehicleEventRepo(request=request).vehicle_event(*args, **kwargs)
+        if vehicle_event is None:
+            mv=MessageView()
+            return mv.get(request=request)
+        context.update(PageContext(request=request,page=vehicle_event))
+        context['vehicle_event']=vehicle_event
+        vehicle_event_s=json.dumps(VehicleEventSerializer(vehicle_event,many=False).data)
+        context['vehicle_event_s']=vehicle_event_s
 
+        return render(request,TEMPLATE_ROOT+"vehicle-event.html",context) 
+  
 class VehicleEventsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
