@@ -33,11 +33,11 @@ def getContext(request,*args, **kwargs):
     context=CoreContext(app_name=APP_NAME,request=request)
 
  
-    if context['me_person'] is not None:
+    if 'me_person' in context and context['me_person'] is not None:
         from django.contrib.auth.models import Group
         # group1 = Group.objects.get_or_create(name = ADD_WORK_SHIFT_GROUP_NAME)
         group2 = Group.objects.get_or_create(name = ADD_FORM_GROUP_NAME)
-        
+
     context['title']="حمل و نقل"
 
     context[WIDE_LAYOUT]=False 
