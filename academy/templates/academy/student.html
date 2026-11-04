@@ -30,6 +30,15 @@
 
 
           <a href="{{ student.person.get_absolute_url }}"><h6>پروفایل</h6></a>
+          {% if student.person.tel %}
+          <a class="btn btn-success"  href="tel:{{ student.person.tel }}"><h6>تماس تلفن</h6></a>
+            
+          {% endif %}
+
+           {% if student.person.mobile %}
+          <a  class="btn btn-info" href="tel:{{ student.person.mobile }}"><h6>تماس همراه</h6></a>
+            
+          {% endif %}
 
           <div>
             <img src="{{ student.person.image }}" class="rounded-circle" width="64" alt="" />
