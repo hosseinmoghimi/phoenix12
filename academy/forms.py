@@ -76,6 +76,7 @@ class AddCourseClassForm(forms.Form):
     major_id=forms.IntegerField(required=True)
     school_id=forms.IntegerField(required=True)
     group_id=forms.IntegerField(required=False)
+    teacher_id=forms.IntegerField(required=False)
     educational_year_id=forms.IntegerField(required=True)
      
      

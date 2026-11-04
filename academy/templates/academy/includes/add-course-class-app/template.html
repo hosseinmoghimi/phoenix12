@@ -24,7 +24,7 @@
       <div class="card-body">
         <form @submit.prevent="add_course_class()">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
               <div class="form-group">
                 <label for="">واحد درسی</label>
                 <select v-model="course_id" class="form-control" >
@@ -35,6 +35,17 @@
               </div>
             </div>
 
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">دبیر</label>
+                <select v-model="teacher_id" class="form-control" >
+                  <option value="0">بدون دبیر</option>
+                  {% for teacher in teachers %}
+                    <option value="{{teacher.id}}">{{teacher}}  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
 
              <div class="col-md-4">
               <div class="form-group">

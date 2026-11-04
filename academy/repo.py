@@ -587,11 +587,10 @@ class CourseClassRepo():
             message="دسترسی غیر مجاز"
             return result,message,course_class
         course_class=CourseClass()
-        if 'title' in kwargs:
-            if len(CourseClass.objects.filter(title=kwargs["title"]))>0:
-                return FAILED,'عنوان تکراری',None
-            course_class.title=kwargs["title"] 
 
+        ss=CourseClass.objects.filter(level=kwargs["level"]).filter(educational_year_id=kwargs["educational_year_id"]).filter(school_id=kwargs["school_id"]).filter(group_id=kwargs["group_id"]).filter(course_id=kwargs["course_id"]).filter(major_id=kwargs["major_id"])
+        if len(ss)>0:
+            return FAILED,' تکراری است',None
             
         if 'course_id' in kwargs and kwargs['course_id']:
             course_class.course_id=kwargs["course_id"]
@@ -625,8 +624,18 @@ class CourseClassRepo():
             
          
         (result,message,course_class)=course_class.save()
+
         for student in course_class.group.students.all():
             course_class.students.add(student.id)
+
+            
+        if 'teacher_id' in kwargs and kwargs['teacher_id']:
+            teacher_id=kwargs["teacher_id"]
+            teacher=Teacher.objects.filter(pk=teacher_id).first()
+            if teacher is not None:
+                course_class.teachers.add(teacher_id)
+
+
         return result,message,course_class
  
 

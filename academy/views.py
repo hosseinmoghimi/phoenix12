@@ -597,6 +597,8 @@ class CourseClassesView(View):
             context['groups']=groups
             schools=SchoolRepo(request=request).list()
             context['schools']=schools
+            teachers=TeacherRepo(request=request).list()
+            context['teachers']=teachers
         return render(request,TEMPLATE_ROOT+"course-classes.html",context) 
  
 
