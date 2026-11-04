@@ -114,12 +114,22 @@
                   </a>
                 </td>
                 {% endif %}
-
+              
                 <td>
                   <span
                     :class="'text-'+get_color(attendance.status)"
                     v-text="attendance.status"
                   ></span>
+                </td>
+                  <td>
+                  <a  v-if="attendance.student.person.tel" class="btn btn-success" :href="'tel:'+attendance.student.person.tel">
+                  <i class="fa fa-call"></i>
+                    تماس
+                  </a>
+                  <a  v-if="attendance.student.person.mobile" class="btn btn-info" :href="'tel:'+attendance.student.person.mobile">
+                    <i class="fa fa-call"></i>
+                    تماس
+                  </a>
                 </td>
                 <td>
                   <span :class="'text-'+get_color(attendance.status)" v-text="attendance.description"></span>
