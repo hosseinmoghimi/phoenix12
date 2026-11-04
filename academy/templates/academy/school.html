@@ -2,6 +2,8 @@
 
 <div class="text-center">
   <h1 class="text-center rtl">{{school.title}}</h1>
+  
+ 
 
   {% if perms.academy.change_school %}
   <h3>
@@ -32,6 +34,30 @@
     </a>
   </h4>
 </div>
+
+
+<div class="rtl text-right">
+  
+  {% if school.manager %}
+    <div class="media rtl">
+      <a class=" " href="{% url 'authentication:person' pk=school.manager.id %}">
+        <img src="{{school.manager.image}}" height="32" class="rounded-circle" alt="">
+      </a>
+      <div class="media-body ">
+        <a class=" " href="{% url 'authentication:person' pk=school.manager.id %}">
+        
+    {{school.manager.full_name}}
+  </a>  
+  <div>
+    مدیر
+
+  </div>
+  </div>
+    </div>
+  {% endif %}
+ 
+</div>
+
 <hr /> 
         {% include "academy/includes/course-classes-app/template.html" %}
 

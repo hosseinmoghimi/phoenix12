@@ -267,6 +267,7 @@ class Student(models.Model,LinkHelper):
         if self.parent is not None:
             return self.parent.person.first_name
 
+
 class Parent(models.Model,LinkHelper):
     person=models.ForeignKey("authentication.person", verbose_name=_("person"), on_delete=models.PROTECT)
     students=models.ManyToManyField("student", verbose_name=_("students"))
@@ -415,6 +416,8 @@ class School(models.Model,LinkHelper):
     tel=models.CharField(_("tel"),null=True,blank=True, max_length=50)
     address=models.CharField(_("address"),null=True,blank=True, max_length=500)
 
+    manager=models.ForeignKey("authentication.person", verbose_name=_("manager"),null=True,blank=True, on_delete=models.SET_NULL)
+    
     class_name="school"  
     app_name=APP_NAME
 

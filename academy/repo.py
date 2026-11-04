@@ -23,9 +23,12 @@ class TeacherRepo():
         person=PersonRepo(request=request).me
         self.me=Teacher.objects.filter(person_id=person.id).first()
         if person is not None:
-            self.objects=Teacher.objects
+            
             if request.user.has_perm(APP_NAME+".view_teacher"):
                 self.objects=Teacher.objects
+            else:
+                self.objects=Teacher.objects.filter(person_id=person.id)
+                pass
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -202,9 +205,11 @@ class SchoolRepo():
         person=PersonRepo(request=request).me
 
         if person is not None:
-            self.objects=School.objects
+            
             if request.user.has_perm(APP_NAME+".view_school"):
                 self.objects=School.objects
+            else:
+                self.objects=School.objects.filter(manager_id=person.id)
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -573,6 +578,13 @@ class CourseClassRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "major_id" in kwargs:
+            major_id=kwargs["major_id"]
+            objects=objects.filter(major_id=major_id)  
+        if "course_id" in kwargs:
+            course_id=kwargs["course_id"]
+            objects=objects.filter(course_id=course_id)  
+                
         return objects.all()
         
     def course_class(self,*args, **kwargs):
@@ -853,7 +865,6 @@ class GroupRepo():
         person=PersonRepo(request=request).me
 
         if person is not None:
-            self.objects=Group.objects
             if request.user.has_perm(APP_NAME+".view_group"):
                 self.objects=Group.objects
     def list(self,*args, **kwargs):

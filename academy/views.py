@@ -123,7 +123,7 @@ class CourseView(View):
         course_s=json.dumps(CourseSerializer(course,many=False).data)
         context['course_s']=course_s
 
-        course_classes=course.courseclass_set.all().order_by('level')
+        course_classes=CourseClassRepo(request=request).list(course_id=course.id)
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
 
@@ -651,7 +651,7 @@ class MajorView(View):
         major_s=json.dumps(MajorSerializer(major,many=False).data)
         context['major_s']=major_s
 
-        course_classes=major.courseclass_set.all().order_by('level')
+        course_classes=CourseClassRepo(request=request).list(major_id=major.id)
         course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
         context['course_classes_s']=course_classes_s
         context['course_classes']=course_classes
@@ -983,7 +983,7 @@ class SchoolView(View):
         school =SchoolRepo(request=request).school(*args, **kwargs) 
         if school is None:
             mv=MessageView()
-            return mv.get(request=request)
+            return mv.get(request=request,title='خطا',body='مدرسه پیدا نشد')
 
  
         context['school']=school
