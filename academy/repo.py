@@ -560,9 +560,11 @@ class CourseClassRepo():
         person=PersonRepo(request=request).me
 
         if person is not None:
-            self.objects=CourseClass.objects
+            me_teacher=TeacherRepo(request=request).me
             if request.user.has_perm(APP_NAME+".view_course_class"):
                 self.objects=CourseClass.objects
+            elif me_teacher is not None:
+                self.objects=me_teacher.courseclass_set.all()
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
