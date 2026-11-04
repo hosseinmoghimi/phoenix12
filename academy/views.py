@@ -707,6 +707,11 @@ class CourseClassView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         course_class =CourseClassRepo(request=request).course_class(*args, **kwargs) 
+
+        if course_class is None:
+            mv=MessageView()
+            return mv.get(request=request,title='خطا',body='وجود ندارد')
+        
         context['course_class']=course_class
         course_class_s=json.dumps(CourseClassSerializer(course_class,many=False).data)
         context['course_class_s']=course_class_s
