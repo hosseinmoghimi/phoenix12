@@ -40,6 +40,10 @@ class AttendancesExcelForm(forms.Form):
     ids=forms.CharField(max_length=10000, required=False)
 
 
+class CourseClassesExcelForm(forms.Form):
+    ids=forms.CharField(max_length=10000, required=False)
+
+
 class ImportStudentFromExcelForm(forms.Form):
     count=forms.IntegerField( required=False)
 

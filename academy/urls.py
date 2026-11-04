@@ -22,6 +22,7 @@ urlpatterns = [
     path('course_classes/',login_required(views.CourseClassesView.as_view()),name="course_classes"),
     path('course_class/<int:pk>/',login_required(views.CourseClassView.as_view()),name="courseclass"),
     path('add-course_class/',login_required(apis.AddCourseClassApi.as_view()),name="add_course_class"),
+    path('course-classes-excel/',login_required(views.CourseClassesExcelView.as_view()),name="course_classes_excel"),
 
      
     path('words/',login_required(views.WordsView.as_view()),name="words"),

@@ -162,6 +162,17 @@
           </table>
         </div>
       </div>
+      <div class="card-footer">
+        <form method="POST" action="{% url 'academy:course_classes_excel' %}">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست  دروس ارئه شده در قالب فایل اکسل
+            </button>
+          </form>
+
+      </div>
     </div>
   </div>
 </div>

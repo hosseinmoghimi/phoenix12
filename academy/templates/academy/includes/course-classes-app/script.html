@@ -9,7 +9,15 @@
         methods: {
             to_price: function(vall) { 
                 return  to_price(vall) 
-            }
+            },
+            ids:function(){
+                let ids=[]
+                this.course_classes.forEach(course_class => {
+                    ids.push(course_class.id)
+                });
+                return JSON.stringify(ids)
+            },
+            
         }
     })
 </script>

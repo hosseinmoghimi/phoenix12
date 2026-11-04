@@ -426,6 +426,80 @@ class StudentsExcelView(View):
         return response
 
      
+class CourseClassesExcelView(View):
+    def post(self,request,*args, **kwargs):
+        context={}
+        from utility.constants import FAILED,SUCCEED
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        course_classes_excel_form=CourseClassesExcelForm(request.POST)
+        if course_classes_excel_form.is_valid():
+            log=333
+            cd=course_classes_excel_form.cleaned_data
+            if 'ids' in cd:
+                ids=cd['ids']
+                if ids is not None and not ids=="":
+                    cd['ids']=json.loads(cd['ids'])
+            course_classes=CourseClassRepo(request=request).list(**cd)
+ 
+        now=PersianCalendar().date
+        
+        date=PersianCalendar().from_gregorian(now)
+        lines=[]
+        from utility.templatetags.to_normal_number import to_normal_number
+        for i,course_class in enumerate(course_classes,start=1):
+            line={
+                'row':i,
+                'id':course_class.id,
+                'educational_year':course_class.educational_year.name,   
+                'school':course_class.school.name,      
+                'course':course_class.course.title,   
+                'teacher':course_class.teachers.first().person.full_name if len(course_class.teachers.all())>0 else "",    
+                'major':course_class.major.title,    
+                'group':course_class.group.title if course_class.group is not None else "",    
+            }
+            lines.append(line)
+ 
+        headers=['ردیف',
+                 'شناسه',
+                 'سال تحصیلی',
+                 'آموزشگاه',
+                 'واحد درسی',
+                 'دبیر',
+                 'رشته',
+                 'گروه',
+        ]
+                
+        from utility.excel import ReportWorkBook,get_style
+        report_work_book=ReportWorkBook(origin_file_name=f'academy.xlsx')
+        style=get_style(font_name='B Koodak',size=12,bold=False,color='FF000000',start_color='FFFFFF',end_color='FF000000')
+        
+        
+        start_row=3
+        report_work_book.add_sheet(
+            data=lines,
+            start_row=start_row,
+            table_has_header=False,
+            table_headers=headers,
+            style=style,
+            sheet_name='course_classes',
+            title='course_classes',
+        )
+        file_name=f"""Phoenix Academy Course Classesd {date.replace('/','').replace(':','')}.xlsx"""
+        from django.http import HttpResponse
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response.AppendHeader("Content-Type", "application/vnd.ms-excel");
+        response["Content-disposition"]=f"attachment; filename={file_name}"
+        report_work_book.work_book.save(response)
+        report_work_book.work_book.close()
+        return response
+
+     
 class AttendancesExcelView(View):
     def post(self,request,*args, **kwargs):
         context={}
