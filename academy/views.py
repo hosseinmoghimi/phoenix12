@@ -740,11 +740,17 @@ class CourseClassView(View):
         context[WIDE_LAYOUT]=True
         # context['NOT_NAVBAR']=True
         # context['NOT_FOOTER']=True
-
+        from authentication.repo import PersonRepo
+        self.me=PersonRepo(request=request).me
         
         if request.user.has_perm(APP_NAME+".add_session"):
             context['add_session_form']=AddSessionForm()
-
+        if self.me is not None:
+            # ddd
+            for te in course_class.teachers.all():
+                # ggggg
+                if te.person.id==self.me.id:
+                    context['add_session_form']=AddSessionForm()
             
         return render(request,TEMPLATE_ROOT+"course-class.html",context) 
  

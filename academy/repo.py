@@ -771,7 +771,12 @@ class SessionRepo():
         
     def add_session(self,*args,**kwargs):
         result,message,session=FAILED,"",None
-        if not self.request.user.has_perm(APP_NAME+".add_session"):
+        me_teacher=TeacherRepo(request=self.request).me
+        if me_teacher is not None and 'course_class_id' in kwargs:
+            course_class=CourseClassRepo(request=self.request).course_class(pk=kwargs['course_class_id'])
+            if course_class is not None:
+                pass
+        elif not self.request.user.has_perm(APP_NAME+".add_session"):
             message="دسترسی غیر مجاز"
             return result,message,session
         session=Session()
