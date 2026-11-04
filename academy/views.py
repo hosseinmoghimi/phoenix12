@@ -809,9 +809,16 @@ class SessionView(View):
         students=session.course_class.students.all().order_by('person__first_name').order_by('person__last_name')
         students_s=json.dumps(StudentSerializer(students,many=True).data)
         context['students_s']=students_s
+        me_teacher=TeacherRepo(request=request).me
+        if me_teacher is not None:
+            ids=[]
+            teachers= session.course_class.teachers.all()
+            for teacher in teachers:
+                ids.append(teacher.id)
+            if me_teacher.id in ids:
+                context['add_attendance_form']=AddAttendanceForm()
 
-
-        if request.user.has_perm(APP_NAME+".add_attendance"):
+        if request.user.has_perm(APP_NAME+".add_attendance") :
             context['add_attendance_form']=AddAttendanceForm()
             
 

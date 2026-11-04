@@ -723,9 +723,19 @@ class SessionRepo():
         person=PersonRepo(request=request).me
 
         if person is not None:
-            self.objects=Session.objects
             if request.user.has_perm(APP_NAME+".view_session"):
                 self.objects=Session.objects
+            else:
+                me_teacher=TeacherRepo(request=request).me
+                if me_teacher is not None:
+                    ccs=me_teacher.courseclass_set.all()
+                    ids=[]
+                    for cc in ccs:
+                        ss=Session.objects.filter(course_class_id=cc.id)
+                        for s in ss:
+                            ids.append(s.id)
+                    self.objects=Session.objects.filter(id__in=ids)
+
     def list(self,*args, **kwargs):
         objects=self.objects
         if "search_for" in kwargs:
@@ -1091,16 +1101,31 @@ class AttendanceRepo():
     def add_attendance(self,*args,**kwargs):
         result,message,attendance,attendances=FAILED,"",None,[]
         if not self.request.user.has_perm(APP_NAME+".add_attendance"):
-            message="دسترسی غیر مجاز"
-            return result,message,attendance,attendances
+            is_teacher=False
+            
+            if 'session_id' in kwargs and kwargs['session_id']:
+                session_id=kwargs["session_id"] 
+
+
+            me_teacher=TeacherRepo(request=self.request).me
+            session=SessionRepo(request=self.request).session(pk=session_id)
+            if session is not None:
+                if session.course_class.teachers.filter(pk=me_teacher.id).first() is not None:
+                    is_teacher=True
+
+            if is_teacher is None:
+                message="دسترسی غیر مجاز"
+                return result,message,attendance,attendances
+        
+        
         attendance=Attendance() 
-
-        if 'student_id' in kwargs and kwargs['student_id']:
-            attendance.student_id=kwargs["student_id"] 
-
 
         if 'session_id' in kwargs and kwargs['session_id']:
             attendance.session_id=kwargs["session_id"] 
+
+
+        if 'student_id' in kwargs and kwargs['student_id']:
+            attendance.student_id=kwargs["student_id"] 
 
 
         if 'status' in kwargs and kwargs['status']:
