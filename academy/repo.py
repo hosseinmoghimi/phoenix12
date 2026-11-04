@@ -272,7 +272,8 @@ class StudentRepo():
         objects=self.objects
         if "search_for" in kwargs:
             search_for=kwargs["search_for"]
-            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+            objects=objects.filter(Q(person__first_name__contains=search_for) | Q(person__last_name__contains=search_for)  )
+            
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  

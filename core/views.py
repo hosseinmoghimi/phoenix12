@@ -228,6 +228,13 @@ class SearchView(View):
                     WAS_FOUND=True
 
 
+            if app_name=='academy' or SEARCH_IN_ALL_APPS:
+                from academy.views import SearchContext as academy_SearchContext
+                context.update(academy_SearchContext(request=request,search_for=search_for))
+                if context['WAS_FOUND']:
+                    WAS_FOUND=True
+
+
             if app_name=='projectmanager' or SEARCH_IN_ALL_APPS:
                 from projectmanager.views import SearchContext as projectmanager_SearchContext
                 context.update(projectmanager_SearchContext(request=request,search_for=search_for))

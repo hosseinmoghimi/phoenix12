@@ -9,6 +9,14 @@
         {% include "accounting/includes/financial-document-lines-app/template.html" %}
     </div>
     {% endif %}
+
+    
+    {% if students %}
+    <div class="col-md-12">
+        {% include "academy/includes/students-app/template.html" %}
+    </div>
+    {% endif %}
+
     {% if persons %}
     <div class="col-md-12">
         {% include "authentication/includes/persons-app/template.html" %}
@@ -331,6 +339,11 @@
         {% include "transport/includes/drivers-app/script.html" %}
  
       
+    {% endif %}
+
+    
+    {% if students %}
+        {% include "academy/includes/students-app/script.html" %}
     {% endif %}
     
      {% if service_mans %}  

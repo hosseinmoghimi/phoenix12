@@ -49,8 +49,35 @@ class SearchView(View):
             words_s=json.dumps(WordSerializer(words,many=True).data)
             context['words_s']=words_s
             context['words']=words
+
+            
+            students=StudentRepo(request=request).list(search_for=search_for)
+            if len(studenrs)>0:
+                students_s=json.dumps(StudentSerializer(students,many=True).data)
+                context['students_s']=students_s
+                context['students']=students
         
         return render(request,TEMPLATE_ROOT+"search.html",context)
+
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+    words=WordRepo(request=request).list(search_for=search_for)
+    if len(words)>0:
+        context['words']=words
+        context['words_s']=json.dumps(WordSerializer(words,many=True).data)
+        WAS_FOUND=True
+
+    students=StudentRepo(request=request).list(search_for=search_for)
+    if len(students)>0:
+        context['students']=students
+        context['students_s']=json.dumps(StudentSerializer(students,many=True).data)
+        WAS_FOUND=True
+
+
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
+    return context
 
  
 class GetJsonBackupView(View):
