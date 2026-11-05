@@ -173,8 +173,11 @@ class CourseClass(models.Model,LinkHelper):
         verbose_name_plural = _("CourseClasss")
 
     def __str__(self):
-        return f'{self.educational_year} {self.course}  {self.group}' 
-
+        teachers="" 
+        for teacher in self.teachers.all():
+            teachers+=" "+teacher.person.full_name
+        return f'{self.educational_year} {self.course}  {self.group}  {teachers}' 
+ 
     def save(self,*args, **kwargs):
         super(CourseClass,self).save()
         message="واحد ارائه شده ذخیره شد.."
