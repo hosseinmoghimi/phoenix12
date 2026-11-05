@@ -34,7 +34,7 @@ class AddStudentToGroupForm(forms.Form):
     group_code=forms.CharField(max_length=100, required=False)
     student_id=forms.IntegerField(required=False)
     group_id=forms.IntegerField(required=False)
-
+    student_melli_codes=forms.CharField( max_length=1000, required=False)
 
 class AddWeeklyScheduleForm(forms.Form):
     pass

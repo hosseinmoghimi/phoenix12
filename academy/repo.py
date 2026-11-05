@@ -1092,6 +1092,16 @@ class GroupRepo():
             message="دسترسی غیر مجاز"
             return result,message,group,groups  
         group=GroupRepo(request=self.request).group(**kwargs) 
+        if 'student_melli_codes' in kwargs:
+            student_melli_codes=kwargs['student_melli_codes']
+            if student_melli_codes is not None:
+                if len(student_melli_codes)>0:
+                    for mc in student_melli_codes.split():
+                        print('mc',mc)
+                        student=StudentRepo(request=self.request).student(melli_code=mc) 
+                        if student is not None:
+                            group.students.add(student.id)  
+                    return SUCCEED,message,group,None
         student=StudentRepo(request=self.request).student(**kwargs) 
        
         
