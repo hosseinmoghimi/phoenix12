@@ -1139,6 +1139,7 @@ class GroupWeeklyScheduleView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request) 
         
+        context[WIDE_LAYOUT]=True
 
         group=GroupRepo(request=request).group(*args, **kwargs)
         group_s=json.dumps(GroupSerializer(group).data)
