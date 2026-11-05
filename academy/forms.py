@@ -36,6 +36,9 @@ class AddStudentToGroupForm(forms.Form):
     group_id=forms.IntegerField(required=False)
 
 
+class AddWeeklyScheduleForm(forms.Form):
+    pass
+
 class AttendancesExcelForm(forms.Form):
     ids=forms.CharField(max_length=10000, required=False)
 

@@ -1,0 +1,174 @@
+<div id="accordion-weekly-schedules" class="rtl text-right farsi">
+  <div class="card" id="weekly-schedules-app">
+    <div class="card-header">
+      <h5 class="text-center">
+        <button
+          class="btn btn-link"
+          data-toggle="collapse"
+          data-target="#collapse-weekly-schedules"
+          aria-expanded="true"
+          aria-controls="collapse-weekly-schedules"
+        >
+          برنامه ریزی هفتگی
+          <span v-if="weekly_schedules.length>0">
+            <small class="text-danger mx-2">
+              <span v-text="weekly_schedules.length"></span>
+            </small>
+          </span>
+        </button>
+      </h5>
+    </div>
+
+    <div
+      id="collapse-weekly-schedules"
+      class="collapse {% if expand_weekly_schedules %} show {% endif %}"
+      aria-labelledby="heading-weekly-schedules"
+      data-parent="#accordion-weekly-schedules"
+    >
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped">
+            <thead> 
+         
+              <th>
+                    آموزشگاه
+              </th>
+
+
+              
+              <th>
+                    واحد درسی
+              </th>
+
+              
+              <th>
+                    گروه
+              </th>
+
+              <th>
+                   روز
+              </th>
+              <th>
+                   زنگ
+              </th>
+              <th>
+                    دبیر
+              </th>
+              <th>
+
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="weekly_schedule in weekly_schedules">
+               
+                <td>
+                  <a :href="weekly_schedule.course_class.school.get_absolute_url">
+                   
+                        <span v-text="weekly_schedule.course_class.school.name"></span>
+                      
+                  </a>
+ 
+                </td>
+
+                <td>
+                  <a :href="weekly_schedule.course_class.get_absolute_url">
+                    <div class="media">
+                      <img :src="weekly_schedule.course_class.course.thumbnail" class="rounded-circle" width="36" alt="">
+                      <div class="media-body mr-2">
+
+                        <span v-text="weekly_schedule.course_class.course.title"></span>
+                      </div>
+                    </div>
+                  </a>
+ 
+                </td>
+             
+                <td>
+                    <a :href="weekly_schedule.course_class.group.get_absolute_url">
+
+                      <span v-text="weekly_schedule.course_class.group.title"></span>
+                    </a>  
+                      
+                 
+                </td>
+
+                
+                <td>
+                      
+                        <span v-text="weekly_schedule.day_name"></span>
+                      
+                 
+                </td>
+
+
+                <td>
+                      
+                        <span v-text="weekly_schedule.col+1"></span>
+                      
+                 
+                </td>
+
+             <td>
+              <template v-for="teacher in weekly_schedule.course_class.teachers">
+
+               
+                
+                <div class="media">
+                  <a  :href="teacher.get_absolute_url">
+                  
+                 <img :src="teacher.person.image" class="rounded-circle" height="48" alt="">
+                </a>
+                  <div class="media-body">
+<a  :href="teacher.get_absolute_url">
+                  
+                  <span v-text="teacher.person.full_name"></span>
+                </a>
+                  </div>
+                </div>
+              </template>
+                      
+                 
+                </td>
+
+                <td>
+                  <a
+                    target="_blank"
+                    :href="weekly_schedule.get_edit_url"
+                    title="ویرایش"
+                    class="text-warning mx-2"
+                  >
+                    <i class="fa fa-edit text-warning"> </i>
+                    ویرایش
+                  </a>
+                  <a
+                    target="_blank"
+                    :href="weekly_schedule.get_delete_url"
+                    title="حذف"
+                    class="text-danger mx-2"
+                  >
+                    <i class="fa fa-trash text-danger"> </i>
+                    حذف
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="my-3">
+          <form method="POST" action="/">
+            {% csrf_token %}
+            <input type="hidden" name="ids" :value="ids()">
+            <button type="submit" class="btn btn-info">
+              <i class="fa fa-file-excel-o ml-3"></i>
+              دریافت لیست دبیر ها در قالب فایل اکسل
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

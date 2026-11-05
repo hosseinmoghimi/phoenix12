@@ -120,9 +120,11 @@ class AddStudentToGroupApi(APIView):
         if add_student_to_group_form.is_valid():
             log=333
             cd=add_student_to_group_form.cleaned_data
-            result,message,group=GroupRepo(request=request).add_student_to_group(**cd)
+            result,message,group,student=GroupRepo(request=request).add_student_to_group(**cd)
             if group is not None:
                 context['group']=GroupSerializer(group).data
+            if student is not None:
+                context['student']=StudentSerializer(student).data
         context['message']=message
         context['result']=result
         context['log']=log

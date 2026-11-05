@@ -289,6 +289,7 @@ class StudentRepo():
         return objects.all().order_by('person__first_name').order_by('person__last_name')
        
     def import_students_from_excel(self,*args,**kwargs):
+        Student.objects.all().delete()
         result,message,students=FAILED,"",[]
         excel_file=kwargs['excel_file']
          
@@ -320,37 +321,40 @@ class StudentRepo():
             
             i=str(i) 
             # product['id']=ws['A'+str(i)].value
+            id=0
             iiiddd=ws['B'+i].value
             if iiiddd is not None:
-                id=0
                 try:
                     id=int(ws['B'+i].value)
                 except:
                     pass
+            melli_code=str(ws['C'+i].value)
+            first_name=(ws['D'+i].value)
+            last_name=(ws['E'+i].value)
+            level=(ws['F'+i].value)
+            major=(ws['G'+i].value)
+            group_code=(ws['H'+i].value)
 
-                melli_code=str(ws['C'+i].value)
-                first_name=(ws['D'+i].value)
-                last_name=(ws['E'+i].value)
-                father_name=(ws['F'+i].value)
-                mobile=(ws['G'+i].value)
-                tel=(ws['H'+i].value)
-                address=(ws['I'+i].value)
- 
-                student['id']=id 
-                student['first_name']=first_name
-                student['last_name']=last_name
-                student['father_name']=father_name
-                student['melli_code']=melli_code
-                student['tel']=tel
-                student['address']=address
-                student['mobile']=mobile 
-                # student['thumbnail_origin']=ws['F'+str(i)].value
-                students_to_import.append(student) 
+            father_name=(ws['I'+i].value)
+            mobile=(ws['J'+i].value)
+            tel=(ws['K'+i].value)
+            address=(ws['L'+i].value)
+            student['id']=0 
+            student['first_name']=first_name
+            student['last_name']=last_name
+            student['father_name']=father_name
+            student['melli_code']=melli_code
+            student['tel']=tel
+            student['address']=address
+            student['mobile']=mobile 
+            # student['thumbnail_origin']=ws['F'+str(i)].value
+            students_to_import.append(student) 
         modified=added=0
 
         for student in students_to_import:
             old_student=Student.objects.filter(person__melli_code=student["melli_code"]).first()
             if old_student is not None:
+                student['id']=old_student.id
                 old_student.person.first_name=student["first_name"] 
                 old_student.person.last_name=student["last_name"] 
                 old_student.person.tel=student["tel"] 
@@ -361,7 +365,16 @@ class StudentRepo():
                 result,message,new_student=self.add_student(**student)
           
                 if result==SUCCEED:
+                    student['id']=new_student.id
                     added+=1
+            leolog(group_code=group_code)
+            group=Group.objects.filter(code=group_code).first()
+            if group is None:
+                group=Group(title=group_code,code=group_code)
+                group.save()
+            group.students.add(student['id'])
+
+
         result=SUCCEED
         message=f"""{added} دانش آموز اضافه شد.
                     <br>
@@ -525,7 +538,6 @@ class MajorRepo():
             ids=[]
             for cc in ccs:
                 ids.append(cc.major.id)
-            leolog(ids=ids)
             objects=objects.filter(id__in=ids)  
         return objects.all()
         
@@ -769,6 +781,21 @@ class WeeklyScheduleRepo():
         if "group_id" in kwargs:
             group_id=kwargs["group_id"]
             objects=objects.filter(course_class__group_id=group_id)  
+        if "teacher_id" in kwargs:
+            teacher_id=kwargs["teacher_id"]
+            ids=[]
+            teacher=Teacher.objects.filter(pk=teacher_id).first()
+            if teacher is not None:
+                ccs=teacher.courseclass_set.all()
+                for cc in ccs:
+                    ids.append(cc.id)
+            objects=objects.filter(course_class_id__in=ids)  
+        if "course_id" in kwargs:
+            course_id=kwargs["course_id"]
+            objects=objects.filter(course_class__course_id=course_id)  
+        if "course_class_id" in kwargs:
+            course_class_id=kwargs["course_class_id"]
+            objects=objects.filter(course_class_id=course_class_id)  
         return objects.all()
         
     def weekly_schedule(self,*args, **kwargs):
@@ -1060,7 +1087,7 @@ class GroupRepo():
   
 
     def add_student_to_group(self,*args,**kwargs):
-        result,message,group,groups=FAILED,"",None,[]
+        result,message,group,groups,student=FAILED,"",None,[],None
         if not self.request.user.has_perm(APP_NAME+".add_group"):
             message="دسترسی غیر مجاز"
             return result,message,group,groups  
@@ -1080,7 +1107,7 @@ class GroupRepo():
         for course_class in CourseClass.objects.filter(group_id=group.id):
             course_class.students.add(student.id)
          
-        return result,message,group
+        return result,message,group,student
  
 
 class ParentRepo():
@@ -1356,7 +1383,6 @@ class ScoreRepo():
                 if 'melli_code' in score1['student'] and score1['student']['melli_code'] and True:
                     student_melli_code=str(score1['student']['melli_code'])
                     if not score1['student']['melli_code'] == "None" :
-                        leolog(student_melli_code=student_melli_code)
                         student=Student.objects.filter(person__melli_code=student_melli_code).first()
                 if student is None and 'id' in score1['student'] and score1['student']['id']:
                     student_id=score1['student']['id']

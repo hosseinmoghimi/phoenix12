@@ -130,6 +130,10 @@ class CourseView(View):
 
   
         
+        weekly_schedules =WeeklyScheduleRepo(request=request).list(course_id=course.id)
+        context['weekly_schedules']=weekly_schedules
+        weekly_schedules_s=json.dumps(WeeklyScheduleSerializer(weekly_schedules,many=True).data)
+        context['weekly_schedules_s']=weekly_schedules_s
 
         scores=ScoreRepo(request=request).list(course_id=course.id).order_by('student__person__last_name')
         scores_s=json.dumps(ScoreSerializer(scores,many=True).data)
@@ -217,6 +221,12 @@ class TeacherView(View):
         context['course_classes']=course_classes
 
  
+         
+        weekly_schedules =WeeklyScheduleRepo(request=request).list(teacher_id=teacher.id)
+        context['weekly_schedules']=weekly_schedules
+        weekly_schedules_s=json.dumps(WeeklyScheduleSerializer(weekly_schedules,many=True).data)
+        context['weekly_schedules_s']=weekly_schedules_s
+        
         return render(request,TEMPLATE_ROOT+"teacher.html",context) 
 
 
@@ -423,7 +433,10 @@ class StudentsExcelView(View):
                  'کد ملی',
                  'نام',
                  'نام خانوادگی',
-                 'نام پدر', 
+                 'پایه', 
+                 'رشته',
+                 'کد گروه',
+                 'نام پدر',
                  'موبایل',
                  'تلفن',
                  'آدرس',
@@ -716,6 +729,14 @@ class CourseClassView(View):
         context['course_class']=course_class
         course_class_s=json.dumps(CourseClassSerializer(course_class,many=False).data)
         context['course_class_s']=course_class_s
+
+        
+        weekly_schedules =WeeklyScheduleRepo(request=request).list(course_class_id=course_class.id)
+        context['weekly_schedules']=weekly_schedules
+        weekly_schedules_s=json.dumps(WeeklyScheduleSerializer(weekly_schedules,many=True).data)
+        context['weekly_schedules_s']=weekly_schedules_s
+
+        
 
         teachers=course_class.teachers.all()
         teachers_s=json.dumps(TeacherSerializer(teachers,many=True).data)
@@ -1097,6 +1118,10 @@ class GroupView(View):
         group_s=json.dumps(GroupSerializer(group,many=False).data)
         context['group_s']=group_s
  
+        weekly_schedules =WeeklyScheduleRepo(request=request).list(group_id=group.id)
+        context['weekly_schedules']=weekly_schedules
+        weekly_schedules_s=json.dumps(WeeklyScheduleSerializer(weekly_schedules,many=True).data)
+        context['weekly_schedules_s']=weekly_schedules_s
 
 
         
@@ -1233,12 +1258,12 @@ class WeeklySchedulesView(View):
         context=getContext(request=request) 
         
 
-        groups=GroupRepo(request=request).list().order_by('title')
-        groups_s=json.dumps(GroupSerializer(groups,many=True).data)
-        context['groups_s']=groups_s
-        context['groups']=groups
-        if request.user.has_perm(APP_NAME+".add_group"):
-            context['add_group_form']=AddGroupForm()
+        weekly_schedules=WeeklyScheduleRepo(request=request).list()
+        weekly_schedules_s=json.dumps(WeeklyScheduleSerializer(weekly_schedules,many=True).data)
+        context['weekly_schedules_s']=weekly_schedules_s
+        context['weekly_schedules']=weekly_schedules
+        if request.user.has_perm(APP_NAME+".add_weeklyschedule"):
+            context['add_weekly_schedule_form']=AddWeeklyScheduleForm()
     
         return render(request,TEMPLATE_ROOT+"weekly-schedules.html",context) 
         

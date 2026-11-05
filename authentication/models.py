@@ -98,13 +98,13 @@ class Person(models.Model,ImageHelper,LinkHelper):
          
         self.full_name=self.full_name_
         persons=Person.objects.filter(full_name=self.full_name)
-        if self.id is None:
-            if len(persons)>0:
-                message='نام تکراری برای شخص'
-                return FAILED,message,None
-        if len(persons.exclude(pk=self.pk))>0:
-                message='نام تکراری برای شخص'
-                return FAILED,message,None
+        # if self.id is None:
+        #     if len(persons)>0:
+        #         message='نام تکراری برای شخص'
+        #         return FAILED,message,None
+        # if len(persons.exclude(pk=self.pk))>0:
+        #         message='نام تکراری برای شخص'
+        #         return FAILED,message,None
         super(Person,self).save()
         result=SUCCEED
         message=" با موفقیت اضافه گردید."

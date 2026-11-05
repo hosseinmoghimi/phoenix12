@@ -432,8 +432,13 @@ class WeeklySchedule(models.Model,LinkHelper):
 
     def __str__(self):
         return self.course_class.course.title
- 
-
+    @property
+    def day_name(self):
+        from utility.calendar import WEEK_DAY_NAMES
+        return WEEK_DAY_NAMES[self.row]
+    # @property
+    # def group(self):
+    #     return self.course_class.group
 class School(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=50)
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)

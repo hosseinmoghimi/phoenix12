@@ -36,10 +36,17 @@
     <div class="col-md-12">
       {% include 'academy/includes/course-classes-app/template.html' %}
     </div>
+
+    
+    <div class="col-md-12">
+      {% include 'academy/includes/weekly-schedules-app/template.html' %}
+    </div>
   </div>
 {% endblock %}
 {% block script %}
   {% include 'academy/includes/add-student-to-group-app/script.html' %}
   {% include 'academy/includes/students-app/script.html' %}
   {% include 'academy/includes/course-classes-app/script.html' %}
+    {% include 'academy/includes/weekly-schedules-app/script.html' %}
+
 {% endblock %}

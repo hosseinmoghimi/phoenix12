@@ -52,6 +52,7 @@
           if (data.result === "SUCCEED") {
             show_message(add_student_to_group_app,'موفق',data.message,'success',1000)
             if (typeof students_app != "undefined") {
+              students_app.students.push(data.student)
             }
           }
           else{

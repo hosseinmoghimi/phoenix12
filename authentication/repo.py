@@ -122,16 +122,16 @@ class PersonRepo():
         if 'melli_code' in kwargs:
             melli_code=kwargs['melli_code']
 
-            if melli_code is not None and len(melli_code)>0 and Person.objects.filter(melli_code=melli_code).first() is not None:
-                message="کد ملی وارد شده تکراری است."
-                person=None
-                return result,message,person
-            
+            # if melli_code is not None and len(melli_code)>0 and Person.objects.filter(melli_code=melli_code).first() is not None:
+            #     leolog(melli_code=melli_code)
+            #     message="کد ملی وارد شده تکراری است."
+            #     person=None
+            #     return result,message,person
         old_person=Person.objects.filter(first_name=kwargs['first_name']).filter(last_name=kwargs['last_name']).first()
         
-        if old_person is not None :
-            message="نام و نام خانوادگی وارد شده تکراری است."
-            return FAILED,message,None
+        # if old_person is not None :
+        #     message="نام و نام خانوادگی وارد شده تکراری است."
+        #     return FAILED,message,None
         
         
 

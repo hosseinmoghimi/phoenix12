@@ -101,8 +101,8 @@ class ScoreSerializer(serializers.ModelSerializer):
 
 class WeeklyScheduleSerializer(serializers.ModelSerializer):
     course_class=CourseClassSerializer()
-    group=GroupSerializer()
+    # group=GroupSerializer()
     class Meta:
         model=WeeklySchedule
-        fields=['id','course_class','group','day','row','col','start_time','end_time', 'get_edit_url','get_delete_url']
+        fields=['id','course_class', 'day_name','row','col','start_time','end_time', 'get_edit_url','get_delete_url']
  

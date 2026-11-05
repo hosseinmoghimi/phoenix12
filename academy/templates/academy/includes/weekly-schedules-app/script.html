@@ -1,0 +1,23 @@
+<script>
+    
+    let weekly_schedules_for_weekly_schedules_app=JSON.parse("{{weekly_schedules_s|escapejs}}")
+    let weekly_schedules_app = new Vue({
+        el: "#weekly-schedules-app",
+        data: {
+            weekly_schedules: weekly_schedules_for_weekly_schedules_app
+        },
+        methods: {
+            ids:function(){
+                let ids=[]
+                this.weekly_schedules.forEach(weekly_schedule => {
+                    ids.push(weekly_schedule.id)
+                    
+                });
+                return JSON.stringify(ids)
+            },
+            to_price: function(vall) { 
+                return  to_price(vall) 
+            }
+        }
+    })
+</script>
