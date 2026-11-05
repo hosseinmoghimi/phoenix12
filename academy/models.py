@@ -1,4 +1,5 @@
-from utility.calendar import PersianCalendar
+
+from utility.calendar import PersianCalendar,WeekDayNameEnums
 from utility.constants import SUCCEED,FAILED
 from django.db import models
 from core.models import LinkHelper,ImageHelper,Page,reverse,STATIC_URL
@@ -24,7 +25,7 @@ class Course(models.Model,LinkHelper):
         thumbnail=""
         if self.thumbnail_origin is None or str(self.thumbnail_origin)=="":
             try:
-                thumbnail= f"{STATIC_URL}{self.app_name}/img/course.jpg/"
+                thumbnail= f"{STATIC_URL}{self.app_name}/img/course.png/"
             except:
                 pass
         else:
@@ -172,7 +173,7 @@ class CourseClass(models.Model,LinkHelper):
         verbose_name_plural = _("CourseClasss")
 
     def __str__(self):
-        return f'{self.educational_year} {self.course}' 
+        return f'{self.educational_year} {self.course}  {self.group}' 
 
     def save(self,*args, **kwargs):
         super(CourseClass,self).save()
@@ -409,7 +410,27 @@ class Group(models.Model,LinkHelper):
         message="گروه ذخیره شد."
         return SUCCEED,message,self
 
-    
+
+class WeeklySchedule(models.Model,LinkHelper):
+    course_class=models.ForeignKey("courseclass", verbose_name=_("course_class"), on_delete=models.CASCADE)
+    # day=models.CharField(_("day"),choices=WeekDayNameEnums.choices, max_length=50)
+    row=models.IntegerField(_("row"),default=0)
+    col=models.IntegerField(_("col"),default=0)
+    start_time=models.CharField(_("start_time"), max_length=50)
+    end_time=models.CharField(_("end_time"), max_length=50)
+    class_room=models.CharField(_("class_room"), max_length=50,null=True,blank=True)
+    building=models.CharField(_("building"), max_length=50,null=True,blank=True)
+    description=models.CharField(_("description"), max_length=50,null=True,blank=True)
+    class_name="weeklyschedule"
+    app_name=APP_NAME
+    class Meta:
+        verbose_name = _("WeeklySchedule")
+        verbose_name_plural = _("WeeklySchedules")
+
+    def __str__(self):
+        return self.course_class.course.title
+ 
+
 class School(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=50)
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)

@@ -66,6 +66,8 @@ urlpatterns = [
 
     path('groups/',login_required(views.GroupsView.as_view()),name="groups"),
     path('group/<int:pk>/',login_required(views.GroupView.as_view()),name="group"),
+    path('weekly_schedule/<int:group_id>/',login_required(views.GroupWeeklyScheduleView.as_view()),name="group_weekly_schedule"),
+    path('weekly_schedules/',login_required(views.WeeklySchedulesView.as_view()),name="weekly_schedules"),
     path('add-group/',login_required(apis.AddGroupApi.as_view()),name="add_group"),
 
     path('parents/',login_required(views.ParentsView.as_view()),name="parents"),

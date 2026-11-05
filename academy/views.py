@@ -8,8 +8,8 @@ from .enums import *
 from utility.calendar import PersianCalendar
 import json
 
-from .serializers import GroupSerializer,ScoreSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
-from .repo import GroupRepo,CourseRepo,ScoreRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
+from .serializers import WeeklyScheduleSerializer,GroupSerializer,ScoreSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
+from .repo import WeeklyScheduleRepo,GroupRepo,CourseRepo,ScoreRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
  
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
@@ -23,6 +23,27 @@ def getContext(request,*args, **kwargs):
     context['LAYOUT_PARENT']=LAYOUT_PARENT
     return context
  
+def SearchContext(request,search_for,*args, **kwargs):
+    context={}
+    WAS_FOUND=False
+    words=WordRepo(request=request).list(search_for=search_for)
+    if len(words)>0:
+        context['words']=words
+        context['words_s']=json.dumps(WordSerializer(words,many=True).data)
+        WAS_FOUND=True
+
+    students=StudentRepo(request=request).list(search_for=search_for)
+    if len(students)>0:
+        context['students']=students
+        context['students_s']=json.dumps(StudentSerializer(students,many=True).data)
+        WAS_FOUND=True
+
+
+    if WAS_FOUND:
+               context['WAS_FOUND']=WAS_FOUND
+    return context
+
+
 class IndexView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
@@ -58,26 +79,6 @@ class SearchView(View):
                 context['students']=students
         
         return render(request,TEMPLATE_ROOT+"search.html",context)
-
-def SearchContext(request,search_for,*args, **kwargs):
-    context={}
-    WAS_FOUND=False
-    words=WordRepo(request=request).list(search_for=search_for)
-    if len(words)>0:
-        context['words']=words
-        context['words_s']=json.dumps(WordSerializer(words,many=True).data)
-        WAS_FOUND=True
-
-    students=StudentRepo(request=request).list(search_for=search_for)
-    if len(students)>0:
-        context['students']=students
-        context['students_s']=json.dumps(StudentSerializer(students,many=True).data)
-        WAS_FOUND=True
-
-
-    if WAS_FOUND:
-               context['WAS_FOUND']=WAS_FOUND
-    return context
 
  
 class GetJsonBackupView(View):
@@ -1133,3 +1134,76 @@ class GroupsView(View):
     
         return render(request,TEMPLATE_ROOT+"groups.html",context) 
 
+
+class GroupWeeklyScheduleView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        group=GroupRepo(request=request).group(*args, **kwargs)
+        group_s=json.dumps(GroupSerializer(group).data)
+        context['group_s']=group_s
+        context['group']=group 
+        aws=WeeklyScheduleRepo(request=request).list(group_id=group.id).order_by('start_time')
+
+        days=[]
+        row=0
+        days.append({
+                'day_name':'شنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        
+        row=1
+        days.append({
+                'day_name':'یک شنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        
+        row=2
+        days.append({
+                'day_name':'دوشنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        
+        row=3
+        days.append({
+                'day_name':'سه شنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        
+        row=4
+        days.append({
+                'day_name':'چهارشنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        
+        row=5
+        days.append({
+                'day_name':'پنج شنبه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+        row=6
+        days.append({
+                'day_name':'جمعه',
+                'rows':[aws.filter(row=row,col=0),aws.filter(row=row,col=1),aws.filter(row=row,col=2),aws.filter(row=row,col=3)]
+            })
+                
+        # ssss    
+        context['days']=days
+        return render(request,TEMPLATE_ROOT+"group-weekly-schedule.html",context) 
+    
+
+class WeeklySchedulesView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+
+        groups=GroupRepo(request=request).list().order_by('title')
+        groups_s=json.dumps(GroupSerializer(groups,many=True).data)
+        context['groups_s']=groups_s
+        context['groups']=groups
+        if request.user.has_perm(APP_NAME+".add_group"):
+            context['add_group_form']=AddGroupForm()
+    
+        return render(request,TEMPLATE_ROOT+"weekly-schedules.html",context) 
+        

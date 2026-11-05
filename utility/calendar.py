@@ -5,6 +5,25 @@ from khayyam import *
 HOURS_OFFSET=3
 MINUTES_OFFSET=30
 
+WEEK_DAY_NAMES=['شنبه'
+    ,'یکشنبه'
+    ,'دوشنبه'
+    ,'سه شنبه'
+    ,'چهارشنبه'
+    ,'پنج شنبه'
+    ,'جمعه']
+from django.db.models import TextChoices
+from django.utils.translation import gettext as _
+
+class WeekDayNameEnums(TextChoices):
+    SATURDAY="شنبه",_("شنبه")
+    SUNDAY="یکشنبه",_("یکشنبه")
+    MONDAY="دوشنبه",_("دوشنبه")
+    TUEDAY="سه شنبه",_("سه شنبه")
+    WEDNESDAY="چهارشنبه",_("چهارشنبه")
+    THURSDAY="پنج شنبه",_("پنج شنبه")
+    FRIDAY="جمعه",_("جمعه")
+ 
 def to_gregorian(date):
     date=str(date)
     year=str(date)[:2]

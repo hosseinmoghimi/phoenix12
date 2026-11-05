@@ -1,4 +1,4 @@
-from .models import Parent,Group,Score,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
+from .models import WeeklySchedule,Parent,Group,Score,Course,Word,CourseClass,School,Major,Session,EducationalYear,Attendance,Student,Teacher
 from .apps import APP_NAME
 from .enums import *
 import json
@@ -727,6 +727,97 @@ class WordRepo():
              
               
         return SUCCEED,'با موفقیت بازیابی شد.',words
+
+
+class WeeklyScheduleRepo():
+    def __init__(self,request,*args, **kwargs):
+        self.me=None
+        self.request=request
+        self.objects=WeeklySchedule.objects.filter(id=0)
+        person=PersonRepo(request=request).me
+
+        if person is not None:
+            if request.user.has_perm(APP_NAME+".view_weekly_schedule"):
+                self.objects=WeeklySchedule.objects
+            else:
+                me_teacher=TeacherRepo(request=request).me
+                if me_teacher is not None:
+                    ccs=me_teacher.courseclass_set.all()
+                    ids=[]
+                    for cc in ccs:
+                        ss=WeeklySchedule.objects.filter(course_class_id=cc.id)
+                        for s in ss:
+                            ids.append(s.id)
+                    self.objects=WeeklySchedule.objects.filter(id__in=ids)
+
+    def list(self,*args, **kwargs):
+        objects=self.objects
+        if "search_for" in kwargs:
+            search_for=kwargs["search_for"]
+            objects=objects.filter(Q(name__contains=search_for) | Q(code=search_for)  )
+        if "parent_id" in kwargs:
+            parent_id=kwargs["parent_id"]
+            objects=objects.filter(parent_id=parent_id)  
+        if "group_id" in kwargs:
+            group_id=kwargs["group_id"]
+            objects=objects.filter(course_class__group_id=group_id)  
+        return objects.all()
+        
+    def weekly_schedule(self,*args, **kwargs):
+        if "weekly_schedule_id" in kwargs and kwargs["weekly_schedule_id"] is not None:
+            return self.objects.filter(pk=kwargs['weekly_schedule_id']).first()  
+        if "pk" in kwargs and kwargs["pk"] is not None:
+            return self.objects.filter(pk=kwargs['pk']).first() 
+        if "id" in kwargs and kwargs["id"] is not None:
+            return self.objects.filter(pk=kwargs['id']).first() 
+        
+        
+    def add_weekly_schedule(self,*args,**kwargs):
+        result,message,weekly_schedule=FAILED,"",None
+        me_teacher=TeacherRepo(request=self.request).me
+        if me_teacher is not None and 'course_class_id' in kwargs:
+            course_class=CourseClassRepo(request=self.request).course_class(pk=kwargs['course_class_id'])
+            if course_class is not None:
+                pass
+        elif not self.request.user.has_perm(APP_NAME+".add_weekly_schedule"):
+            message="دسترسی غیر مجاز"
+            return result,message,weekly_schedule
+        weekly_schedule=WeeklySchedule()
+        if 'title' in kwargs:
+            if len(WeeklySchedule.objects.filter(title=kwargs["title"]))>0:
+                return FAILED,'عنوان تکراری',None
+            weekly_schedule.title=kwargs["title"] 
+
+        if 'course_class_id' in kwargs and kwargs['course_class_id']:
+            weekly_schedule.course_class_id=kwargs["course_class_id"]
+
+
+        if 'weekly_schedule_no' in kwargs and kwargs['weekly_schedule_no']>0 :
+            weekly_schedule.weekly_schedule_no=kwargs["weekly_schedule_no"]
+        else:
+            return FAILED,'شماره جلسه را صحیح وارد کنید.',None
+
+        if 'class_room' in kwargs and kwargs['class_room']:
+            weekly_schedule.class_room=kwargs["class_room"]
+
+ 
+        if 'start_datetime' in kwargs and kwargs['start_datetime'] is not None and not kwargs['start_datetime']=='':
+            year=kwargs['start_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])
+            weekly_schedule.start_datetime=kwargs["start_datetime"]
+
+        if 'end_datetime' in kwargs and kwargs['end_datetime'] is not None and not kwargs['end_datetime']=='':
+            year=kwargs['end_datetime'][:2]
+            if year=="13" or year=="14":
+                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])
+            weekly_schedule.end_datetime=kwargs["end_datetime"]
+        a=WeeklySchedule.objects.filter(weekly_schedule_no=weekly_schedule.weekly_schedule_no).filter(course_class_id=weekly_schedule.course_class_id).first()
+        if a is not None:
+            return FAILED,'شماره جلسه تکراری است',None
+        (result,message,weekly_schedule)=weekly_schedule.save()
+        return result,message,weekly_schedule
+ 
 
 
 class SessionRepo():

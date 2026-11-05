@@ -1,0 +1,104 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row rtl farsi">
+    
+    <div class="col-md-12">
+
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">
+                    برنامه هفتگی
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>
+                                روز
+                            </th>
+                            <th>
+                                ساعت اول
+                            </th>
+                            <th>
+                                ساعت دوم
+                            </th>
+                            <th>
+                                ساعت سوم
+                            </th>
+                            <th>
+                                ساعت چهارم
+                            </th>
+                        </thead>
+                        <tbody>
+                            {% for day in days %}
+                            <tr>
+                                <td> 
+                                    {{day.day_name}}
+                                </td>
+                                {% for weekly_schedules in day.rows %}
+                                <td>
+                                {% for weekly_schedule in weekly_schedules %}
+                                       
+                                    <div>
+
+
+                                         <div class="media">
+                                            <a href="{{weekly_schedule.course_class.get_absolute_url}}">
+                                                <img src="{{weekly_schedule.course_class.course.thumbnail}}" class="rounded-circle" height="32" alt="">
+                                            </a>
+                                            <div class="media-body mr-2">
+                                                <a href="{{weekly_schedule.course_class.get_absolute_url}}">
+                                                    {{weekly_schedule.course_class.course.title}}
+                                                </a>
+                                                  {% for teacher in weekly_schedule.course_class.teachers.all %}
+                                     
+                                            <div>
+                                                <a href="{{teacher.get_absolute_url}}">
+                                                    {{teacher.person.full_name}}
+                                                </a>
+                                            </div>
+                                     
+                                                    
+                                    {% endfor %} 
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+
+                                    
+                                 
+                                    <div>
+                                        <small class="text-muted">
+
+                                            {{weekly_schedule.start_time}}    ~               
+                                            {{weekly_schedule.end_time}}                   
+                                        </small>  
+                                    </div>
+ 
+                                    {% endfor %}
+                                </td>
+                                {% endfor %}
+                                
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% block script %}
+{% include "academy/includes/educational-years-app/script.html" %}
+
+
+{% endblock script %}

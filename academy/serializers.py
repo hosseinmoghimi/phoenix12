@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from authentication.serializers import Person
-from .models import Score,Parent,Group,Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
+from .models import Score,Parent,WeeklySchedule,Group,Course,Word,CourseClass,Teacher,Student,Major,Attendance,EducationalYear,Session,School
  
 class EducationalYearSerializer(serializers.ModelSerializer): 
     class Meta:
@@ -35,6 +35,7 @@ class PersonSerializer(serializers.ModelSerializer):
         model=Person
         fields=['id','full_name','first_name','last_name','melli_code','image','username','tel','mobile','user_id','get_absolute_url', 'get_edit_url','get_delete_url']
  
+
   
 class StudentSerializer(serializers.ModelSerializer): 
     person=PersonSerializer()
@@ -98,3 +99,10 @@ class ScoreSerializer(serializers.ModelSerializer):
         model=Score
         fields=['id','student','score','score_type', 'course_class', 'get_edit_url','get_delete_url']
 
+class WeeklyScheduleSerializer(serializers.ModelSerializer):
+    course_class=CourseClassSerializer()
+    group=GroupSerializer()
+    class Meta:
+        model=WeeklySchedule
+        fields=['id','course_class','group','day','row','col','start_time','end_time', 'get_edit_url','get_delete_url']
+ 
