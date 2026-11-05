@@ -1,0 +1,161 @@
+{% extends "academy/layout.html" %} {% load static %} {% block content %}
+
+<div class="text-center">
+  <h1 class="text-center rtl">{{school.title}}</h1>
+  
+ 
+
+  {% if perms.academy.change_school %}
+  <h3>
+    <a
+      href="{{school.get_edit_url}}"
+      class="my-2 text-warning mx-2"
+      title="ویرایش"
+      target="_blank"
+      ><i class="fa fa-edit text-warning"></i
+    ></a>
+    {% endif %} {% if perms.academy.delete_school %}
+    <a
+      href="{{school.get_delete_url}}"
+      class="my-2 text-danger mx-2"
+      title="حذف"
+      target="_blank"
+      ><i class="fa fa-trash text-danger"></i
+    ></a>
+  </h3>
+  {% endif %}
+
+  <h4 class="text-center rtl">
+    <a href="{{school.get_absolute_url}}">
+      <small>
+        آموزشگاه
+      </small>
+      {{school.name}}
+    </a>
+  </h4>
+</div>
+
+
+<div class="rtl text-right">
+  
+  {% if school.manager %}
+    <div class="media rtl">
+      <a class=" " href="{% url 'authentication:person' pk=school.manager.id %}">
+        <img src="{{school.manager.image}}" height="32" class="rounded-circle" alt="">
+      </a>
+      <div class="media-body ">
+        <a class=" " href="{% url 'authentication:person' pk=school.manager.id %}">
+        
+    {{school.manager.full_name}}
+  </a>  
+  <div>
+    مدیر
+
+  </div>
+  </div>
+    </div>
+  {% endif %}
+ 
+</div>
+
+<hr />  
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="text-center">
+                    برنامه هفتگی آموزشگاه
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>
+                                رشته تحصیلی
+                            </th>
+                            <th>
+                                شنبه
+                            </th>
+                            
+                           <th>
+                                یک
+                                شنبه
+                            </th>
+                            
+                           <th>
+                                دو
+                                شنبه
+                            </th>
+                            
+                           <th>
+                                سه
+                                شنبه
+                            </th>
+                            
+                            <th>
+                                چهار
+                                شنبه
+                            </th>
+                            
+                            <th>
+                                پنچ
+                                شنبه
+                            </th>
+
+                            
+                            <th>
+                                جمعه
+                            </th>
+
+                        </thead>
+                        <tbody>
+                            {% for awas_group in awas_groups %}
+                              
+                            <tr>
+                                <td>
+                                     
+                                    <a href="{{awas_group.group.get_absolute_url}}">
+
+                                        {{awas_group.group.title}}
+                                    </a>
+                                </td>
+                                {% for day in awas_group.days %}
+                                <td>
+                                           {% for weekly_schedules in day %}
+                                           {% for weekly_schedule in weekly_schedules %}
+                                             <div>
+                                                <a href="{{weekly_schedule.course_class.get_absolute_url}}">
+                                               
+                                                    {{weekly_schedule.course_class.course.title}}
+                                                </a>
+                                                {% for teacher in weekly_schedule.course_class.teachers.all %}
+                                                   <a href="{{teacher.get_absolute_url}}">
+                                                        <small class="text-muted">
+
+
+                                                            {{teacher.person.full_name}}
+                                                        </small>
+                                                </a>
+                                                {% endfor %}
+                                             </div>
+                                           {% endfor %} 
+                                           <hr>
+                                           {% endfor %} 
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+{% endblock content %} {% block script %}  
+
+
+
+{% endblock script %}

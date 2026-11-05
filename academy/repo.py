@@ -519,6 +519,14 @@ class MajorRepo():
         if "parent_id" in kwargs:
             parent_id=kwargs["parent_id"]
             objects=objects.filter(parent_id=parent_id)  
+        if "school_id" in kwargs:
+            school_id=kwargs["school_id"]
+            ccs=CourseClass.objects.filter(school_id=school_id)
+            ids=[]
+            for cc in ccs:
+                ids.append(cc.major.id)
+            leolog(ids=ids)
+            objects=objects.filter(id__in=ids)  
         return objects.all()
         
     def major(self,*args, **kwargs):
@@ -974,11 +982,22 @@ class GroupRepo():
 
         if "student_id" in kwargs and kwargs['student_id']:
             student_id=kwargs["student_id"]
-            objects=objects.filter(student_id=student_id) 
+            objects=objects.filter(student_id=student_id)
 
         if "session_id" in kwargs and kwargs['session_id']:
             session_id=kwargs["session_id"]
             objects=objects.filter(session_id=session_id)  
+ 
+
+        if "school_id" in kwargs and kwargs['school_id']:
+            school_id=kwargs["school_id"]
+            ids=[]
+            ccs=CourseClass.objects.filter(school_id=school_id)
+            for cc in ccs:
+                ids.append(cc.group.id)
+            objects=objects.filter(id__in=ids)  
+ 
+
         return objects.all().order_by('title')
         
     def group(self,*args, **kwargs):

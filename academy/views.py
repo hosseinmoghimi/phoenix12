@@ -10,7 +10,7 @@ import json
 
 from .serializers import WeeklyScheduleSerializer,GroupSerializer,ScoreSerializer,ParentSerializer,CourseSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,TeacherSerializer,SessionSerializer,StudentSerializer,EducationalYearSerializer
 from .repo import WeeklyScheduleRepo,GroupRepo,CourseRepo,ScoreRepo,WordRepo,ParentRepo,CourseClassRepo,SchoolRepo,StudentRepo,MajorRepo,TeacherRepo,AttendanceRepo,SessionRepo,EducationalYearRepo
- 
+from utility.log import leolog
 LAYOUT_PARENT='phoenix/layout.html'
 TEMPLATE_ROOT='academy/'
 WIDE_LAYOUT="WIDE_LAYOUT"
@@ -1192,6 +1192,40 @@ class GroupWeeklyScheduleView(View):
         # ssss    
         context['days']=days
         return render(request,TEMPLATE_ROOT+"group-weekly-schedule.html",context) 
+    
+
+class SchoolWeeklyScheduleView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request) 
+        
+        context[WIDE_LAYOUT]=True
+
+        school=SchoolRepo(request=request).school(*args, **kwargs)
+        school_s=json.dumps(SchoolSerializer(school).data)
+        context['school_s']=school_s
+        context['school']=school 
+        
+        groups=GroupRepo(request=request).list(school_id=school.id)
+        weekly_schedule_repo=WeeklyScheduleRepo(request=request)
+        awas_groups=[]
+        for group in groups:
+            ws_group={}
+            ws_group['group']=group
+            weekly_schedules=[]
+            aws=weekly_schedule_repo.list(group_id=group.id) 
+            days=[]
+            for row in range(7):
+                day=[]
+                for col in range(4):
+                    day.append(aws.filter(row=row,col=col))
+                days.append(day)
+            ws_group['days']=days
+            ws_group['weekly_schedules']=weekly_schedules
+            awas_groups.append(ws_group)
+        
+        context['awas_groups']=awas_groups
+ 
+        return render(request,TEMPLATE_ROOT+"school-weekly-schedule.html",context) 
     
 
 class WeeklySchedulesView(View):

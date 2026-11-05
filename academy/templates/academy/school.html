@@ -2,7 +2,10 @@
 
 <div class="text-center">
   <h1 class="text-center rtl">{{school.title}}</h1>
-  
+   <h1 class="text-center rtl">
+      
+      <a href="{% url 'academy:school_weekly_schedule' school_id=school.id %}">برنامه هفتگی</a>
+    </h1>
  
 
   {% if perms.academy.change_school %}
