@@ -1,8 +1,19 @@
 {% extends "academy/layout.html" %} {% load static %} {% block content %}
 <div class="row ltr">
+  {% if add_weekly_schedule_form %}
+  <div class="col-md-12">
+  {% include "academy/includes/add-weekly-schedule-app/template.html" %}
+  </div>
+  {% endif %}
   <div class="col-md-12">
     {% include "academy/includes/weekly-schedules-app/template.html" %}
   </div>
 </div>
 
-{% endblock content %} {% block script %} {% include "academy/includes/weekly-schedules-app/script.html" %} {% endblock script %}
+{% endblock content %}
+{% block script %} 
+  {% if add_weekly_schedule_form %}
+  {% include "academy/includes/add-weekly-schedule-app/script.html" %}
+  {% endif %}
+{% include "academy/includes/weekly-schedules-app/script.html" %}
+{% endblock script %}

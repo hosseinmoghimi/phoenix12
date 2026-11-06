@@ -439,6 +439,15 @@ class WeeklySchedule(models.Model,LinkHelper):
     # @property
     # def group(self):
     #     return self.course_class.group
+
+    
+    def save(self,*args, **kwargs):
+        super(WeeklySchedule,self).save()
+        message="برنامه هفتگی جدید ذخیره شد."
+        return SUCCEED,message,self
+
+
+
 class School(models.Model,LinkHelper):
     name=models.CharField(_("name"), max_length=50)
     code=models.CharField(_("code"),null=True,blank=True, max_length=50)

@@ -1264,6 +1264,12 @@ class WeeklySchedulesView(View):
         context['weekly_schedules']=weekly_schedules
         if request.user.has_perm(APP_NAME+".add_weeklyschedule"):
             context['add_weekly_schedule_form']=AddWeeklyScheduleForm()
-    
+            context['schools']=SchoolRepo(request=request).list()
+            context['majors']=MajorRepo(request=request).list()
+            context['groups']=GroupRepo(request=request).list()
+            course_classes=CourseClassRepo(request=request).list()
+            course_classes_s=json.dumps(CourseClassSerializer(course_classes,many=True).data)
+            context['course_classes']=course_classes
+            context['course_classes_s']=course_classes_s
         return render(request,TEMPLATE_ROOT+"weekly-schedules.html",context) 
         

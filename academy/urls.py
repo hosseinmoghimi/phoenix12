@@ -68,7 +68,6 @@ urlpatterns = [
     path('group/<int:pk>/',login_required(views.GroupView.as_view()),name="group"),
     path('group-weekly_schedule/<int:group_id>/',login_required(views.GroupWeeklyScheduleView.as_view()),name="group_weekly_schedule"),
     path('school-weekly_schedule/<int:school_id>/',login_required(views.SchoolWeeklyScheduleView.as_view()),name="school_weekly_schedule"),
-    path('weekly_schedules/',login_required(views.WeeklySchedulesView.as_view()),name="weekly_schedules"),
     path('add-group/',login_required(apis.AddGroupApi.as_view()),name="add_group"),
 
     path('parents/',login_required(views.ParentsView.as_view()),name="parents"),
@@ -86,5 +85,7 @@ urlpatterns = [
     path('add-educational_year/',login_required(apis.AddEducationalYearApi.as_view()),name="add_educational_year"),
 
 
+    path('add-weekly_schedule/',login_required(apis.AddWeeklyScheduleApi.as_view()),name="add_weekly_schedule"),
+    path('weekly_schedules/',login_required(views.WeeklySchedulesView.as_view()),name="weekly_schedules"),
          
 ]

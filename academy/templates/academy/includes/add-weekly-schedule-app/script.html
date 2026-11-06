@@ -1,0 +1,90 @@
+<script>
+  let group_id=0
+  let major_id=0
+  let school_id=0
+</script>
+{% if group %}
+  <script>
+    group_id=parseInt("{{group.id}}")
+  </script>
+{% endif %}
+<script>
+  let course_classes_for_add_weekly_schedule=JSON.parse(`{{course_classes_s|escapejs}}`)
+  let add_weekly_schedule_app = new Vue({
+    el: "#add-weekly-schedule-app",
+    data: {
+      course_classes:course_classes_for_add_weekly_schedule,
+    start_time: "00:00:00",
+    end_time: "00:00:00",
+    course_class_id:0,
+    row:0,
+    col:0,
+
+    school_id:school_id,
+    major_id:major_id,
+    group_id:group_id,
+
+    message:{show:false},
+    waiting:false,
+    },
+    components: {
+      DatePicker: VuePersianDatetimePicker,
+    },
+    methods: {
+      select_group:function(){
+        setTimeout(() => {
+
+            add_weekly_schedule_app.course_classes=course_classes_for_add_weekly_schedule.filter(function(course_class){
+              if(course_class.group.id==add_weekly_schedule_app.group_id){
+                return true
+              }
+            })
+          
+        }, 200);
+      },
+      select_school:function(){
+        console.log('seeeeeeeeeeeefsddsfsdfsdf')
+
+      },
+      select_course_classes:function(){
+          setTimeout(() => {
+            console.log('sfsddsfsdfsdf')
+            //add_weekly_schedule_app.course_classes=course_classes_for_add_weekly_schedule.filter(function(course_class){})
+            
+          }, 200);
+      },
+      to_price: function (vall) {
+        return to_price(vall) + " {{CURRENCY}}";
+      },
+
+     
+      add_weekly_schedule: function () {
+        let payload = {
+          csrfmiddlewaretoken: csrfmiddlewaretoken,
+          start_time: add_weekly_schedule_app.start_time,
+          end_time: add_weekly_schedule_app.end_time,
+          course_class_id: parseInt(add_weekly_schedule_app.course_class_id),
+          row: parseInt(add_weekly_schedule_app.row),
+          col: parseInt(add_weekly_schedule_app.col),
+        };
+
+        console.log(payload);
+        let url = "{% url 'academy:add_weekly_schedule' %}"
+        let posting = $.post(url, payload);
+        posting.done((data) => {
+          console.log(data);
+          if (data.result === "SUCCEED") {
+            show_message(add_weekly_schedule_app,'موفق',data.message,'success',1000)
+            if (typeof weekly_schedules_app != "undefined") {
+              weekly_schedules_app.weekly_schedules.push(data.weekly_schedules);
+            }
+          }
+          else{
+
+            show_message(add_weekly_schedule_app,'خطا',data.message,'danger',1000)
+          }
+        });
+      },
+    },
+  });
+</script>

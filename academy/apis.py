@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 import json
 from utility.calendar import PersianCalendar
 from utility.log import leolog
-from .repo import ParentRepo,CourseRepo,ScoreRepo,EducationalYearRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
-from .serializers import ParentSerializer,ScoreSerializer,EducationalYearSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
+from .repo import ParentRepo,CourseRepo,WeeklyScheduleRepo,ScoreRepo,EducationalYearRepo,WordRepo,GroupRepo,CourseClassRepo,MajorRepo,SessionRepo,SchoolRepo,TeacherRepo,StudentRepo,AttendanceRepo
+from .serializers import ParentSerializer,WeeklyScheduleSerializer,ScoreSerializer,EducationalYearSerializer,CourseSerializer,GroupSerializer,WordSerializer,SchoolSerializer,MajorSerializer,CourseClassSerializer,AttendanceSerializer,SessionSerializer,TeacherSerializer,StudentSerializer
 from django.http import JsonResponse
 from .forms import *
     
@@ -33,6 +33,29 @@ class AddScoresApi(APIView):
         return JsonResponse(context)
 
   
+  
+class AddWeeklyScheduleApi(APIView):
+    def post(self,request,*args, **kwargs):
+        context={}
+        result=FAILED
+        message=""
+        log=111
+        context['result']=FAILED 
+        log=222
+        from utility.message import INVALID_FORM_VALUE_MESSAGE
+        message=INVALID_FORM_VALUE_MESSAGE
+        add_weekly_schedule_form=AddWeeklyScheduleForm(request.POST)
+        if add_weekly_schedule_form.is_valid():
+            log=333
+            cd=add_weekly_schedule_form.cleaned_data
+            result,message,weekly_schedule=WeeklyScheduleRepo(request=request).add_weekly_schedule(**cd)
+            if weekly_schedule is not None:
+                context['weekly_schedule']=WeeklyScheduleSerializer(weekly_schedule,many=False).data
+        context['message']=message
+        context['result']=result
+        context['log']=log
+        return JsonResponse(context)
+
     
 class AddCourseApi(APIView):
     def post(self,request,*args, **kwargs):

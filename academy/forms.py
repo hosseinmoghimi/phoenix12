@@ -37,7 +37,11 @@ class AddStudentToGroupForm(forms.Form):
     student_melli_codes=forms.CharField( max_length=1000, required=False)
 
 class AddWeeklyScheduleForm(forms.Form):
-    pass
+    course_class_id=forms.IntegerField(required=True)
+    col=forms.IntegerField(required=True)
+    row=forms.IntegerField(required=True)
+    start_time=forms.CharField(max_length=10, required=False)
+    end_time=forms.CharField(max_length=10, required=False)
 
 class AttendancesExcelForm(forms.Form):
     ids=forms.CharField(max_length=10000, required=False)

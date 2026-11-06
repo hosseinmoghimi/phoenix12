@@ -818,38 +818,35 @@ class WeeklyScheduleRepo():
             message="دسترسی غیر مجاز"
             return result,message,weekly_schedule
         weekly_schedule=WeeklySchedule()
-        if 'title' in kwargs:
-            if len(WeeklySchedule.objects.filter(title=kwargs["title"]))>0:
-                return FAILED,'عنوان تکراری',None
-            weekly_schedule.title=kwargs["title"] 
+        
 
         if 'course_class_id' in kwargs and kwargs['course_class_id']:
             weekly_schedule.course_class_id=kwargs["course_class_id"]
 
-
-        if 'weekly_schedule_no' in kwargs and kwargs['weekly_schedule_no']>0 :
-            weekly_schedule.weekly_schedule_no=kwargs["weekly_schedule_no"]
-        else:
-            return FAILED,'شماره جلسه را صحیح وارد کنید.',None
-
-        if 'class_room' in kwargs and kwargs['class_room']:
-            weekly_schedule.class_room=kwargs["class_room"]
-
  
-        if 'start_datetime' in kwargs and kwargs['start_datetime'] is not None and not kwargs['start_datetime']=='':
-            year=kwargs['start_datetime'][:2]
-            if year=="13" or year=="14":
-                kwargs['start_datetime']=PersianCalendar().to_gregorian(kwargs["start_datetime"])
-            weekly_schedule.start_datetime=kwargs["start_datetime"]
+        if 'row' in kwargs and kwargs['row'] :
+            weekly_schedule.row=kwargs["row"]
 
-        if 'end_datetime' in kwargs and kwargs['end_datetime'] is not None and not kwargs['end_datetime']=='':
-            year=kwargs['end_datetime'][:2]
-            if year=="13" or year=="14":
-                kwargs['end_datetime']=PersianCalendar().to_gregorian(kwargs["end_datetime"])
-            weekly_schedule.end_datetime=kwargs["end_datetime"]
-        a=WeeklySchedule.objects.filter(weekly_schedule_no=weekly_schedule.weekly_schedule_no).filter(course_class_id=weekly_schedule.course_class_id).first()
-        if a is not None:
-            return FAILED,'شماره جلسه تکراری است',None
+
+        if 'col' in kwargs and kwargs['col'] :
+            weekly_schedule.col=kwargs["col"]
+
+
+        if 'start_time' in kwargs and kwargs['start_time'] :
+            weekly_schedule.start_time=kwargs["start_time"]
+
+
+        if 'end_time' in kwargs and kwargs['end_time'] :
+            weekly_schedule.end_time=kwargs["end_time"]
+
+
+        if 'description' in kwargs and kwargs['description'] :
+            weekly_schedule.description=kwargs["description"]
+        olds=WeeklySchedule.objects.filter(course_class_id=weekly_schedule.course_class_id)
+        olds=olds.filter(row=weekly_schedule.row)
+        olds=olds.filter(col=weekly_schedule.col)
+        if len(olds)>0:
+            return FAILED,'تکراری',None
         (result,message,weekly_schedule)=weekly_schedule.save()
         return result,message,weekly_schedule
  
