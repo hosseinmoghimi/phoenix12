@@ -1,6 +1,6 @@
 {% if APP_FOOTER %} {% include APP_FOOTER %} {% endif %}
  
-<footer class="footer" style="position: fixed">
+<footer class="footer {% if DARK_THEME %}bg-dark{% endif %} " style="position: fixed">
   <!-- <div class="container"> -->
   <div class="text-center">
     <span class="text-muted">
