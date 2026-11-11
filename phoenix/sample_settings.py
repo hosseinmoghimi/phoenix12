@@ -90,6 +90,8 @@ INSTALLED_APPS = [
     'transport',
     'academy',
     'restaurant',
+    'resume',
+    'health',
 
 
     # 'allauth',   # <--
