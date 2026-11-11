@@ -1,0 +1,53 @@
+{% load static %}
+{% if resume_index.resumetestimonial_set.all %}
+  
+<!-- ======= Testimonials Section ======= -->
+<section id="testimonials" class="testimonials section-bg">
+    <div class="container" data-aos="fade-up">
+        
+        <div class="section-title">
+            <h2>Testimonials</h2>
+            {% if perms.resume.add_testimonial %}
+              {{admin_utility.get_add_testimonial_btn|safe}}
+              {% endif %}
+            </div>
+            
+            <div class="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="100">
+                <div class="swiper-wrapper">
+                    {% for testimonial in resume_index.resumetestimonial_set.all %}
+                    
+                    
+                    
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="{{testimonial.image}}" class="testimonial-img" alt="">
+                            <h3>{{testimonial.teller}}</h3>
+                            
+                            {% if perms.resume.change_resumetestimonial %}
+                            <div class="text-center">
+                                {{testimonial.get_edit_btn|safe}}
+                            </div>
+                            {% endif %}
+                            
+                            <h4>{{testimonial.teller_description}}</h4>
+                        <p>
+                            <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                            {{testimonial.body}}
+                            <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+                
+
+                
+
+                
+                {% endfor %}
+                
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div>
+</section><!-- End Testimonials Section -->
+{% endif %}

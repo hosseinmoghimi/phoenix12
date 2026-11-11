@@ -1,0 +1,42 @@
+<div class="text-center">
+
+    <i style="cursor:pointer;" @click="show_form=!show_form" class="material-icons text-primary"
+        title="Show Form">add</i>
+</div>
+<div class="text-center">
+</div>
+
+<form v-show="show_form" @submit.prevent="add_resume_fact({{resume_index.id}})">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" name="title" v-model="title" required placeholder="title" class="form-control">
+
+        </div>
+        <div class="col-md-3">
+            <input type="number" required name="count" v-model="count" placeholder="count" class="form-control">
+
+        </div>
+        <div class="col-md-3">
+            <input type="number" required name="priority" v-model="priority" min="0" max="1000" placeholder="priority"
+                class="form-control">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn btn-secondary" @click="show_form=false">Cancel</button>
+        </div>
+    </div>
+
+</form>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div v-if="message.show" :class="'my-3 alert alert-'+message.color">
+            <div>
+                <h4 v-text="message.title"></h4>
+                <div v-html="message.body"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

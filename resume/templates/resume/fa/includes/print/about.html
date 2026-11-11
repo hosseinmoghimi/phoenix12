@@ -1,0 +1,132 @@
+{% load to_persian_date %}
+<div class="row rtl">
+    <div class="col-md-9">
+
+        <h5 class="text-right">
+            <small>
+                نام کامل :
+            </small>
+            {{resume_index.profile.name}}
+        </h5>
+        <div>
+            {% if resume_index.about_top %}
+            {{resume_index.about_top|safe}}
+
+            {% endif %}
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        {% if resume_index.image %}
+
+        <img src="{{resume_index.image}}" class="rounded-circle" width="100%" alt="">
+
+        {% endif %}
+    </div>
+</div>
+
+<div class="row rtl">
+
+    <div class="col-md-6">
+        <ul>
+
+            {% if resume_index.birth_day %}
+
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>تاریخ تولد:</strong>
+                <span>{{resume_index.birth_day|to_persian_date|safe}}</span>
+            </li>
+
+            {% endif %}
+
+            {% if resume_index.age %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>سن:</strong>
+                <span>{{resume_index.age}}</span>
+            </li>
+
+            {% endif %}
+            {% if resume_index.profile.mobile %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>همراه:</strong>
+                <span>{{resume_index.profile.mobile}}</span>
+            </li>
+
+            {% endif %}
+    </div>
+    <div class="col-md-6">
+        <ul>
+            {% if resume_index.degree %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>مدرک تحصیلی:</strong>
+                <span>{{resume_index.degree}}</span>
+            </li>
+
+            {% endif %}
+            {% if resume_index.freelance %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>دورکاری:</strong>
+                <span>{{resume_index.freelance}}</span>
+            </li>
+
+            {% endif %}
+
+
+            {% if resume_index.city %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>متولد:</strong>
+                <span>{{resume_index.city}}</span>
+            </li>
+
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col-md-10">
+
+        <ul>
+
+            {% if resume_index.website %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>وب سایت:</strong>
+
+                <span class="rtl">{{resume_index.website}}</span>
+            </li>
+
+            {% endif %}
+
+            {% if resume_index.email %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>ایمیل:</strong>
+                <span>{{resume_index.email}}</span>
+            </li>
+
+            {% endif %}
+
+
+            {% if resume_index.location %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>آدرس:</strong>
+
+                <span>{{resume_index.location|safe}}</span>
+            </li>
+
+            {% endif %}
+            {% if resume_index.call %}
+            <li class="text-right"><i class="bi bi-chevron-left"></i> <strong>تماس:</strong>
+
+                <span>{{resume_index.call|safe}}</span>
+            </li>
+
+            {% endif %}
+
+        </ul>
+    </div>
+    <div class="col-md-2">
+        <a href="{{resume_index.get_absolute_url}}">
+
+            <img src="{{resume_index.get_qrcode_url}}" width="100%" alt="">
+        </a>
+
+    </div>
+</div>
+{% if resume_index.about_middle %}
+
+
+{{resume_index.about_middle|safe}}
+{% endif %}
+{% if resume_index.about_bottom %}
+
+{{resume_index.about_bottom|safe}}
+
+{% endif %}

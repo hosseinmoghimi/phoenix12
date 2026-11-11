@@ -1,0 +1,37 @@
+<nav id="navbar" class="navbar nav-menu">
+    <ul>
+      <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span
+            class="farsi">خانه</span></a></li>
+
+      <li><a href="#hero" class="nav-link scrollto"><i class="bx bx-home"></i> <span class="farsi">سربرگ</span></a>
+      </li>
+      <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span class="farsi">درباره
+            ...</span></a></li>
+      <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span class="farsi">رزومه
+            ها</span></a></li>
+      <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span class="farsi">کار
+            ها</span></a>
+      </li>
+      <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span
+            class="farsi">خدمات</span></a></li>
+      <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span
+            class="farsi">ارتباط</span></a></li>
+      <li><a href="{{resume_index.get_print_url}}" class="nav-link scrollto"><i class="bx bx-printer"></i> <span
+            class="farsi">چاپ</span></a></li>
+      {% if perms.resume.change_resumeindex %}
+      <li><a href="{{resume_index.get_edit_url}}" class="nav-link scrollto" target="_blank"><i
+            class="material-icons">edit</i> <span>Edit</span></a></li>
+
+      {% endif %}
+      {% if resume_index %}
+
+      <li><a href="{% url 'resume:resume_index_language' profile_id=resume_index.profile_id language_code='en' %}"
+          class="nav-link scrollto">
+
+
+          EN
+
+          <span class="">Resume</span></a></li>
+      {% endif %}
+    </ul>
+  </nav><!-- .nav-menu -->

@@ -1,0 +1,25 @@
+{% load static %}
+
+
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex flex-column justify-content-center" style="background: url('{{resume_index.image_header}}') top right no-repeat;background-size: cover;">
+    <div class="container" data-aos="zoom-in" data-aos-delay="100">
+        <h1 class="text-center">{{resume_index.title}}
+
+          {% if perms.resume.change_resumeindex %}
+            {{resume_index.get_edit_btn|safe}}
+          {% endif %}
+        </h1>
+        <p class="text-center rtl"><span class="farsi typed" data-typed-items="{{resume_index.typing_text}}"></span></p>
+        <div class="social-links">
+          {% for contact in resume_index.profilecontact_set.all %}
+            
+          <a title="{{contact.name}}" href="{{contact.value}}" target="_blank" class="{{contact.bs_class}}">
+            {{contact.icon|safe}}
+          </a>
+          {% endfor %} 
+         
+          
+        </div>
+    </div>
+</section><!-- End Hero -->

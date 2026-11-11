@@ -1,0 +1,150 @@
+{% load static %}
+{% load to_persian_date %}
+<!-- ======= About Section ======= -->
+<section id="about" class="about farsi">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>{{resume_index.profile.name}}</h2>
+            <div>
+{% if resume_index.about_top %}
+{{resume_index.about_top|safe}}
+{% endif %}
+  {% if edit_resume_form %}
+  <div class="text-center">
+
+      <a title="ویرایش" href="{{resume_index.get_edit_url}}">
+          <i class="fa fa-edit text-warning"></i>
+        </a>
+    </div>
+   
+  {% endif %}
+            </div>
+        </div>
+
+        <div class="row rtl">
+            <div class="col-lg-4">
+                <img src="{{resume_index.image}}" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-8 pt-4 pt-lg-0 content">
+                {% if job_title %}
+
+                <h3>{{resume_index.job_title}}</h3>
+                {% endif %}
+                <div class="fst-italic">
+
+                    <div class="my-3">
+                        {% if resume_index.about_middle %}
+
+                        {{resume_index.about_middle|safe}}
+                        {% endif %}
+                    </div>
+
+                </div>
+                <div class="row" class="my-3">
+                    <div class="col-lg-6">
+                        <ul>
+
+                            {% if resume_index.birth_day %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>تاریخ تولد :</strong>
+                                <span class="mx-2">{{resume_index.birth_day}}</span>
+                            </li>
+                            <li><i class="bi bi-chevron-left"></i> <strong>تاریخ تولد :</strong>
+                                <span class="mx-2">{{resume_index.birth_day|to_persian_date|safe}}</span>
+                            </li>
+
+                            {% endif %}
+                          
+
+
+                            {% if resume_index.city %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>متولد  :</strong>
+                                <span class="mx-2">{{resume_index.city}}</span>
+                            </li>
+
+                            {% endif %}
+
+
+
+
+
+
+                         
+                         
+
+                    </div>
+                    <div class="col-lg-6">
+                        <ul>
+                            {% if resume_index.age %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>سن : </strong>
+                                <span class="mx-2">{{resume_index.age}}</span>
+                            </li>
+
+                            {% endif %}
+                         
+                         
+                            {% if resume_index.freelance %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>دورکاری :  </strong>
+                                <span class="mx-2">{{resume_index.freelance}}</span>
+                            </li>
+
+                            {% endif %}
+                            {% if resume_index.profile.mobile %}
+                            <li><i class="bi bi-chevron-left"></i> 
+                                <strong>همراه:</strong>
+                               <a href="tel:{{resume_index.profile.mobile}}" >
+
+                                   <span class="mx-2" >{{resume_index.profile.mobile}}</span>
+                                </a>
+                            </li>
+
+                            {% endif %}
+                         
+                            
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        {% if resume_index.website %}
+                        <ul>
+                            {% if resume_index.email %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>پست الکترونیک :</strong>
+                                <span class="mx-2">
+                                    <a href="mailto:{{resume_index.email}}">
+
+                                        {{resume_index.email}}
+                                    </a>
+                                </span>
+                            </li>
+
+                            {% endif %}
+
+                            {% if resume_index.degree %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>مدرک تحصیلی :</strong>
+                                <span  class="mx-2">{{resume_index.degree}}</span>
+                            </li>
+
+                            {% endif %}
+                            <li><i class="bi bi-chevron-left"></i> <strong>وب سایت :</strong>
+                                <a target="_blank" href="{{resume_index.website}}" class="mx-2">
+                                    
+                                    <span  style="direction: ltr!important;text-align: right;">{{resume_index.website}}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    {% if resume_index.about_bottom %}
+
+                    {{resume_index.about_bottom|safe}}
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section><!-- End About Section -->

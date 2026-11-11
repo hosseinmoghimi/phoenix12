@@ -1,0 +1,128 @@
+{% load to_persian_date %}
+{% load to_price %}
+{% load to_amount_color %}
+{% load static %}
+<div id="accordion-resumes">
+
+
+    <div class="card" id="resumes-app">
+        <div class="card-header" id="heading-resumes">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-resumes"
+                    aria-expanded="true" aria-controls="collapse-resumes">
+رزومه ها
+
+
+                    <span v-if="resumes.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="resumes.length"></span>
+                        </small>
+                    </span>
+
+
+                </button>
+            </h5>
+
+            {% if page_pre_description %}
+
+            <h5 class="text-center">
+                {{page_pre_description}}
+            </h5>
+            {% endif %}
+            {% if page_description %}
+
+            <h4 class="text-center">
+                {{page_description}}
+            </h4>
+            {% endif %}
+        </div>
+        <div id="collapse-resumes" class="collapse" aria-labelledby="heading-resumes"
+            data-parent="#accordion-resumes">
+
+
+            <div class="card-body">
+
+                {% load static %}
+                <form @submit.prevent="search()">
+                    <img src="{% static 'leo/img/loading.gif' %}" width="32" v-if="waiting" alt="">
+
+                    <input type="text" v-model="search_for" class="form-control" placeholder="جستجو ..."
+                        @input="filter()">
+                </form>
+
+
+                <div class="table-responsive rtl">
+                    <img v-if="false" width="32" src="{% static 'leo/img/loading.gif' %}" alt="">
+                    <h6 v-if="false">
+
+                        <span class="text-muted">در حال بار گذاری ... </span>
+                    </h6>
+                    <table class="table table-striped">
+                        <thead>
+                            <th>
+                                حساب
+                            </th>
+                            <th>
+                                زبان
+                            </th>
+                            <th>
+                                پروفایل
+                            </th> 
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+
+
+                            <tr v-for="resume in resumes">
+                                <td>
+                                    <a :href="resume.get_absolute_url">
+                                        <div class="media">
+                                            <img :src="resume.logo" class="rounded-circle" width="32" alt="">
+                                            <div class="media-body mr-3">
+                                                <div>
+
+                                                    <span v-text="resume.title"></span>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">
+                                                        <span v-text="resume.class_title"></span>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+
+
+                                </td>
+                                <td>
+                                    <span v-text="resume.language"></span>
+
+                                </td>
+                                <td>
+                                    <a :href="resume.profile.get_absolute_url">
+                                        <img :src="resume.profile.image" class="rounded-circle" width="32" alt="">
+                                        <span v-text="resume.profile.name"></span>
+                                    </a>
+
+                                </td>
+                                 
+                                <td>
+
+                                    {% if perms.projectmanager.add_employee and not resume.employee %}
+                                   
+                                    {% endif %}
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

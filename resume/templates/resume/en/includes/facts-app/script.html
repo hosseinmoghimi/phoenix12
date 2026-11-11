@@ -1,0 +1,70 @@
+<script>
+    let facts = JSON.parse(`{{facts_s|escapejs}}`)
+    facts = []
+</script>
+{% if add_resume_fact_form %}
+<script>
+    let facts_app_data = {
+        facts: facts,
+        count: "",
+        priority: "",
+        title: "",
+        show_form: false,
+        message: {
+            show: false,
+            title: "",
+            body: "",
+        }
+    }
+    let facts_app_methods = {
+        add_resume_fact: function (resume_id) {
+            let url = "{% url 'resume:add_resume_fact' %}"
+            let payload = {
+                csrfmiddlewaretoken: csrfmiddlewaretoken,
+                resume_index_id: resume_id,
+                title: facts_app.title,
+                priority: facts_app.priority,
+                count: facts_app.count,
+            }
+            console.log(payload)
+            let posting = $.post(url, payload)
+            posting.done((data) => {
+                console.log(data)
+                if (data.result === 'SUCCEED') {
+                    facts_app.title = ""
+                    facts_app.count = 0
+                    facts_app.facts.push(data.fact)
+                    facts_app.message = {
+                        show: true,
+                        title: "added",
+                        body: "fact added successfully !",
+                        color: "success",
+                    }
+                    setTimeout(() => {
+                        facts_app.message = {
+                            show: false,
+                        }
+                    }, 3000);
+                }
+            })
+        },
+    }
+</script>
+{% else %}
+<script>
+
+    let facts_app_data = {
+        facts: facts,
+    }
+    let facts_app_methods = {
+
+    }
+</script>
+{% endif %}
+<script>
+    let facts_app = new Vue({
+        el: "#facts-app",
+        data: facts_app_data,
+        methods: facts_app_methods,
+    })
+</script>

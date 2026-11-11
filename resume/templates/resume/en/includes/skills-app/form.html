@@ -1,0 +1,29 @@
+<div class="text-center">
+
+    <i style="cursor:pointer;" @click="show_form=!show_form" class="material-icons text-primary" title="Show Form">add</i>
+</div>
+
+<form v-show="show_form" @submit.prevent="add_resume_skill({{resume_index.id}})">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-4">
+            <input type="text" name="title" v-model="title" required placeholder="title" class="form-control">
+
+        </div>
+        <div class="col-2">
+            <input type="number" required name="percentage" v-model="percentage" min="0" max="100"
+                placeholder="percentage" class="form-control">
+
+        </div> 
+        <div class="col-2">
+            <input type="number" required name="priority" v-model="priority" min="0" max="1000"
+                placeholder="priority" class="form-control">
+
+        </div>
+        <div class="col-4">
+            <button class="btn btn-success" type="submit">Add</button>
+            <button class="btn btn-secondary" @click="show_form=false">Cancel</button>
+        </div>
+    </div>
+
+</form>

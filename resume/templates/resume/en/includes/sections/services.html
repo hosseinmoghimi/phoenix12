@@ -1,0 +1,47 @@
+{% load static %}
+
+<!-- ======= Services Section ======= -->
+<section id="services" class="services">
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <h2>Services</h2>
+            <div>
+
+                {{resume_index.services_top|safe}}
+            </div>
+            <div class="text-center">
+
+                {% if perms.resume.add_resumefact %}
+                <div class="text-center">
+                    <a target="_blank" href="{{admin_utility.get_add_service_link}}?resume_index={{resume_index.id}}">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>  
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="row">
+            {% for service in resume_index.resumeservice_set.all %}
+            <div class="col-lg-4 col-md-6 " data-aos="zoom-in" data-aos-delay="{{forloop.counter}}00">
+                <div class="icon-box iconbox-blue">
+                    <div class="icon">
+                        {{service.icon.get_icon_tag|safe}}
+                    </div>
+                    <h4>
+                        <a href="{{service.get_absolute_url}}" class="docs-creator">
+                            {{service.title}}
+                        </a>
+                    </h4>
+                    {{service.short_description|safe}}
+                    {% if perms.resume.change_resumeindex %}
+                    <div class="text-center">
+                        {{service.get_edit_btn|safe}}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section><!-- End Services Section -->

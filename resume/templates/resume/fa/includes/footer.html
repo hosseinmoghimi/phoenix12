@@ -1,0 +1,36 @@
+<footer id="footer">
+    <div class="container">
+      <h3 class="farsi" style="font-family: 'HMFONT';">{{resume_index.title}}</h3>
+      <p>
+        {% if resume_index.profile.bio %}
+          
+        {{resume_index.profile.bio}}
+        {% endif %}
+      </p>
+      <div class="social-links">
+        {% for contact in resume_index.profile.profilecontact_set.all %}
+            
+        <a title="{{contact.name}}" href="{{contact.value}}" target="_blank" class="{{contact.bs_class}}">
+          {{contact.icon|safe}}
+        </a>
+        {% endfor %} 
+    
+      </div>
+      <div class="copyright">
+        &copy; Copyright <strong><span>MyResume</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: [license-url] -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/free-html-bootstrap-template-my-resume/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+
+        | <a href="{{SITE_URL}}">
+          <i class="material-icons">
+            home
+          </i>
+          </a>
+      </div>
+    </div>
+  </footer>

@@ -1,0 +1,68 @@
+{% load static %}
+
+<!-- ======= Facts Section ======= -->
+<section id="facts" class="facts">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Facts</h2>
+            <div>
+
+                {{resume_index.facts_top|safe}}
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+            {% if perms.resume.add_resumefact %}
+            <div class="text-center">
+                <a target="_blank" href="{{admin_utility.get_add_fact_link}}?resume_index={{resume_index.id}}">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>            
+            {% endif %}
+            {% if add_resume_fact_form %}
+            <form method="POST" action="{% url 'resume:add_resume_fact' %}">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="{{language}}">
+                <input type="hidden" name="resume_index_id" value="{{resume_index.id}}">
+                <div class="row">
+                    <div class="col-4">
+                        <input type="text" name="title" required placeholder="title" class="form-control">
+
+                    </div>
+                    <div class="col-4">
+                        <input type="number" required name="count" placeholder="count" class="form-control">
+
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-success" type="submit">Add</button>
+                    </div>
+                </div>
+
+            </form>
+            {% endif %}
+            {% for fact in facts %}
+
+            <div class="col-lg-3 col-md-6">
+                <div class="count-box">
+
+                    {{fact.icon|safe}}
+
+                    <span data-purecounter-start="0" data-purecounter-end="{{fact.count}}" data-purecounter-duration="1"
+                        class="purecounter"></span>
+                    <p>{{fact.title}}</p>
+                </div>
+                {% if perms.resume.change_resumefact %}
+                <div class="text-center">
+
+                    {{fact.get_edit_btn|safe}}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+</section><!-- End Facts Section -->

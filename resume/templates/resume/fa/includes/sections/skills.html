@@ -1,0 +1,60 @@
+{% load static %}
+
+
+<!-- ======= Skills Section ======= -->
+<section id="skills" class="skills section-bg">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>مهارت ها</h2>
+
+            {% if resume_index.skills_top %}
+
+            <div class="farsi">
+
+                {{resume_index.skills_top|safe}}
+            </div>
+            {% endif %}
+        </div>
+
+
+        <div class="row skills-content rtl">
+            {% if perms.resume.add_resumeskill %}
+
+            <div class="text-center">
+                <a target="_blank" href="{{admin_utility.get_add_skill_link}}?resume_index={{resume_index.id}}">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+
+
+            {% endif %}
+
+            {% for skill in resume_skills %}
+
+            <div class="col-lg-6">
+
+                <div class="progress">
+                    <span class="skill farsi rtl">
+                        {{skill.title}}
+                        {% if perms.resume.change_resumeskill %}
+
+                        {{skill.get_edit_btn|safe}}
+                        {% endif %}
+                        <i class="val" style="float: unset !important;">{{skill.percentage}}%</i></span>
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{skill.percentage}}"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section><!-- End Skills Section -->

@@ -1,0 +1,56 @@
+{% load static %}
+
+<!-- ======= Facts Section ======= -->
+<section id="facts" class="facts">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>افتخارات و دستاورد ها</h2>
+            {% if resume_index.facts_top %}
+
+
+
+            <div class="farsi">
+
+                {{resume_index.facts_top|safe}}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row justify-content-md-center">
+            {% if perms.resume.add_resumefact %}
+
+            <div class="text-center">
+                <a target="_blank" href="{{admin_utility.get_add_fact_link}}?resume_index={{resume_index.id}}">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+
+
+            {% endif %}
+            {% for fact in resume_index.resumefact_set.all %}
+
+            <div class="col-lg-3 col-md-6 farsi text-{{fact.color}}">
+                <div class="count-box">
+                    {% if fact.icon %}
+                    {{fact.icon|safe}}
+  
+{% endif %}
+                    <span data-purecounter-start="0" data-purecounter-end="{{fact.count}}" data-purecounter-duration="1"
+                        class="purecounter"></span>
+                    <p class="farsi">{{fact.title}}</p>
+                </div>
+                {% if perms.resume.change_resumefact %}
+                <div class="text-center">
+
+                    {{fact.get_edit_btn|safe}}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+</section><!-- End Facts Section -->

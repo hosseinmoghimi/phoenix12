@@ -1,0 +1,84 @@
+{% load to_persian_date %}
+{% if resume_categories %}
+
+
+
+<div class=" card my-5">
+    <div class="card-header">
+        <h5>تحصیلات آکادمیک</h5>
+
+
+    </div>
+    <div class="card-body">
+        {% if resume_index.resume_top %}
+        <div class="farsi">
+
+            {{resume_index.resume_top|safe}}
+        </div>
+        {% endif %}
+        <div class="mr-5">
+
+            {% for resume_category in resume_index.resumecategory_set.all %}
+            <div class="my-5 text-right farsi">
+
+                <h4>
+                    <i class="material-icons">ballot</i>
+                    {{resume_category.title}}
+                </h4>
+
+
+                <div class="mr-5">
+                    {% for resume in resume_category.resume_set.all %}
+                    <div>
+
+                        <span
+                            style="font-size: 16px;background: #f7f8f9;padding: 5px 15px;display: inline-block;font-weight: 600;margin-bottom: 10px;"
+                            class=" text-right">
+                            {{resume.start_date|to_persian_date|safe}} - {{resume.end_date|to_persian_date|safe}}
+
+
+                        </span>
+                        <span class="mr-4 h5">
+
+                            {{resume.title}}
+                        </span>
+                    </div>
+                    {% if resume.location %}
+
+                    <div class="mb-3 text-left">
+
+                        <em>
+                            {{resume.location}}
+                        </em>
+                        <i class="material-icons">
+                            public
+                        </i>
+                    </div>
+                    {% endif %}
+
+                    {% if resume.short_description %}
+                    <div class="text-dark  text-right">
+
+                        {{resume.short_description|safe}}
+                    </div>
+                    {% endif %}
+                    
+                    {% if full_print and resume.description %}
+
+                    <div class="text-dark  text-right">
+
+                        {{resume.description|safe}}
+                    </div>
+                    {% endif %}
+
+                    <hr>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,63 @@
+{% load static %}
+<!-- ======= Portfolio Section ======= -->
+<section id="portfolio" class="portfolio section-bg farsi">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>کارهای انجام شده</h2>
+
+            <div>
+
+                {{resume_index.portfolio_top|safe}}
+            </div>
+        </div>
+{% if perms.resume.add_porfolio %}
+<div class="text-center">
+    <a target="_blank" href="{{admin_utility.get_add_portfolio_link}}?resume_index={{resume_index.id}}">
+        <i class="material-icons">add</i>
+    </a>
+</div>  
+{% endif %}
+        <div class="row rtl">
+            <div class="col-lg-12 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                <ul id="portfolio-flters">
+                    <li data-filter="*" class="filter-active">All</li>
+                    {% for filter in portfolio_filters %}
+                    <li data-filter=".filter-{{filter}}">{{filter}}</li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="row portfolio-container rtl" data-aos="fade-up" data-aos-delay="200">
+            {% for portfolio in portfolios %}
+
+            <div class="col-lg-4 col-md-6 portfolio-item filter-{{portfolio.category}}">
+                <div class="portfolio-wrap">
+                    <img src="{{portfolio.thumbnail}}" class="img-fluid w-100" alt="">
+                    <div class="portfolio-info">
+                        <h4>{{portfolio.title}}</h4>
+                        <p>{{portfolio.category}}</p>
+                        <div class="portfolio-links">
+                            <a href="{{portfolio.thumbnail}}" data-gallery="portfolioGallery" class="portfolio-lightbox"
+                                title="{{portfolio.title}}"><i class="bx bx-plus"></i></a>
+                            {% if perms.resume.change_resumeportfolio %}
+                            <a href="{{portfolio.get_edit_url}}" target="_blank" title="{{portfolio.title}}"><i
+                                    class="material-icons">edit</i></a>
+                            {% endif %}
+
+
+
+                            <a href="{{portfolio.get_absolute_url}}" target="_blank"  title="Portfolio Details"><i class="bx bx-link"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+
+    </div>
+</section><!-- End Portfolio Section -->

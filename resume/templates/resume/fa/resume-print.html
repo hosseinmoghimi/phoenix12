@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load to_persian_date %}
+    {% load static %}
+    {% load to_price %}
+    {% include "phoenix/includes/head.html" %}
+
+    <link href="{% static 'resume/en/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <style>
+        .table-header {
+            text-align: right;
+            background-color: #ddd;
+            color: #222;
+        }
+
+        .bordered>td,
+        th,
+        .lines_total {
+            border: 3px solid #888;
+        }
+
+        .nav {
+            margin-top: 1em;
+
+        }
+
+        .nav-item {
+            margin-bottom: 1em;
+
+        }
+    </style>
+</head>
+
+<body class="farsi rtl">
+
+    <div class="container rtl pt-5">
+        <div class="row mt-3">
+
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+
+                <h4 class="text-center">
+                    {{resume_index.title}}
+                </h4>
+
+
+                {% include "resume/fa/includes/print/about.html" %}
+
+
+
+
+                {% if skills %}
+
+                {% include "resume/fa/includes/print/skills.html" %}
+                {% endif %}
+
+                {% if resume_index.resumecategory_set.all %}
+                {% include "resume/fa/includes/print/resumes.html" %}
+
+
+                {% endif %}
+
+                {% if facts %}
+
+                {% include "resume/fa/includes/print/facts.html" %}
+
+
+                {% endif %}
+
+
+
+                {% if portfolios %}
+                {% include "resume/fa/includes/print/portfolios.html" %}
+
+
+                {% endif %}
+
+
+                {% if services %}
+                {% include "resume/fa/includes/print/services.html" %}
+
+
+                {% endif %}
+
+
+
+
+
+
+
+
+
+            </div>
+            <div class="col-md-1"></div>
+
+
+
+
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<script>
+    let skills = JSON.parse(`{{skills_s|escapejs}}`)
+</script>
+{% if add_resume_skill_form %}
+<script>
+    let skills_app_data = {
+        skills: skills,
+        percentage: "",
+        priority:"",
+        title: "",
+        show_form:false
+    }
+    let skills_app_methods = {
+        add_resume_skill: function (resume_id, language) {
+            let url = "{% url 'resume:add_resume_skill' %}"
+            let payload = {
+                csrfmiddlewaretoken: csrfmiddlewaretoken,
+                resume_index_id: resume_id,
+                title: skills_app.title,
+                priority: skills_app.priority,
+                percentage: skills_app.percentage,
+            }
+            console.log(payload)
+            let posting = $.post(url, payload)
+            posting.done((data) => {
+                console.log(data)
+                if (data.result === 'SUCCEED') {
+                    skills_app.title = ""
+                    skills_app.percentage = 0
+                    skills_app.skills.push(data.skill)
+                }
+            })
+        },
+    }
+</script>
+{% else %}
+<script>
+
+    let skills_app_data = {
+        skills: skills,
+    }
+    let skills_app_methods = {
+
+    }
+</script>
+{% endif %}
+<script>
+    let skills_app = new Vue({
+        el: "#skills-app",
+        data: skills_app_data,
+        methods: skills_app_methods,
+    })
+</script>

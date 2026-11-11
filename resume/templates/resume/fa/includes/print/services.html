@@ -1,0 +1,32 @@
+{% if services %}
+
+<div class="card my-5">
+    <div class="card-header">
+
+
+        <h5>خدمات</h5>
+    </div>
+    <div class="card-body">
+
+        {% if resume_index.services_top %}
+
+        <div class="farsi">
+
+            {{resume_index.services_top|safe}}
+        </div>
+        {% endif %}
+
+        <ul class="nav flex-column">
+            {% for service in services %}
+
+            <li class="nav-item">
+                {{service.title}}
+
+               
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endif %}

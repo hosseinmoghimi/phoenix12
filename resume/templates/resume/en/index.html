@@ -1,0 +1,101 @@
+{% extends "resume/en/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock head %}
+
+
+
+{% block content %}
+
+
+
+{% include "resume/en/includes/sections/hero.html" %}
+
+<main id="main">
+    {% include "resume/en/includes/sections/about.html" %}
+
+    {% include "resume/en/includes/facts-app/template.html" %}
+    {% include "resume/en/includes/skills-app/template.html" %}
+
+
+    {% include "resume/en/includes/sections/resumes.html" %}
+    {% include "resume/en/includes/sections/portfolios.html" %}
+    {% include "resume/en/includes/sections/services.html" %}
+    {% include "resume/en/includes/sections/testimonials.html" %}
+    {% include "resume/en/includes/sections/contact.html" %}
+
+</main><!-- End #main -->
+
+
+{% endblock content %}
+
+
+
+{% block script %}
+<script src="{% static 'vendor/js/vue.min.js' %}"></script>
+<script>
+    let resume_index_id=parseInt("{{resume_index.id}}")
+    let contact_app = new Vue({
+        el: "#contact",
+        data: {
+            full_name: "",
+            subject: "",
+            email: "",
+            mobile: "",
+            message: "",
+            waiting: false,
+            sent: false,
+            error: "",
+            resume_index_id:resume_index_id
+        },
+        methods: {
+            add_contact_message: function () {
+                let url = "{% url 'resume:add_contact_message' %}"
+                contact_app.waiting = true
+                contact_app.sent = false
+                contact_app.error = false
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    full_name: this.full_name,
+                    subject: this.subject,
+                    email: this.email,
+                    mobile: this.mobile,
+                    message: this.message,
+                    resume_index_id: this.resume_index_id,
+                    app_name: "{{APP_NAME}}",
+                }
+
+                let posting = $.post(url, payload)
+                posting.fail((error) => {
+                    contact_app.error = "Error while sending message, Try again please"
+                    contact_app.sent = false
+                    contact_app.waiting = false
+                    setTimeout(() => {
+                        contact_app.error = false
+
+                    }, 4000);
+
+                })
+                posting.done((data) => {
+                    //console.log(data)
+                    contact_app.error = false
+                    contact_app.waiting = false
+                    contact_app.sent = true
+                    contact_app.message = ""
+                    // contact_app.mobile = ""
+                    contact_app.subject = ""
+                    setTimeout(() => {
+                        contact_app.sent = false
+
+                    }, 4000);
+                })
+            },
+        }
+    })
+</script>
+{% include "resume/en/includes/skills-app/script.html" %}
+{% include "resume/en/includes/facts-app/script.html" %}
+
+
+{% endblock script %}

@@ -1,0 +1,103 @@
+{% load static %}
+{% load to_persian_date %}
+<!-- ======= Resume Section ======= -->
+<section id="resume" class="resume farsi">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>تحصیلات و آموخته های آکادمیک</h2>
+
+            <div>
+                {% if resume_index.resume_top %}
+
+                {{resume_index.resume_top|safe}}
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            {% if perms.resume.add_resumeskill %}
+            {{admin_utility.get_add_resume_btn|safe}}
+            {% endif %}
+
+        </div>
+        <div class="row rtl">
+            {% for resume_category in resume_index.resumecategory_set.all %}
+
+
+            <div class="col-lg-6">
+                <h3 class="resume-title">
+                    <a href="{{resume_category.get_absolute_url}}">
+
+                        {{resume_category.title}}
+                    </a>
+
+                    {% if perms.resume.change_resumecategory %}
+               
+                    {{resume_category.get_edit_btn|safe}}
+                      
+                    {% endif %}
+                </h3>
+                {% for resume in resume_category.resume_set.all %}
+
+
+
+                <div class="resume-item1"
+                    style="padding: 0 20px 20px 0;margin-top: -2px;border-right: 2px solid #0563bb;position: relative;">
+
+                    <h4 class="farsi">
+                        <a href="{{resume.get_absolute_url}}">
+                            {{resume.title}}
+
+                        </a>  
+                        <a class="mx-2" title="ویرایش" href="{{resume.get_edit_url}}">
+                            <i class="fa fa-edit text-warning"></i>
+                        </a>
+                        {% if perms.resume.change_resume %}
+                      
+                        {% endif %}
+                        {% if sdsdsd %}
+                        {{resume.get_edit_btn|safe}}
+                        {% endif %}
+                    </h4>
+                    <h5
+                        style="font-size: 16px;background: #f7f8f9;padding: 5px 15px;display: inline-block;font-weight: 600;margin-bottom: 10px;">
+                        {{resume.start_date|to_persian_date|safe}} - {{resume.end_date|to_persian_date|safe}}</h5>
+                    <div>
+
+                        {% if resume.location %}
+
+                        <div class="mb-3">
+                            <i class="material-icons">
+                                public
+                            </i>
+                            <em>
+                                {{resume.location}}
+                            </em>
+                        </div>
+                        {% endif %}
+
+
+{% if resume.short_description %}
+  
+<div class="text-dark">
+    
+    {{resume.short_description|safe}}
+</div>
+{% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+            </div>
+
+
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    </div>
+</section><!-- End Resume Section -->

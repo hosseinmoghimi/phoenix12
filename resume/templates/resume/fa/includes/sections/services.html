@@ -1,0 +1,56 @@
+{% load static %}
+
+<!-- ======= Services Section ======= -->
+<section id="services" class="services farsi" >
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>خدمات و سرویس ها</h2>
+            <div>
+
+                {{resume_index.services_top|safe}}
+            </div>
+            <div class="text-center">
+
+                {% if perms.resume.add_resumefact %}
+                <div class="text-center">
+                    <a target="_blank" href="{{admin_utility.get_add_service_link}}?resume_index={{resume_index.id}}">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>  
+    
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="row rtl">
+            {% for service in services %}
+
+            <div class="col-lg-4 col-md-6 mb-5" data-aos="zoom-in" data-aos-delay="{{forloop.counter}}00">
+                <div class="text-center">
+                    {{service.icon.get_icon_tag|safe}}
+
+                </div>
+
+                <a href="{{service.get_absolute_url}}">
+                    <h4 class="text-center">{{service.title}}</h4>
+                </a>
+                <div class="d-block text-center">
+                    {{service.short_description|safe}}
+                </div>
+                {% if perms.resume.change_resumeindex %}
+                <div class="text-center">
+                    {{service.get_edit_btn|safe}}
+                </div>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+</section><!-- End Services Section -->

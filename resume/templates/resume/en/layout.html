@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  {% include "resume/en/includes/head.html" %}
+  {% block head %}
+
+  {% endblock head %}
+
+
+  <style>
+    .contact-sent-message {
+      color: #fff;
+      background: #18d26e;
+      text-align: center;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    .contact-error-message {
+      color: #fff;
+      background: #e71919;
+      text-align: center;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    .contact-loading {
+      background: #fff;
+      text-align: center;
+      padding: 15px;
+    }
+  </style>
+
+
+{% if farsi_font_name %}
+<link href="{{STATIC_URL}}leo/css/font-farsi-{{farsi_font_name}}.css" rel="stylesheet">
+{% else %}
+<link href="{% static 'leo/css/font-farsi.css' %}" rel="stylesheet">
+{% endif %}
+</head>
+
+<body>
+
+  <!-- ======= Mobile nav toggle button ======= -->
+  <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
+  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+  <!-- ======= Header ======= -->
+  <header id="header" class="d-flex flex-column justify-content-center">
+
+    <nav id="navbar" class="navbar nav-menu">
+      <ul>
+        <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
+      
+        <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
+        <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
+        <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a>
+        </li>
+        <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>
+        <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
+        {% if perms.resume.change_resumeindex %}
+        <li><a href="https://bootstrapmade.com/demo/MyRresume_index_languageesume/" class="nav-link scrollto" target="_blank"><i
+              class="material-icons">settings</i> <span>Origin</span></a></li>
+        <li><a href="{{resume_index.get_edit_url}}" class="nav-link scrollto" target="_blank"><i
+              class="material-icons">edit</i> <span>Edit</span></a></li>
+
+        {% endif %}
+          {% if resume_index %}
+          
+        <li><a href="{% url 'resume:resume_index' language='fa' pk=resume_index.profile.id%}" class="nav-link scrollto farsi ">فا<span class="farsi">فارسی</span></a></li>
+        {% endif %}
+      </ul>
+    </nav><!-- .nav-menu -->
+
+  </header><!-- End Header -->
+
+  {% block content %}
+
+  {% endblock content %}
+
+
+  <!-- ======= Footer ======= -->
+  <!-- End Footer -->
+  {% include "resume/en/includes/footer.html" %}
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  {% include "resume/en/includes/script.html" %}
+
+
+  {% csrf_token %}
+  <script>
+    let current_datetime = "{{current_datetime}}"
+    var csrfmiddlewaretoken = ''
+    $(document).ready(function () {
+      // Javascript method's body can be found in assets/js/demos.js
+      csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+    })
+  </script>
+  {% block script %}
+
+  {% endblock script %}
+
+</body>
+
+</html>

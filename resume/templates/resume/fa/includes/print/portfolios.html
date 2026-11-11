@@ -1,0 +1,22 @@
+{% if portfolios %}
+<div class=" card my-5">
+    <div class="card-header">
+        <h5>کارها و پروژه های انجام شده </h5>
+
+    </div>
+    <div class="card-body">
+
+        <ul class="nav flex-column">
+            {% for portfolio in portfolios %}
+
+            <li class="nav-item">
+                {{portfolio.title}}
+
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endif %}

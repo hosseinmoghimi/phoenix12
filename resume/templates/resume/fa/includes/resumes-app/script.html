@@ -1,0 +1,41 @@
+{% load to_json %}
+<script>
+    let resumes = JSON.parse(`{{resumes|to_json_resumes|escapejs}}`)
+    let resumes_app = new Vue({
+        el:"#resumes-app",
+        data: {
+            resumes: resumes,
+            search_for:'',
+            waiting:false,
+        },
+        methods: {
+            filter:function(){
+                this.resumes = resumes.filter(resume => resume.title.indexOf(this.search_for) > -1)
+         
+            },
+            to_price: function (vall) {
+                let color='primary'
+                if (vall<0)
+                color='danger'
+                if (vall>0)
+                color='success'
+                vall=to_price(vall,"{{CURRENCY}}")
+                return `
+                    <span class="text-${color}">${vall}</span>
+                    `
+            },
+            create_employee: function (resume_id) {
+                let url = "{% url 'organization:employee' pk=0 %}"
+                let payload = {
+                    csrfmiddlewaretoken: csrfmiddlewaretoken,
+                    resume_id: resume_id
+                }
+                $.post(url, payload).done((data) => {
+                    console.log(data)
+                })
+            },
+           
+        }
+    })
+
+</script>
