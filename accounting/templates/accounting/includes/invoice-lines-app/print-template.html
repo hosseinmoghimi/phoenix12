@@ -1,4 +1,4 @@
-<div id="invoice-lines-app" class="card">
+<div id="invoice-lines-app" class="card bordered">
   {% load to_price %}
 
   <div class="card-body">
@@ -7,7 +7,7 @@
     <div class="table-responsive rtl">
        
       <div v-show="invoice_lines.length>0">
-        <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped farsi rtl">
+        <table class="table bordered table-striped farsi rtl">
           <thead>
             <th class="bordered farsi text-right">ردیف</th>
             
@@ -29,7 +29,10 @@
           <tbody>
             <tr v-for="(invoice_line, index) in invoice_lines" :key="invoice_line.id">
               <td class="bordered farsi text-right">
-                <span v-text="index + 1"></span>
+                <div class="text-center">
+
+                  <span v-text="index + 1"></span>
+                </div>
               </td>
 
             
@@ -108,14 +111,19 @@
             </tr> 
 
             <tr>
-              <td colspan="4">
-                <div class="text-left">
-                  
-                </div>
+              <td colspan="1">
               </td>
-
-              <td  >
-                <div class="text-right"> 
+              <td colspan="1">
+              </td>
+              <td colspan="1">
+              </td>
+              <td colspan="1">
+              </td>
+              <td colspan="1">
+                <div class="text-left">
+              
+                  
+                
                
 
                 <span class="text-success" v-if="sum_discounts()>0" v-text="to_price(sum_discounts())"></span>
@@ -123,7 +131,6 @@
                 </div>
               </td>
               <td class="bordered farsi text-right">
-                 
                 <span v-text="to_price(lines_total())"></span>
                 <div v-if="sum_discounts()>0">
   
@@ -178,45 +185,24 @@
  
           </tbody>
           <tfoot>
-            <th colspan="1">
-              <div class="text-left"></div>
-            </th>
+            <th colspan="5">
+              <div class="text-left">
+                <small class="text-muted">
+                قابل پرداخت :
 
-            {% if not invoice_line_item %}
+             </small>
 
-            <th colspan="1">
-              <div class="text-left"></div>
-            </th>
-            {% endif %} {% if not invoice %}
-
-            <th colspan="1">
-              <div class="text-left"></div>
-            </th>
-
-            {% endif %}
-
-            <th colspan="1">
-              <div class="text-left"></div>
-            </th>
-            <th colspan="1">
-              <div class="text-left"></div>
-            </th>
-
-            <th>
-              <!-- <div class="text-left">
-                جمع بدون تخفیف :
-                <span v-text="to_price(sum_prices())"></span>
-                {{CURRENCY}}
+                  {{invoice.amount|to_horuf}}
+            
+              {{CURRENCY}}
+         
               </div>
-              <div class="text-success text-left">
-                تخفیف :
-                <span v-text="to_price(sum_discounts())"></span>
-                {{CURRENCY}}
-              </div> -->
+             
+               
             </th>
 
-            <th>
-              <div class="alert alert-success">
+            <th class="">
+              <div class="alert alert-success bordered">
                 <!-- <div style="text-decoration:  line-through;"
                                         v-text="to_price(sum_prices())"></div> -->
 

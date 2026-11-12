@@ -1,7 +1,15 @@
-{% extends "phoenix/print-layout.html" %} {% block content %} {% load to_persian_date %}
+{% extends "phoenix/print-layout.html" %}
+{% block style %}
+  <style>
+    .bordered{
+      border: 1px black solid !important;
+    }
+  </style>
+{% endblock style %}
+{% block content %} {% load to_persian_date %}
 <div class="row rtl farsi">
   <div class="col-md-12">
-    <div class="card">
+    <div class="card bordered">
       {% load to_price %}
       <div class="card-body">
         <div class="text-center">
@@ -41,7 +49,7 @@
   </div>
 
   <div class="col-6">
-    <div class="card">
+    <div class="card bordered">
       <div class="card-body">
         <p class="text-center">
           فروشنده
@@ -55,7 +63,7 @@
   </div>
 
   <div class="col-6">
-    <div class="card farsi">
+    <div class="card farsi bordered">
       <div class="card-body">
         <p class="text-center">
           خریدار
@@ -70,7 +78,7 @@
   {% if invoice.variz_info %}
     
   <div class="col-12">
-    <div class="card">
+    <div class="card bordered">
       <div class="card-body">
         جهت واریز :
         {{invoice.variz_info}}
@@ -82,7 +90,7 @@
   {% if invoice.address or invoice.postal_code %}
 
   <div class="col-12">
-    <div class="card">
+    <div class="card bordered">
       <div class="card-body">
         <div class="description">
           {% if invoice.address %}
@@ -102,7 +110,7 @@
   </div>
   {% endif %}
   <div class="col-12">
-    <div class="card">
+    <div class="card bordered">
       <div class="card-body">
         <div class="media">
           <img src="{{invoice.get_print_qrcode_url}}" width="128" alt="" />
