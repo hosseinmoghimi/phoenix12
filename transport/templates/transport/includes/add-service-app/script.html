@@ -87,6 +87,19 @@
         let posting = $.post(url, payload);
         posting.done((data) => {
           console.log(data);
+          add_service_app.oil_action=""
+          add_service_app.oil_liter=0
+          add_service_app.oil_type=""
+          add_service_app.filter_type=""
+          add_service_app.filter_action=""
+          add_service_app.description=""
+          add_service_app.service_man_id=0
+          add_service_app.vehicle_code=""
+          add_service_app.shift=""
+          add_service_app.driver_code=""
+          add_service_app.vehicle_hour=0
+          add_service_app.grease_count=0
+          add_service_app.grease=0
 
           if (data.result === "SUCCEED") {
             // add_service_app.title = "";

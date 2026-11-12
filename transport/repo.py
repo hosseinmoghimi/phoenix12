@@ -1632,8 +1632,8 @@ class ServiceRepo():
         if 'grease' in kwargs and kwargs['grease']:
             service.grease=kwargs["grease"]
 
-        if 'grease_count' in kwargs and kwargs['grease_count']:
-            service.grease_count=kwargs["grease_count"]
+        # if 'grease_count' in kwargs and kwargs['grease_count']:
+        #     service.grease_count=kwargs["grease_count"]
           
         if 'oil_liter' in kwargs and kwargs['oil_liter']:
             service.oil_liter=kwargs["oil_liter"]
