@@ -51,8 +51,8 @@ class DrugView(View):
         drug =DrugRepo(request=request).drug(*args, **kwargs)
         context[WIDE_LAYOUT]=False
         context['drug']=drug
-        from core.views import PageContext
-        context.update(PageContext(request=request,page=drug,*args, **kwargs))
+        from accounting.views import ProductContext
+        context.update(ProductContext(request=request,product=drug,*args, **kwargs))
         return render(request,TEMPLATE_ROOT+"drug.html",context) 
 
 
@@ -60,7 +60,8 @@ class DrugsView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)
         drugs =DrugRepo(request=request).list(*args, **kwargs)
-        context[WIDE_LAYOUT]=False
+   
+        context[WIDE_LAYOUT]=True
         context['drugs']=drugs
         drugs_s=json.dumps(DrugSerializer(drugs,many=True).data)
         context['drugs_s']=drugs_s

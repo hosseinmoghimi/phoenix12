@@ -1,0 +1,34 @@
+<script>
+    console.log('drugs app')
+    let drugs_for_drugs_app=JSON.parse("{{drugs_s|escapejs}}")
+    let drugs_app = new Vue({
+        el: "#drugs-app",
+        data: {
+           drugs:drugs_for_drugs_app,
+            search_for:"",
+        },
+        methods: {
+            filter: () => {
+                let search_for = (drugs_app.search_for).toUpperCase()
+               drugs_app.drugs =drugs_for_drugs_app.filter(function (drug) {
+                    let title=(drug.title).toUpperCase()
+                    
+                    if(title.indexOf(search_for) > -1){
+                        return true
+                    }
+                        let model=drug.model
+                        
+                    if( model !=null && model.indexOf(search_for) > -1){
+                        return true
+                    }
+                    return false
+                })
+
+            },
+
+            to_price: (vall) => {
+                return to_price(vall)
+            }
+        }
+    })
+</script>

@@ -1,0 +1,44 @@
+{% extends "health/layout.html" %}
+{% block content %}
+<div class="row rtl farsi">
+      
+ 
+    {% if add_drug_form %}
+    <div class="col-md-8">
+        {% include "health/includes/add-drug-app/template.html" %}
+    </div>
+    {% endif %}
+    
+    
+    {% if import_drugs_from_excel_form %}
+
+    <div class="col-md-4">
+        {% include "health/includes/import-drugs-from-excel-app/template.html" %}
+    </div>
+    {% endif %}
+
+    <div class="col-md-12 ">
+        {% include "health/includes/drugs-app/template.html" %}
+    </div>
+    
+    
+</div>
+{% endblock content %}
+
+{% block script %}
+ 
+
+{% include "health/includes/drugs-app/script.html" %} 
+{% if add_drug_form %}
+{% include "health/includes/add-drug-app/script.html" %}
+{% if add_drug_form %}
+    <div class="col-md-8">
+        {% include "health/includes/add-drug-app/script.html" %}
+    </div>
+    {% endif %}
+{% endif %}
+ 
+
+ 
+
+{% endblock script %}

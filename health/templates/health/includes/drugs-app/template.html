@@ -1,0 +1,108 @@
+<div id="accordion-drugs" class="rtl text-right farsi">
+
+    <div class="card" id="drugs-app">
+        <div class="card-header">
+            <h5 class="text-center">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-drugs"
+                    aria-expanded="true" aria-controls="collapse-drugs">
+                    دارو ها
+                    <span v-if="drugs.length>0">
+                        <small class="text-danger mx-2">
+                            <span v-text="drugs.length"></span>
+                        </small>
+                    </span>
+
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapse-drugs" class="collapse " aria-labelledby="heading-drugs"
+            data-parent="#accordion-drugs">
+
+            <div class="card-body rtl">
+                <div class="my-2">
+                    <input type="text" placeholder="جستجو ..." class="form-control" v-model="search_for" @input="filter()">
+                </div>
+              
+                <div class="table-responsive">
+                    <table class="table {% if DARK_THEME %}table-dark {% endif %}table-striped table-dark">
+                        <thead>
+                            <th>
+                                نام
+                            </th>
+
+
+                            <th>
+                                بارکد
+                            </th>
+
+
+
+                            <th>
+                                قیمت
+                            </th>
+
+
+                            <th>
+
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="drug in drugs">
+
+                                <td>
+                                    <a :href="drug.get_absolute_url">
+                                        <div class="media">
+                                            <img :src="drug.thumbnail" width="48" class="rounded" alt="">
+                                            <div class="media-body mr-2">
+                                                <h5 v-text="drug.title"></h5>
+                                                <h6 class="text-muted small" v-text="drug.class_title"></h6>
+                                                <h6 v-if="drug.model"> 
+                                                    <span v-text="drug.model"></span>
+                                                </h6>
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                      
+                                  
+
+                                </td>
+                                <td>
+                                    <a :href="drug.get_absolute_url">
+                                        <span :class="'text-'+drug.color" v-text="drug.barcode"></span>
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <h6>
+                                        هر
+                                        <span v-text="drug.unit_name"> </span>
+                                        <span v-text="to_price(drug.unit_price)"> </span>
+                                        {{CURRENCY}}
+                                    </h6>
+                                </td>
+
+
+                                <td>
+                                    {% if perms.accounting.change_drug %}
+                                    <a :href="drug.get_edit_url" class="my-2 text-warning mx-2" title="ویرایش"
+                                        target="_blank">
+                                        <i class="fa fa-edit text-warning"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if perms.accounting.delete_drug %}
+                                    <a :href="drug.get_delete_url" class="my-2 text-danger mx-2" title="حذف"
+                                        target="_blank">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
