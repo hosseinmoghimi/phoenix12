@@ -172,6 +172,20 @@ class PersonsView(View):
         return render(request,TEMPLATE_ROOT+"persons.html",context)
 
 
+class DuplicatedPersonsView(View):
+    def get(self,request,*args, **kwargs):
+        context=getContext(request=request)
+        context['name3']="name 3333"
+        persons=PersonRepo(request=request).duplicated(*args, **kwargs)
+        if persons is not None:
+            persons=persons.order_by('full_name')
+        persons_s=json.dumps(PersonSerializer(persons,many=True).data)
+        context['persons']=persons
+        context['persons_s']=persons_s
+         
+        return render(request,TEMPLATE_ROOT+"persons.html",context)
+
+
 class PersonView(View):
     def get(self,request,*args, **kwargs):
         context=getContext(request=request)

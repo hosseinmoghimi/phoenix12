@@ -1,6 +1,11 @@
 {% extends "authentication/layout.html" %} {% load static %} {% block content %}
 <div class="row rtl farsi">
- 
+ <div class="col-md-12">
+  <p>
+
+    <a href="{% url 'authentication:duplicated_persons' %}">اشخاص تکراری</a>
+  </p>
+ </div>
   {% if add_person_form %}
   <div class="col-md-12">
     {% include "authentication/includes/add-person-app/template.html" %}

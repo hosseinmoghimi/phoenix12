@@ -31,6 +31,18 @@ class PersonRepo():
             search_for=kwargs["search_for"]
             objects=objects.filter(Q(full_name__contains=search_for)  | Q(melli_code__contains=search_for) )
         return objects.all()
+    def duplicated(self,*args, **kwargs):
+        if not self.request.user.has_perm(APP_NAME+".change_person"):
+            return None
+        ids=[]
+        persons=Person.objects.all()
+        for person in persons:
+            pdup_persons=Person.objects.filter(full_name=person.full_name).exclude(pk=person.id)
+            # pdup_persons=Person.objects.filter(first_name=person.first_name).filter(last_name=person.last_name).exclude(pk=person.id)
+            if len(pdup_persons)>0:
+                for dup_person in pdup_persons:
+                    ids.append(dup_person.id)
+        return Person.objects.filter(id__in=ids)
     
     def change_image(self,person_id,image):
         person=self.person(person_id=person_id)
