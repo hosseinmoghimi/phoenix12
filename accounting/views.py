@@ -617,6 +617,56 @@ class InvoiceToExcelView(View):
                 'line_total':invoice_line.line_total,      
             }
             lines.append(line)
+        line_lines_total={
+                'row':"",
+                'title':"",
+                'quantity':"",      
+                'discount':"",      
+                'unit_price': "جمع اقلام فاکتور",      
+                'line_total':invoice.lines_total, 
+            }
+        lines.append(line_lines_total)
+        if invoice.discount>0:
+            line_discount={
+                'row':"",
+                'title':"",
+                'quantity':"",      
+                'discount':"",      
+                'unit_price': "تخفیف",      
+                'line_total':invoice.discount, 
+            }
+            lines.append(line_discount)
+        if invoice.shipping_fee>0:
+            line_shipping={
+                'row':"",
+                'title':"",
+                'quantity':"",      
+                'discount':"",      
+                'unit_price': "هزینه حمل",      
+                'line_total':invoice.shipping_fee, 
+            }
+            lines.append(line_shipping)
+        if invoice.tax_percentage>0:
+            line_tax={
+                'row':"",
+                'title':"",
+                'quantity':"",      
+                'discount':"",      
+                'unit_price':f"{invoice.tax_percentage} % مالیات بر ارزش افزوده",      
+                'line_total':invoice.tax_amount, 
+            }
+            lines.append(line_tax)
+        from utility.num import to_horuf
+        from phoenix.server_settings import CURRENCY
+        line_total={
+            'row':"",
+            'title':"",
+            'quantity':"",      
+            'discount':"",      
+            'unit_price':f"قابل پرداخت : {to_horuf(invoice.amount)} {CURRENCY}",      
+            'line_total':invoice.amount, 
+        }
+        lines.append(line_total)
         headers=['ردیف',
                  'عنوان',
                  'تعداد', 
@@ -646,6 +696,7 @@ class InvoiceToExcelView(View):
             table_headers=headers,
             style=style,
             sheet_name='Invoice',
+            title='فاکتور '+str(invoice.pk),
         )
             
         file_name=f"""Phoenix Invoice {invoice.pk} {date.replace('/','').replace(':','')}.xlsx"""
