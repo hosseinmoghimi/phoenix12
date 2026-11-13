@@ -101,7 +101,8 @@ class AddAccountForm(forms.Form):
 class AddPersonAccountForm(AddAccountForm):
     person_id=forms.IntegerField(required=True)
     person_category_id=forms.IntegerField(required=True)
-    
+    first_name=forms.CharField(max_length=50,required=False)
+    last_name=forms.CharField(max_length=50,required=False)
     
 class AddInvoiceLineItemUnitForm(forms.Form):
     invoice_line_item_id=forms.IntegerField(required=True)

@@ -22,25 +22,7 @@
       <div class="card-body">
         <form @submit.prevent="add_person_account()">
           <div class="row rtl">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for=""
-                  >نام حساب شخص
-
-                 
-                </label>
-                <input
-                  type="text" 
-                  required
-                  class="form-control"
-                  v-model="title"
-                />
-              </div>
- 
-
-            </div>
- 
-
+            
             <div class="col-md-6">
               <div class="form-group">
                 <label for=""
@@ -59,7 +41,42 @@
                 />
               </div>
 
-                <div v-if="person.full_name">
+               
+
+            </div>
+            
+            <div class="col-md-3" v-if="person_id==0">
+              <div class="form-group">
+                <label for=""
+                  >نام شخص
+                </label>
+                <input
+                  type="text" 
+                  class="form-control"
+                  v-model="first_name"
+                />
+              </div>
+ 
+            </div>
+
+
+             <div class="col-md-3" v-if="person_id==0">
+              <div class="form-group">
+                <label for=""
+                  >نام خانوادگی شخص
+                </label>
+                <input
+                  type="text" 
+                  class="form-control"
+                  v-model="last_name"
+                />
+              </div>
+ 
+            </div>
+
+            <div class="col-md-6">
+
+               <div v-if="person.full_name">
                 <a :href="person.get_absolute_url">
                   <div class="media">
                     <img
@@ -74,6 +91,27 @@
                   </div>
                 </a>
               </div>
+              
+            </div>
+
+            <div class="col-12"></div>
+ 
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for=""
+                  >نام حساب شخص
+
+                 
+                </label>
+                <input
+                  type="text" 
+                  required
+                  class="form-control"
+                  v-model="title"
+                />
+              </div>
+ 
 
             </div>
  

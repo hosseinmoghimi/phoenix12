@@ -119,6 +119,12 @@ class PersonRepo():
         #         message="کد پروفایل وارد شده تکراری است."
         #         person=None
         #         return result,message,person
+
+        first_name=kwargs['first_name']
+        last_name=kwargs['last_name']
+        old_person=Person.objects.filter(first_name=first_name).filter(last_name=last_name).first()
+        if old_person is not None:
+            return FAILED,'نام و نام خانوادگی شخص تکراری می باشد.',None
         if 'melli_code' in kwargs:
             melli_code=kwargs['melli_code']
 

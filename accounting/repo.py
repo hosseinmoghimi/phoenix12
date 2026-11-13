@@ -746,8 +746,33 @@ class PersonAccountRepo(Repo):
         if 'nature' in kwargs:
             person_account.nature=kwargs['nature']
 
+        person_id=0
         if 'person_id' in kwargs and kwargs['person_id']:
-            person_account.person_id=kwargs['person_id']
+            try:
+                person_id=int(kwargs['person_id'])
+                person=Person.objects.filter(pk=person_id).first()
+                if person is None:
+                    return FAILED,'شناسه شخص نامعتبر می باشد.',None
+                person_account.person_id=person_id
+            except:
+                return FAILED,'شناسه شخص صحیح نمی باشد.',None
+
+        if person_id==0:
+            first_name=kwargs['first_name']
+            last_name=kwargs['last_name']
+            
+            person_repo=PersonRepo(request=self.request)
+            # if False:
+            #     old_person=person_repo.objects.filter(first_name=first_name).filter(last_name=last_name).first()
+            #     if old_person is not None:
+            #         return FAILED,'نام و نام خانوادگی شخص تکراری می باشد.',None
+            result,message,person=person_repo.add_person(first_name=first_name,last_name=last_name)
+            if person is not None:
+                person_account.person_id=person.id
+            else:
+                return FAILED,message,None
+
+            
 
         if 'parent_id' in kwargs and kwargs['parent_id']:
             person_account.parent_id=kwargs['parent_id']

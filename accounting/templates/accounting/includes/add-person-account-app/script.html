@@ -31,6 +31,8 @@
             person:person,
             person_id:person_id,
             priority: 100,
+            first_name:"",
+            last_name:"",
             title:"",
             type: "",
             nature: "بدون کنترل",
@@ -43,6 +45,10 @@
                 select_person_by_id(this.person_id).done(data => {
                     if (data.result === "SUCCEED") {
                         add_person_account_app.person = data.person
+                     
+                            add_person_account_app.title = data.person.full_name
+                        
+
                         console.log(data.person)
                     }
 
@@ -76,6 +82,8 @@
                     priority: parseInt(this.priority),
                     parent_id:0, 
                     person_id: parseInt(this.person_id),
+                    first_name: (this.first_name),
+                    last_name: (this.last_name),
                     person_category_id: parseInt(this.person_category_id),
                     color: this.color,
                     // type: this.type,
